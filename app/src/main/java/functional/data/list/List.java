@@ -2,16 +2,27 @@ package functional.data.list;
 
 import functional.annotation.Functor;
 import functional.annotation.iface.IFunctor;
-import functional.data.optional.Optional;
+import functional.data.optional.Maybe;
 
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 @Functor
-public sealed interface List<A> extends IFunctor<A,List<?>> permits Nil, Cons {
+public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Nil, Repeat {
 
-    Optional<A> head();
+    Maybe<A> head();
 
     List<A> tail();
+
+    <B> List<B> map(Function<A,B> mapping);
+
+    default FiniteList<A> limit(int k){
+        return head().maybe(h -> FiniteList.cons(h, tail().limit(k-1)), FiniteList.nil());
+    }
+
+    static <A> List<A> generate(A first, UnaryOperator<A> generator){
+        return new Generating<>(first, generator);
+    }
 
     static <A> List<A> cons(A first, List<A> tail) {
         if (first == null || tail == null) {
@@ -24,14 +35,16 @@ public sealed interface List<A> extends IFunctor<A,List<?>> permits Nil, Cons {
         return (List<A>) Nil.NIL;
     }
 
+    @SafeVarargs
     static <A> List<A> of(A... a) {
         if (a.length == 0) {
             return nil();
         } else {
-            return List.of(1, a);
+            return List.of(0, a);
         }
     }
 
+    @SafeVarargs
     private static <A> List<A> of(int n, A... a) {
         if (n >= a.length) {
             return nil();
@@ -41,9 +54,12 @@ public sealed interface List<A> extends IFunctor<A,List<?>> permits Nil, Cons {
     }
 
     static <A,B> List<B> map(List<A> lst, Function<A,B> mapping){
-        return lst.head().maybe(h -> List.cons(mapping.apply(h), map(lst.tail(),mapping)), nil());
+        return lst.map(mapping);
     }
 
+    static <A> List<A> repeat(A a){
+        return new Repeat<>(a);
+    }
 }
 /*
     public <Q> List<Q> fapply(Applicative<Function<A, Q>, List<?>> ff);

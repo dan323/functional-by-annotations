@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 public final class FunctorUtils {
 
-    public static <F extends IFunctor<?, F>, FA extends IFunctor<A, F>, FB extends IFunctor<B, F>, A, B> FB map(Class<? extends IFunctor> clazz, FA base, Function<A, B> function) {
+    public static <G extends IFunctor<F>,F, FA extends F, FB extends F, A, B> FB map(Class<? extends G> clazz, FA base, Function<A, B> function) {
         if (clazz.getAnnotation(functional.annotation.Functor.class) == null) {
             throw new IllegalArgumentException("The functor was not properly defined, as there is no annotation in the class.");
         }

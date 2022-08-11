@@ -1,9 +1,14 @@
 package functional.data.list;
-import functional.data.optional.Optional;
+import functional.data.optional.Maybe;
 
 import java.util.Objects;
+import java.util.function.Function;
 
-public final class Cons<A> implements List<A> {
+/**
+ * List of one element in front of another list
+ * @param <A>
+ */
+sealed class Cons<A> implements List<A> permits FinCons {
 
     private final A head;
     private final List<A> tail;
@@ -17,13 +22,18 @@ public final class Cons<A> implements List<A> {
     }
 
     @Override
-    public Optional<A> head() {
-        return Optional.of(head);
+    public Maybe<A> head() {
+        return Maybe.of(head);
     }
 
     @Override
     public List<A> tail() {
         return tail;
+    }
+
+    @Override
+    public <B> List<B> map(Function<A, B> mapping) {
+        return new Cons<>(mapping.apply(head), tail().map(mapping));
     }
 
     @Override

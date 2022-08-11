@@ -2,7 +2,7 @@ package functional.data.list.zipper;
 
 import functional.annotation.iface.IFunctor;
 import functional.data.list.List;
-import functional.data.optional.Optional;
+import functional.data.optional.Maybe;
 
 import java.util.function.Function;
 
@@ -15,7 +15,7 @@ import static functional.data.list.ListUtils.reverse;
  * @param <A>
  * @author Daniel de la Concepcion
  */
-public class ListZipper<A> implements IFunctor<A, ListZipper<?>> {
+public class ListZipper<A> implements IFunctor<ListZipper<?>> {
 
     private final List<A> left;
     private final A pointer;
@@ -30,16 +30,16 @@ public class ListZipper<A> implements IFunctor<A, ListZipper<?>> {
         this.pointer = pointer;
     }
 
-    public Optional<ListZipper<A>> moveLeft() {
+    public Maybe<ListZipper<A>> moveLeft() {
         var newLeft = left.tail();
         var newRight = List.cons(pointer, right);
-        return left.head().maybe(x -> Optional.of(new ListZipper<>(newLeft, x, newRight)), Optional.of());
+        return left.head().maybe(x -> Maybe.of(new ListZipper<>(newLeft, x, newRight)), Maybe.of());
     }
 
-    public Optional<ListZipper<A>> moveRight() {
+    public Maybe<ListZipper<A>> moveRight() {
         var newLeft = List.cons(pointer, left);
         var newRight = right.tail();
-        return right.head().maybe(x -> Optional.of(new ListZipper<>(newLeft, x, newRight)), Optional.of());
+        return right.head().maybe(x -> Maybe.of(new ListZipper<>(newLeft, x, newRight)), Maybe.of());
     }
 
     public ListZipper<A> modify(Function<A, A> map) {

@@ -3,7 +3,7 @@ package functional.data.optional;
 import java.util.Objects;
 import java.util.function.Function;
 
-public final class Just<A> implements Optional<A> {
+public final class Just<A> implements Maybe<A> {
 
     private final A element;
 

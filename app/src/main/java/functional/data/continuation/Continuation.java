@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 @Functor
 @FunctionalInterface
-public interface Continuation<A, R> extends Function<Function<A, R>, R>, IFunctor<A,Continuation<?,R>> {
+public interface Continuation<A, R> extends Function<Function<A, R>, R>, IFunctor<Continuation<?,R>> {
 
     static <R1, R2, R> Continuation<R2, R> map(Continuation<R1, R> base, Function<R1, R2> mapping) {
         return k -> base.apply(k.compose(mapping));

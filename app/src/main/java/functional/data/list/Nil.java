@@ -1,8 +1,12 @@
 package functional.data.list;
 
-import functional.data.optional.Optional;
+import functional.data.optional.Maybe;
 
-public final class Nil<A> implements List<A> {
+/**
+ * Empty list
+ * @param <A>
+ */
+final class Nil<A> implements List<A>, FiniteList<A> {
 
     private Nil() {
     }
@@ -10,12 +14,12 @@ public final class Nil<A> implements List<A> {
     static Nil<?> NIL = new Nil<>();
 
     @Override
-    public Optional<A> head() {
-        return Optional.of();
+    public Maybe<A> head() {
+        return Maybe.of();
     }
 
     @Override
-    public List<A> tail() {
+    public FiniteList<A> tail() {
         return new Nil<>();
     }
 

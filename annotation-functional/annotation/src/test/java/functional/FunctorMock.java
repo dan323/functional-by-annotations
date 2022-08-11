@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Functor
-public class FunctorMock<A> implements IFunctor<A,FunctorMock<?>> {
+public class FunctorMock<A> implements IFunctor<FunctorMock<?>> {
 
     private final List<A> lst;
 

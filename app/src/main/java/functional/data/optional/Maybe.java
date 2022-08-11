@@ -6,20 +6,20 @@ import functional.annotation.iface.IFunctor;
 import java.util.function.Function;
 
 @Functor
-public sealed interface Optional<A> extends IFunctor<A, Optional<?>> permits Nothing, Just {
+public sealed interface Maybe<A> extends IFunctor<Maybe<?>> permits Nothing, Just {
 
     <C> C maybe(Function<A, C> f, C constant);
 
-    static <A> Optional<A> of(A element) {
+    static <A> Maybe<A> of(A element) {
         return new Just<>(element);
     }
 
-    static <A> Optional<A> of() {
-        return (Optional<A>) Nothing.NOTHING;
+    static <A> Maybe<A> of() {
+        return (Maybe<A>) Nothing.NOTHING;
     }
 
-    static <A,R> Optional<R> map(Optional<A> base, Function<A, R> f){
-        return base.maybe(x -> Optional.of(f.apply(x)), Optional.of());
+    static <A,R> Maybe<R> map(Maybe<A> base, Function<A, R> f){
+        return base.maybe(x -> Maybe.of(f.apply(x)), Maybe.of());
     }
 
     /*

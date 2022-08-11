@@ -18,16 +18,18 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * Annotation processor to verify all classes with {@link Functor} implement the correct {@code map} function
+ *
+ * @author daniel
+ */
 public class FunctorCompiler extends AbstractProcessor {
     private Elements elementUtils;
     private Messager messager;
     private Types typeUtils;
-
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -39,9 +41,7 @@ public class FunctorCompiler extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        Set<String> annotataions = new LinkedHashSet<>();
-        annotataions.add(Functor.class.getCanonicalName());
-        return annotataions;
+        return Set.of(Functor.class.getCanonicalName());
     }
 
     @Override
@@ -51,35 +51,43 @@ public class FunctorCompiler extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        var elems = roundEnvironment.getElementsAnnotatedWith(Functor.class);
-        for (var elem : elems) {
-            if (elem instanceof TypeElement && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
-                if (!validateFunctor((TypeElement) elem)) {
-                    error("The annotated type %s does not satisfy the conditions", ((TypeElement) elem).getQualifiedName());
+        try {
+            var elems = roundEnvironment.getElementsAnnotatedWith(Functor.class);
+            for (var elem : elems) {
+                if (elem instanceof TypeElement && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
+                    if (!validateFunctor((TypeElement) elem)) {
+                        error("The annotated type %s does not satisfy the conditions", ((TypeElement) elem).getQualifiedName());
+                        return false;
+                    }
+                } else {
+                    error("@Functor is not valid for %s", elem.getKind().toString());
                     return false;
                 }
-            } else {
-                error("@Functor is not valid for %s", elem.getKind().toString());
-                return false;
             }
+            return true;
+        } catch (Exception e){
+            error("There was an exception launched: %s", e.getMessage());
+            return false;
         }
-        //verifyImplementsInterface();
-        return true;
+
     }
 
     private boolean validateFunctor(TypeElement element) {
+        // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
             return false;
         }
+        // Obtain the IFunctor interface it is implementing, or fail if it does not
         var iFace = element.getInterfaces().stream().map((TypeMirror iface) -> ((DeclaredType) iface)).filter(iface -> isProperFunctor(element, iface)).findFirst().orElse(null);
         if (iFace == null) {
             error("The element %s is not implementing the interface Functor", element.getQualifiedName());
             return false;
         }
         boolean success = false;
+        // Look for the public static method called map and verify its signature
         for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals("map")) {
                 if (checkIfMap((ExecutableElement) elem, element, iFace)) {
                     success = true;
                     break;
@@ -96,13 +104,7 @@ public class FunctorCompiler extends AbstractProcessor {
 
     private boolean isProperFunctor(TypeElement element, DeclaredType type) {
         var functorI = elementUtils.getTypeElement(IFunctor.class.getTypeName());
-        if (type.asElement().equals(functorI)) {
-            var lst = type.getTypeArguments();
-            var input = lst.get(0);
-            var finalType = changeWildBy(type, input);
-            return finalType.toString().equals(element.asType().toString());
-        }
-        return false;
+        return type.asElement().equals(functorI);
     }
 
     private DeclaredType changeWildBy(DeclaredType type, TypeMirror substitute) {
@@ -110,7 +112,7 @@ public class FunctorCompiler extends AbstractProcessor {
         var wilderized = type;
         if (type.asElement().equals(functorI)) {
             var lst = type.getTypeArguments();
-            wilderized = (DeclaredType) lst.get(1);
+            wilderized = (DeclaredType) lst.get(0);
         } else {
             error("The interface is not an %s", IFunctor.class.getName());
         }
@@ -126,7 +128,7 @@ public class FunctorCompiler extends AbstractProcessor {
     }
 
     private boolean checkIfMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
-        if (method.getSimpleName().toString().equals("map") && method.getParameters().size() == 2) {
+        if (method.getParameters().size() == 2) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
             var input = changeWildBy(iFace, params.get(0));
             var returnTyp = changeWildBy(iFace, params.get(1));
@@ -136,13 +138,13 @@ public class FunctorCompiler extends AbstractProcessor {
                     if (param2.asElement().equals(funcElem) && param2.getTypeArguments().equals(params.subList(0, 2))) {
                         return true;
                     } else {
-                        error("The mapping for type %s is not a Function or the type arguments are not matching the rest of the signature", type.getQualifiedName().toString());
+                        warning("There is a map method, but for type %s is not a Function or the type arguments are not matching the rest of the signature", type.getQualifiedName().toString());
                     }
                 } else {
-                    error("The first input type and the return type should be %s", type.getQualifiedName());
+                    warning("There is a map method, but the first input type and the return type should be %s", type.getQualifiedName());
                 }
             } else {
-                error("The signature is not parametrized");
+                warning("There is a map method, but the signature is not parametrized");
             }
         }
         return false;
@@ -150,5 +152,9 @@ public class FunctorCompiler extends AbstractProcessor {
 
     private void error(String message, Object... args) {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));
+    }
+
+    private void warning(String message, Object... args) {
+        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));
     }
 }

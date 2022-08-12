@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IFunctorUtilTest {
 
     @Test
+    @SuppressWarnings("tested")
     public void mapTest() {
         var lst = List.of(1, 2, 3);
         var sol = FunctorUtils.<FunctorMock, FunctorMock<?>, FunctorMock<Integer>, FunctorMock<Integer>, Integer, Integer>map(FunctorMock.class, new FunctorMock<>(lst), x -> x + 1);

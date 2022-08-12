@@ -18,11 +18,6 @@ public interface Continuation<A, R> extends Function<Function<A, R>, R>, IFuncto
 public interface Continuation<A,R> extends Function<Function<A,R>,R>, Functor<A,Continuation<?,R>> {
 
     @Override
-    default <R1> Continuation<R1, R> map(Function<A, R1> f){
-        return k -> this.apply(k.compose(f));
-    }
-
-    @Override
     default  <S> Continuation<S, R> pure(S r) {
         return f -> f.apply(r);
     }

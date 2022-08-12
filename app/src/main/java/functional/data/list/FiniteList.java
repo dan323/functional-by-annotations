@@ -2,6 +2,10 @@ package functional.data.list;
 
 import java.util.function.Function;
 
+/**
+ * Finite lists are represented by the empty or a finite amount con appends
+ * @param <A>
+ */
 public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
 
     static <A> FiniteList<A> cons(A a, FiniteList<A> tail){

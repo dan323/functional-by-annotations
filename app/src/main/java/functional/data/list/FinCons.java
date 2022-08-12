@@ -1,9 +1,8 @@
 package functional.data.list;
 
-
 import java.util.function.Function;
 
-public final class FinCons<A> extends Cons<A> implements FiniteList<A> {
+final class FinCons<A> extends Cons<A> implements FiniteList<A> {
 
     FinCons(A head, FiniteList<A> tail){
         super(head, tail);

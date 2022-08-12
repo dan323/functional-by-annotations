@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 @Functor
-public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Nil, Repeat {
+public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Repeat {
 
     Maybe<A> head();
 
@@ -33,24 +33,6 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
 
     static <A> List<A> nil() {
         return (List<A>) Nil.NIL;
-    }
-
-    @SafeVarargs
-    static <A> List<A> of(A... a) {
-        if (a.length == 0) {
-            return nil();
-        } else {
-            return List.of(0, a);
-        }
-    }
-
-    @SafeVarargs
-    private static <A> List<A> of(int n, A... a) {
-        if (n >= a.length) {
-            return nil();
-        } else {
-            return cons(a[n], of(n + 1, a));
-        }
     }
 
     static <A,B> List<B> map(List<A> lst, Function<A,B> mapping){

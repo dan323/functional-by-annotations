@@ -6,7 +6,7 @@ import functional.data.optional.Maybe;
  * Empty list
  * @param <A>
  */
-final class Nil<A> implements List<A>, FiniteList<A> {
+final class Nil<A> implements FiniteList<A> {
 
     private Nil() {
     }
@@ -46,5 +46,10 @@ final class Nil<A> implements List<A>, FiniteList<A> {
     @Override
     public boolean equals(Object obj) {
         return obj == NIL;
+    }
+
+    @Override
+    public int hashCode() {
+        return 7;
     }
 }

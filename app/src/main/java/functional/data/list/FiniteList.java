@@ -30,4 +30,21 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
 
     FiniteList<A> tail();
 
+    @SafeVarargs
+    static <A> FiniteList<A> of(A... a) {
+        if (a.length == 0) {
+            return nil();
+        } else {
+            return FiniteList.of(0, a);
+        }
+    }
+
+    @SafeVarargs
+    private static <A> FiniteList<A> of(int n, A... a) {
+        if (n >= a.length) {
+            return nil();
+        } else {
+            return cons(a[n], of(n + 1, a));
+        }
+    }
 }

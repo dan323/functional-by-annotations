@@ -36,7 +36,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -B -f pom.xml sonar-maven-plugin:sonar -Dsonar.java.source=17 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323_functional-by-annotations
+        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=17 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323_functional-by-annotations
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |
@@ -80,7 +80,7 @@ jobs:
           java-version: 17
       - name: mutation testing
         run: |
-          mvn -B -f pom.xml clean test-compile org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module
+          mvn -B -f pom.xml clean test org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module
           rm -r target/pit-reports/pit-reports
           mkdir -p target/site
           mv target/pit-reports target/site

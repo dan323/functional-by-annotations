@@ -52,8 +52,14 @@ public final class FunctionalUtils {
     private static <O> O invokeStaticMethod(Method method, Object... inputs) {
         try {
             return (O) method.invoke(null, inputs);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalArgumentException("The inputs are not correct");
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("The method or inputs were not accessible");
+        } catch (InvocationTargetException e) {
+            InvocationTargetException ex = e;
+            while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException && illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {
+                ex = invocationTargetException;
+            }
+            throw new IllegalArgumentException(String.format("There was an error executing %s: %s", method.getName(), ex.getTargetException().getMessage()), ex);
         }
     }
 
@@ -71,7 +77,8 @@ public final class FunctionalUtils {
 
     static <G, F, FA extends F, FB extends F, A, B> Optional<FB> monadMap(Class<G> gClass, Class<F> fClass, FA base, Function<A, B> map) {
         if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, "flatMap", fClass, fClass)
+            return getMethodIfExists(gClass, "flatMap", Function.class, fClass)
+                    .flatMap(m -> getMethodIfExists(gClass, "pure", Object.class))
                     .map(m -> MonadUtil.flatMap(gClass, fClass, (A a) -> ApplicativeUtil.pure(gClass, fClass, map.apply(a)), base));
         } else {
             throw new IllegalArgumentException("The applicative is not correctly defined");
@@ -152,7 +159,7 @@ public final class FunctionalUtils {
     static <G, F, FA extends F, FB extends F, A> Optional<FB> monadFlatMap(Class<G> gClass, Class<F> fClass, Function<A, FB> mapping, FA fa) {
         if (isMonad(gClass)) {
             return getMethodIfExists(gClass, "flatMap", Function.class, fClass)
-                    .<FB>map(m -> invokeStaticMethod(m, gClass, mapping, fa))
+                    .<FB>map(m -> invokeStaticMethod(m, mapping, fa))
                     .or(() -> getMethodIfExists(gClass, "join", fClass)
                             .flatMap(m -> getMethodIfExists(gClass, "map", fClass, Function.class))
                             .map(m -> MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));
@@ -166,7 +173,7 @@ public final class FunctionalUtils {
     public static <G, F, FFA extends F, FA extends F> Optional<FA> monadJoin(Class<G> gClass, Class<F> fClass, FFA ffa) {
         if (isMonad(gClass)) {
             return getMethodIfExists(gClass, "join", fClass)
-                    .<FA>map(m -> invokeStaticMethod(m, gClass, ffa))
+                    .<FA>map(m -> invokeStaticMethod(m, ffa))
                     .or(() -> getMethodIfExists(gClass, "flatMap", fClass)
                             .map(m -> MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));
         } else {

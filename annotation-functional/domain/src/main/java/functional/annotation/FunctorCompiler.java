@@ -2,11 +2,8 @@ package functional.annotation;
 
 import functional.annotation.iface.IFunctor;
 
-import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -18,6 +15,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -26,61 +25,36 @@ import java.util.function.Function;
  *
  * @author daniel
  */
-public class FunctorCompiler extends AbstractProcessor {
-    private Elements elementUtils;
-    private Messager messager;
-    private Types typeUtils;
+public class FunctorCompiler implements Compiler {
 
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
-        super.init(processingEnv);
-        elementUtils = processingEnv.getElementUtils();
-        messager = processingEnv.getMessager();
-        typeUtils = processingEnv.getTypeUtils();
+    private final Messager messager;
+    private final Types typeUtils;
+    private final Elements elementUtils;
+
+    FunctorCompiler(Messager messager, Types types, Elements elements){
+        this.messager = messager;
+        this.typeUtils = types;
+        this.elementUtils = elements;
     }
 
     @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return Set.of(Functor.class.getCanonicalName());
-    }
-
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.latestSupported();
-    }
-
-    @Override
-    public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        try {
-            var elems = roundEnvironment.getElementsAnnotatedWith(Functor.class);
-            for (var elem : elems) {
-                if (elem instanceof TypeElement && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
-                    if (!validateFunctor((TypeElement) elem)) {
-                        error("The annotated type %s does not satisfy the conditions", ((TypeElement) elem).getQualifiedName());
-                        return false;
-                    }
-                } else {
-                    error("@Functor is not valid for %s", elem.getKind().toString());
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e){
-            error("There was an exception launched: %s", e.getMessage());
+    public boolean process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
+        if (!validateFunctor(element, iface)) {
+            error("The annotated type %s does not satisfy the conditions", element.getQualifiedName());
             return false;
+        } else {
+            return true;
         }
-
     }
 
-    private boolean validateFunctor(TypeElement element) {
+    private boolean validateFunctor(TypeElement element, DeclaredType iface) {
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
             return false;
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
-        var iFace = element.getInterfaces().stream().map((TypeMirror iface) -> ((DeclaredType) iface)).filter(iface -> isProperFunctor(element, iface)).findFirst().orElse(null);
-        if (iFace == null) {
+        if (!iface.asElement().equals(elementUtils.getTypeElement(IFunctor.class.getTypeName()))) {
             error("The element %s is not implementing the interface Functor", element.getQualifiedName());
             return false;
         }
@@ -88,7 +62,7 @@ public class FunctorCompiler extends AbstractProcessor {
         // Look for the public static method called map and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals("map")) {
-                if (checkIfMap((ExecutableElement) elem, element, iFace)) {
+                if (checkIfMap((ExecutableElement) elem, element, iface)) {
                     success = true;
                     break;
                 }
@@ -102,36 +76,11 @@ public class FunctorCompiler extends AbstractProcessor {
         }
     }
 
-    private boolean isProperFunctor(TypeElement element, DeclaredType type) {
-        var functorI = elementUtils.getTypeElement(IFunctor.class.getTypeName());
-        return type.asElement().equals(functorI);
-    }
-
-    private DeclaredType changeWildBy(DeclaredType type, TypeMirror substitute) {
-        var functorI = elementUtils.getTypeElement(IFunctor.class.getTypeName());
-        var wilderized = type;
-        if (type.asElement().equals(functorI)) {
-            var lst = type.getTypeArguments();
-            wilderized = (DeclaredType) lst.get(0);
-        } else {
-            error("The interface is not an %s", IFunctor.class.getName());
-        }
-        var funcList = wilderized.getTypeArguments().stream()
-                .map((TypeMirror tm) -> {
-                    if (tm.getKind().equals(TypeKind.WILDCARD)) {
-                        return substitute;
-                    } else {
-                        return tm;
-                    }
-                }).toList().toArray(new TypeMirror[]{});
-        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);
-    }
-
     private boolean checkIfMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
-            var input = changeWildBy(iFace, params.get(0));
-            var returnTyp = changeWildBy(iFace, params.get(1));
+            var input =  CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);
+            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils,iFace, params.get(1), IFunctor.class);
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(input.toString()) && returnType.toString().equals(returnTyp.toString())) {
                     var funcElem = elementUtils.getTypeElement(Function.class.getTypeName());

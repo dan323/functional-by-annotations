@@ -47,7 +47,7 @@
                     <encoding>UTF-8</encoding>
                     <annotationProcessors>
                         <annotationProcessor>
-                            functional.annotation.FunctorCompiler
+                            functional.annotation.FunctionalCompiler
                         </annotationProcessor>
                     </annotationProcessors>
                 </configuration>

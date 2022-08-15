@@ -1,6 +1,6 @@
 package functional;
 
-import functional.annotation.iface.FunctorUtils;
+import functional.annotation.iface.util.FunctorUtil;
 import functional.data.continuation.Continuation;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +18,13 @@ public class ContinuationFunctorTest {
     }
 
     @Test
-    public void continuationFunctor(){
+    public void continuationFunctor() {
         Function<Integer, Continuation<Integer, String>> succ = q -> k -> k.apply(q + 1);
-        Continuation<Integer,String> mapped = Continuation.map(succ.apply(7), k -> k+2);
+        Continuation<Integer, String> mapped = Continuation.map(succ.apply(7), k -> k + 2);
 
         assertEquals("10", mapped.apply(k -> Integer.toString(k)));
 
-        Continuation<Integer,String> cont = FunctorUtils.<Continuation,Continuation<?,String>,Continuation<Integer,String>,Continuation<Integer,String>,Integer,Integer>map(Continuation.class, succ.apply(9), k -> k-1);
+        Continuation<Integer, String> cont = FunctorUtil.<Continuation, Continuation, Continuation<Integer, String>, Continuation<Integer, String>, Integer, Integer>map(Continuation.class, Continuation.class, succ.apply(9), k -> k - 1);
         assertEquals("9", cont.apply(k -> Integer.toString(k)));
     }
 }

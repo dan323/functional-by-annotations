@@ -1,6 +1,6 @@
 package functional;
 
-import functional.annotation.iface.FunctorUtils;
+import functional.annotation.iface.util.FunctorUtil;
 import functional.data.list.FiniteList;
 import functional.data.list.zipper.ListZipper;
 import functional.data.optional.Maybe;
@@ -25,7 +25,7 @@ public class ListZipperFunctorTest {
         var lst = zipped.maybe(zip -> ListZipper.map(zip, b -> !b), null).toList();
         assertEquals(FiniteList.of(false, false, true), lst);
 
-        lst = zipped.maybe(zip -> FunctorUtils.<ListZipper, ListZipper<?>,ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipper.class, zip, b -> !b), null).toList();
+        lst = zipped.maybe(zip -> FunctorUtil.<ListZipper, ListZipper,ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipper.class, ListZipper.class, zip, b -> !b), null).toList();
         assertEquals(FiniteList.of(false, false, true), lst);
     }
 }

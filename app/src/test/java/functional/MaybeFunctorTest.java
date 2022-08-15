@@ -1,6 +1,6 @@
 package functional;
 
-import functional.annotation.iface.FunctorUtils;
+import functional.annotation.iface.util.FunctorUtil;
 import functional.data.optional.Maybe;
 import org.junit.jupiter.api.Test;
 
@@ -22,11 +22,11 @@ public class MaybeFunctorTest {
     @Test
     public void maybeFunctorUtils() {
         Maybe<Boolean> mb = Maybe.of();
-        Maybe<Boolean> mnotb = FunctorUtils.<Maybe, Maybe<?>, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(Maybe.class, mb, b -> !b);
+        Maybe<Boolean> mnotb = FunctorUtil.<Maybe, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(Maybe.class, Maybe.class, mb, b -> !b);
         assertEquals(Maybe.of(), mnotb);
 
         mb = Maybe.of(true);
-        mnotb = FunctorUtils.<Maybe, Maybe<?>, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(Maybe.class, mb, b -> !b);
+        mnotb = FunctorUtil.<Maybe, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(Maybe.class, Maybe.class, mb, b -> !b);
         assertEquals(Maybe.of(false), mnotb);
     }
 }

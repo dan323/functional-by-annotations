@@ -1,6 +1,6 @@
 package functional;
 
-import functional.annotation.iface.FunctorUtils;
+import functional.annotation.iface.util.FunctorUtil;
 import functional.data.tree.BinaryTree;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ public class TreeFunctorTest {
         BinaryTree<Integer> leaf6 = BinaryTree.leaf(6);
         BinaryTree<Integer> tree = BinaryTree.node(leaf5, leaf6);
 
-        var sol = FunctorUtils.<BinaryTree, BinaryTree<?>, BinaryTree<Integer>, BinaryTree<Integer>, Integer, Integer>map(BinaryTree.class, tree, k -> k * k);
+        var sol = FunctorUtil.<BinaryTree, BinaryTree, BinaryTree<Integer>, BinaryTree<Integer>, Integer, Integer>map(BinaryTree.class, BinaryTree.class, tree, k -> k * k);
 
         assertEquals(BinaryTree.node(BinaryTree.leaf(25), BinaryTree.leaf(36)), sol);
     }

@@ -93,9 +93,6 @@
                     <version>${pitest.version}</version>
                     <configuration>
                         <verbose>false</verbose>
-                        <targetClasses>
-                            <targetClass>com.dan323.*</targetClass>
-                        </targetClasses>
                         <exportLineCoverage>true</exportLineCoverage>
                         <outputFormats>
                             <format>XML</format>

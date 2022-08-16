@@ -17,22 +17,50 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>report-aggregate</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report-aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>app</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>annotation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>jacoco</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>report-aggregate</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                                <configuration>
+                                    <includeCurrentProject>false</includeCurrentProject>
+                                    <title>Functionals by annotation in Java</title>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

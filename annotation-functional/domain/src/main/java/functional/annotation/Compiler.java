@@ -6,5 +6,5 @@ import javax.lang.model.type.DeclaredType;
 
 public interface Compiler {
 
-    boolean process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface);
+    void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface);
 }

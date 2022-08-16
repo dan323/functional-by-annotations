@@ -10,14 +10,9 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -31,32 +26,25 @@ public class FunctorCompiler implements Compiler {
     private final Types typeUtils;
     private final Elements elementUtils;
 
-    FunctorCompiler(Messager messager, Types types, Elements elements){
+    FunctorCompiler(Messager messager, Types types, Elements elements) {
         this.messager = messager;
         this.typeUtils = types;
         this.elementUtils = elements;
     }
 
     @Override
-    public boolean process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
-        if (!validateFunctor(element, iface)) {
-            error("The annotated type %s does not satisfy the conditions", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
-        }
+    public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
+        validateFunctor(element, iface);
     }
 
-    private boolean validateFunctor(TypeElement element, DeclaredType iface) {
+    private void validateFunctor(TypeElement element, DeclaredType iface) {
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
-            return false;
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
         if (!iface.asElement().equals(elementUtils.getTypeElement(IFunctor.class.getTypeName()))) {
             error("The element %s is not implementing the interface Functor", element.getQualifiedName());
-            return false;
         }
         boolean success = false;
         // Look for the public static method called map and verify its signature
@@ -70,17 +58,14 @@ public class FunctorCompiler implements Compiler {
         }
         if (!success) {
             error("The static public function map was not found in %s", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
         }
     }
 
     private boolean checkIfMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
-            var input =  CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);
-            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils,iFace, params.get(1), IFunctor.class);
+            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);
+            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IFunctor.class);
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(input.toString()) && returnType.toString().equals(returnTyp.toString())) {
                     var funcElem = elementUtils.getTypeElement(Function.class.getTypeName());

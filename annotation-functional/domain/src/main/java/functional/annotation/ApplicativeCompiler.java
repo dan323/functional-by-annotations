@@ -29,25 +29,18 @@ public class ApplicativeCompiler implements Compiler {
     }
 
     @Override
-    public boolean process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
-        if (!validateApplicative(element, iface)) {
-            error("The annotated type %s does not satisfy the conditions", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
-        }
+    public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
+        validateApplicative(element, iface);
     }
 
-    private boolean validateApplicative(TypeElement element, DeclaredType iface) {
+    private void validateApplicative(TypeElement element, DeclaredType iface) {
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
-            return false;
         }
         // Obtain the IApplicative interface it is implementing, or fail if it does not
         if (!iface.asElement().equals(elementUtils.getTypeElement(IApplicative.class.getTypeName()))) {
             error("The element %s is not implementing the interface Applicative", element.getQualifiedName());
-            return false;
         }
         boolean successFapply = false;
         boolean successLiftA2 = false;
@@ -71,9 +64,6 @@ public class ApplicativeCompiler implements Compiler {
         }
         if (!success) {
             error("The static public function pure or fapply was not found in %s", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
         }
     }
 

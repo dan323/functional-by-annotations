@@ -32,25 +32,18 @@ public class MonadCompiler implements Compiler {
     }
 
     @Override
-    public boolean process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
-        if (!validateMonad(element, iface)) {
-            error("The annotated type %s does not satisfy the conditions", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
-        }
+    public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
+        validateMonad(element, iface);
     }
 
-    private boolean validateMonad(TypeElement element, DeclaredType iface) {
+    private void validateMonad(TypeElement element, DeclaredType iface) {
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
-            return false;
         }
         // Obtain the IMonad interface it is implementing, or fail if it does not
         if (!iface.asElement().equals(elementUtils.getTypeElement(IMonad.class.getTypeName()))) {
             error("The element %s is not implementing the interface Applicative", element.getQualifiedName());
-            return false;
         }
         boolean successFlatmap = false;
         boolean successJoin = false;
@@ -87,9 +80,6 @@ public class MonadCompiler implements Compiler {
         }
         if (!success) {
             error("The static public function pure or fapply was not found in %s", element.getQualifiedName());
-            return false;
-        } else {
-            return true;
         }
     }
 

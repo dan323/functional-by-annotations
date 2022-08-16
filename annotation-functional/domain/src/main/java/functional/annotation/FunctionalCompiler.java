@@ -36,17 +36,14 @@ public class FunctionalCompiler extends AbstractProcessor {
             for (var elem : elems) {
                 if (elem instanceof TypeElement telem && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
                     var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(typeUtils, elementUtils, telem);
-                    if (ifaces.map(iface -> Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))
-                            .map(comp -> !comp.getValue().process(roundEnvironment, telem, comp.getKey())).orElse(true)) {
-                        return false;
-                    }
+                    ifaces.map(iface -> Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))
+                            .ifPresent(comp -> comp.getValue().process(roundEnvironment, telem, comp.getKey()));
                 }
             }
-            return true;
-        } catch (Exception e) {
-            error("There was an exception launched: %s", e.getMessage());
-            return false;
+        } catch (Throwable e) {
+            error("There was an exception or error launched: %s", e.getMessage());
         }
+        return true;
     }
 
     private void error(String message, Object... args) {

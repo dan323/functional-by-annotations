@@ -19,6 +19,6 @@ public final class CompilerFactory {
         } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){
             return new MonadCompiler(messager, types, elements);
         }
-        throw new IllegalArgumentException("The argument is not valid");
+        throw new IllegalArgumentException("The interfaces does not represent an implemented functional");
     }
 }

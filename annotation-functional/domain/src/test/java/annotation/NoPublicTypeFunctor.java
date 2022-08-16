@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.function.Function;
 
 @Functor
-public class NoPublicFunctor implements IFunctor<List<?>> {
+class NoPublicTypeFunctor implements IFunctor<List<?>> {
 
-    static <B, A> List<B> map(List<A> lst, Function<A, B> mapping) {
+    public static <A, B> List<B> map(Function<A, B> map, List<A> base) {
         return List.of();
     }
+
 }

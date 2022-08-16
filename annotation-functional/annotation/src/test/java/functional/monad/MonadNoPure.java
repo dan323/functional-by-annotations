@@ -1,4 +1,4 @@
-package functional;
+package functional.monad;
 
 import functional.annotation.Monad;
 import functional.annotation.iface.IMonad;

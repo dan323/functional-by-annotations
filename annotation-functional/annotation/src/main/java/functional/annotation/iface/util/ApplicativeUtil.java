@@ -4,6 +4,10 @@ import java.util.function.BiFunction;
 
 public final class ApplicativeUtil {
 
+    private ApplicativeUtil(){
+        throw new UnsupportedOperationException();
+    }
+
     public static <G, F, FA extends F, A> FA pure(Class<G> gclass, Class<F> fClass, A a) {
         return FunctionalUtils.<G, F, FA, A>applicativePure(gclass, fClass, a).orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
     }

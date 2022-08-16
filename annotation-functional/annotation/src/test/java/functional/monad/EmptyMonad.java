@@ -1,4 +1,4 @@
-package functional;
+package functional.monad;
 
 import functional.annotation.Monad;
 import functional.annotation.iface.IMonad;
@@ -6,5 +6,5 @@ import functional.annotation.iface.IMonad;
 import java.util.List;
 
 @Monad
-public class EmptyMonad implements IMonad<List<?>> {
+public final class EmptyMonad implements IMonad<List<?>> {
 }

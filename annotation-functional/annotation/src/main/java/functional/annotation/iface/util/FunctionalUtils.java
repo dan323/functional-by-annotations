@@ -12,6 +12,10 @@ import java.util.function.Function;
 
 public final class FunctionalUtils {
 
+    private FunctionalUtils(){
+        throw new UnsupportedOperationException();
+    }
+
     private static <G> boolean isApplicative(Class<G> gClass) {
         return gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;
     }

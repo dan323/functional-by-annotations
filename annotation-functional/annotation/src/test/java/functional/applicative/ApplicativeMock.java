@@ -1,4 +1,4 @@
-package functional;
+package functional.applicative;
 
 import functional.annotation.Applicative;
 import functional.annotation.iface.IApplicative;
@@ -10,7 +10,7 @@ public final class ApplicativeMock<A> implements IApplicative<ApplicativeMock<?>
 
     private final A a;
 
-    ApplicativeMock(A a) {
+    public ApplicativeMock(A a) {
         this.a = a;
     }
 

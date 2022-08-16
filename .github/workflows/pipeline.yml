@@ -27,7 +27,7 @@ jobs:
       - name: compile
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
-        run: mvn -B -f pom.xml verify
+        run: mvn -B -f pom.xml test
       - name: jacoco report
         run: mvn -B -f pom.xml -Dmaven.test.skip=true package
       - name: sonar cloud
@@ -39,10 +39,10 @@ jobs:
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |
-          mkdir jacocoreport/target/tmp
-          mv -v jacocoreport/target/site/* jacoco-functional/target/tmp/
-          mkdir jacocoreport/target/site/$PR
-          mv -v jacocoreport/target/tmp/* jacoco-functional/target/site/$PR/
+          mkdir jacoco-functional/target/tmp
+          mv -v jacoco-functional/target/site/* jacoco-functional/target/tmp/
+          mkdir jacoco-functional/target/site/$PR
+          mv -v jacoco-functional/target/tmp/* jacoco-functional/target/site/$PR/
         env:
           PR: ${{ github.event.pull_request.number }}
       - name: publish jacoco report
@@ -52,7 +52,7 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./jacocoreport/target/site/
+          publish_dir: ./jacoco-functional/target/site/
           user_name: 'jacoco-report[bot]'
           user_email: 'jacoco-report[bot]@users.noreply.github.com'
           commit_message: "jacoco-report for PR ${PR}"
@@ -62,7 +62,7 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./jacocoreport/target/site/
+          publish_dir: ./jacoco-functional/target/site/
           user_name: 'jacoco-report[bot]'
           user_email: 'jacoco-report[bot]@users.noreply.github.com'
           commit_message: 'jacoco-report'

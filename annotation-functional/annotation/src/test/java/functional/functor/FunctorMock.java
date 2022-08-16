@@ -1,4 +1,4 @@
-package functional;
+package functional.functor;
 
 import functional.annotation.Functor;
 import functional.annotation.iface.IFunctor;

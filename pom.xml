@@ -11,6 +11,7 @@
     <modules>
         <module>annotation-functional</module>
         <module>app</module>
+        <module>jacoco-functional</module>
     </modules>
 
     <properties>

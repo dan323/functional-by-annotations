@@ -4,6 +4,10 @@ import java.util.function.Function;
 
 public final class MonadUtil {
 
+    private MonadUtil(){
+        throw new UnsupportedOperationException();
+    }
+
     public static <G, F, FA extends F, FB extends F, A> FB flatMap(Class<G> gClass, Class<F> fClass, Function<A, FB> mapping, FA fa) {
         return FunctionalUtils.monadFlatMap(gClass, fClass, mapping, fa)
                 .orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));

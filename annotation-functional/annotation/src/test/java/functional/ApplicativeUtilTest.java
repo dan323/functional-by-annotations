@@ -1,23 +1,21 @@
 package functional;
 
 import functional.annotation.iface.util.ApplicativeUtil;
-import functional.annotation.iface.util.FunctorUtil;
-import functional.annotation.iface.util.MonadUtil;
+import functional.applicative.ApplicativeLiftA2Mock;
+import functional.applicative.ApplicativeMock;
+import functional.applicative.ApplicativeNoMapMock;
+import functional.monad.EmptyMonad;
+import functional.monad.MonadMock;
+import functional.monad.MonadNoPure;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IFunctorUtilTest {
-
-    @Test
-    public void mapTest() {
-        var lst = List.of(1, 2, 3);
-        var sol = FunctorUtil.map(FunctorMock.class, FunctorMock.class, new FunctorMock<>(lst), (Integer x) -> x + 1);
-        assertEquals(List.of(2, 3, 4), sol.toList());
-    }
+public class ApplicativeUtilTest {
 
     @Test
     public void monadNoPure() {
@@ -31,19 +29,6 @@ public class IFunctorUtilTest {
         IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(EmptyMonad.class, List.class, List.of(1, 2), List.of(x -> x + 1, x -> x * 2)));
         assertTrue(ex2.getMessage().contains("The monad is not correctly implemented"));
     }
-
-    @Test
-    public void monadFlatMap() {
-        var sol = MonadUtil.flatMap(MonadMock.class, List.class, (Integer x) -> List.of(x, x + 1), List.of(2, 3, 4));
-        assertEquals(List.of(2, 3, 3, 4, 4, 5), sol);
-    }
-
-    @Test
-    public void monandMap() {
-        var sol = FunctorUtil.<MonadMock, List, List<Integer>, List<Integer>, Integer, Integer>map(MonadMock.class, List.class, List.of(2, 3, 4), x -> x + 2);
-        assertEquals(List.of(4, 5, 6), sol);
-    }
-
     @Test
     public void monandFapply() {
         var sol = ApplicativeUtil.<MonadMock, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(MonadMock.class, List.class, List.of(2, 3, 4), List.of(x -> x + 1, x -> x - 3));
@@ -65,16 +50,6 @@ public class IFunctorUtilTest {
 
         k = ApplicativeUtil.fapply(ApplicativeLiftA2Mock.class, ApplicativeMock.class, base, ff);
         assertEquals(7, k.getA());
-    }
-
-    @Test
-    public void applicativeMap() {
-        ApplicativeMock<Integer> v = new ApplicativeMock<>(7);
-        var q = FunctorUtil.map(ApplicativeMock.class, ApplicativeMock.class, v, (Integer k) -> k + 1);
-        assertEquals(8, q.getA());
-
-        q = FunctorUtil.map(ApplicativeNoMapMock.class, ApplicativeMock.class, v, (Integer k) -> k + 1);
-        assertEquals(8, q.getA());
     }
 
     @Test

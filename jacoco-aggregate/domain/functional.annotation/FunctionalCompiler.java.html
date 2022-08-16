@@ -36,31 +36,28 @@ import java.util.Set;
 <span class="fc bfc" id="L36" title="All 2 branches covered.">            for (var elem : elems) {</span>
 <span class="pc bpc" id="L37" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
 <span class="fc" id="L38">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(typeUtils, elementUtils, telem);</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">                    if (ifaces.map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
-<span class="fc bfc" id="L40" title="All 2 branches covered.">                            .map(comp -&gt; !comp.getValue().process(roundEnvironment, telem, comp.getKey())).orElse(true)) {</span>
-<span class="fc" id="L41">                        return false;</span>
-                    }
+<span class="fc" id="L39">                    ifaces.map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
+<span class="fc" id="L40">                            .ifPresent(comp -&gt; comp.getValue().process(roundEnvironment, telem, comp.getKey()));</span>
                 }
-<span class="fc" id="L44">            }</span>
-<span class="fc" id="L45">            return true;</span>
-<span class="nc" id="L46">        } catch (Exception e) {</span>
-<span class="nc" id="L47">            error(&quot;There was an exception launched: %s&quot;, e.getMessage());</span>
-<span class="nc" id="L48">            return false;</span>
-        }
+<span class="fc" id="L42">            }</span>
+<span class="nc" id="L43">        } catch (Throwable e) {</span>
+<span class="nc" id="L44">            error(&quot;There was an exception or error launched: %s&quot;, e.getMessage());</span>
+<span class="fc" id="L45">        }</span>
+<span class="fc" id="L46">        return true;</span>
     }
 
     private void error(String message, Object... args) {
-<span class="nc" id="L53">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L50">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="nc" id="L51">    }</span>
 
     @Override
     public Set&lt;String&gt; getSupportedAnnotationTypes() {
-<span class="fc" id="L58">        return Set.of(Functor.class.getCanonicalName(), Applicative.class.getCanonicalName(), Monad.class.getCanonicalName());</span>
+<span class="fc" id="L55">        return Set.of(Functor.class.getCanonicalName(), Applicative.class.getCanonicalName(), Monad.class.getCanonicalName());</span>
     }
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-<span class="fc" id="L63">        return SourceVersion.latestSupported();</span>
+<span class="fc" id="L60">        return SourceVersion.latestSupported();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

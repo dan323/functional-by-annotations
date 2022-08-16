@@ -19,7 +19,7 @@ import javax.lang.model.util.Types;
 <span class="nc bnc" id="L19" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){</span>
 <span class="nc" id="L20">            return new MonadCompiler(messager, types, elements);</span>
         }
-<span class="nc" id="L22">        throw new IllegalArgumentException(&quot;The argument is not valid&quot;);</span>
+<span class="nc" id="L22">        throw new IllegalArgumentException(&quot;The interfaces does not represent an implemented functional&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

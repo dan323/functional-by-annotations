@@ -1,10 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Functionals by annotation in Java/domain,functional.annotation,FunctorCompiler,50,228,11,25,9,35,12,12,1,5
-Functionals by annotation in Java/domain,functional.annotation,MonadCompiler,990,0,134,0,121,0,78,0,11,0
+Functionals by annotation in Java/domain,functional.annotation,FunctorCompiler,27,230,9,25,4,35,9,14,0,6
+Functionals by annotation in Java/domain,functional.annotation,MonadCompiler,969,0,132,0,116,0,77,0,11,0
 Functionals by annotation in Java/domain,functional.annotation,CompilerFactory,20,33,3,3,3,5,2,3,0,2
 Functionals by annotation in Java/domain,functional.annotation,CompilerUtils,64,100,19,5,17,22,14,10,3,9
-Functionals by annotation in Java/domain,functional.annotation,FunctionalCompiler,21,116,2,8,5,18,3,10,1,7
-Functionals by annotation in Java/domain,functional.annotation,ApplicativeCompiler,285,295,46,30,34,40,38,8,3,5
+Functionals by annotation in Java/domain,functional.annotation,FunctionalCompiler,19,104,2,4,4,18,3,8,1,7
+Functionals by annotation in Java/domain,functional.annotation,ApplicativeCompiler,267,292,45,29,29,40,37,8,3,5
 Functionals by annotation in Java/app,functional.data.optional,Just,13,30,3,3,1,8,4,3,1,3
 Functionals by annotation in Java/app,functional.data.optional,JOptionalFunctor,3,4,0,0,1,1,1,1,1,1
 Functionals by annotation in Java/app,functional.data.optional,Nothing,5,13,1,1,1,3,2,3,1,3

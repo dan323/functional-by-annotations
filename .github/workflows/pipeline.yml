@@ -1,5 +1,3 @@
-
-
 # This workflow will compile and test verify
 # when a push or pull request action on master is activated
 # or when a push is done in a release
@@ -81,7 +79,7 @@ jobs:
           java-version: 17
       - name: mutation testing
         run: |
-          mvn -B -f pom.xml clean test org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module
+          mvn -B -f pom.xml clean test-compile org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module org.apache.maven.plugins:maven-clean-plugin:clean@AllClassDel
           mkdir -p target/site
           mv target/pit-reports target/site
       - name: set PR number

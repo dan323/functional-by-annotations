@@ -53,10 +53,6 @@ public class FunctionalCompiler extends AbstractProcessor {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));
     }
 
-    private void warning(String message, Object... args) {
-        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));
-    }
-
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         return Set.of(Functor.class.getCanonicalName(), Applicative.class.getCanonicalName(), Monad.class.getCanonicalName());

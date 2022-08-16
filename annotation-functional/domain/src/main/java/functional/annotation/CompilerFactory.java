@@ -9,7 +9,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class CompilerFactory {
+public final class CompilerFactory {
 
     Compiler from(DeclaredType iface, Elements elements, Types types, Messager messager){
         if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))){
@@ -19,6 +19,6 @@ public class CompilerFactory {
         } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){
             return new MonadCompiler(messager, types, elements);
         }
-        return null;
+        throw new IllegalArgumentException("The argument is not valid");
     }
 }

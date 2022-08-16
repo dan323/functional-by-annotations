@@ -26,10 +26,10 @@ import java.util.Optional;
         }
 <span class="fc" id="L27">        var funcList = wilderized.getTypeArguments().stream()</span>
 <span class="fc" id="L28">                .map((TypeMirror tm) -&gt; {</span>
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">                    if (tm.getKind().equals(TypeKind.WILDCARD)) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                    if (tm.getKind().equals(TypeKind.WILDCARD)) {</span>
 <span class="fc" id="L30">                        return substitute;</span>
                     } else {
-<span class="nc" id="L32">                        return tm;</span>
+<span class="fc" id="L32">                        return tm;</span>
                     }
 <span class="fc" id="L34">                }).toList().toArray(new TypeMirror[]{});</span>
 <span class="fc" id="L35">        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);</span>

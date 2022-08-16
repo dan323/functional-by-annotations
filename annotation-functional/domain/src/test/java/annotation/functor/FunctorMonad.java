@@ -1,4 +1,4 @@
-package annotation;
+package annotation.functor;
 
 import functional.annotation.Monad;
 import functional.annotation.iface.IFunctor;

@@ -1,4 +1,4 @@
-package annotation;
+package annotation.functor;
 
 import functional.annotation.Functor;
 import functional.annotation.iface.IFunctor;
@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.function.Function;
 
 @Functor
-public class NoStaticFunctor implements IFunctor<List<?>> {
+public class NoPublicMapFunctor implements IFunctor<List<?>> {
 
-    public <B,A> List<B> map(List<A> lst, Function<A, B> mapping) {
+    static <B, A> List<B> map(List<A> lst, Function<A, B> mapping) {
         return List.of();
     }
-
 }

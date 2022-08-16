@@ -1,4 +1,4 @@
-package annotation;
+package annotation.functor;
 
 import functional.annotation.FunctionalCompiler;
 import org.junit.jupiter.api.Test;
@@ -14,9 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FunctorCompilerTest {
 
     @Test
+    public void eitherFunctor(){
+        List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
+                        "src/test/java/annotation/functor/EitherF")
+                .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
+                .collect(Collectors.toList());
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
+        String[] flags = args.toArray(new String[4]);
+        int k = ToolProvider.getSystemJavaCompiler()
+                .run(System.in, System.out, System.err, flags);
+        assertEquals(0, k);
+
+    }
+    @Test
     public void functorNoPublicFun() {
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/NoPublicMapFunctor")
+                        "src/test/java/annotation/functor/NoPublicMapFunctor")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
@@ -29,7 +42,7 @@ public class FunctorCompilerTest {
     @Test
     public void functorMonad(){
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/FunctorMonad")
+                        "src/test/java/annotation/functor/FunctorMonad")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
@@ -42,7 +55,7 @@ public class FunctorCompilerTest {
     @Test
     public void functorNoPublicClass(){
         var args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/NoPublicTypeFunctor")
+                        "src/test/java/annotation/functor/NoPublicTypeFunctor")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
@@ -55,7 +68,7 @@ public class FunctorCompilerTest {
     @Test
     public void functorNoStaticRun() {
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/NoStaticFunctor")
+                        "src/test/java/annotation/functor/NoStaticFunctor")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
@@ -68,7 +81,7 @@ public class FunctorCompilerTest {
     @Test
     public void functorRun() {
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/FunctorMock")
+                        "src/test/java/annotation/functor/FunctorMock")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));

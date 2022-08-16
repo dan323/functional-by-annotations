@@ -148,7 +148,7 @@ public final class FunctionalUtils {
 
     static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> monadLiftA2(Class<G> gClass, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
         if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, "flatMap", BiFunction.class, fClass, fClass)
+            return getMethodIfExists(gClass, "flatMap", Function.class, fClass)
                     .or(() -> getMethodIfExists(gClass, "join", fClass)
                             .flatMap(m -> getMethodIfExists(gClass, "map", fClass, Function.class)))
                     .map(m -> ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
@@ -178,7 +178,7 @@ public final class FunctionalUtils {
         if (isMonad(gClass)) {
             return getMethodIfExists(gClass, "join", fClass)
                     .<FA>map(m -> invokeStaticMethod(m, ffa))
-                    .or(() -> getMethodIfExists(gClass, "flatMap", fClass)
+                    .or(() -> getMethodIfExists(gClass, "flatMap", Function.class, fClass)
                             .map(m -> MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));
         } else {
             throw new IllegalArgumentException("The class is not annotated");

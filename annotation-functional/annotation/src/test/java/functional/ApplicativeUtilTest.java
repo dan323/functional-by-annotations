@@ -53,7 +53,7 @@ public class ApplicativeUtilTest {
     }
 
     @Test
-    public void applicativeLift2A() {
+    public void applicativeLiftA2() {
         ApplicativeMock<Integer> v = new ApplicativeMock<>(7);
         ApplicativeMock<Integer> w = new ApplicativeMock<>(9);
         var q = ApplicativeUtil.liftA2(ApplicativeMock.class, ApplicativeMock.class, Integer::sum, v, w);
@@ -61,5 +61,16 @@ public class ApplicativeUtilTest {
 
         q = ApplicativeUtil.liftA2(ApplicativeNoMapMock.class, ApplicativeMock.class, (Integer k, Integer s) -> k - s, v, w);
         assertEquals(-2, q.getA());
+    }
+
+    @Test
+    public void monadLiftA2(){
+        List<Integer> v = List.of(5,6);
+        List<Integer> w = List.of(-1,-2);
+        List<Integer> q = ApplicativeUtil.liftA2(MonadMock.class, List.class, Integer::sum, v, w);
+        assertEquals(List.of(4,3,5,4), q);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad,List,List<Integer>,List<Integer>,List<Integer>,Integer,Integer,Integer>liftA2(EmptyMonad.class, List.class, Integer::sum, v, w));
+        assertTrue(exception.getMessage().contains("The monad is not correctly implemented"));
     }
 }

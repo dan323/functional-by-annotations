@@ -38,6 +38,9 @@ public class FunctorCompiler implements Compiler {
     }
 
     private void validateFunctor(TypeElement element, DeclaredType iface) {
+        if (element.getAnnotation(Functor.class) == null){
+            error("The functor interface is not annotated as a functor");
+        }
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());

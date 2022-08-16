@@ -34,6 +34,9 @@ public class ApplicativeCompiler implements Compiler {
     }
 
     private void validateApplicative(TypeElement element, DeclaredType iface) {
+        if (element.getAnnotation(Applicative.class) == null){
+            error("The applicative interface is not annotated as an applicative");
+        }
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());

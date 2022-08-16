@@ -82,17 +82,33 @@
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
                     <version>${pitest.version}</version>
-                    <configuration>
-                        <verbose>false</verbose>
-                        <exportLineCoverage>true</exportLineCoverage>
-                        <outputFormats>
-                            <format>XML</format>
-                        </outputFormats>
-                        <excludedMethods>
-                            <excludedMethod>hashCode</excludedMethod>
-                        </excludedMethods>
-                        <timestampedReports>false</timestampedReports>
-                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>mutation</id>
+                            <goals>
+                                <goal>mutationCoverage</goal>
+                            </goals>
+                            <phase>none</phase>
+                            <configuration>
+                                <verbose>false</verbose>
+                                <exportLineCoverage>true</exportLineCoverage>
+                                <outputFormats>
+                                    <format>XML</format>
+                                </outputFormats>
+                                <excludedMethods>
+                                    <excludedMethod>hashCode</excludedMethod>
+                                </excludedMethods>
+                                <timestampedReports>false</timestampedReports>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <goals>
+                                <goal>report-aggregate-module</goal>
+                            </goals>
+                            <phase>none</phase>
+                        </execution>
+                    </executions>
                     <dependencies>
                         <dependency>
                             <groupId>org.pitest</groupId>

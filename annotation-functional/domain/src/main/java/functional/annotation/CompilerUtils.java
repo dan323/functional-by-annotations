@@ -35,7 +35,7 @@ public final class CompilerUtils {
         return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);
     }
 
-    public static Optional<DeclaredType> getAllMaximalFunctionalInterfaces(Types types, Elements elementUtils, TypeElement element) {
+    public static Optional<DeclaredType> getAllMaximalFunctionalInterfaces(Elements elementUtils, TypeElement element) {
         return element.getInterfaces().stream()
                 .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
                 .filter(type -> CompilerUtils.isFunctional(elementUtils, type))

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FunctorCompilerTest {
 
     @Test
-    public void functorNoPublicRun() {
+    public void functorNoPublicFun() {
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
                         "src/test/java/annotation/NoPublicMapFunctor")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
@@ -24,14 +24,30 @@ public class FunctorCompilerTest {
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
         assertEquals(1, k);
+    }
 
-        args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
+    @Test
+    public void functorMonad(){
+        List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
+                        "src/test/java/annotation/FunctorMonad")
+                .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
+                .collect(Collectors.toList());
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
+        String[] flags = args.toArray(new String[4]);
+        int k = ToolProvider.getSystemJavaCompiler()
+                .run(System.in, System.out, System.err, flags);
+        assertEquals(1, k);
+    }
+
+    @Test
+    public void functorNoPublicClass(){
+        var args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
                         "src/test/java/annotation/NoPublicTypeFunctor")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
-        flags = args.toArray(new String[4]);
-        k = ToolProvider.getSystemJavaCompiler()
+        var flags = args.toArray(new String[4]);
+        var k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
         assertEquals(1, k);
     }

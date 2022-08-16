@@ -35,7 +35,7 @@ public class FunctionalCompiler extends AbstractProcessor {
             var elems = roundEnvironment.getElementsAnnotatedWithAny(Set.of(Functor.class, Applicative.class, Monad.class));
             for (var elem : elems) {
                 if (elem instanceof TypeElement telem && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
-                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(typeUtils, elementUtils, telem);
+                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, telem);
                     ifaces.map(iface -> Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))
                             .ifPresent(comp -> comp.getValue().process(roundEnvironment, telem, comp.getKey()));
                 }

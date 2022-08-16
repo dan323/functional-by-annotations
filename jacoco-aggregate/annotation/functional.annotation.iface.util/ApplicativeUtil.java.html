@@ -20,8 +20,8 @@ public final class ApplicativeUtil {
 
     public static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; FC liftA2(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; map, FA fa, FB fb) {
 <span class="fc" id="L22">        return FunctionalUtils.&lt;G, F, FA, FB, FC, A, B, C&gt;applicativeLiftA2(gClass, fClass, map, fa, fb)</span>
-<span class="pc" id="L23">                .or(() -&gt; FunctionalUtils.monadLiftA2(gClass, fClass, map, fa, fb))</span>
-<span class="pc" id="L24">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+<span class="fc" id="L23">                .or(() -&gt; FunctionalUtils.monadLiftA2(gClass, fClass, map, fa, fb))</span>
+<span class="fc" id="L24">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
 }

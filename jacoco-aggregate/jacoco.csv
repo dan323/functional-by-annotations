@@ -32,6 +32,6 @@ Functionals by annotation in Java/app,functional.data.either,FRightEither,3,12,0
 Functionals by annotation in Java/app,functional.data.either,Right,14,30,4,4,2,8,5,3,1,3
 Functionals by annotation in Java/app,functional.data.either,FLeftEither,3,12,0,0,1,1,1,2,1,2
 Functionals by annotation in Java/annotation,functional.annotation.iface.util,FunctorUtil,6,37,0,0,2,4,1,4,1,4
-Functionals by annotation in Java/annotation,functional.annotation.iface.util,FunctionalUtils,265,532,17,21,29,49,30,39,15,35
-Functionals by annotation in Java/annotation,functional.annotation.iface.util,MonadUtil,23,8,0,0,4,2,4,1,4,1
-Functionals by annotation in Java/annotation,functional.annotation.iface.util,ApplicativeUtil,18,53,0,0,2,7,3,6,3,6
+Functionals by annotation in Java/annotation,functional.annotation.iface.util,FunctionalUtils,137,660,15,23,17,61,21,48,6,44
+Functionals by annotation in Java/annotation,functional.annotation.iface.util,MonadUtil,6,25,0,0,2,4,1,4,1,4
+Functionals by annotation in Java/annotation,functional.annotation.iface.util,ApplicativeUtil,6,65,0,0,2,7,1,8,1,8

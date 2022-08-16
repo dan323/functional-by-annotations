@@ -10,12 +10,12 @@ public final class MonadUtil {
 
     public static &lt;G, F, FA extends F, FB extends F, A&gt; FB flatMap(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, Function&lt;A, FB&gt; mapping, FA fa) {
 <span class="fc" id="L12">        return FunctionalUtils.monadFlatMap(gClass, fClass, mapping, fa)</span>
-<span class="pc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+<span class="fc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;G, F, FFA extends F, FA extends F&gt; FA join(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FFA ffa) {
-<span class="nc" id="L17">        return FunctionalUtils.&lt;G, F, FFA, FA&gt;monadJoin(gClass, fClass, ffa)</span>
-<span class="nc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+<span class="fc" id="L17">        return FunctionalUtils.&lt;G, F, FFA, FA&gt;monadJoin(gClass, fClass, ffa)</span>
+<span class="fc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

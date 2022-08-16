@@ -147,11 +147,11 @@ public final class FunctionalUtils {
     }
 
     static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; Optional&lt;FC&gt; monadLiftA2(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; mapping, FA fa, FB fb) {
-<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="nc" id="L151">            return getMethodIfExists(gClass, &quot;flatMap&quot;, BiFunction.class, fClass, fClass)</span>
-<span class="nc" id="L152">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="nc" id="L153">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class)))</span>
-<span class="nc" id="L154">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L151">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
+<span class="fc" id="L152">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
+<span class="pc" id="L153">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class)))</span>
+<span class="fc" id="L154">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
         } else {
 <span class="nc" id="L156">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
@@ -164,9 +164,9 @@ public final class FunctionalUtils {
 <span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
 <span class="fc" id="L165">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
 <span class="fc" id="L166">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(m, mapping, fa))</span>
-<span class="pc" id="L167">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="nc" id="L168">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class))</span>
-<span class="nc" id="L169">                            .map(m -&gt; MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));</span>
+<span class="fc" id="L167">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
+<span class="pc" id="L168">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class))</span>
+<span class="pc" id="L169">                            .map(m -&gt; MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));</span>
         } else {
 <span class="nc" id="L171">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
@@ -175,11 +175,11 @@ public final class FunctionalUtils {
     // Join functions
 
     public static &lt;G, F, FFA extends F, FA extends F&gt; Optional&lt;FA&gt; monadJoin(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FFA ffa) {
-<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="nc" id="L179">            return getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="nc" id="L180">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
-<span class="nc" id="L181">                    .or(() -&gt; getMethodIfExists(gClass, &quot;flatMap&quot;, fClass)</span>
-<span class="nc" id="L182">                            .map(m -&gt; MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L179">            return getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
+<span class="pc" id="L180">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
+<span class="fc" id="L181">                    .or(() -&gt; getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
+<span class="fc" id="L182">                            .map(m -&gt; MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));</span>
         } else {
 <span class="nc" id="L184">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }

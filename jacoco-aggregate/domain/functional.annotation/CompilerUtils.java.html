@@ -35,7 +35,7 @@ import java.util.Optional;
 <span class="fc" id="L35">        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);</span>
     }
 
-    public static Optional&lt;DeclaredType&gt; getAllMaximalFunctionalInterfaces(Types types, Elements elementUtils, TypeElement element) {
+    public static Optional&lt;DeclaredType&gt; getAllMaximalFunctionalInterfaces(Elements elementUtils, TypeElement element) {
 <span class="fc" id="L39">        return element.getInterfaces().stream()</span>
 <span class="fc" id="L40">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
 <span class="fc" id="L41">                .filter(type -&gt; CompilerUtils.isFunctional(elementUtils, type))</span>

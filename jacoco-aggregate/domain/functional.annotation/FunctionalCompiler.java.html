@@ -35,7 +35,7 @@ import java.util.Set;
 <span class="fc" id="L35">            var elems = roundEnvironment.getElementsAnnotatedWithAny(Set.of(Functor.class, Applicative.class, Monad.class));</span>
 <span class="fc bfc" id="L36" title="All 2 branches covered.">            for (var elem : elems) {</span>
 <span class="pc bpc" id="L37" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
-<span class="fc" id="L38">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(typeUtils, elementUtils, telem);</span>
+<span class="fc" id="L38">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, telem);</span>
 <span class="fc" id="L39">                    ifaces.map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
 <span class="fc" id="L40">                            .ifPresent(comp -&gt; comp.getValue().process(roundEnvironment, telem, comp.getKey()));</span>
                 }

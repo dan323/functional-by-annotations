@@ -42,7 +42,7 @@ public class FunctorCompilerTest {
     @Test
     public void functorRun() {
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/"+FunctorMock.class.getCanonicalName())
+                        "src/test/java/annotation/FunctorMock")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));

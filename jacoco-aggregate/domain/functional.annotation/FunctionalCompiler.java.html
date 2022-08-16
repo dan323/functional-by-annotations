@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FunctionalCompiler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">domain</a> &gt; <a href="index.source.html" class="el_package">functional.annotation</a> &gt; <span class="el_source">FunctionalCompiler.java</span></div><h1>FunctionalCompiler.java</h1><pre class="source lang-java linenums">package functional.annotation;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
+import java.util.Map;
+import java.util.Set;
+
+<span class="fc" id="L16">public class FunctionalCompiler extends AbstractProcessor {</span>
+
+    private Elements elementUtils;
+    private Messager messager;
+    private Types typeUtils;
+    private CompilerFactory compilerFactory;
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+<span class="fc" id="L25">        super.init(processingEnv);</span>
+<span class="fc" id="L26">        compilerFactory = new CompilerFactory();</span>
+<span class="fc" id="L27">        elementUtils = processingEnv.getElementUtils();</span>
+<span class="fc" id="L28">        messager = processingEnv.getMessager();</span>
+<span class="fc" id="L29">        typeUtils = processingEnv.getTypeUtils();</span>
+<span class="fc" id="L30">    }</span>
+
+    @Override
+    public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment) {
+        try {
+<span class="fc" id="L35">            var elems = roundEnvironment.getElementsAnnotatedWithAny(Set.of(Functor.class, Applicative.class, Monad.class));</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            for (var elem : elems) {</span>
+<span class="pc bpc" id="L37" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
+<span class="fc" id="L38">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(typeUtils, elementUtils, telem);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                    if (ifaces.map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">                            .map(comp -&gt; !comp.getValue().process(roundEnvironment, telem, comp.getKey())).orElse(true)) {</span>
+<span class="fc" id="L41">                        return false;</span>
+                    }
+                }
+<span class="fc" id="L44">            }</span>
+<span class="fc" id="L45">            return true;</span>
+<span class="nc" id="L46">        } catch (Exception e) {</span>
+<span class="nc" id="L47">            error(&quot;There was an exception launched: %s&quot;, e.getMessage());</span>
+<span class="nc" id="L48">            return false;</span>
+        }
+    }
+
+    private void error(String message, Object... args) {
+<span class="nc" id="L53">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="nc" id="L54">    }</span>
+
+    @Override
+    public Set&lt;String&gt; getSupportedAnnotationTypes() {
+<span class="fc" id="L58">        return Set.of(Functor.class.getCanonicalName(), Applicative.class.getCanonicalName(), Monad.class.getCanonicalName());</span>
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+<span class="fc" id="L63">        return SourceVersion.latestSupported();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

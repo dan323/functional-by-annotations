@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Functionals by annotation in Java/domain,functional.annotation,FunctorCompiler,62,216,13,23,11,33,14,10,1,5
+Functionals by annotation in Java/domain,functional.annotation,FunctorCompiler,62,216,12,24,11,33,13,11,1,5
 Functionals by annotation in Java/domain,functional.annotation,MonadCompiler,990,0,134,0,121,0,78,0,11,0
 Functionals by annotation in Java/domain,functional.annotation,CompilerFactory,20,33,3,3,3,5,2,3,0,2
 Functionals by annotation in Java/domain,functional.annotation,CompilerUtils,64,100,19,5,17,22,14,10,3,9

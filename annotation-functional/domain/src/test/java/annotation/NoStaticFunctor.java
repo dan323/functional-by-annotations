@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.function.Function;
 
 @Functor
-public class WrongFunctorMock implements IFunctor<List<?>> {
+public class NoStaticFunctor implements IFunctor<List<?>> {
 
-    static <B, A> List<B> map(List<A> lst, Function<A, B> mapping) {
+    public <B,A> List<B> map(List<A> lst, Function<A, B> mapping) {
         return List.of();
     }
+
 }

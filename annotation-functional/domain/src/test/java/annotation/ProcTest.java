@@ -12,40 +12,20 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProcTest {
-    @Test
-    public void functorWrongRun() {
-        var basePath = Paths.get("");
-        System.out.println(basePath.toAbsolutePath());
-        List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/WrongFunctorMock")
-                .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
-                .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
-        String[] flags = args.toArray(new String[4]);
-        int k = ToolProvider.getSystemJavaCompiler()
-                .run(System.in, System.out, System.err, flags);
-        assertEquals(1, k);
-    }
 
     @Test
-    public void functorRun() {
-        var basePath = Paths.get("");
-        System.out.println(basePath.toAbsolutePath());
-        List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Functor",
-                        "src/test/java/annotation/FunctorMock")
+    public void noFunctionals(){
+        List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Applicative")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName()));
-        String[] flags = args.toArray(new String[4]);
+        String[] flags = args.toArray(new String[3]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
-        assertEquals(0, k);
-    }
+        assertEquals(0, k);}
 
     @Test
     public void applicativeRun() {
-        var basePath = Paths.get("");
-        System.out.println(basePath.toAbsolutePath());
         List<String> args = Stream.of("../annotation/src/main/java/functional/annotation/Applicative",
                         "src/test/java/annotation/ApplicativeMock")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())

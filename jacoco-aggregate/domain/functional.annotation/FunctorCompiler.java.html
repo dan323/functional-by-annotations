@@ -49,9 +49,9 @@ public class FunctorCompiler implements Compiler {
 
     private boolean validateFunctor(TypeElement element, DeclaredType iface) {
         // Verify that it is a public class
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="nc" id="L53">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
-<span class="nc" id="L54">            return false;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="fc" id="L53">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+<span class="fc" id="L54">            return false;</span>
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
 <span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IFunctor.class.getTypeName()))) {</span>

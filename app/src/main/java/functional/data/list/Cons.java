@@ -8,7 +8,7 @@ import java.util.function.Function;
  * List of one element in front of another list
  * @param <A>
  */
-sealed class Cons<A> implements List<A> permits FinCons {
+final class Cons<A> implements List<A> {
 
     private final A head;
     private final List<A> tail;

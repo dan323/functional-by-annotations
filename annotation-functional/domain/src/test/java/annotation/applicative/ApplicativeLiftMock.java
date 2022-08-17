@@ -1,10 +1,12 @@
-package annotation;
+package annotation.applicative;
 
+import functional.annotation.Applicative;
 import functional.annotation.iface.IApplicative;
 
 import java.util.List;
 import java.util.function.BiFunction;
 
+@Applicative
 public class ApplicativeLiftMock implements IApplicative<List<?>> {
 
     public static <A, B, C> List<C> liftA2(BiFunction<A, B, C> function, List<A> base1, List<B> base2) {

@@ -6,24 +6,10 @@ import functional.annotation.iface.IFunctor;
 import java.util.function.Function;
 
 @Functor
-public class EitherF<A> implements IFunctor<EitherF.Either<A,?>> {
+public class EitherF<A,B> implements IFunctor<EitherF<A,?>> {
 
-    public static <B,C,A> Either<A,C> map(Either<A,B> base, Function<B,C> map){
-        return new Either<>() {
-            @Override
-            public A getLeft() {
-                return base.getLeft();
-            }
-
-            @Override
-            public C getRight() {
-                return map.apply(base.getRight());
-            }
-        };
+    public static <B,C,A> EitherF<A,C> map(EitherF<A,B> base, Function<B,C> map){
+        return null;
     }
 
-    interface Either<A,B> {
-        A getLeft();
-        B getRight();
-    }
 }

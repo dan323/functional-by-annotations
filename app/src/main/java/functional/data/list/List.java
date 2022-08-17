@@ -17,7 +17,15 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
     <B> List<B> map(Function<A,B> mapping);
 
     default FiniteList<A> limit(int k){
-        return head().maybe(h -> FiniteList.cons(h, tail().limit(k-1)), FiniteList.nil());
+        return head().maybe(h -> limitWithHead(h, k), FiniteList.nil());
+    }
+
+    private FiniteList<A> limitWithHead(A h, int k){
+        if (k == 0){
+            return FiniteList.nil();
+        } else {
+            return FiniteList.cons(h, tail().limit(k-1));
+        }
     }
 
     static <A> List<A> generate(A first, UnaryOperator<A> generator){

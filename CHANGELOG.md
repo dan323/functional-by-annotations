@@ -15,3 +15,5 @@
 * 15/08/22
   - Implementing other functions from minimal requirements
   - Pitest added
+* 16/08/22
+  - Working on test coverage

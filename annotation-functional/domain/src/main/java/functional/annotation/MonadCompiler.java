@@ -1,7 +1,5 @@
 package functional.annotation;
 
-import functional.annotation.iface.IApplicative;
-import functional.annotation.iface.IFunctor;
 import functional.annotation.iface.IMonad;
 
 import javax.annotation.processing.Messager;
@@ -90,9 +88,9 @@ public class MonadCompiler implements Compiler {
         if (method.getParameters().size() == 3) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
             var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(2));
-            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IApplicative.class);
-            var input3 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IApplicative.class);
-            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(2), IApplicative.class);
+            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);
+            var input3 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);
+            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(2), IMonad.class);
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getParameters().get(2).asType() instanceof DeclaredType param3 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(input1.toString()) && param2.toString().equals(input2.toString()) && param3.toString().equals(input3.toString())) {
                     if (returnType.toString().equals(returnTyp.toString())) {
@@ -114,9 +112,9 @@ public class MonadCompiler implements Compiler {
     private boolean checkIfFapply(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
-            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IApplicative.class);
-            var func = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)), IApplicative.class);
-            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IApplicative.class);
+            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);
+            var func = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)), IMonad.class);
+            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(func.toString()) && param2.toString().equals(input.toString()) && returnType.toString().equals(returnTyp.toString())) {
                     return true;
@@ -133,8 +131,8 @@ public class MonadCompiler implements Compiler {
     private boolean checkIfMap(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = ((ExecutableType) method.asType()).getTypeVariables();
-            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);
-            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IFunctor.class);
+            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);
+            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(input.toString()) && returnType.toString().equals(returnTyp.toString())) {
                     var funcElem = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));

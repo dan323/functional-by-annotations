@@ -1,4 +1,4 @@
-package annotation;
+package annotation.applicative;
 
 import functional.annotation.Applicative;
 import functional.annotation.iface.IApplicative;

@@ -1,20 +1,44 @@
 package functional.data.list;
 
-import java.util.function.Function;
+import functional.data.optional.Maybe;
 
-final class FinCons<A> extends Cons<A> implements FiniteList<A> {
+import java.util.Objects;
 
-    FinCons(A head, FiniteList<A> tail){
-        super(head, tail);
+final class FinCons<A> implements FiniteList<A> {
+
+    private final Cons<A> cons;
+
+    FinCons(A head, FiniteList<A> tail) {
+        cons = new Cons<>(head, tail);
+    }
+
+    @Override
+    public Maybe<A> head() {
+        return cons.head();
     }
 
     @Override
     public FiniteList<A> tail() {
-        return (FiniteList<A>) super.tail();
+        return (FiniteList<A>) cons.tail();
+    }
+
+
+    @Override
+    public String toString() {
+        return cons.toString();
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != getClass()) return false;
+        FinCons<?> k = ((FinCons<?>) obj);
+        return Objects.equals(k.cons, cons);
     }
 
     @Override
-    public <B> FiniteList<B> map(Function<A, B> mapping) {
-        return FiniteList.super.map(mapping);
+    public int hashCode() {
+        return Objects.hash(cons, "finite");
     }
 }

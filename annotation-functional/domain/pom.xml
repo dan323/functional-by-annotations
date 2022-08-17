@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>annotation-functional</artifactId>
-        <groupId>org.example</groupId>
+        <groupId>com.dan323</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
@@ -13,7 +13,7 @@
     <artifactId>domain</artifactId>
     <dependencies>
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>com.dan323</groupId>
             <artifactId>annotation</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

@@ -29,7 +29,7 @@ public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCon
      */
     @Override
     default &lt;B&gt; FiniteList&lt;B&gt; map(Function&lt;A,B&gt; mapping){
-<span class="nc" id="L32">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());</span>
+<span class="fc" id="L32">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());</span>
     }
 
     FiniteList&lt;A&gt; tail();

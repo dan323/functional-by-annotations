@@ -62,7 +62,7 @@ import java.util.Optional;
     }
 
     private static boolean isFunctional(Elements elementUtils, DeclaredType type) {
-<span class="pc bpc" id="L65" title="3 of 6 branches missed.">        return isFunctor(elementUtils, type) || isApplicative(elementUtils, type) || isMonad(elementUtils, type);</span>
+<span class="pc bpc" id="L65" title="1 of 6 branches missed.">        return isFunctor(elementUtils, type) || isApplicative(elementUtils, type) || isMonad(elementUtils, type);</span>
     }
 
     private static boolean isFunctor(Elements elementUtils, DeclaredType type) {
@@ -71,8 +71,8 @@ import java.util.Optional;
     }
 
     private static boolean isMonad(Elements elementUtils, DeclaredType type) {
-<span class="nc" id="L74">        var functorI = elementUtils.getTypeElement(IMonad.class.getTypeName());</span>
-<span class="nc" id="L75">        return type.asElement().equals(functorI);</span>
+<span class="fc" id="L74">        var functorI = elementUtils.getTypeElement(IMonad.class.getTypeName());</span>
+<span class="fc" id="L75">        return type.asElement().equals(functorI);</span>
     }
 
     private static boolean isApplicative(Elements elementUtils, DeclaredType type) {

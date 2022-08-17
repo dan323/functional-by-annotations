@@ -7,30 +7,30 @@ import functional.data.optional.Maybe;
     public static &lt;A&gt; FiniteList&lt;A&gt; reverse(FiniteList&lt;A&gt; lst) {
 <span class="fc" id="L8">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, FiniteList.nil())), FiniteList.nil());</span>
     }
-
+/*
     public static &lt;A&gt; List&lt;A&gt; concat(List&lt;A&gt; a, List&lt;A&gt; b) {
-<span class="nc bnc" id="L12" title="All 2 branches missed.">        if (b instanceof Nil&lt;A&gt;) {</span>
-<span class="nc" id="L13">            return a;</span>
-<span class="nc bnc" id="L14" title="All 6 branches missed.">        } else if (a instanceof Repeat&lt;A&gt; || a instanceof Generating&lt;A&gt; || a instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {</span>
-<span class="nc" id="L15">            return a;</span>
+        if (b instanceof Nil&lt;A&gt;) {
+            return a;
+        } else if (a instanceof Repeat&lt;A&gt; || a instanceof Generating&lt;A&gt; || a instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {
+            return a;
         } else {
-<span class="nc" id="L17">            return a.head().maybe(h -&gt; List.cons(h, concat(a.tail(), b)), b);</span>
+            return a.head().maybe(h -&gt; List.cons(h, concat(a.tail(), b)), b);
         }
-    }
+    }*/
 
     public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
 <span class="fc" id="L22">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
     }
-
+/*
     static &lt;C&gt; List&lt;C&gt; join(List&lt;List&lt;C&gt;&gt; lst) {
-<span class="nc" id="L26">        Maybe&lt;List&lt;C&gt;&gt; first = lst.head();</span>
-<span class="nc" id="L27">        return first.maybe(list -&gt; {</span>
-<span class="nc bnc" id="L28" title="All 6 branches missed.">            if (list instanceof Repeat&lt;C&gt; || list instanceof Generating&lt;C&gt; || list instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {</span>
-<span class="nc" id="L29">                return list;</span>
+        Maybe&lt;List&lt;C&gt;&gt; first = lst.head();
+        return first.maybe(list -&gt; {
+            if (list instanceof Repeat&lt;C&gt; || list instanceof Generating&lt;C&gt; || list instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {
+                return list;
             } else {
-<span class="nc" id="L31">                return ListUtils.concat(list, join(lst.tail()));</span>
+                return ListUtils.concat(list, join(lst.tail()));
             }
-<span class="nc" id="L33">        }, List.nil());</span>
-    }
+        }, List.nil());
+    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

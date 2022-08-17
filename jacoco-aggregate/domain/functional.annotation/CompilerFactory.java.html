@@ -14,10 +14,10 @@ import javax.lang.model.util.Types;
     Compiler from(DeclaredType iface, Elements elements, Types types, Messager messager){
 <span class="fc bfc" id="L15" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))){</span>
 <span class="fc" id="L16">            return new FunctorCompiler(messager, types, elements);</span>
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))){</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))){</span>
 <span class="fc" id="L18">            return new ApplicativeCompiler(messager, types, elements);</span>
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){</span>
-<span class="nc" id="L20">            return new MonadCompiler(messager, types, elements);</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){</span>
+<span class="fc" id="L20">            return new MonadCompiler(messager, types, elements);</span>
         }
 <span class="nc" id="L22">        throw new IllegalArgumentException(&quot;The interfaces does not represent an implemented functional&quot;);</span>
     }

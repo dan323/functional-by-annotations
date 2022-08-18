@@ -21,18 +21,18 @@
     <dependencies>
         <dependency>
             <groupId>com.dan323</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>annotation-definitions</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.dan323</groupId>
-            <artifactId>app</artifactId>
+            <artifactId>example-functional</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.dan323</groupId>
-            <artifactId>annotation</artifactId>
+            <artifactId>functional-compiler</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

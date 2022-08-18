@@ -17,3 +17,6 @@
   - Pitest added
 * 16/08/22
   - Working on test coverage
+* 17/08/22
+  - Package renaming and reorganization
+  - Added Semigroup

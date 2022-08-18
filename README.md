@@ -1,34 +1,66 @@
 # Functional Java by Annotations
 
-This projects tries to bring proper functional elements to Java 
+This projects tries to bring proper functional elements to Java
 through annotation processing.
 
 ### How to
 
-To create use it you just need to implement ``IFuntor<List<?>>``
+You need to annotate the class that is implementing such a
+structure with the correct annotation. For example ``@Functor`` to implement ``IFunctor``.
+
+#### Functionals
+
+A functional structure is a set of operations defined over a type constructor or set of type constructors
+
+To create use it you just need to implement the needed interface, like ``IFuntor&lt;List&lt;?>>``
 substituting ``IFunctor`` and ``List`` for the functional structure 
-and the type constructor you would like to use.
+and the type constructor you would like to use. The type constructor needs to use
+the wildcard ``?``. Note that we may use type constructors with several inputs like
+``Either<A,?>`` or ``Either&lt;?,?>``.
 
-In addition, you need to annotate the class that is implementing such a
-structure with the correct annotation. In this case ``@Functor``.
+It is not possible to concatenate constructors as in ``Maybe&lt;List&lt;?>>``
 
-As the last step, add the annotation processor ``functional.annotation.FunctionalCompiler``
+#### Algebraic Structures
+
+An algebraic structure is a set of operations defined over a type or set of types. They
+are type constructors, but they still require the corresponding annotation.
+
+#### Compile time
+
+As the last step, add the annotation processor ``com.dan323.functional.annotation.FunctionalCompiler``
 to your project.
 
-Compilation will fail until you add enough methods to satisfy the functional
+Compilation will fail until you add enough methods to satisfy the functional and algebraic
 structure requirements.
 
+## Algebraic Structures
+
+An algebraic structure is a set of operations defined over a type or set of types
+
+### Semigroup
+
+A semigroup requires only one operation
+````java
+public static T op(T a, T b)
+````
+and it should satisfy the associative property:
+````
+op(x,op(y,z)) == op(op(x,y),z)
+````
+
 ## Functionals
+
+
 ### Functor
 
 A functor requires only one function
 ```java
 public static <A,B> F<B> map(F<A> base, Function<A,B> map)
 ```
-and it satisfies the following law:
+and it satisfies the following laws:
 ```
 map(x, id) == x
-map(map(x, f), g) == map(x, f . g)
+map(map(x, f), g) == map(x, g . f)
 ```
 
 The miminal required is the only function it has: *map*
@@ -68,6 +100,6 @@ join(pure(fa)) == fa
 ````
 
 The minimal required is *pure* and one of the following lists:
-    1. *flatMap*
-    2. *join* and the minimal Functor
-    3. *join* and the minimal Applicative
+1. *flatMap*
+2. *join* and the minimal Functor
+3. *join* and the minimal Applicative

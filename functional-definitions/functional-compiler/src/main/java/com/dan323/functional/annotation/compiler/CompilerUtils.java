@@ -1,9 +1,8 @@
 package com.dan323.functional.annotation.compiler;
 
-import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.funcs.IFunctor;
-import com.dan323.functional.annotation.funcs.IMonad;
-import com.dan323.functional.annotation.algs.ISemigroup;
+import com.dan323.functional.annotation.Structure;
+import com.dan323.functional.annotation.algs.Algebraic;
+import com.dan323.functional.annotation.funcs.Functional;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -36,10 +35,10 @@ public final class CompilerUtils {
         return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);
     }
 
-    public static List<DeclaredType> getAllMaximalFunctionalInterfaces(Elements elementUtils, TypeElement element) {
+    public static List<DeclaredType> getAllMaximalFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
         var lst = element.getInterfaces().stream()
                 .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
-                .filter(type -> CompilerUtils.isFunctional(elementUtils, type))
+                .filter(type -> CompilerUtils.isStrucutre(elementUtils, types, type))
                 .toList();
         return lst.stream().filter(type -> isMaximal(elementUtils, type, lst)).toList();
     }
@@ -66,27 +65,7 @@ public final class CompilerUtils {
         }
     }
 
-    private static boolean isFunctional(Elements elementUtils, DeclaredType type) {
-        return isFunctor(elementUtils, type) || isApplicative(elementUtils, type) || isMonad(elementUtils, type);
-    }
-
-    private static boolean isFunctor(Elements elementUtils, DeclaredType type) {
-        var functorI = elementUtils.getTypeElement(IFunctor.class.getTypeName());
-        return type.asElement().equals(functorI);
-    }
-
-    private static boolean isMonad(Elements elementUtils, DeclaredType type) {
-        var functorI = elementUtils.getTypeElement(IMonad.class.getTypeName());
-        return type.asElement().equals(functorI);
-    }
-
-    private static boolean isApplicative(Elements elementUtils, DeclaredType type) {
-        var functorI = elementUtils.getTypeElement(IApplicative.class.getTypeName());
-        return type.asElement().equals(functorI);
-    }
-
-    private static boolean isSemigroup(Elements elements, DeclaredType type) {
-        var functorI = elements.getTypeElement(ISemigroup.class.getTypeName());
-        return type.asElement().equals(functorI);
+    private static boolean isStrucutre(Elements elementUtils, Types types, DeclaredType type) {
+        return types.isAssignable(type, elementUtils.getTypeElement(Structure.class.getTypeName()).asType());
     }
 }

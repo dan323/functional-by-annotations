@@ -1,6 +1,7 @@
 package com.dan323.functional.annotation.compiler;
 
 import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
 
 import javax.annotation.processing.Messager;
@@ -35,27 +36,27 @@ public final class SemigroupCompiler implements Compiler {
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", element.getQualifiedName());
         }
-        // Obtain the IApplicative interface it is implementing, or fail if it does not
-        if (!iface.asElement().equals(elementUtils.getTypeElement(IApplicative.class.getTypeName()))) {
+        // Obtain the ISemigroup interface it is implementing, or fail if it does not
+        if (!iface.asElement().equals(elementUtils.getTypeElement(ISemigroup.class.getTypeName()))) {
             error("The element %s is not implementing the interface Semigroup", element.getQualifiedName());
         }
         boolean success = false;
         // Look for the public static methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals("pure") && checkOp((ExecutableElement) elem, iface)) {
+                if (elem.getSimpleName().toString().equals("op") && checkOp((ExecutableElement) elem, iface)) {
                     success = true;
                 }
             }
         }
         if (!success) {
-            error("The static public function pure or fapply was not found in %s", element.getQualifiedName());
+            error("The static public function op was not found in %s", element.getQualifiedName());
         }
     }
 
     private boolean checkOp(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
-            var params = ((ExecutableType) method.asType()).getTypeVariables();
+            var params = iFace.getTypeArguments();
             if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
                 if (param1.toString().equals(params.get(0).toString()) && param2.toString().equals(params.get(0).toString()) && returnType.toString().equals(params.get(0).toString())) {
                     return true;

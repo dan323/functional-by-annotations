@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FRightEither.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.either</a> &gt; <span class="el_source">FRightEither.java</span></div><h1>FRightEither.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.either;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import java.util.function.Function;
+
+@Functor
+<span class="nc" id="L9">public final class FRightEither&lt;A&gt; implements IFunctor&lt;Either&lt;A, ?&gt;&gt; {</span>
+
+    public static &lt;B,C,A&gt; Either&lt;A,C&gt; map(Either&lt;A,B&gt; base, Function&lt;B,C&gt; mapping){
+<span class="fc" id="L12">        return base.either(Either::left, b -&gt; Either.right(mapping.apply(b)));</span>
+    }
+    /*
+    @Override
+    public &lt;R&gt; FRightEither&lt;A, R&gt; pure(R r) {
+        return new FRightEither&lt;&gt;(Either.right(r));
+    }
+
+    @Override
+    public &lt;R&gt; FRightEither&lt;A, R&gt; join(Monad&lt;Monad&lt;R, FRightEither&lt;A, ?&gt;&gt;, FRightEither&lt;A, ?&gt;&gt; monadMonad) {
+        var g = (FRightEither&lt;A,FRightEither&lt;A,R&gt;&gt;)(Monad&lt;?,?&gt;)monadMonad;
+        return g.either.either(a -&gt; new FRightEither&lt;&gt;(Either.left(a)), Function.identity());
+    }
+
+    @Override
+    public &lt;R&gt; FRightEither&lt;A, R&gt; map(Function&lt;B, R&gt; f) {
+        Function&lt;B, Either&lt;A, R&gt;&gt; g = a -&gt; Either.right(f.apply(a));
+        return new FRightEither&lt;&gt;(either.either(Either::left, g));
+    }
+
+    @Override
+    public &lt;R&gt; FRightEither&lt;A, R&gt; flatMap(Function&lt;B, Monad&lt;R, FRightEither&lt;A, ?&gt;&gt;&gt; f) {
+        var g = (Function&lt;B,FRightEither&lt;A,R&gt;&gt;)(Function&lt;?,?&gt;)f;
+
+
+    }
+
+    @Override
+    public &lt;Q&gt; FRightEither&lt;A,Q&gt; fapply(Applicative&lt;Function&lt;B, Q&gt;, FRightEither&lt;A, ?&gt;&gt; ff) {
+        return Monad.super.fapply(ff);
+    }
+    */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -2,6 +2,7 @@ package com.dan323.functional;
 
 import com.dan323.functional.annotation.util.ApplicativeUtil;
 import com.dan323.functional.annotation.util.FunctorUtil;
+import com.dan323.functional.annotation.util.MonadUtil;
 import com.dan323.functional.data.continuation.Continuation;
 import org.junit.jupiter.api.Test;
 
@@ -47,5 +48,14 @@ public class ContinuationTest {
 
         sol = ApplicativeUtil.pure(Continuation.class, Continuation.class, 8);
         assertEquals(false, sol.apply(k -> k > 9));
+    }
+
+    @Test
+    public void continuationJoin() {
+        Continuation<Continuation<Integer, Integer>, Integer> continuation = k -> k.apply(q -> q.apply(10));
+        assertEquals(11, Continuation.join(continuation).apply(k -> k + 1));
+
+        continuation = k -> k.apply(q -> q.apply(10));
+        assertEquals(11, MonadUtil.<Continuation, Continuation, Continuation<Continuation<Integer, Integer>, Integer>, Continuation<Integer, Integer>>join(Continuation.class, Continuation.class, continuation).apply(k -> k + 1));
     }
 }

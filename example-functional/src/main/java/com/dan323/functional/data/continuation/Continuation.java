@@ -1,16 +1,27 @@
 package com.dan323.functional.data.continuation;
 
+import com.dan323.functional.annotation.Applicative;
 import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IFunctor;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
-@Functor
+@Applicative
 @FunctionalInterface
-public interface Continuation<A, R> extends Function<Function<A, R>, R>, IFunctor<Continuation<?,R>> {
+public interface Continuation<A, R> extends Function<Function<A, R>, R>, IApplicative<Continuation<?,R>> {
 
     static <R1, R2, R> Continuation<R2, R> map(Continuation<R1, R> base, Function<R1, R2> mapping) {
         return k -> base.apply(k.compose(mapping));
+    }
+
+    static <R1,R> Continuation<R1,R> pure(R1 r){
+        return k -> k.apply(r);
+    }
+
+    static <R1,R2,R> Continuation<R2,R> fapply(Continuation<Function<R1,R2>,R> f, Continuation<R1,R> c1){
+        return k -> f.apply(h -> c1.apply(k.compose(h)));
     }
 }
 

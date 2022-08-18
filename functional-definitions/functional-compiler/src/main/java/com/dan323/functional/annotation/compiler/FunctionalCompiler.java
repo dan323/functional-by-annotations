@@ -18,6 +18,7 @@ import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class FunctionalCompiler extends AbstractProcessor {
 
@@ -60,7 +61,7 @@ public final class FunctionalCompiler extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return Set.of(Functor.class.getCanonicalName(), Applicative.class.getCanonicalName(), Monad.class.getCanonicalName());
+        return annotations.stream().map(Class::getCanonicalName).collect(Collectors.toSet());
     }
 
     @Override

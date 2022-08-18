@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 <span class="fc" id="L44">            var elems = roundEnvironment.getElementsAnnotatedWithAny(annotations);</span>
 <span class="fc bfc" id="L45" title="All 2 branches covered.">            for (var elem : elems) {</span>
 <span class="pc bpc" id="L46" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
-<span class="fc" id="L47">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, telem);</span>
+<span class="fc" id="L47">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);</span>
 <span class="fc" id="L48">                    ifaces.stream().map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
 <span class="fc" id="L49">                            .forEach(comp -&gt; comp.getValue().process(roundEnvironment, telem, comp.getKey()));</span>
                 }

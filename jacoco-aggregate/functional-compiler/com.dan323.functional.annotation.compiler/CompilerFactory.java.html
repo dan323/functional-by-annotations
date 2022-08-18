@@ -17,10 +17,10 @@ import javax.lang.model.util.Types;
 <span class="fc" id="L17">            return new FunctorCompiler(messager, types, elements);</span>
 <span class="fc bfc" id="L18" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))){</span>
 <span class="fc" id="L19">            return new ApplicativeCompiler(messager, types, elements);</span>
-<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))){</span>
 <span class="fc" id="L21">            return new MonadCompiler(messager, types, elements);</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))){</span>
-<span class="nc" id="L23">            return new SemigroupCompiler(messager, elements);</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))){</span>
+<span class="fc" id="L23">            return new SemigroupCompiler(messager, elements);</span>
         }
 <span class="nc" id="L25">        throw new IllegalArgumentException(&quot;The interfaces does not represent an implemented functional&quot;);</span>
     }

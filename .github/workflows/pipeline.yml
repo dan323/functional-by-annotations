@@ -28,7 +28,7 @@ jobs:
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
         run: |
-          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package
           mvn -B -f pom.xml test -P test
       - name: jacoco report
         run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco
@@ -81,6 +81,7 @@ jobs:
           java-version: 17
       - name: mutation testing
         run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package
           mvn -B -f pom.xml clean test-compile org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module
           mkdir -p target/site
           mv target/pit-reports target/site

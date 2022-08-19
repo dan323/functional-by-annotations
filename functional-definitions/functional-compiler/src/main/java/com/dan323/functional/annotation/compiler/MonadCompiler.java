@@ -81,7 +81,7 @@ public final class MonadCompiler implements Compiler {
             }
         }
         if (!success) {
-            error("The static public function pure or fapply was not found in %s", element.getQualifiedName());
+            error("The static public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

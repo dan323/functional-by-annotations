@@ -1,6 +1,6 @@
 package com.dan323.functional;
 
-import com.dan323.functional.data.FunctionFrom;
+import com.dan323.functional.data.function.FunctionFrom;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

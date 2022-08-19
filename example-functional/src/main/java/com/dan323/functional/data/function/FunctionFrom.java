@@ -1,4 +1,4 @@
-package com.dan323.functional.data;
+package com.dan323.functional.data.function;
 
 import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.annotation.funcs.IFunctor;

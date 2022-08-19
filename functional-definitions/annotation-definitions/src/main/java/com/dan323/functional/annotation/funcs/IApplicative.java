@@ -1,8 +1,8 @@
 package com.dan323.functional.annotation.funcs;
 
 public interface IApplicative<F> extends IFunctor<F> {
-    String PURE = "pure";
-    String FAPPLY = "fapply";
-    String LIFT_A2 = "liftA2";
+    String PURE_NAME = "pure";
+    String FAPPLY_NAME = "fapply";
+    String LIFT_A2_NAME = "liftA2";
 
 }

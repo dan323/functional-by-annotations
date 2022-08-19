@@ -53,11 +53,11 @@ public final class ApplicativeCompiler implements Compiler {
         // Look for the public static methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(IApplicative.PURE) && checkIfPure((ExecutableElement) elem, iface)) {
+                if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) && checkIfPure((ExecutableElement) elem, iface)) {
                     successPure = true;
-                } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY) && checkIfFapply((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY_NAME) && checkIfFapply((ExecutableElement) elem, iface)) {
                     successFapply = true;
-                } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2) && checkIfLiftA2((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2_NAME) && checkIfLiftA2((ExecutableElement) elem, iface)) {
                     successLiftA2 = true;
                 }
                 if ((successLiftA2 || successFapply) && successPure) {

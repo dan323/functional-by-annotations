@@ -58,17 +58,17 @@ public final class MonadCompiler implements Compiler {
         // Look for the public static methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP) && checkIfFlatmap((ExecutableElement) elem, iface)) {
+                if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP_NAME) && checkIfFlatmap((ExecutableElement) elem, iface)) {
                     successFlatmap = true;
-                } else if (elem.getSimpleName().toString().equals(IMonad.JOIN) && checkIfJoin((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IMonad.JOIN_NAME) && checkIfJoin((ExecutableElement) elem, iface)) {
                     successJoin = true;
-                } else if (elem.getSimpleName().toString().equals(IMonad.PURE) && checkIfPure((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IMonad.PURE_NAME) && checkIfPure((ExecutableElement) elem, iface)) {
                     successPure = true;
-                } else if (elem.getSimpleName().toString().equals(IMonad.MAP) && checkIfMap((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IMonad.MAP_NAME) && checkIfMap((ExecutableElement) elem, iface)) {
                     successMap = true;
-                } else if (elem.getSimpleName().toString().equals(IMonad.FAPPLY) && checkIfFapply((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IMonad.FAPPLY_NAME) && checkIfFapply((ExecutableElement) elem, iface)) {
                     successFapply = true;
-                } else if (elem.getSimpleName().toString().equals(IMonad.LIFT_A2) && checkIfLiftA2((ExecutableElement) elem, iface)) {
+                } else if (elem.getSimpleName().toString().equals(IMonad.LIFT_A2_NAME) && checkIfLiftA2((ExecutableElement) elem, iface)) {
                     successLiftA2 = true;
                 }
                 if (successFapply || successLiftA2){

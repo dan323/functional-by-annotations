@@ -1,7 +1,5 @@
 package com.dan323.functional.annotation.util;
 
-import com.dan323.functional.annotation.util.FunctionalUtils;
-
 public final class SemigroupUtil {
 
     private SemigroupUtil() {
@@ -10,7 +8,8 @@ public final class SemigroupUtil {
 
     public static <G, A> A op(Class<G> gClass, Class<A> aClass, A a, A b) {
         return FunctionalUtils.semigroupOp(gClass, aClass, a, b)
-                .orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
+                .or(() -> FunctionalUtils.monoidOp(gClass, aClass, a, b))
+                .orElseThrow(() -> new IllegalArgumentException("The monoid is not correctly implemented."));
     }
 
 }

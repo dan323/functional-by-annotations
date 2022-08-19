@@ -12,13 +12,13 @@ structure with the correct annotation. For example ``@Functor`` to implement ``I
 
 A functional structure is a set of operations defined over a type constructor or set of type constructors
 
-To create use it you just need to implement the needed interface, like ``IFuntor&lt;List&lt;?>>``
+To create use it you just need to implement the needed interface, like ``IFuntor<List<?>>``
 substituting ``IFunctor`` and ``List`` for the functional structure 
 and the type constructor you would like to use. The type constructor needs to use
 the wildcard ``?``. Note that we may use type constructors with several inputs like
-``Either<A,?>`` or ``Either&lt;?,?>``.
+``Either<A,?>`` or ``Either<?,?>``.
 
-It is not possible to concatenate constructors as in ``Maybe&lt;List&lt;?>>``
+It is not possible to concatenate constructors as in ``Maybe<List<?>>``
 
 #### Algebraic Structures
 

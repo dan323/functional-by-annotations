@@ -52,12 +52,6 @@ public sealed interface List&lt;A&gt; extends IFunctor&lt;List&lt;?&gt;&gt; perm
     }
 }
 /*
-    public &lt;Q&gt; List&lt;Q&gt; fapply(Applicative&lt;Function&lt;A, Q&gt;, List&lt;?&gt;&gt; ff);
-
-    default &lt;Q&gt; List&lt;Q&gt; pure(Q a){
-        return List.cons(a, List.nil());
-    }
-
     @Override
     default &lt;R&gt; List&lt;R&gt; join(Monad&lt;Monad&lt;R,List&lt;?&gt;&gt;,List&lt;?&gt;&gt; lst){
         return ListUtils.join((List&lt;List&lt;R&gt;&gt;) (Monad&lt;?,?&gt;) lst);

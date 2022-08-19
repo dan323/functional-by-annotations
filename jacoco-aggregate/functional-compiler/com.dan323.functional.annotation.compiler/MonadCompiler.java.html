@@ -58,17 +58,17 @@ public final class MonadCompiler implements Compiler {
         // Look for the public static methods called pure and fapply and verify its signature
 <span class="pc bpc" id="L59" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L60" title="2 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.STATIC) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="pc bpc" id="L61" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(&quot;flatMap&quot;) &amp;&amp; checkIfFlatmap((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP) &amp;&amp; checkIfFlatmap((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L62">                    successFlatmap = true;</span>
-<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(&quot;join&quot;) &amp;&amp; checkIfJoin((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.JOIN) &amp;&amp; checkIfJoin((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L64">                    successJoin = true;</span>
-<span class="pc bpc" id="L65" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(&quot;pure&quot;) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L65" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.PURE) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L66">                    successPure = true;</span>
-<span class="pc bpc" id="L67" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(&quot;map&quot;) &amp;&amp; checkIfMap((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.MAP) &amp;&amp; checkIfMap((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L68">                    successMap = true;</span>
-<span class="pc bpc" id="L69" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(&quot;fapply&quot;) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.FAPPLY) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L70">                    successFapply = true;</span>
-<span class="pc bpc" id="L71" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(&quot;liftA2&quot;) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L71" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.LIFT_A2) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L72">                    successLiftA2 = true;</span>
                 }
 <span class="fc bfc" id="L74" title="All 4 branches covered.">                if (successFapply || successLiftA2){</span>

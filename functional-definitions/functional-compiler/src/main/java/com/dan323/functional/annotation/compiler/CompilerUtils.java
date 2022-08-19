@@ -1,8 +1,6 @@
 package com.dan323.functional.annotation.compiler;
 
 import com.dan323.functional.annotation.Structure;
-import com.dan323.functional.annotation.algs.Algebraic;
-import com.dan323.functional.annotation.funcs.Functional;
 
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -49,7 +47,7 @@ public final class CompilerUtils {
     }
 
     private static boolean isMaximalRec(Elements elements, List<FunctionalDependencyTree> forest, DeclaredType type, List<DeclaredType> types) {
-        if (forest.size() == 0) {
+        if (forest.isEmpty()) {
             return false;
         } else {
             var lst = new ArrayList<>(forest);

@@ -44,7 +44,7 @@ public final class SemigroupCompiler implements Compiler {
         // Look for the public static methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals("op") && checkOp((ExecutableElement) elem, iface)) {
+                if (elem.getSimpleName().toString().equals(ISemigroup.OP) && checkOp((ExecutableElement) elem, iface)) {
                     success = true;
                 }
             }

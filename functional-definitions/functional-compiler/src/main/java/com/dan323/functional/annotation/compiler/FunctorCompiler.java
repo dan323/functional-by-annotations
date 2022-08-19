@@ -53,7 +53,7 @@ public final class FunctorCompiler implements Compiler {
         boolean success = false;
         // Look for the public static method called map and verify its signature
         for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals("map")) {
+            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals(IFunctor.MAP)) {
                 if (checkIfMap((ExecutableElement) elem, element, iface)) {
                     success = true;
                     break;

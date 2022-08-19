@@ -52,12 +52,6 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
     }
 }
 /*
-    public <Q> List<Q> fapply(Applicative<Function<A, Q>, List<?>> ff);
-
-    default <Q> List<Q> pure(Q a){
-        return List.cons(a, List.nil());
-    }
-
     @Override
     default <R> List<R> join(Monad<Monad<R,List<?>>,List<?>> lst){
         return ListUtils.join((List<List<R>>) (Monad<?,?>) lst);

@@ -1,9 +1,6 @@
 package com.dan323.functional.annotation.compiler;
 
-import com.dan323.functional.annotation.Applicative;
-import com.dan323.functional.annotation.Functor;
-import com.dan323.functional.annotation.Monad;
-import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.*;
 import com.dan323.functional.annotation.compiler.internal.CompilerFactory;
 import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
 
@@ -29,7 +26,7 @@ public final class FunctionalCompiler extends AbstractProcessor {
     private Types typeUtils;
     private CompilerFactory compilerFactory;
 
-    private static final Set<Class<? extends Annotation>> annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class);
+    private static final Set<Class<? extends Annotation>> annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class);
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {

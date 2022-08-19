@@ -25,7 +25,9 @@ jobs:
         with:
           java-version: 17
       - name: compile
-        run: mvn -B -f pom.xml clean compile
+        run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package
+          mvn -B -f pom.xml clean compile
       - name: run test suits
         run: mvn -B -f pom.xml test -P test
       - name: jacoco report

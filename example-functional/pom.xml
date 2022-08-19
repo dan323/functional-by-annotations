@@ -19,11 +19,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.dan323</groupId>
-            <artifactId>functional-compiler</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
         </dependency>
@@ -43,6 +38,13 @@
                 <version>3.10.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.dan323</groupId>
+                            <artifactId>functional-compiler</artifactId>
+                            <version>${project.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <annotationProcessors>
                         <annotationProcessor>
                             com.dan323.functional.annotation.compiler.FunctionalCompiler
@@ -52,5 +54,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

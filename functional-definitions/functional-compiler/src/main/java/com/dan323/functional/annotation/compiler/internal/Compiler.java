@@ -1,4 +1,4 @@
-package com.dan323.functional.annotation.compiler;
+package com.dan323.functional.annotation.compiler.internal;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.TypeElement;

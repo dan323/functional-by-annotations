@@ -1,4 +1,4 @@
-package com.dan323.functional.annotation.compiler;
+package com.dan323.functional.annotation.compiler.internal;
 
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.funcs.IMonad;

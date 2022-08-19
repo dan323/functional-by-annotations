@@ -20,3 +20,5 @@
 * 17/08/22
   - Package renaming and reorganization
   - Added Semigroup
+* 19/08/22
+  - Added Monoid

@@ -1,4 +1,4 @@
-package com.dan323.functional.annotation.compiler;
+package com.dan323.functional.annotation.compiler.internal;
 
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
@@ -13,7 +13,7 @@ import javax.lang.model.util.Types;
 
 public final class CompilerFactory {
 
-    Compiler from(DeclaredType iface, Elements elements, Types types, Messager messager) {
+    public Compiler from(DeclaredType iface, Elements elements, Types types, Messager messager) {
         if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {
             return new FunctorCompiler(messager, types, elements);
         } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {

@@ -1,4 +1,4 @@
-package com.dan323.functional.annotation.compiler;
+package com.dan323.functional.annotation.compiler.internal;
 
 import com.dan323.functional.annotation.Structure;
 import com.dan323.functional.annotation.algs.ISemigroup;

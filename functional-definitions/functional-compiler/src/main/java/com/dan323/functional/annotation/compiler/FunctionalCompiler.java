@@ -4,6 +4,8 @@ import com.dan323.functional.annotation.Applicative;
 import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.compiler.internal.CompilerFactory;
+import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;

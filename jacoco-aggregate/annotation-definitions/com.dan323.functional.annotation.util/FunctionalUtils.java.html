@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FunctionalUtils.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">annotation-definitions</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.util</a> &gt; <span class="el_source">FunctionalUtils.java</span></div><h1>FunctionalUtils.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.util;
 
-import com.dan323.functional.annotation.Applicative;
-import com.dan323.functional.annotation.Functor;
-import com.dan323.functional.annotation.Monad;
-import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.*;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.ISemigroup;
+import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.IFunctor;
+import com.dan323.functional.annotation.funcs.IMonad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,163 +15,187 @@ import java.util.function.Function;
 
 public final class FunctionalUtils {
 
-<span class="nc" id="L16">    private FunctionalUtils(){</span>
-<span class="nc" id="L17">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L18">    private FunctionalUtils() {</span>
+<span class="nc" id="L19">        throw new UnsupportedOperationException();</span>
     }
 
     private static &lt;G&gt; boolean isApplicative(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L21" title="1 of 4 branches missed.">        return gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;</span>
+<span class="pc bpc" id="L23" title="1 of 4 branches missed.">        return gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean isMonad(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        return gClass.getAnnotation(Monad.class) != null;</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        return gClass.getAnnotation(Monad.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean isFunctor(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L29" title="1 of 6 branches missed.">        return gClass.getAnnotation(Functor.class) != null || gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;</span>
+<span class="pc bpc" id="L31" title="1 of 6 branches missed.">        return gClass.getAnnotation(Functor.class) != null || gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;</span>
     }
 
-    private static &lt;G&gt; boolean isSemigroup(Class&lt;G&gt; gClassz){
-<span class="fc bfc" id="L33" title="All 2 branches covered.">        return gClassz.getAnnotation(Semigroup.class) != null;</span>
+    private static &lt;G&gt; boolean isSemigroup(Class&lt;G&gt; gClassz) {
+<span class="pc bpc" id="L35" title="1 of 4 branches missed.">        return gClassz.getAnnotation(Semigroup.class) != null || gClassz.getAnnotation(Monoid.class) != null;</span>
+    }
+
+    private static &lt;G&gt; boolean isMonoid(Class&lt;G&gt; gClassz) {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        return gClassz.getAnnotation(Monoid.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean implementsStaticMethod(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
         try {
-<span class="fc" id="L38">            gClass.getDeclaredMethod(name, inputs);</span>
-<span class="fc" id="L39">            return true;</span>
-<span class="fc" id="L40">        } catch (NoSuchMethodException e) {</span>
-<span class="fc" id="L41">            return false;</span>
+<span class="fc" id="L44">            gClass.getDeclaredMethod(name, inputs);</span>
+<span class="fc" id="L45">            return true;</span>
+<span class="fc" id="L46">        } catch (NoSuchMethodException e) {</span>
+<span class="fc" id="L47">            return false;</span>
         }
     }
 
     private static &lt;G&gt; Method getMethod(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
         try {
-<span class="fc" id="L47">            return gClass.getDeclaredMethod(name, inputs);</span>
-<span class="nc" id="L48">        } catch (NoSuchMethodException e) {</span>
-<span class="nc" id="L49">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L53">            return gClass.getDeclaredMethod(name, inputs);</span>
+<span class="nc" id="L54">        } catch (NoSuchMethodException e) {</span>
+<span class="nc" id="L55">            throw new IllegalArgumentException(e);</span>
         }
     }
 
     private static &lt;G&gt; Optional&lt;Method&gt; getMethodIfExists(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (implementsStaticMethod(gClass, name, inputs)) {</span>
-<span class="fc" id="L55">            return Optional.of(getMethod(gClass, name, inputs));</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (implementsStaticMethod(gClass, name, inputs)) {</span>
+<span class="fc" id="L61">            return Optional.of(getMethod(gClass, name, inputs));</span>
         } else {
-<span class="fc" id="L57">            return Optional.empty();</span>
+<span class="fc" id="L63">            return Optional.empty();</span>
         }
     }
 
     private static &lt;O&gt; O invokeStaticMethod(Method method, Object... inputs) {
         try {
-<span class="fc" id="L63">            return (O) method.invoke(null, inputs);</span>
-<span class="nc" id="L64">        } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L65">            throw new IllegalStateException(&quot;The method or inputs were not accessible&quot;);</span>
-<span class="fc" id="L66">        } catch (InvocationTargetException e) {</span>
-<span class="fc" id="L67">            InvocationTargetException ex = e;</span>
-<span class="pc bpc" id="L68" title="2 of 4 branches missed.">            while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException &amp;&amp; illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {</span>
-<span class="nc" id="L69">                ex = invocationTargetException;</span>
+<span class="fc" id="L69">            return (O) method.invoke(null, inputs);</span>
+<span class="nc" id="L70">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L71">            throw new IllegalStateException(&quot;The method or inputs were not accessible&quot;);</span>
+<span class="fc" id="L72">        } catch (InvocationTargetException e) {</span>
+<span class="fc" id="L73">            InvocationTargetException ex = e;</span>
+<span class="pc bpc" id="L74" title="2 of 4 branches missed.">            while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException &amp;&amp; illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {</span>
+<span class="nc" id="L75">                ex = invocationTargetException;</span>
             }
-<span class="fc" id="L71">            throw new IllegalArgumentException(String.format(&quot;There was an error executing %s: %s&quot;, method.getName(), ex.getTargetException().getMessage()), ex);</span>
+<span class="fc" id="L77">            throw new IllegalArgumentException(String.format(&quot;There was an error executing %s: %s&quot;, method.getName(), ex.getTargetException().getMessage()), ex);</span>
         }
     }
 
     // SEMIGROUP
     // Operation
-    static &lt;G,A&gt; Optional&lt;A&gt; semigroupOp(Class&lt;G&gt; gClass, Class&lt;A&gt; aClass, A a, A b){
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (isSemigroup(gClass)){</span>
-<span class="fc" id="L79">            return getMethodIfExists(gClass, &quot;op&quot;, aClass, aClass)</span>
-<span class="fc" id="L80">                    .map(m -&gt; invokeStaticMethod(m, a, b));</span>
+    static &lt;G, A&gt; Optional&lt;A&gt; semigroupOp(Class&lt;G&gt; gClass, Class&lt;A&gt; aClass, A a, A b) {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (isSemigroup(gClass)) {</span>
+<span class="fc" id="L85">            return getMethodIfExists(gClass, ISemigroup.OP_NAME, aClass, aClass)</span>
+<span class="fc" id="L86">                    .map(m -&gt; invokeStaticMethod(m, a, b));</span>
         } else {
-<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;The semigroup is not correctly defined&quot;);</span>
+<span class="fc" id="L88">            throw new IllegalArgumentException(&quot;The semigroup is not correctly defined&quot;);</span>
+        }
+    }
+
+    static &lt;G, A&gt; Optional&lt;A&gt; monoidOp(Class&lt;G&gt; gClass, Class&lt;A&gt; aClass, A a, A b) {
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (isMonoid(gClass)) {</span>
+<span class="nc" id="L94">            return getMethodIfExists(gClass, IMonoid.OP_NAME, aClass, aClass)</span>
+<span class="nc" id="L95">                    .map(m -&gt; invokeStaticMethod(m, a, b));</span>
+        } else {
+<span class="fc" id="L97">            throw new IllegalArgumentException(&quot;The monoid is not correctly defined&quot;);</span>
+        }
+    }
+
+    // MONOID
+    // Unit function
+    static &lt;G, A&gt; Optional&lt;A&gt; monoidUnit(Class&lt;G&gt; gClass, Class&lt;A&gt; aClass) {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (isMonoid(gClass)) {</span>
+<span class="fc" id="L105">            return getMethodIfExists(gClass, IMonoid.UNIT_NAME)</span>
+<span class="fc" id="L106">                    .map(FunctionalUtils::invokeStaticMethod);</span>
+        } else {
+<span class="fc" id="L108">            throw new IllegalArgumentException(&quot;The monoid is not correctly defined&quot;);</span>
         }
     }
 
     // FUNCTOR
     // Map functions
     static &lt;G, F, FA extends F, FB extends F, A, B&gt; Optional&lt;FB&gt; applicativeMap(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, Function&lt;A, B&gt; map) {
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
-<span class="fc" id="L90">            return getMethodIfExists(gClass, &quot;fapply&quot;, fClass, fClass)</span>
-<span class="fc" id="L91">                    .or(() -&gt; getMethodIfExists(gClass, &quot;liftA2&quot;, BiFunction.class, fClass, fClass))</span>
-<span class="fc" id="L92">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, base, ApplicativeUtil.pure(gClass, fClass, map)));</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
+<span class="fc" id="L116">            return getMethodIfExists(gClass, &quot;fapply&quot;, fClass, fClass)</span>
+<span class="fc" id="L117">                    .or(() -&gt; getMethodIfExists(gClass, &quot;liftA2&quot;, BiFunction.class, fClass, fClass))</span>
+<span class="fc" id="L118">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, base, ApplicativeUtil.pure(gClass, fClass, map)));</span>
         } else {
-<span class="nc" id="L94">            throw new IllegalArgumentException(&quot;The functor is not correctly defined&quot;);</span>
+<span class="nc" id="L120">            throw new IllegalArgumentException(&quot;The functor is not correctly defined&quot;);</span>
         }
     }
 
     static &lt;G, F, FA extends F, FB extends F, A, B&gt; Optional&lt;FB&gt; monadMap(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, Function&lt;A, B&gt; map) {
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="fc" id="L100">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
-<span class="fc" id="L101">                    .flatMap(m -&gt; getMethodIfExists(gClass, &quot;pure&quot;, Object.class))</span>
-<span class="fc" id="L102">                    .map(m -&gt; MonadUtil.flatMap(gClass, fClass, (A a) -&gt; ApplicativeUtil.pure(gClass, fClass, map.apply(a)), base));</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L126">            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
+<span class="fc" id="L127">                    .flatMap(m -&gt; getMethodIfExists(gClass, IMonad.PURE_NAME, Object.class))</span>
+<span class="fc" id="L128">                    .map(m -&gt; MonadUtil.flatMap(gClass, fClass, (A a) -&gt; ApplicativeUtil.pure(gClass, fClass, map.apply(a)), base));</span>
         } else {
-<span class="nc" id="L104">            throw new IllegalArgumentException(&quot;The applicative is not correctly defined&quot;);</span>
+<span class="nc" id="L130">            throw new IllegalArgumentException(&quot;The applicative is not correctly defined&quot;);</span>
         }
     }
 
     static &lt;G, F, FA extends F, FB extends F, A, B&gt; Optional&lt;FB&gt; functorMap(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, Function&lt;A, B&gt; map) {
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (isFunctor(gClass)) {</span>
-<span class="fc" id="L110">            return getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class)</span>
-<span class="fc" id="L111">                    .map(m -&gt; FunctionalUtils.invokeStaticMethod(m, base, map));</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (isFunctor(gClass)) {</span>
+<span class="fc" id="L136">            return getMethodIfExists(gClass, IFunctor.MAP_NAME, fClass, Function.class)</span>
+<span class="fc" id="L137">                    .map(m -&gt; FunctionalUtils.invokeStaticMethod(m, base, map));</span>
         } else {
-<span class="nc" id="L113">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L139">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
     // APPLICATIVE
     // Pure functions
     static &lt;G, F, FA extends F, A&gt; Optional&lt;FA&gt; applicativePure(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, A a) {
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
-<span class="fc" id="L121">            return getMethodIfExists(gClass, &quot;pure&quot;, Object.class)</span>
-<span class="fc" id="L122">                    .map(m -&gt; invokeStaticMethod(m, a));</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
+<span class="fc" id="L147">            return getMethodIfExists(gClass, IApplicative.PURE_NAME, Object.class)</span>
+<span class="fc" id="L148">                    .map(m -&gt; invokeStaticMethod(m, a));</span>
         } else {
-<span class="nc" id="L124">            throw new IllegalArgumentException(&quot;The applicative is not correctly defined.&quot;);</span>
+<span class="nc" id="L150">            throw new IllegalArgumentException(&quot;The applicative is not correctly defined.&quot;);</span>
         }
     }
 
     // Fapply functions
 
     static &lt;G, F, FA extends F, FB extends F, FF extends F&gt; Optional&lt;FB&gt; applicativeFapply(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, FF ff) {
-<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
-<span class="fc" id="L132">            return getMethodIfExists(gClass, &quot;fapply&quot;, fClass, fClass)</span>
-<span class="fc" id="L133">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(m, ff, base))</span>
-<span class="fc" id="L134">                    .or(() -&gt; getMethodIfExists(gClass, &quot;liftA2&quot;, BiFunction.class, fClass, fClass)</span>
-<span class="fc" id="L135">                            .map(m -&gt; ApplicativeUtil.liftA2(gClass, fClass, (Function&lt;Object, Object&gt; a, Object b) -&gt; a.apply(b), ff, base)));</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
+<span class="fc" id="L158">            return getMethodIfExists(gClass, IApplicative.FAPPLY_NAME, fClass, fClass)</span>
+<span class="fc" id="L159">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(m, ff, base))</span>
+<span class="fc" id="L160">                    .or(() -&gt; getMethodIfExists(gClass, IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)</span>
+<span class="fc" id="L161">                            .map(m -&gt; ApplicativeUtil.liftA2(gClass, fClass, (Function&lt;Object, Object&gt; a, Object b) -&gt; a.apply(b), ff, base)));</span>
         } else {
-<span class="nc" id="L137">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L163">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
     static &lt;G, F, FA extends F, FB extends F, FF extends F&gt; Optional&lt;FB&gt; monadFapply(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, FF ff) {
-<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="fc" id="L143">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
-<span class="fc" id="L144">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="pc" id="L145">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class)))</span>
-<span class="fc" id="L146">                    .map(m -&gt; MonadUtil.flatMap(gClass, fClass, f -&gt; FunctorUtil.map(gClass, fClass, base, (Function&lt;?, ?&gt;) f), ff));</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L169">            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
+<span class="fc" id="L170">                    .or(() -&gt; getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)</span>
+<span class="pc" id="L171">                            .flatMap(m -&gt; getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class)))</span>
+<span class="fc" id="L172">                    .map(m -&gt; MonadUtil.flatMap(gClass, fClass, f -&gt; FunctorUtil.map(gClass, fClass, base, (Function&lt;?, ?&gt;) f), ff));</span>
         } else {
-<span class="nc" id="L148">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L174">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
     // LiftA2 functions
 
     static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; Optional&lt;FC&gt; applicativeLiftA2(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; mapping, FA fa, FB fb) {
-<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
-<span class="fc" id="L156">            return getMethodIfExists(gClass, &quot;liftA2&quot;, BiFunction.class, fClass, fClass)</span>
-<span class="fc" id="L157">                    .&lt;FC&gt;map(m -&gt; invokeStaticMethod(m, mapping, fa, fb))</span>
-<span class="fc" id="L158">                    .or(() -&gt; getMethodIfExists(gClass, &quot;fapply&quot;, fClass, fClass)</span>
-<span class="fc" id="L159">                            .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b))))));</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (isApplicative(gClass)) {</span>
+<span class="fc" id="L182">            return getMethodIfExists(gClass, IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)</span>
+<span class="fc" id="L183">                    .&lt;FC&gt;map(m -&gt; invokeStaticMethod(m, mapping, fa, fb))</span>
+<span class="fc" id="L184">                    .or(() -&gt; getMethodIfExists(gClass, IApplicative.FAPPLY_NAME, fClass, fClass)</span>
+<span class="fc" id="L185">                            .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b))))));</span>
         } else {
-<span class="nc" id="L161">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L187">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
     static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; Optional&lt;FC&gt; monadLiftA2(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; mapping, FA fa, FB fb) {
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="fc" id="L167">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
-<span class="fc" id="L168">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="pc" id="L169">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class)))</span>
-<span class="fc" id="L170">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L193">            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
+<span class="fc" id="L194">                    .or(() -&gt; getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)</span>
+<span class="pc" id="L195">                            .flatMap(m -&gt; getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class)))</span>
+<span class="fc" id="L196">                    .map(m -&gt; ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
         } else {
-<span class="nc" id="L172">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L198">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
@@ -177,30 +203,29 @@ public final class FunctionalUtils {
     // FlatMap functions
 
     static &lt;G, F, FA extends F, FB extends F, A&gt; Optional&lt;FB&gt; monadFlatMap(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, Function&lt;A, FB&gt; mapping, FA fa) {
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="fc" id="L181">            return getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
-<span class="fc" id="L182">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(m, mapping, fa))</span>
-<span class="fc" id="L183">                    .or(() -&gt; getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="pc" id="L184">                            .flatMap(m -&gt; getMethodIfExists(gClass, &quot;map&quot;, fClass, Function.class))</span>
-<span class="pc" id="L185">                            .map(m -&gt; MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L207">            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
+<span class="fc" id="L208">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(m, mapping, fa))</span>
+<span class="fc" id="L209">                    .or(() -&gt; getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)</span>
+<span class="pc" id="L210">                            .flatMap(m -&gt; getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class))</span>
+<span class="pc" id="L211">                            .map(m -&gt; MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));</span>
         } else {
-<span class="nc" id="L187">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L213">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
 
     // Join functions
 
-    public static &lt;G, F, FFA extends F, FA extends F&gt; Optional&lt;FA&gt; monadJoin(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FFA ffa) {
-<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
-<span class="fc" id="L195">            return getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="pc" id="L196">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
-<span class="fc" id="L197">                    .or(() -&gt; getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
-<span class="fc" id="L198">                            .map(m -&gt; MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));</span>
+    static &lt;G, F, FFA extends F, FA extends F&gt; Optional&lt;FA&gt; monadJoin(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FFA ffa) {
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
+<span class="fc" id="L221">            return getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)</span>
+<span class="pc" id="L222">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
+<span class="fc" id="L223">                    .or(() -&gt; getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
+<span class="fc" id="L224">                            .map(m -&gt; MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));</span>
         } else {
-<span class="nc" id="L200">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
+<span class="nc" id="L226">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
     }
-
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

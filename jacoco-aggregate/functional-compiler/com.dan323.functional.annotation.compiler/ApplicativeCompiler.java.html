@@ -53,11 +53,11 @@ public final class ApplicativeCompiler implements Compiler {
         // Look for the public static methods called pure and fapply and verify its signature
 <span class="fc bfc" id="L54" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L55" title="2 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.STATIC) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="pc bpc" id="L56" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IApplicative.PURE) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L56" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L57">                    successPure = true;</span>
-<span class="pc bpc" id="L58" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY_NAME) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L59">                    successFapply = true;</span>
-<span class="pc bpc" id="L60" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
+<span class="pc bpc" id="L60" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2_NAME) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L61">                    successLiftA2 = true;</span>
                 }
 <span class="fc bfc" id="L63" title="All 6 branches covered.">                if ((successLiftA2 || successFapply) &amp;&amp; successPure) {</span>

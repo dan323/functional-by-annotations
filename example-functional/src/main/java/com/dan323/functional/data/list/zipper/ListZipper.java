@@ -3,7 +3,7 @@ package com.dan323.functional.data.list.zipper;
 import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.data.list.FiniteList;
-import com.dan323.functional.data.list.FiniteListFunctor;
+import com.dan323.functional.data.list.FiniteListFunctional;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.list.ListUtils;
 import com.dan323.functional.data.optional.Maybe;
@@ -67,7 +67,7 @@ public class ListZipper<A> implements IFunctor<ListZipper<?>> {
     }
 
     public static <A, B> ListZipper<B> map(ListZipper<A> base, Function<A, B> mapping) {
-        return new ListZipper<>(FiniteListFunctor.map(base.left, mapping), mapping.apply(base.pointer), FiniteListFunctor.map(base.right, mapping));
+        return new ListZipper<>(FiniteListFunctional.map(base.left, mapping), mapping.apply(base.pointer), FiniteListFunctional.map(base.right, mapping));
     }
 
 }

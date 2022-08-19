@@ -81,7 +81,7 @@ public final class MonadCompiler implements Compiler {
             }
 <span class="fc" id="L82">        }</span>
 <span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (!success) {</span>
-<span class="nc" id="L84">            error(&quot;The static public function pure or fapply was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="nc" id="L84">            error(&quot;The static public functions required to be a monad were not found in %s&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L86">    }</span>
 

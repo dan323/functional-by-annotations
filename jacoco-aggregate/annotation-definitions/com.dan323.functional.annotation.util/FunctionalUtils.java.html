@@ -193,7 +193,7 @@ public final class FunctionalUtils {
     public static &lt;G, F, FFA extends F, FA extends F&gt; Optional&lt;FA&gt; monadJoin(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FFA ffa) {
 <span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (isMonad(gClass)) {</span>
 <span class="fc" id="L195">            return getMethodIfExists(gClass, &quot;join&quot;, fClass)</span>
-<span class="fc" id="L196">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
+<span class="pc" id="L196">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(m, ffa))</span>
 <span class="fc" id="L197">                    .or(() -&gt; getMethodIfExists(gClass, &quot;flatMap&quot;, Function.class, fClass)</span>
 <span class="fc" id="L198">                            .map(m -&gt; MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));</span>
         } else {

@@ -1,6 +1,7 @@
 package com.dan323.functional.annotation.compiler.internal;
 
 import com.dan323.functional.annotation.Structure;
+import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IFunctor;
@@ -28,7 +29,7 @@ class FunctionalDependencyTree {
         FunctionalDependencyTree applicative = new FunctionalDependencyTree(IApplicative.class);
         FunctionalDependencyTree functor = new FunctionalDependencyTree(IFunctor.class);
         FunctionalDependencyTree semigroup = new FunctionalDependencyTree(ISemigroup.class);
-        FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonad.class);
+        FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);
         monad.addDependency(applicative);
         applicative.addDependency(functor);
         monoid.addDependency(semigroup);

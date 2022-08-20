@@ -47,8 +47,8 @@ import java.util.List;
     }
 
     private static boolean isMaximalRec(Elements elements, List&lt;FunctionalDependencyTree&gt; forest, DeclaredType type, List&lt;DeclaredType&gt; types) {
-<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (forest.isEmpty()) {</span>
-<span class="fc" id="L51">            return false;</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (forest.isEmpty()) {</span>
+<span class="nc" id="L51">            return false;</span>
         } else {
 <span class="fc" id="L53">            var lst = new ArrayList&lt;&gt;(forest);</span>
 <span class="fc bfc" id="L54" title="All 2 branches covered.">            for (var tree : forest) {</span>

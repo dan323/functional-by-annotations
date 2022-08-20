@@ -18,55 +18,55 @@ public final class MonoidCompiler implements Compiler {
     private final Elements elementUtils;
     private final Messager messager;
 
-<span class="nc" id="L21">    MonoidCompiler(Messager messager, Elements elements) {</span>
-<span class="nc" id="L22">        this.messager = messager;</span>
-<span class="nc" id="L23">        this.elementUtils = elements;</span>
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L21">    MonoidCompiler(Messager messager, Elements elements) {</span>
+<span class="fc" id="L22">        this.messager = messager;</span>
+<span class="fc" id="L23">        this.elementUtils = elements;</span>
+<span class="fc" id="L24">    }</span>
 
     @Override
     public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
-<span class="nc" id="L28">        validateMonoid(element, iface);</span>
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L28">        validateMonoid(element, iface);</span>
+<span class="fc" id="L29">    }</span>
 
     private void validateMonoid(TypeElement element, DeclaredType iface) {
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (element.getAnnotation(Monoid.class) == null) {</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (element.getAnnotation(Monoid.class) == null) {</span>
 <span class="nc" id="L33">            error(&quot;The monoi interface is not annotated as a semigroup&quot;);</span>
         }
         // Verify that it is a public class
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
 <span class="nc" id="L37">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
         }
         // Obtain the ISemigroup interface it is implementing, or fail if it does not
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IMonoid.class.getTypeName()))) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IMonoid.class.getTypeName()))) {</span>
 <span class="nc" id="L41">            error(&quot;The element %s is not implementing the interface Semigroup&quot;, element.getQualifiedName());</span>
         }
-<span class="nc" id="L43">        boolean success = false;</span>
-<span class="nc" id="L44">        boolean successSemigroup = false;</span>
-<span class="nc" id="L45">        boolean successUnity = false;</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
-<span class="nc bnc" id="L47" title="All 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.STATIC) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="nc bnc" id="L48" title="All 4 branches missed.">                if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) &amp;&amp; checkOp((ExecutableElement) elem, iface)) {</span>
-<span class="nc" id="L49">                    successSemigroup = true;</span>
-<span class="nc bnc" id="L50" title="All 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonoid.UNIT_NAME) &amp;&amp; checkUnit((ExecutableElement) elem, iface)) {</span>
-<span class="nc" id="L51">                    successUnity = true;</span>
+<span class="fc" id="L43">        boolean success = false;</span>
+<span class="fc" id="L44">        boolean successSemigroup = false;</span>
+<span class="fc" id="L45">        boolean successUnity = false;</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
+<span class="pc bpc" id="L47" title="2 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.STATIC) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) &amp;&amp; checkOp((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L49">                    successSemigroup = true;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonoid.UNIT_NAME) &amp;&amp; checkUnit((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L51">                    successUnity = true;</span>
                 }
-<span class="nc bnc" id="L53" title="All 4 branches missed.">                if (successSemigroup &amp;&amp; successUnity) {</span>
-<span class="nc" id="L54">                    success = true;</span>
-<span class="nc" id="L55">                    break;</span>
+<span class="pc bpc" id="L53" title="1 of 4 branches missed.">                if (successSemigroup &amp;&amp; successUnity) {</span>
+<span class="fc" id="L54">                    success = true;</span>
+<span class="fc" id="L55">                    break;</span>
                 }
             }
-<span class="nc" id="L58">        }</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (!success) {</span>
+<span class="fc" id="L58">        }</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!success) {</span>
 <span class="nc" id="L60">            error(&quot;The static public function op or unit was not found in %s&quot;, element.getQualifiedName());</span>
         }
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L62">    }</span>
 
     private boolean checkOp(ExecutableElement method, DeclaredType iFace) {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
-<span class="nc" id="L66">            var params = iFace.getTypeArguments();</span>
-<span class="nc bnc" id="L67" title="All 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="nc bnc" id="L68" title="All 6 branches missed.">                if (param1.toString().equals(params.get(0).toString()) &amp;&amp; param2.toString().equals(params.get(0).toString()) &amp;&amp; returnType.toString().equals(params.get(0).toString())) {</span>
-<span class="nc" id="L69">                    return true;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
+<span class="fc" id="L66">            var params = iFace.getTypeArguments();</span>
+<span class="pc bpc" id="L67" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L68" title="3 of 6 branches missed.">                if (param1.toString().equals(params.get(0).toString()) &amp;&amp; param2.toString().equals(params.get(0).toString()) &amp;&amp; returnType.toString().equals(params.get(0).toString())) {</span>
+<span class="fc" id="L69">                    return true;</span>
                 } else {
 <span class="nc" id="L71">                    warning(&quot;There is a op method, but the input types and the return type are not as expected&quot;);</span>
                 }
@@ -78,11 +78,11 @@ public final class MonoidCompiler implements Compiler {
     }
 
     private boolean checkUnit(ExecutableElement method, DeclaredType iFace) {
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (method.getParameters().isEmpty()) {</span>
-<span class="nc" id="L82">            var params = iFace.getTypeArguments();</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (returnType.toString().equals(params.get(0).toString())) {</span>
-<span class="nc" id="L85">                    return true;</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (method.getParameters().isEmpty()) {</span>
+<span class="fc" id="L82">            var params = iFace.getTypeArguments();</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                if (returnType.toString().equals(params.get(0).toString())) {</span>
+<span class="fc" id="L85">                    return true;</span>
                 } else {
 <span class="nc" id="L87">                    warning(&quot;There is a unit method, but the return type are not as expected&quot;);</span>
                 }

@@ -22,3 +22,5 @@
   - Added Semigroup
 * 19/08/22
   - Added Monoid
+* 20/08/22
+  - Methods allowed to not be static

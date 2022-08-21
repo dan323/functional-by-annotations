@@ -50,7 +50,7 @@ public final class ApplicativeCompiler implements Compiler {
         boolean successLiftA2 = false;
         boolean successPure = false;
         boolean success = false;
-        // Look for the public static methods called pure and fapply and verify its signature
+        // Look for the public static called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
                 if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) && checkIfPure((ExecutableElement) elem, iface)) {
@@ -67,7 +67,7 @@ public final class ApplicativeCompiler implements Compiler {
             }
         }
         if (!success) {
-            error("The static public function pure or fapply was not found in %s", element.getQualifiedName());
+            error("The public function pure or fapply was not found in %s", element.getQualifiedName());
         }
     }
 

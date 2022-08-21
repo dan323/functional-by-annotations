@@ -57,7 +57,7 @@ public final class MonoidCompiler implements Compiler {
             }
         }
         if (!success) {
-            error("The static public function op or unit was not found in %s", element.getQualifiedName());
+            error("The public function op or unit was not found in %s", element.getQualifiedName());
         }
     }
 

@@ -55,7 +55,7 @@ public final class MonadCompiler implements Compiler {
         boolean successLiftA2 = false;
         boolean successApplicative = false;
         boolean success = false;
-        // Look for the public static methods called pure and fapply and verify its signature
+        // Look for the public methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
                 if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP_NAME) && checkIfFlatmap((ExecutableElement) elem, iface)) {
@@ -81,7 +81,7 @@ public final class MonadCompiler implements Compiler {
             }
         }
         if (!success) {
-            error("The static public functions required to be a monad were not found in %s", element.getQualifiedName());
+            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

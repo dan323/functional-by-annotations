@@ -51,7 +51,7 @@ public final class FunctorCompiler implements Compiler {
 <span class="nc" id="L51">            error(&quot;The element %s is not implementing the interface Functor&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L53">        boolean success = false;</span>
-        // Look for the public static method called map and verify its signature
+        // Look for the public method called map and verify its signature
 <span class="fc bfc" id="L55" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L56" title="1 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC) &amp;&amp; elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {</span>
 <span class="fc bfc" id="L57" title="All 2 branches covered.">                if (checkIfMap((ExecutableElement) elem, element, iface)) {</span>
@@ -61,7 +61,7 @@ public final class FunctorCompiler implements Compiler {
             }
 <span class="fc" id="L62">        }</span>
 <span class="fc bfc" id="L63" title="All 2 branches covered.">        if (!success) {</span>
-<span class="fc" id="L64">            error(&quot;The static public function map was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="fc" id="L64">            error(&quot;The public function map was not found in %s&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L66">    }</span>
 

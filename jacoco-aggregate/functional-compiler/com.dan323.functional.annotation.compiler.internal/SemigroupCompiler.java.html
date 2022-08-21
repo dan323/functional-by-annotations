@@ -39,7 +39,7 @@ public final class SemigroupCompiler implements Compiler {
 <span class="nc" id="L39">            error(&quot;The element %s is not implementing the interface Semigroup&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L41">        boolean success = false;</span>
-        // Look for the public static methods called pure and fapply and verify its signature
+        // Look for the public methods called pure and fapply and verify its signature
 <span class="fc bfc" id="L43" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L44" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
 <span class="pc bpc" id="L45" title="2 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(ISemigroup.OP_NAME) &amp;&amp; checkOp((ExecutableElement) elem, iface)) {</span>
@@ -48,7 +48,7 @@ public final class SemigroupCompiler implements Compiler {
             }
 <span class="fc" id="L49">        }</span>
 <span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (!success) {</span>
-<span class="nc" id="L51">            error(&quot;The static public function op was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="nc" id="L51">            error(&quot;The public function op was not found in %s&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L53">    }</span>
 

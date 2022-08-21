@@ -50,7 +50,7 @@ public final class ApplicativeCompiler implements Compiler {
 <span class="fc" id="L50">        boolean successLiftA2 = false;</span>
 <span class="fc" id="L51">        boolean successPure = false;</span>
 <span class="fc" id="L52">        boolean success = false;</span>
-        // Look for the public static methods called pure and fapply and verify its signature
+        // Look for the public static called pure and fapply and verify its signature
 <span class="fc bfc" id="L54" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L55" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
 <span class="pc bpc" id="L56" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
@@ -67,7 +67,7 @@ public final class ApplicativeCompiler implements Compiler {
             }
 <span class="fc" id="L68">        }</span>
 <span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!success) {</span>
-<span class="fc" id="L70">            error(&quot;The static public function pure or fapply was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="fc" id="L70">            error(&quot;The public function pure or fapply was not found in %s&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L72">    }</span>
 

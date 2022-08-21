@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>SemigroupUtil.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">annotation-definitions</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.util</a> &gt; <span class="el_source">SemigroupUtil.java</span></div><h1>SemigroupUtil.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.util;
+
+public final class SemigroupUtil {
+
+<span class="nc" id="L5">    private SemigroupUtil() {</span>
+<span class="nc" id="L6">        throw new UnsupportedOperationException(&quot;This class has no instances&quot;);</span>
+    }
+
+    public static &lt;G, A&gt; A op(G semi, Class&lt;A&gt; aClass, A a, A b) {
+<span class="fc" id="L10">        return FunctionalUtils.semigroupOp(semi, aClass, a, b)</span>
+<span class="pc" id="L11">                .or(() -&gt; FunctionalUtils.monoidOp(semi, aClass, a, b))</span>
+<span class="pc" id="L12">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monoid is not correctly implemented.&quot;));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

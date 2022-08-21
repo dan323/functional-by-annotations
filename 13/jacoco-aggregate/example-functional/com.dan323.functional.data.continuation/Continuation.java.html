@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Continuation.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.continuation</a> &gt; <span class="el_source">Continuation.java</span></div><h1>Continuation.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.continuation;
+
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.funcs.IMonad;
+
+import java.util.function.Function;
+
+@Monad
+@FunctionalInterface
+public interface Continuation&lt;A, R&gt; extends Function&lt;Function&lt;A, R&gt;, R&gt;, IMonad&lt;Continuation&lt;?, R&gt;&gt; {
+
+    static &lt;R1, R2, R&gt; Continuation&lt;R2, R&gt; map(Continuation&lt;R1, R&gt; base, Function&lt;R1, R2&gt; mapping) {
+<span class="fc" id="L13">        return k -&gt; base.apply(k.compose(mapping));</span>
+    }
+
+    static &lt;R1, R&gt; Continuation&lt;R1, R&gt; pure(R1 r) {
+<span class="fc" id="L17">        return k -&gt; k.apply(r);</span>
+    }
+
+    static &lt;R1, R2, R&gt; Continuation&lt;R2, R&gt; fapply(Continuation&lt;Function&lt;R1, R2&gt;, R&gt; f, Continuation&lt;R1, R&gt; c1) {
+<span class="fc" id="L21">        return k -&gt; f.apply(h -&gt; c1.apply(k.compose(h)));</span>
+    }
+
+    static &lt;R1,R&gt; Continuation&lt;R1,R&gt; join(Continuation&lt;Continuation&lt;R1,R&gt;,R&gt; cc){
+<span class="fc" id="L25">        return k -&gt; cc.apply(c1 -&gt; c1.apply(k));</span>
+    }
+}
+
+/*
+public interface Continuation&lt;A,R&gt; extends Function&lt;Function&lt;A,R&gt;,R&gt;, Functor&lt;A,Continuation&lt;?,R&gt;&gt; {
+
+    @Override
+    default  &lt;S&gt; Continuation&lt;S, R&gt; pure(S r) {
+        return f -&gt; f.apply(r);
+    }
+
+    @Override
+    default  &lt;S&gt; Continuation&lt;S, R&gt; join(Monad&lt;Monad&lt;S, Continuation&lt;?, R&gt;&gt;, Continuation&lt;?, R&gt;&gt; monadMonad) {
+        return k -&gt; ((Continuation&lt;Continuation&lt;S,R&gt;,R&gt;)(Monad&lt;?,?&gt;)monadMonad).apply(f -&gt; f.apply(k));
+    }
+
+    @Override
+    default &lt;Q&gt; Continuation&lt;Q, R&gt; fapply(Applicative&lt;Function&lt;A, Q&gt;, Continuation&lt;?, R&gt;&gt; ff){
+        var fg = (Continuation&lt;Function&lt;A,Q&gt;,R&gt;) ff;
+        return u -&gt; fg.apply(q -&gt; apply(u.compose(q)));
+    }
+}
+*/
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

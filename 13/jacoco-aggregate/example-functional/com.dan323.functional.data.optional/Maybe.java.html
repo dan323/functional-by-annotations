@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Maybe.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.optional</a> &gt; <span class="el_source">Maybe.java</span></div><h1>Maybe.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.optional;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import java.util.function.Function;
+
+@Functor
+public sealed interface Maybe&lt;A&gt; permits Nothing, Just {
+
+    &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant);
+
+    static &lt;A&gt; Maybe&lt;A&gt; of(A element) {
+<span class="fc" id="L14">        return new Just&lt;&gt;(element);</span>
+    }
+
+    static &lt;A&gt; Maybe&lt;A&gt; of() {
+<span class="fc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
+    }
+
+
+    /*
+    @Override
+    &lt;R&gt; Optional&lt;R&gt; flatMap(Function&lt;A, Monad&lt;R, Optional&lt;?&gt;&gt;&gt; f);
+
+    @Override
+    &lt;R&gt; Optional&lt;R&gt; fapply(Applicative&lt;Function&lt;A, R&gt;, Optional&lt;?&gt;&gt; applicative);
+
+    @Override
+    default &lt;Q&gt; Optional&lt;Q&gt; pure(Q a) {
+        return of(a);
+    }
+
+    @Override
+    default &lt;R&gt; Optional&lt;R&gt; join(Monad&lt;Monad&lt;R, Optional&lt;?&gt;&gt;, Optional&lt;?&gt;&gt; monadMonad) {
+        var optOpt = ((Optional&lt;Optional&lt;R&gt;&gt;) (Monad&lt;?, ?&gt;) monadMonad);
+        return optOpt.maybe(Function.identity(), of());
+    }*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

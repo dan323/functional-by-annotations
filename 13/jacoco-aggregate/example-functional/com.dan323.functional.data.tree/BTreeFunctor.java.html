@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>BTreeFunctor.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.tree</a> &gt; <span class="el_source">BTreeFunctor.java</span></div><h1>BTreeFunctor.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.tree;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import java.util.function.Function;
+
+@Functor
+public class BTreeFunctor implements IFunctor&lt;BinaryTree&lt;?&gt;&gt; {
+
+    private BTreeFunctor(){
+
+    }
+
+<span class="fc" id="L15">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
+
+    public static &lt;A, B&gt; BinaryTree&lt;B&gt; map(BinaryTree&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (base instanceof Leaf&lt;A&gt; baseLeaf) {</span>
+<span class="fc" id="L19">            return new Leaf&lt;&gt;(mapping.apply(baseLeaf.value()));</span>
+        } else {
+<span class="fc" id="L21">            BinaryNode&lt;A&gt; baseTree = (BinaryNode&lt;A&gt;) base;</span>
+<span class="fc" id="L22">            return new BinaryNode&lt;&gt;(map(baseTree.left(), mapping), map(baseTree.right(), mapping));</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -9,6 +9,12 @@ import java.util.function.Function;
 @Monad
 public final class MonadMock implements IMonad<List<?>> {
 
+    private MonadMock(){
+
+    }
+
+    public static final MonadMock MONAD = new MonadMock();
+
     public static <A,B> List<B> flatMap(Function<A,List<B>> f, List<A> base){
         return base.stream().flatMap(x -> f.apply(x).stream()).toList();
     }

@@ -57,7 +57,7 @@ public final class MonadCompiler implements Compiler {
         boolean success = false;
         // Look for the public static methods called pure and fapply and verify its signature
         for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
                 if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP_NAME) && checkIfFlatmap((ExecutableElement) elem, iface)) {
                     successFlatmap = true;
                 } else if (elem.getSimpleName().toString().equals(IMonad.JOIN_NAME) && checkIfJoin((ExecutableElement) elem, iface)) {

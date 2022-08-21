@@ -2,8 +2,8 @@ package com.dan323.functional.annotation.util;
 
 public final class MonoidUtil {
 
-    public static <G, A> A unit(Class<G> gClass, Class<A> aClass) {
-        return FunctionalUtils.monoidUnit(gClass, aClass)
+    public static <G, A> A unit(G monoid) {
+        return (A)FunctionalUtils.monoidUnit(monoid)
                 .orElseThrow(() -> new IllegalArgumentException("The monoid is not correctly implemented."));
     }
 

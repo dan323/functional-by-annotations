@@ -9,17 +9,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class MonoidUtilTest {
     @Test
     public void monoidUnit() {
-        var sol = MonoidUtil.unit(MonoidSum.class, Integer.class);
+        var sol = MonoidUtil.unit(MonoidSum.MONOID);
         assertEquals(0, sol);
     }
 
     @Test
     public void monoidNoAnnotationError() {
-        assertThrows(IllegalArgumentException.class, () -> MonoidUtil.unit(MonoidNoAnnotation.class, Integer.class));
+        assertThrows(IllegalArgumentException.class, () -> MonoidUtil.unit(MonoidNoAnnotation.MONOID));
     }
 
     @Test
     public void monoidNoUnitError() {
-        assertThrows(IllegalArgumentException.class, () -> MonoidUtil.unit(EmptyMonoid.class, Integer.class));
+        assertThrows(IllegalArgumentException.class, () -> MonoidUtil.unit(EmptyMonoid.MONOID));
     }
 }

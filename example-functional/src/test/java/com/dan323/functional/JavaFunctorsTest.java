@@ -20,7 +20,7 @@ public class JavaFunctorsTest {
         opt = JOptionalFunctor.<Integer, Integer>map(Optional.empty(), k -> k + 1);
         assertEquals(Optional.empty(), opt);
 
-        opt = FunctorUtil.<JOptionalFunctor, Optional<?>, Optional<Integer>, Optional<Integer>, Integer, Integer>map(JOptionalFunctor.class, (Class<Optional<?>>)(Class<?>) Optional.class, Optional.empty(), k -> k + 1);
+        opt = FunctorUtil.<JOptionalFunctor, Optional<?>, Optional<Integer>, Optional<Integer>, Integer, Integer>map(JOptionalFunctor.FUNCTOR, (Class<Optional<?>>)(Class<?>) Optional.class, Optional.empty(), k -> k + 1);
         assertEquals(Optional.empty(), opt);
     }
 
@@ -28,7 +28,7 @@ public class JavaFunctorsTest {
     public void javaListFunctor() {
         var lst = JListFunctor.map(List.of(3, 3, 4), k -> k * k);
         assertEquals(List.of(9, 9, 16), lst);
-        lst = FunctorUtil.<JListFunctor, List<?>, List<Integer>, List<Integer>, Integer, Integer>map(JListFunctor.class, (Class<List<?>>) (Class<?>) List.class, List.of(3, 3, 4), k -> k * k);
+        lst = FunctorUtil.<JListFunctor, List<?>, List<Integer>, List<Integer>, Integer, Integer>map(JListFunctor.FUNCTOR, (Class<List<?>>) (Class<?>) List.class, List.of(3, 3, 4), k -> k * k);
         assertEquals(List.of(9, 9, 16), lst);
     }
 }

@@ -9,6 +9,12 @@ import java.util.function.Function;
 @Functor
 public class JOptionalFunctor implements IFunctor<Optional<?>> {
 
+    private JOptionalFunctor(){
+
+    }
+
+    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();
+
     public static <A, B> Optional<B> map(Optional<A> base, Function<A, B> mapping) {
         return base.map(mapping);
     }

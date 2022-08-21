@@ -7,4 +7,10 @@ import java.util.List;
 
 @Monad
 public final class EmptyMonad implements IMonad<List<?>> {
+
+    private EmptyMonad(){
+
+    }
+
+    public static final EmptyMonad MONAD = new EmptyMonad();
 }

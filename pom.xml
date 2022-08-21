@@ -90,6 +90,8 @@
                         </outputFormats>
                         <excludedMethods>
                             <excludedMethod>hashCode</excludedMethod>
+                            <excludedMethod>equals</excludedMethod>
+                            <excludedMethod>toString</excludedMethod>
                         </excludedMethods>
                         <timestampedReports>false</timestampedReports>
                     </configuration>

@@ -1,6 +1,7 @@
 package com.dan323.functional;
 
 import com.dan323.functional.annotation.util.FunctorUtil;
+import com.dan323.functional.data.tree.BTreeFunctor;
 import com.dan323.functional.data.tree.BinaryTree;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class TreeFunctorTest {
         BinaryTree<Integer> leaf6 = BinaryTree.leaf(6);
         BinaryTree<Integer> tree = BinaryTree.node(leaf5, leaf6);
 
-        var sol = BinaryTree.map(tree, k -> k * k);
+        var sol = BTreeFunctor.map(tree, k -> k * k);
 
         assertEquals(BinaryTree.node(BinaryTree.leaf(25), BinaryTree.leaf(36)), sol);
     }
@@ -25,7 +26,7 @@ public class TreeFunctorTest {
         BinaryTree<Integer> leaf6 = BinaryTree.leaf(6);
         BinaryTree<Integer> tree = BinaryTree.node(leaf5, leaf6);
 
-        var sol = FunctorUtil.<BinaryTree, BinaryTree, BinaryTree<Integer>, BinaryTree<Integer>, Integer, Integer>map(BinaryTree.class, BinaryTree.class, tree, k -> k * k);
+        var sol = FunctorUtil.<BTreeFunctor, BinaryTree, BinaryTree<Integer>, BinaryTree<Integer>, Integer, Integer>map(BTreeFunctor.FUNCTOR, BinaryTree.class, tree, k -> k * k);
 
         assertEquals(BinaryTree.node(BinaryTree.leaf(25), BinaryTree.leaf(36)), sol);
     }

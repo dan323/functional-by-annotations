@@ -6,9 +6,9 @@ public final class SemigroupUtil {
         throw new UnsupportedOperationException("This class has no instances");
     }
 
-    public static <G, A> A op(Class<G> gClass, Class<A> aClass, A a, A b) {
-        return FunctionalUtils.semigroupOp(gClass, aClass, a, b)
-                .or(() -> FunctionalUtils.monoidOp(gClass, aClass, a, b))
+    public static <G, A> A op(G semi, Class<A> aClass, A a, A b) {
+        return FunctionalUtils.semigroupOp(semi, aClass, a, b)
+                .or(() -> FunctionalUtils.monoidOp(semi, aClass, a, b))
                 .orElseThrow(() -> new IllegalArgumentException("The monoid is not correctly implemented."));
     }
 

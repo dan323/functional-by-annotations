@@ -64,9 +64,9 @@ public final class FunctionalUtils {
         }
     }
 
-    private static <O> O invokeStaticMethod(Method method, Object... inputs) {
+    private static <G, O> O invokeStaticMethod(G structure, Method method, Object... inputs) {
         try {
-            return (O) method.invoke(null, inputs);
+            return (O) method.invoke(structure, inputs);
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("The method or inputs were not accessible");
         } catch (InvocationTargetException e) {
@@ -80,19 +80,19 @@ public final class FunctionalUtils {
 
     // SEMIGROUP
     // Operation
-    static <G, A> Optional<A> semigroupOp(Class<G> gClass, Class<A> aClass, A a, A b) {
-        if (isSemigroup(gClass)) {
-            return getMethodIfExists(gClass, ISemigroup.OP_NAME, aClass, aClass)
-                    .map(m -> invokeStaticMethod(m, a, b));
+    static <G, A> Optional<A> semigroupOp(G semigroup, Class<A> aClass, A a, A b) {
+        if (isSemigroup(semigroup.getClass())) {
+            return getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass)
+                    .map(m -> invokeStaticMethod(semigroup, m, a, b));
         } else {
             throw new IllegalArgumentException("The semigroup is not correctly defined");
         }
     }
 
-    static <G, A> Optional<A> monoidOp(Class<G> gClass, Class<A> aClass, A a, A b) {
-        if (isMonoid(gClass)) {
-            return getMethodIfExists(gClass, IMonoid.OP_NAME, aClass, aClass)
-                    .map(m -> invokeStaticMethod(m, a, b));
+    static <G, A> Optional<A> monoidOp(G monoid, Class<A> aClass, A a, A b) {
+        if (isMonoid(monoid.getClass())) {
+            return getMethodIfExists(monoid.getClass(), IMonoid.OP_NAME, aClass, aClass)
+                    .map(m -> invokeStaticMethod(monoid, m, a, b));
         } else {
             throw new IllegalArgumentException("The monoid is not correctly defined");
         }
@@ -100,10 +100,10 @@ public final class FunctionalUtils {
 
     // MONOID
     // Unit function
-    static <G, A> Optional<A> monoidUnit(Class<G> gClass, Class<A> aClass) {
-        if (isMonoid(gClass)) {
-            return getMethodIfExists(gClass, IMonoid.UNIT_NAME)
-                    .map(FunctionalUtils::invokeStaticMethod);
+    static <G, A> Optional<A> monoidUnit(G monoid) {
+        if (isMonoid(monoid.getClass())) {
+            return getMethodIfExists(monoid.getClass(), IMonoid.UNIT_NAME)
+                    .map(m -> invokeStaticMethod(monoid, m));
         } else {
             throw new IllegalArgumentException("The monoid is not correctly defined");
         }
@@ -111,30 +111,30 @@ public final class FunctionalUtils {
 
     // FUNCTOR
     // Map functions
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> applicativeMap(Class<G> gClass, Class<F> fClass, FA base, Function<A, B> map) {
-        if (isApplicative(gClass)) {
-            return getMethodIfExists(gClass, "fapply", fClass, fClass)
-                    .or(() -> getMethodIfExists(gClass, "liftA2", BiFunction.class, fClass, fClass))
-                    .map(m -> ApplicativeUtil.fapply(gClass, fClass, base, ApplicativeUtil.pure(gClass, fClass, map)));
+    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> applicativeMap(G applicative, Class<F> fClass, FA base, Function<A, B> map) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), "fapply", fClass, fClass)
+                    .or(() -> getMethodIfExists(applicative.getClass(), "liftA2", BiFunction.class, fClass, fClass))
+                    .map(m -> ApplicativeUtil.fapply(applicative, fClass, base, ApplicativeUtil.pure(applicative, fClass, map)));
         } else {
             throw new IllegalArgumentException("The functor is not correctly defined");
         }
     }
 
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> monadMap(Class<G> gClass, Class<F> fClass, FA base, Function<A, B> map) {
-        if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)
-                    .flatMap(m -> getMethodIfExists(gClass, IMonad.PURE_NAME, Object.class))
-                    .map(m -> MonadUtil.flatMap(gClass, fClass, (A a) -> ApplicativeUtil.pure(gClass, fClass, map.apply(a)), base));
+    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> monadMap(G monad, Class<F> fClass, FA base, Function<A, B> map) {
+        if (isMonad(monad.getClass())) {
+            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
+                    .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))
+                    .map(m -> MonadUtil.flatMap(monad, fClass, (A a) -> ApplicativeUtil.pure(monad, fClass, map.apply(a)), base));
         } else {
             throw new IllegalArgumentException("The applicative is not correctly defined");
         }
     }
 
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> functorMap(Class<G> gClass, Class<F> fClass, FA base, Function<A, B> map) {
-        if (isFunctor(gClass)) {
-            return getMethodIfExists(gClass, IFunctor.MAP_NAME, fClass, Function.class)
-                    .map(m -> FunctionalUtils.invokeStaticMethod(m, base, map));
+    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> functorMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
+        if (isFunctor(functor.getClass())) {
+            return getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, fClass, Function.class)
+                    .map(m -> FunctionalUtils.invokeStaticMethod(functor, m, base, map));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
@@ -142,10 +142,10 @@ public final class FunctionalUtils {
 
     // APPLICATIVE
     // Pure functions
-    static <G, F, FA extends F, A> Optional<FA> applicativePure(Class<G> gClass, Class<F> fClass, A a) {
-        if (isApplicative(gClass)) {
-            return getMethodIfExists(gClass, IApplicative.PURE_NAME, Object.class)
-                    .map(m -> invokeStaticMethod(m, a));
+    static <G, F, FA extends F, A> Optional<FA> applicativePure(G applicative, Class<F> fClass, A a) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), IApplicative.PURE_NAME, Object.class)
+                    .map(m -> invokeStaticMethod(applicative, m, a));
         } else {
             throw new IllegalArgumentException("The applicative is not correctly defined.");
         }
@@ -153,23 +153,23 @@ public final class FunctionalUtils {
 
     // Fapply functions
 
-    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> applicativeFapply(Class<G> gClass, Class<F> fClass, FA base, FF ff) {
-        if (isApplicative(gClass)) {
-            return getMethodIfExists(gClass, IApplicative.FAPPLY_NAME, fClass, fClass)
-                    .<FB>map(m -> invokeStaticMethod(m, ff, base))
-                    .or(() -> getMethodIfExists(gClass, IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)
-                            .map(m -> ApplicativeUtil.liftA2(gClass, fClass, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
+    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> applicativeFapply(G applicative, Class<F> fClass, FA base, FF ff) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, fClass, fClass)
+                    .<FB>map(m -> invokeStaticMethod(applicative, m, ff, base))
+                    .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)
+                            .map(m -> ApplicativeUtil.liftA2(applicative, fClass, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
     }
 
-    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> monadFapply(Class<G> gClass, Class<F> fClass, FA base, FF ff) {
-        if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)
-                    .or(() -> getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)
-                            .flatMap(m -> getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class)))
-                    .map(m -> MonadUtil.flatMap(gClass, fClass, f -> FunctorUtil.map(gClass, fClass, base, (Function<?, ?>) f), ff));
+    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> monadFapply(G monad, Class<F> fClass, FA base, FF ff) {
+        if (isMonad(monad.getClass())) {
+            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
+                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class)))
+                    .map(m -> MonadUtil.flatMap(monad, fClass, f -> FunctorUtil.map(monad, fClass, base, (Function<?, ?>) f), ff));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
@@ -177,23 +177,23 @@ public final class FunctionalUtils {
 
     // LiftA2 functions
 
-    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> applicativeLiftA2(Class<G> gClass, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
-        if (isApplicative(gClass)) {
-            return getMethodIfExists(gClass, IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)
-                    .<FC>map(m -> invokeStaticMethod(m, mapping, fa, fb))
-                    .or(() -> getMethodIfExists(gClass, IApplicative.FAPPLY_NAME, fClass, fClass)
-                            .map(m -> ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b))))));
+    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> applicativeLiftA2(G applicative, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)
+                    .<FC>map(m -> invokeStaticMethod(applicative, m, mapping, fa, fb))
+                    .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, fClass, fClass)
+                            .map(m -> ApplicativeUtil.fapply(applicative, fClass, fb, FunctorUtil.map(applicative, fClass, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b))))));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
     }
 
-    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> monadLiftA2(Class<G> gClass, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
-        if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)
-                    .or(() -> getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)
-                            .flatMap(m -> getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class)))
-                    .map(m -> ApplicativeUtil.fapply(gClass, fClass, fb, FunctorUtil.map(gClass, fClass, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
+    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> monadLiftA2(G monad, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
+        if (isMonad(monad.getClass())) {
+            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
+                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class)))
+                    .map(m -> ApplicativeUtil.fapply(monad, fClass, fb, FunctorUtil.map(monad, fClass, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
@@ -202,13 +202,13 @@ public final class FunctionalUtils {
     // MONAD
     // FlatMap functions
 
-    static <G, F, FA extends F, FB extends F, A> Optional<FB> monadFlatMap(Class<G> gClass, Class<F> fClass, Function<A, FB> mapping, FA fa) {
-        if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)
-                    .<FB>map(m -> invokeStaticMethod(m, mapping, fa))
-                    .or(() -> getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)
-                            .flatMap(m -> getMethodIfExists(gClass, IMonad.MAP_NAME, fClass, Function.class))
-                            .map(m -> MonadUtil.join(gClass, fClass, FunctorUtil.map(gClass, fClass, fa, mapping))));
+    static <G, F, FA extends F, FB extends F, A> Optional<FB> monadFlatMap(G monad, Class<F> fClass, Function<A, FB> mapping, FA fa) {
+        if (isMonad(monad.getClass())) {
+            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
+                    .<FB>map(m -> invokeStaticMethod(monad, m, mapping, fa))
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
+                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class))
+                            .map(m -> MonadUtil.join(monad, fClass, FunctorUtil.map(monad, fClass, fa, mapping))));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }
@@ -216,12 +216,12 @@ public final class FunctionalUtils {
 
     // Join functions
 
-    static <G, F, FFA extends F, FA extends F> Optional<FA> monadJoin(Class<G> gClass, Class<F> fClass, FFA ffa) {
-        if (isMonad(gClass)) {
-            return getMethodIfExists(gClass, IMonad.JOIN_NAME, fClass)
-                    .<FA>map(m -> invokeStaticMethod(m, ffa))
-                    .or(() -> getMethodIfExists(gClass, IMonad.FLAT_MAP_NAME, Function.class, fClass)
-                            .map(m -> MonadUtil.flatMap(gClass, fClass, Function.identity(), ffa)));
+    static <G, F, FFA extends F, FA extends F> Optional<FA> monadJoin(G monad, Class<F> fClass, FFA ffa) {
+        if (isMonad(monad.getClass())) {
+            return getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
+                    .<FA>map(m -> invokeStaticMethod(monad, m, ffa))
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
+                            .map(m -> MonadUtil.flatMap(monad, fClass, Function.identity(), ffa)));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }

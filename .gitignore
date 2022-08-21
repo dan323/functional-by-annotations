@@ -12,6 +12,7 @@ target
 
 # Ignore IntelliJ project-specific cache directory
 .idea
+*.iml
 
 # Ignore Java compile files
 *.class

@@ -8,13 +8,13 @@ public final class MonadUtil {
         throw new UnsupportedOperationException();
     }
 
-    public static <G, F, FA extends F, FB extends F, A> FB flatMap(Class<G> gClass, Class<F> fClass, Function<A, FB> mapping, FA fa) {
-        return FunctionalUtils.monadFlatMap(gClass, fClass, mapping, fa)
+    public static <G, F, FA extends F, FB extends F, A> FB flatMap(G monad, Class<F> fClass, Function<A, FB> mapping, FA fa) {
+        return FunctionalUtils.monadFlatMap(monad, fClass, mapping, fa)
                 .orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
     }
 
-    public static <G, F, FFA extends F, FA extends F> FA join(Class<G> gClass, Class<F> fClass, FFA ffa) {
-        return FunctionalUtils.<G, F, FFA, FA>monadJoin(gClass, fClass, ffa)
+    public static <G, F, FFA extends F, FA extends F> FA join(G monad, Class<F> fClass, FFA ffa) {
+        return FunctionalUtils.<G, F, FFA, FA>monadJoin(monad, fClass, ffa)
                 .orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
     }
 }

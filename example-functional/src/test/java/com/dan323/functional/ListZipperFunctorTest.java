@@ -6,6 +6,8 @@ import com.dan323.functional.data.list.zipper.ListZipper;
 import com.dan323.functional.data.optional.Maybe;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Function;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListZipperFunctorTest {
@@ -25,7 +27,7 @@ public class ListZipperFunctorTest {
         var lst = zipped.maybe(zip -> ListZipper.map(zip, b -> !b), null).toList();
         assertEquals(FiniteList.of(false, false, true), lst);
 
-        lst = zipped.maybe(zip -> FunctorUtil.<ListZipper, ListZipper,ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipper.class, ListZipper.class, zip, b -> !b), null).toList();
+        lst = zipped.maybe(zip -> FunctorUtil.<ListZipper, ListZipper,ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipper.zipFrom(FiniteList.of(true)).maybe(Function.identity(), null), ListZipper.class, zip, b -> !b), null).toList();
         assertEquals(FiniteList.of(false, false, true), lst);
     }
 }

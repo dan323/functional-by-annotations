@@ -1,73 +1,51 @@
 package com.dan323.functional.applicative;
 
+import com.dan323.functional.Identity;
 import com.dan323.functional.annotation.util.ApplicativeUtil;
-import com.dan323.functional.monad.MonadMock;
-import com.dan323.functional.monad.EmptyMonad;
-import com.dan323.functional.monad.MonadNoPure;
+import com.dan323.functional.annotation.util.FunctorUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApplicativeUtilTest {
 
     @Test
-    public void monadNoPure() {
-        assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<MonadNoPure, List, List<Integer>, Integer>pure(MonadNoPure.class, List.class, 5));
-    }
-
-    @Test
-    public void monadFapplyError(){
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<MonadNoPure, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(MonadNoPure.class, List.class, List.of(1, 2), List.of(x -> x + 1, x -> x * 2)));
-        assertTrue(ex.getMessage().contains("The monad is not correctly implemented"));
-        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(EmptyMonad.class, List.class, List.of(1, 2), List.of(x -> x + 1, x -> x * 2)));
-        assertTrue(ex2.getMessage().contains("The monad is not correctly implemented"));
-    }
-    @Test
-    public void monandFapply() {
-        var sol = ApplicativeUtil.<MonadMock, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(MonadMock.class, List.class, List.of(2, 3, 4), List.of(x -> x + 1, x -> x - 3));
-        assertEquals(List.of(3, 4, 5, -1, 0, 1), sol);
-    }
-
-    @Test
     public void pureTest() {
-        var k = ApplicativeUtil.pure(ApplicativeMock.class, ApplicativeMock.class, 5);
-        assertEquals(5, k.getA());
+        var k = ApplicativeUtil.pure(ApplicativeMock.APPLICATIVE, Identity.class, 5);
+        assertEquals(5, k.get());
     }
 
     @Test
     public void fapplyTest() {
-        ApplicativeMock<Function<Integer, Integer>> ff = new ApplicativeMock<>(x -> x + 1);
-        ApplicativeMock<Integer> base = new ApplicativeMock<>(6);
-        var k = ApplicativeUtil.fapply(ApplicativeMock.class, ApplicativeMock.class, base, ff);
-        assertEquals(7, k.getA());
+        Identity<Function<Integer, Integer>> ff = new Identity<>(x -> x + 1);
+        Identity<Integer> base = new Identity<>(6);
+        var k = ApplicativeUtil.fapply(ApplicativeMock.APPLICATIVE, Identity.class, base, ff);
+        assertEquals(7, k.get());
 
-        k = ApplicativeUtil.fapply(ApplicativeLiftA2Mock.class, ApplicativeMock.class, base, ff);
-        assertEquals(7, k.getA());
+        k = ApplicativeUtil.fapply(ApplicativeLiftA2Mock.APPLICATIVE, Identity.class, base, ff);
+        assertEquals(7, k.get());
     }
 
     @Test
     public void applicativeLiftA2() {
-        ApplicativeMock<Integer> v = new ApplicativeMock<>(7);
-        ApplicativeMock<Integer> w = new ApplicativeMock<>(9);
-        var q = ApplicativeUtil.liftA2(ApplicativeMock.class, ApplicativeMock.class, Integer::sum, v, w);
-        assertEquals(16, q.getA());
+        Identity<Integer> v = new Identity<>(7);
+        Identity<Integer> w = new Identity<>(9);
+        var q = ApplicativeUtil.liftA2(ApplicativeMock.APPLICATIVE, Identity.class, Integer::sum, v, w);
+        assertEquals(16, q.get());
 
-        q = ApplicativeUtil.liftA2(ApplicativeNoMapMock.class, ApplicativeMock.class, (Integer k, Integer s) -> k - s, v, w);
-        assertEquals(-2, q.getA());
+        q = ApplicativeUtil.liftA2(ApplicativeNoMapMock.APPLICATIVE, Identity.class, (Integer k, Integer s) -> k - s, v, w);
+        assertEquals(-2, q.get());
     }
 
     @Test
-    public void monadLiftA2(){
-        List<Integer> v = List.of(5,6);
-        List<Integer> w = List.of(-1,-2);
-        List<Integer> q = ApplicativeUtil.liftA2(MonadMock.class, List.class, Integer::sum, v, w);
-        assertEquals(List.of(4,3,5,4), q);
+    public void applicativeMap() {
+        Identity<Integer> v = new Identity<>(7);
+        var q = FunctorUtil.map(ApplicativeMock.APPLICATIVE, Identity.class, v, (Integer k) -> k + 1);
+        assertEquals(8, q.get());
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad,List,List<Integer>,List<Integer>,List<Integer>,Integer,Integer,Integer>liftA2(EmptyMonad.class, List.class, Integer::sum, v, w));
-        assertTrue(exception.getMessage().contains("The monad is not correctly implemented"));
+        q = FunctorUtil.map(ApplicativeNoMapMock.APPLICATIVE, Identity.class, v, (Integer k) -> k + 1);
+        assertEquals(8, q.get());
     }
 }

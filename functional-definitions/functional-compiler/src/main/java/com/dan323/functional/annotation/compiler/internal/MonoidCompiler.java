@@ -30,7 +30,7 @@ public final class MonoidCompiler implements Compiler {
 
     private void validateMonoid(TypeElement element, DeclaredType iface) {
         if (element.getAnnotation(Monoid.class) == null) {
-            error("The monoi interface is not annotated as a semigroup");
+            error("The monoid interface is not annotated as a semigroup");
         }
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
@@ -44,7 +44,7 @@ public final class MonoidCompiler implements Compiler {
         boolean successSemigroup = false;
         boolean successUnity = false;
         for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.STATIC) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
                 if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
                     successSemigroup = true;
                 } else if (elem.getSimpleName().toString().equals(IMonoid.UNIT_NAME) && checkUnit((ExecutableElement) elem, iface)) {

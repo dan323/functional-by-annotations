@@ -9,6 +9,11 @@ import java.util.function.Function;
 @Functor
 public class JListFunctor implements IFunctor<List<?>> {
 
+    private JListFunctor(){
+
+    }
+
+    public static final JListFunctor FUNCTOR = new JListFunctor();
     public static <A,B> List<B> map(List<A> base, Function<A,B> mapping){
         return base.stream().map(mapping).toList();
     }

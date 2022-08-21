@@ -1,37 +1,29 @@
 package com.dan323.functional.applicative;
 
+import com.dan323.functional.Identity;
 import com.dan323.functional.annotation.Applicative;
 import com.dan323.functional.annotation.funcs.IApplicative;
 
 import java.util.function.Function;
 
 @Applicative
-public final class ApplicativeMock<A> implements IApplicative<ApplicativeMock<?>> {
+public final class ApplicativeMock implements IApplicative<Identity<?>> {
 
-    private final A a;
+    private ApplicativeMock(){
 
-    public ApplicativeMock(A a) {
-        this.a = a;
     }
 
-    public A getA() {
-        return a;
+    public static final ApplicativeMock APPLICATIVE = new ApplicativeMock();
+
+    public <A> Identity<A> pure(A a) {
+        return new Identity<>(a);
     }
 
-    public static <A> ApplicativeMock<A> pure(A a) {
-        return new ApplicativeMock<>(a);
+    public <A, B> Identity<B> fapply(Identity<Function<A, B>> f, Identity<A> base) {
+        return new Identity<>(f.get().apply(base.get()));
     }
 
-    public static <A, B> ApplicativeMock<B> fapply(ApplicativeMock<Function<A, B>> f, ApplicativeMock<A> base) {
-        return new ApplicativeMock<>(f.a.apply(base.a));
-    }
-
-    public static <A, B> ApplicativeMock<B> map(ApplicativeMock<A> base, Function<A, B> function) {
-        return new ApplicativeMock<>(function.apply(base.a));
-    }
-
-    @Override
-    public String toString() {
-        return a.toString();
+    public static <A, B> Identity<B> map(Identity<A> base, Function<A, B> function) {
+        return new Identity<>(function.apply(base.get()));
     }
 }

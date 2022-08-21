@@ -53,8 +53,8 @@ public final class FunctorCompiler implements Compiler {
 <span class="fc" id="L53">        boolean success = false;</span>
         // Look for the public static method called map and verify its signature
 <span class="fc bfc" id="L55" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
-<span class="pc bpc" id="L56" title="1 of 8 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.STATIC) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC) &amp;&amp; elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {</span>
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                if (checkIfMap((ExecutableElement) elem, element, iface)) {</span>
+<span class="pc bpc" id="L56" title="1 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC) &amp;&amp; elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">                if (checkIfMap((ExecutableElement) elem, element, iface)) {</span>
 <span class="fc" id="L58">                    success = true;</span>
 <span class="fc" id="L59">                    break;</span>
                 }
@@ -71,7 +71,7 @@ public final class FunctorCompiler implements Compiler {
 <span class="fc" id="L71">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);</span>
 <span class="fc" id="L72">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IFunctor.class);</span>
 <span class="pc bpc" id="L73" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L74" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
 <span class="fc" id="L75">                    var funcElem = elementUtils.getTypeElement(Function.class.getTypeName());</span>
 <span class="pc bpc" id="L76" title="2 of 4 branches missed.">                    if (param2.asElement().equals(funcElem) &amp;&amp; param2.getTypeArguments().equals(params.subList(0, 2))) {</span>
 <span class="fc" id="L77">                        return true;</span>
@@ -79,13 +79,13 @@ public final class FunctorCompiler implements Compiler {
 <span class="nc" id="L79">                        warning(&quot;There is a map method, but for type %s is not a Function or the type arguments are not matching the rest of the signature&quot;, type.getQualifiedName().toString());</span>
                     }
 <span class="nc" id="L81">                } else {</span>
-<span class="nc" id="L82">                    warning(&quot;There is a map method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+<span class="fc" id="L82">                    warning(&quot;There is a map method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
                 }
             } else {
 <span class="nc" id="L85">                warning(&quot;There is a map method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L88">        return false;</span>
+<span class="fc" id="L88">        return false;</span>
     }
 
     private void error(String message, Object... args) {
@@ -93,7 +93,7 @@ public final class FunctorCompiler implements Compiler {
 <span class="fc" id="L93">    }</span>
 
     private void warning(String message, Object... args) {
-<span class="nc" id="L96">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
-<span class="nc" id="L97">    }</span>
+<span class="fc" id="L96">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
+<span class="fc" id="L97">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

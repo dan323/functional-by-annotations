@@ -7,10 +7,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Functor
-<span class="nc" id="L10">public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {</span>
+public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {
+
+    private JOptionalFunctor(){
+
+    }
+
+<span class="fc" id="L16">    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();</span>
 
     public static &lt;A, B&gt; Optional&lt;B&gt; map(Optional&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L13">        return base.map(mapping);</span>
+<span class="fc" id="L19">        return base.map(mapping);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

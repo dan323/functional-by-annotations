@@ -6,7 +6,7 @@ import com.dan323.functional.annotation.funcs.IFunctor;
 import java.util.function.Function;
 
 @Functor
-public sealed interface Maybe&lt;A&gt; extends IFunctor&lt;Maybe&lt;?&gt;&gt; permits Nothing, Just {
+public sealed interface Maybe&lt;A&gt; permits Nothing, Just {
 
     &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant);
 
@@ -18,9 +18,6 @@ public sealed interface Maybe&lt;A&gt; extends IFunctor&lt;Maybe&lt;?&gt;&gt; pe
 <span class="fc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
     }
 
-    static &lt;A,R&gt; Maybe&lt;R&gt; map(Maybe&lt;A&gt; base, Function&lt;A, R&gt; f){
-<span class="fc" id="L22">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
-    }
 
     /*
     @Override

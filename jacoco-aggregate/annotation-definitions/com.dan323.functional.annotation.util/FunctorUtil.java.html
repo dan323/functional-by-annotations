@@ -8,10 +8,10 @@ public final class FunctorUtil {
 <span class="nc" id="L8">        throw new UnsupportedOperationException();</span>
     }
 
-    public static &lt;G, F, FA extends F, FB extends F, A, B&gt; FB map(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, Function&lt;A, B&gt; function) {
-<span class="fc" id="L12">        return FunctionalUtils.&lt;G, F, FA, FB, A, B&gt;functorMap(gClass, fClass, base, function)</span>
-<span class="fc" id="L13">                .or(() -&gt; FunctionalUtils.applicativeMap(gClass, fClass, base, function))</span>
-<span class="fc" id="L14">                .or(() -&gt; FunctionalUtils.monadMap(gClass, fClass, base, function))</span>
+    public static &lt;G, F, FA extends F, FB extends F, A, B&gt; FB map(G functor, Class&lt;F&gt; fClass, FA base, Function&lt;A, B&gt; function) {
+<span class="fc" id="L12">        return FunctionalUtils.&lt;G, F, FA, FB, A, B&gt;functorMap(functor, fClass, base, function)</span>
+<span class="fc" id="L13">                .or(() -&gt; FunctionalUtils.applicativeMap(functor, fClass, base, function))</span>
+<span class="fc" id="L14">                .or(() -&gt; FunctionalUtils.monadMap(functor, fClass, base, function))</span>
 <span class="fc" id="L15">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 

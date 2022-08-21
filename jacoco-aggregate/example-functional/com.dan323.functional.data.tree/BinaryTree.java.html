@@ -5,24 +5,14 @@ import com.dan323.functional.annotation.funcs.IFunctor;
 
 import java.util.function.Function;
 
-@Functor
-public sealed interface BinaryTree&lt;A&gt; extends IFunctor&lt;BinaryTree&lt;?&gt;&gt; permits BinaryNode, Leaf {
+public sealed interface BinaryTree&lt;A&gt; permits BinaryNode, Leaf {
 
     static &lt;A&gt; BinaryTree&lt;A&gt; leaf(A a) {
-<span class="fc" id="L12">        return new Leaf&lt;&gt;(a);</span>
+<span class="fc" id="L11">        return new Leaf&lt;&gt;(a);</span>
     }
 
     static &lt;A&gt; BinaryTree&lt;A&gt; node(BinaryTree&lt;A&gt; left, BinaryTree&lt;A&gt; right) {
-<span class="fc" id="L16">        return new BinaryNode&lt;&gt;(left, right);</span>
-    }
-
-    static &lt;A, B&gt; BinaryTree&lt;B&gt; map(BinaryTree&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (base instanceof Leaf&lt;A&gt; baseLeaf) {</span>
-<span class="fc" id="L21">            return new Leaf&lt;&gt;(mapping.apply(baseLeaf.value()));</span>
-        } else {
-<span class="fc" id="L23">            BinaryNode&lt;A&gt; baseTree = (BinaryNode&lt;A&gt;) base;</span>
-<span class="fc" id="L24">            return new BinaryNode&lt;&gt;(map(baseTree.left(), mapping), map(baseTree.right(), mapping));</span>
-        }
+<span class="fc" id="L15">        return new BinaryNode&lt;&gt;(left, right);</span>
     }
 
 }

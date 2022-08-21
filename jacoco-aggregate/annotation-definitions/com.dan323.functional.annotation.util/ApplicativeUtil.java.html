@@ -8,19 +8,19 @@ public final class ApplicativeUtil {
 <span class="nc" id="L8">        throw new UnsupportedOperationException();</span>
     }
 
-    public static &lt;G, F, FA extends F, A&gt; FA pure(Class&lt;G&gt; gclass, Class&lt;F&gt; fClass, A a) {
-<span class="fc" id="L12">        return FunctionalUtils.&lt;G, F, FA, A&gt;applicativePure(gclass, fClass, a).orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+    public static &lt;G, F, FA extends F, A&gt; FA pure(G applicative, Class&lt;F&gt; fClass, A a) {
+<span class="fc" id="L12">        return FunctionalUtils.&lt;G, F, FA, A&gt;applicativePure(applicative, fClass, a).orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
-    public static &lt;G, F, FA extends F, FB extends F, FF extends F&gt; FB fapply(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, FA base, FF ff) {
-<span class="fc" id="L16">        return FunctionalUtils.&lt;G, F, FA, FB, FF&gt;applicativeFapply(gClass, fClass, base, ff)</span>
-<span class="fc" id="L17">                .or(() -&gt; FunctionalUtils.monadFapply(gClass, fClass, base, ff))</span>
+    public static &lt;G, F, FA extends F, FB extends F, FF extends F&gt; FB fapply(G applicative, Class&lt;F&gt; fClass, FA base, FF ff) {
+<span class="fc" id="L16">        return FunctionalUtils.&lt;G, F, FA, FB, FF&gt;applicativeFapply(applicative, fClass, base, ff)</span>
+<span class="fc" id="L17">                .or(() -&gt; FunctionalUtils.monadFapply(applicative, fClass, base, ff))</span>
 <span class="fc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
-    public static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; FC liftA2(Class&lt;G&gt; gClass, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; map, FA fa, FB fb) {
-<span class="fc" id="L22">        return FunctionalUtils.&lt;G, F, FA, FB, FC, A, B, C&gt;applicativeLiftA2(gClass, fClass, map, fa, fb)</span>
-<span class="fc" id="L23">                .or(() -&gt; FunctionalUtils.monadLiftA2(gClass, fClass, map, fa, fb))</span>
+    public static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; FC liftA2(G applicative, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; map, FA fa, FB fb) {
+<span class="fc" id="L22">        return FunctionalUtils.&lt;G, F, FA, FB, FC, A, B, C&gt;applicativeLiftA2(applicative, fClass, map, fa, fb)</span>
+<span class="fc" id="L23">                .or(() -&gt; FunctionalUtils.monadLiftA2(applicative, fClass, map, fa, fb))</span>
 <span class="fc" id="L24">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 

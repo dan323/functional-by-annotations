@@ -23,6 +23,7 @@ public class MonoidCompilerTest {
                 .run(System.in, System.out, System.err, flags);
         assertEquals(0, k);
     }
+
     @Test
     public void monoidNotPublicError() {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/monoid/NotPublicTypeMonoid")

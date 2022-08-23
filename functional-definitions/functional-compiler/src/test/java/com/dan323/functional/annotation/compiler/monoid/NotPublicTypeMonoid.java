@@ -1,10 +1,12 @@
 package com.dan323.functional.annotation.compiler.monoid;
 
+import com.dan323.functional.annotation.Monoid;
 import com.dan323.functional.annotation.algs.IMonoid;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Monoid
 class NotPublicTypeMonoid<A> implements IMonoid<List<A>> {
 
     public List<A> op(List<A> lst, List<A> lst2) {

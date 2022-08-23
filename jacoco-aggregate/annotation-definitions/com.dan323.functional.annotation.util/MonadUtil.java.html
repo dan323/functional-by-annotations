@@ -9,12 +9,12 @@ public final class MonadUtil {
     }
 
     public static &lt;G, F, FA extends F, FB extends F, A&gt; FB flatMap(G monad, Class&lt;F&gt; fClass, Function&lt;A, FB&gt; mapping, FA fa) {
-<span class="fc" id="L12">        return FunctionalUtils.monadFlatMap(monad, fClass, mapping, fa)</span>
+<span class="fc" id="L12">        return FunctionalUtil.monadFlatMap(monad, fClass, mapping, fa)</span>
 <span class="fc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;G, F, FFA extends F, FA extends F&gt; FA join(G monad, Class&lt;F&gt; fClass, FFA ffa) {
-<span class="fc" id="L17">        return FunctionalUtils.&lt;G, F, FFA, FA&gt;monadJoin(monad, fClass, ffa)</span>
+<span class="fc" id="L17">        return FunctionalUtil.&lt;G, F, FFA, FA&gt;monadJoin(monad, fClass, ffa)</span>
 <span class="fc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 }

@@ -3,7 +3,7 @@
 <span class="nc" id="L3">public final class MonoidUtil {</span>
 
     public static &lt;G, A&gt; A unit(G monoid) {
-<span class="fc" id="L6">        return (A)FunctionalUtils.monoidUnit(monoid)</span>
+<span class="fc" id="L6">        return (A) FunctionalUtil.monoidUnit(monoid)</span>
 <span class="fc" id="L7">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monoid is not correctly implemented.&quot;));</span>
     }
 

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FoldableCompiler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.internal</a> &gt; <span class="el_source">FoldableCompiler.java</span></div><h1>FoldableCompiler.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.internal;
+
+import com.dan323.functional.annotation.Foldable;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.funcs.IFoldable;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import javax.annotation.processing.Messager;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ExecutableType;
+import javax.lang.model.type.TypeVariable;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public final class FoldableCompiler implements Compiler {
+
+    private final Messager messager;
+    private final Types typeUtils;
+    private final Elements elementUtils;
+
+<span class="fc" id="L29">    FoldableCompiler(Messager messager, Types types, Elements elements) {</span>
+<span class="fc" id="L30">        this.messager = messager;</span>
+<span class="fc" id="L31">        this.typeUtils = types;</span>
+<span class="fc" id="L32">        this.elementUtils = elements;</span>
+<span class="fc" id="L33">    }</span>
+
+    @Override
+    public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
+<span class="fc" id="L37">        validateFoldable(element, iface);</span>
+<span class="fc" id="L38">    }</span>
+
+    private void validateFoldable(TypeElement element, DeclaredType iface) {
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (element.getAnnotation(Foldable.class) == null) {</span>
+<span class="nc" id="L42">            error(&quot;The foldable interface is not annotated as a foldable&quot;);</span>
+        }
+        // Verify that it is a public class
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="fc" id="L46">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+        }
+        // Obtain the IFunctor interface it is implementing, or fail if it does not
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IFoldable.class.getTypeName()))) {</span>
+<span class="nc" id="L50">            error(&quot;The element %s is not implementing the interface Foldable&quot;, element.getQualifiedName());</span>
+        }
+<span class="fc" id="L52">        boolean successFoldMap = false;</span>
+<span class="fc" id="L53">        boolean successFoldr = false;</span>
+<span class="fc" id="L54">        boolean success = false;</span>
+        // Look for the public method called map and verify its signature
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IFoldable.FOLD_MAP_NAME) &amp;&amp; checkIfFoldMap((ExecutableElement) elem, element, iface)) {</span>
+<span class="fc" id="L59">                    successFoldMap = true;</span>
+<span class="pc bpc" id="L60" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IFoldable.FOLDR_NAME) &amp;&amp; checkIfFoldr((ExecutableElement) elem, element, iface)) {</span>
+<span class="fc" id="L61">                    successFoldr = true;</span>
+                }
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                if (successFoldMap || successFoldr) {</span>
+<span class="fc" id="L64">                    success = true;</span>
+<span class="fc" id="L65">                    break;</span>
+                }
+            }
+<span class="fc" id="L68">        }</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (!success) {</span>
+<span class="nc" id="L70">            error(&quot;The public function foldr or foldMap was not found in %s&quot;, element.getQualifiedName());</span>
+        }
+<span class="fc" id="L72">    }</span>
+
+    private boolean checkIfFoldr(ExecutableElement method, TypeElement type, DeclaredType iFace) {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
+<span class="fc" id="L76">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L77">            var biFun = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(1));</span>
+<span class="fc" id="L78">            var foldableA = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
+<span class="pc bpc" id="L79" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof TypeVariable param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
+<span class="pc bpc" id="L80" title="4 of 8 branches missed.">                if (param1.toString().equals(biFun.toString()) &amp;&amp; param2.toString().equals(params.get(1).toString()) &amp;&amp; param3.toString().equals(foldableA.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
+<span class="fc" id="L81">                    return true;</span>
+                } else {
+<span class="nc" id="L83">                    warning(&quot;There is a foldr method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+                }
+            } else {
+<span class="nc" id="L86">                warning(&quot;There is a foldr method, but the signature is not parametrized&quot;);</span>
+            }
+        }
+<span class="nc" id="L89">        return false;</span>
+    }
+
+    private boolean checkIfFoldMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
+<span class="fc" id="L94">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L95">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
+<span class="fc" id="L96">            var foldable = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
+<span class="fc" id="L97">            var iMonoid = typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(1));</span>
+<span class="pc bpc" id="L98" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
+<span class="pc bpc" id="L99" title="4 of 8 branches missed.">                if (param1.toString().equals(iMonoid.toString()) &amp;&amp; param2.toString().equals(fun.toString()) &amp;&amp; param3.toString().equals(foldable.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
+<span class="fc" id="L100">                    return true;</span>
+                } else {
+<span class="nc" id="L102">                    warning(&quot;There is a foldMap method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+                }
+            } else {
+<span class="nc" id="L105">                warning(&quot;There is a foldMap method, but the signature is not parametrized&quot;);</span>
+            }
+        }
+<span class="nc" id="L108">        return false;</span>
+    }
+
+    private void error(String message, Object... args) {
+<span class="fc" id="L112">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L113">    }</span>
+
+    private void warning(String message, Object... args) {
+<span class="nc" id="L116">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
+<span class="nc" id="L117">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

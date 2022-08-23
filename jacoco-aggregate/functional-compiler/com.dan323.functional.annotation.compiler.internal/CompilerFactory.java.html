@@ -3,6 +3,7 @@
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.IFoldable;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.annotation.funcs.IMonad;
 
@@ -11,21 +12,23 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-<span class="fc" id="L14">public final class CompilerFactory {</span>
+<span class="fc" id="L15">public final class CompilerFactory {</span>
 
     public Compiler from(DeclaredType iface, Elements elements, Types types, Messager messager) {
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
-<span class="fc" id="L18">            return new FunctorCompiler(messager, types, elements);</span>
-<span class="fc bfc" id="L19" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
-<span class="fc" id="L20">            return new ApplicativeCompiler(messager, types, elements);</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
-<span class="fc" id="L22">            return new MonadCompiler(messager, types, elements);</span>
-<span class="fc bfc" id="L23" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
-<span class="fc" id="L24">            return new SemigroupCompiler(messager, elements);</span>
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
-<span class="fc" id="L26">            return new MonoidCompiler(messager, elements);</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
+<span class="fc" id="L19">            return new FunctorCompiler(messager, types, elements);</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
+<span class="fc" id="L21">            return new ApplicativeCompiler(messager, types, elements);</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
+<span class="fc" id="L23">            return new MonadCompiler(messager, types, elements);</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
+<span class="fc" id="L25">            return new SemigroupCompiler(messager, elements);</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
+<span class="fc" id="L27">            return new MonoidCompiler(messager, elements);</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))){</span>
+<span class="fc" id="L29">            return new FoldableCompiler(messager, types, elements);</span>
         }
-<span class="nc" id="L28">        throw new IllegalArgumentException(&quot;The interfaces does not represent an implemented functional&quot;);</span>
+<span class="nc" id="L31">        throw new IllegalArgumentException(&quot;The interfaces does not represent an implemented functional&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

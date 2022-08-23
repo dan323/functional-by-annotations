@@ -25,7 +25,7 @@ public class SemigroupCompilerTest {
     }
     @Test
     public void semigroupNotPublicError() {
-        List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/monoid/NotPublicTypeSemigroup")
+        List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/semigroup/NotPublicTypeSemigroup")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.0-SNAPSHOT.jar", "--add-modules", "functional.annotations"));

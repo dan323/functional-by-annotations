@@ -12,11 +12,11 @@ public class MonoidSum implements IMonoid<Integer> {
 
     public static final MonoidSum MONOID = new MonoidSum();
 
-    public static Integer op(Integer a, Integer b){
+    public Integer op(Integer a, Integer b){
         return a+b;
     }
 
-    public static Integer unit(){
+    public Integer unit(){
         return 0;
     }
 }

@@ -24,3 +24,5 @@
   - Added Monoid
 * 20/08/22
   - Methods allowed to not be static
+* 23/08/22
+  - Added Foldable functional

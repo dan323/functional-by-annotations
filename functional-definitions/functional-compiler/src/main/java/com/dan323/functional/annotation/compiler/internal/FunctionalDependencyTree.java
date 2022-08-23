@@ -4,6 +4,7 @@ import com.dan323.functional.annotation.Structure;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.IFoldable;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.annotation.funcs.IMonad;
 
@@ -30,10 +31,11 @@ class FunctionalDependencyTree {
         FunctionalDependencyTree functor = new FunctionalDependencyTree(IFunctor.class);
         FunctionalDependencyTree semigroup = new FunctionalDependencyTree(ISemigroup.class);
         FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);
+        FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);
         monad.addDependency(applicative);
         applicative.addDependency(functor);
         monoid.addDependency(semigroup);
-        return List.of(monad, monoid);
+        return List.of(monad, monoid, foldable);
     }
 
     public Class<? extends Structure> getNode() {

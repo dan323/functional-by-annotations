@@ -26,7 +26,7 @@ public final class FunctionalCompiler extends AbstractProcessor {
     private Types typeUtils;
     private CompilerFactory compilerFactory;
 
-    private static final Set<Class<? extends Annotation>> annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class);
+    private static final Set<Class<? extends Annotation>> annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class, Foldable.class);
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {

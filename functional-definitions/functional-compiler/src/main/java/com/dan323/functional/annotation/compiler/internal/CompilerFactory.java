@@ -3,6 +3,7 @@ package com.dan323.functional.annotation.compiler.internal;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.IFoldable;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.annotation.funcs.IMonad;
 
@@ -24,6 +25,8 @@ public final class CompilerFactory {
             return new SemigroupCompiler(messager, elements);
         } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {
             return new MonoidCompiler(messager, elements);
+        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))){
+            return new FoldableCompiler(messager, types, elements);
         }
         throw new IllegalArgumentException("The interfaces does not represent an implemented functional");
     }

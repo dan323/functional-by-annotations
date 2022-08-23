@@ -4,18 +4,21 @@ import com.dan323.functional.annotation.*;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.IFoldable;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.annotation.funcs.IMonad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
-public final class FunctionalUtils {
+public final class FunctionalUtil {
 
-    private FunctionalUtils() {
+    private FunctionalUtil() {
         throw new UnsupportedOperationException();
     }
 
@@ -33,6 +36,10 @@ public final class FunctionalUtils {
 
     private static <G> boolean isSemigroup(Class<G> gClassz) {
         return gClassz.getAnnotation(Semigroup.class) != null || gClassz.getAnnotation(Monoid.class) != null;
+    }
+
+    private static <G> boolean isFoldable(Class<G> gClass) {
+        return gClass.getAnnotation(Foldable.class) != null;
     }
 
     private static <G> boolean isMonoid(Class<G> gClassz) {
@@ -78,20 +85,76 @@ public final class FunctionalUtils {
         }
     }
 
+    // FOLDABLE
+    // Fold
+    static <G, FA extends F, F, A> Optional<A> foldableFold(G foldable, IMonoid<A> monoid, Class<F> fClass, FA base) {
+        if (isFoldable(foldable.getClass())) {
+            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_NAME, IMonoid.class, fClass)
+                    .<A>map(m -> invokeStaticMethod(foldable, m, monoid, base))
+                    .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)
+                            .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass))
+                            .map(m -> FoldableUtil.foldMap(foldable, monoid, fClass, Function.identity(), base)));
+        } else {
+            throw new IllegalArgumentException("The foldable is not correctly defined");
+        }
+    }
+
+    // FoldMap
+    static <G, FA extends F, F, A, M> Optional<M> foldableFoldMap(G foldable, IMonoid<M> monoid, Class<F> fClass, Function<A, M> function, FA base) {
+        if (isFoldable(foldable.getClass())) {
+            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)
+                    .<M>map(m -> invokeStaticMethod(foldable, m, monoid, function, base))
+                    .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass)
+                            .map(m -> FoldableUtil.foldr(foldable, fClass, (A x, M y) -> SemigroupUtil.op(monoid, function.apply(x), y), MonoidUtil.unit(monoid), base)));
+        } else {
+            throw new IllegalArgumentException("The foldable is not correctly defined");
+        }
+    }
+
+    // Foldr
+    static <G, M, B, F, FM extends F> Optional<B> foldableFoldr(G foldable, Class<F> fClass, BiFunction<M, B, B> function, B b, FM fm) {
+        if (isFoldable(foldable.getClass())) {
+            return getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass)
+                    .<B>map(m -> invokeStaticMethod(foldable, m, function, b, fm))
+                    .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)
+                            .map(m -> FoldableUtil.foldMap(foldable, new IMonoid<Function<B, B>>() {
+                                public Function<B, B> op(Function<B, B> f1, Function<B, B> f2) {
+                                    return f1.compose(f2);
+                                }
+
+                                public Function<B, B> unit() {
+                                    return Function.identity();
+                                }
+                            }, fClass, (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
+        } else {
+            throw new IllegalArgumentException("The foldable is not correctly defined");
+        }
+    }
+
     // SEMIGROUP
     // Operation
-    static <G, A> Optional<A> semigroupOp(G semigroup, Class<A> aClass, A a, A b) {
+    static <G, A> Optional<A> semigroupOp(G semigroup, A a, A b) {
         if (isSemigroup(semigroup.getClass())) {
-            return getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass)
+            return Stream.of(semigroup.getClass().getGenericInterfaces())
+                    .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
+                    .findFirst()
+                    .map(iface -> (Class<?>) ((ParameterizedType) iface).getActualTypeArguments()[0])
+                    .flatMap(aClass -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass))
+                    .or(() -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))
                     .map(m -> invokeStaticMethod(semigroup, m, a, b));
         } else {
             throw new IllegalArgumentException("The semigroup is not correctly defined");
         }
     }
 
-    static <G, A> Optional<A> monoidOp(G monoid, Class<A> aClass, A a, A b) {
+    static <G, A> Optional<A> monoidOp(G monoid, A a, A b) {
         if (isMonoid(monoid.getClass())) {
-            return getMethodIfExists(monoid.getClass(), IMonoid.OP_NAME, aClass, aClass)
+            return Stream.of(monoid.getClass().getGenericInterfaces())
+                    .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
+                    .findFirst()
+                    .map(iface -> (Class<?>) ((ParameterizedType) iface).getActualTypeArguments()[0])
+                    .flatMap(aClass -> getMethodIfExists(monoid.getClass(), IMonoid.OP_NAME, aClass, aClass))
+                    .or(() -> getMethodIfExists(monoid.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))
                     .map(m -> invokeStaticMethod(monoid, m, a, b));
         } else {
             throw new IllegalArgumentException("The monoid is not correctly defined");
@@ -134,7 +197,7 @@ public final class FunctionalUtils {
     static <G, F, FA extends F, FB extends F, A, B> Optional<FB> functorMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
         if (isFunctor(functor.getClass())) {
             return getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, fClass, Function.class)
-                    .map(m -> FunctionalUtils.invokeStaticMethod(functor, m, base, map));
+                    .map(m -> FunctionalUtil.invokeStaticMethod(functor, m, base, map));
         } else {
             throw new IllegalArgumentException("The class is not annotated");
         }

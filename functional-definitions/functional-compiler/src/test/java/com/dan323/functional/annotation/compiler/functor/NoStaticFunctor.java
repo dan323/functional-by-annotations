@@ -9,7 +9,7 @@ import java.util.function.Function;
 @Functor
 public class NoStaticFunctor implements IFunctor<List<?>> {
 
-    public <B,A> List<B> map(List<A> lst, Function<A, B> mapping) {
+    public <A,B> List<B> map(List<A> lst, Function<A, B> mapping) {
         return List.of();
     }
 

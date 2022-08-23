@@ -70,7 +70,7 @@ public class FunctorCompilerTest {
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
-        assertEquals(1, k);
+        assertEquals(0, k);
     }
 
     @Test

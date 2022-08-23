@@ -33,8 +33,8 @@ public final class MonoidCompiler implements Compiler {
 <span class="nc" id="L33">            error(&quot;The monoid interface is not annotated as a semigroup&quot;);</span>
         }
         // Verify that it is a public class
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="nc" id="L37">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="fc" id="L37">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
         }
         // Obtain the ISemigroup interface it is implementing, or fail if it does not
 <span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IMonoid.class.getTypeName()))) {</span>
@@ -43,7 +43,7 @@ public final class MonoidCompiler implements Compiler {
 <span class="fc" id="L43">        boolean success = false;</span>
 <span class="fc" id="L44">        boolean successSemigroup = false;</span>
 <span class="fc" id="L45">        boolean successUnity = false;</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
 <span class="pc bpc" id="L47" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
 <span class="pc bpc" id="L48" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) &amp;&amp; checkOp((ExecutableElement) elem, iface)) {</span>
 <span class="fc" id="L49">                    successSemigroup = true;</span>
@@ -56,8 +56,8 @@ public final class MonoidCompiler implements Compiler {
                 }
             }
 <span class="fc" id="L58">        }</span>
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!success) {</span>
-<span class="nc" id="L60">            error(&quot;The public function op or unit was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (!success) {</span>
+<span class="fc" id="L60">            error(&quot;The public function op or unit was not found in %s&quot;, element.getQualifiedName());</span>
         }
 <span class="fc" id="L62">    }</span>
 
@@ -94,8 +94,8 @@ public final class MonoidCompiler implements Compiler {
     }
 
     private void error(String message, Object... args) {
-<span class="nc" id="L97">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="nc" id="L98">    }</span>
+<span class="fc" id="L97">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L98">    }</span>
 
     private void warning(String message, Object... args) {
 <span class="nc" id="L101">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>

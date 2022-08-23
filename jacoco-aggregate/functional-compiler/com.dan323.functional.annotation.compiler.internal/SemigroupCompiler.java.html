@@ -31,8 +31,8 @@ public final class SemigroupCompiler implements Compiler {
 <span class="nc" id="L31">            error(&quot;The semigroup interface is not annotated as a semigroup&quot;);</span>
         }
         // Verify that it is a public class
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="nc" id="L35">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="fc" id="L35">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
         }
         // Obtain the ISemigroup interface it is implementing, or fail if it does not
 <span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
@@ -69,8 +69,8 @@ public final class SemigroupCompiler implements Compiler {
     }
 
     private void error(String message, Object... args) {
-<span class="nc" id="L72">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="nc" id="L73">    }</span>
+<span class="fc" id="L72">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L73">    }</span>
 
     private void warning(String message, Object... args) {
 <span class="nc" id="L76">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>

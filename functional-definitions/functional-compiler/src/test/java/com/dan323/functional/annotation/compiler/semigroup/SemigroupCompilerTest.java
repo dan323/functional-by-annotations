@@ -23,6 +23,7 @@ public class SemigroupCompilerTest {
                 .run(System.in, System.out, System.err, flags);
         assertEquals(0, k);
     }
+
     @Test
     public void semigroupNotPublicError() {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/semigroup/NotPublicTypeSemigroup")

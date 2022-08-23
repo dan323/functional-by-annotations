@@ -8,11 +8,11 @@ public final class SumMonoid implements IMonoid<Integer> {
 
     private SumMonoid(){}
 
-    public Integer op(Integer num1, Integer num2) {
+    public static Integer op(Integer num1, Integer num2) {
         return num1 + num2;
     }
 
-    public Integer unit(){
+    public static Integer unit(){
         return 0;
     }
 

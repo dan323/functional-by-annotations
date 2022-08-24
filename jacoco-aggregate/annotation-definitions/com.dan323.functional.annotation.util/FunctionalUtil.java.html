@@ -48,7 +48,7 @@ public final class FunctionalUtil {
 
     private static &lt;G&gt; boolean implementsStaticMethod(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
         try {
-<span class="fc" id="L51">            gClass.getDeclaredMethod(name, inputs);</span>
+<span class="fc" id="L51">            gClass.getMethod(name, inputs);</span>
 <span class="fc" id="L52">            return true;</span>
 <span class="fc" id="L53">        } catch (NoSuchMethodException e) {</span>
 <span class="fc" id="L54">            return false;</span>
@@ -57,7 +57,7 @@ public final class FunctionalUtil {
 
     private static &lt;G&gt; Method getMethod(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
         try {
-<span class="fc" id="L60">            return gClass.getDeclaredMethod(name, inputs);</span>
+<span class="fc" id="L60">            return gClass.getMethod(name, inputs);</span>
 <span class="nc" id="L61">        } catch (NoSuchMethodException e) {</span>
 <span class="nc" id="L62">            throw new IllegalArgumentException(e);</span>
         }

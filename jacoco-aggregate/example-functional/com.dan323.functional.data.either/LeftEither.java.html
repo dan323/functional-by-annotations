@@ -6,26 +6,30 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import java.util.function.Function;
 
 @Monad
-<span class="nc" id="L9">public final class LeftEither&lt;R&gt; implements IMonad&lt;Either&lt;?, R&gt;&gt; {</span>
+public final class LeftEither&lt;R&gt; implements IMonad&lt;Either&lt;?, R&gt;&gt; {
 
-    public static &lt;A, B, R&gt; Either&lt;B, R&gt; map(Either&lt;A, R&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L12">        return base.either(((Function&lt;B, Either&lt;B, R&gt;&gt;) Either::left).compose(mapping), Either::right);</span>
+    private LeftEither(){}
+    public static &lt;R&gt; LeftEither&lt;R&gt; getInstance(){
+<span class="fc" id="L13">        return new LeftEither&lt;&gt;();</span>
+    }
+    public &lt;A, B&gt; Either&lt;B, R&gt; map(Either&lt;A, R&gt; base, Function&lt;A, B&gt; mapping) {
+<span class="fc" id="L16">        return base.either(((Function&lt;B, Either&lt;B, R&gt;&gt;) Either::left).compose(mapping), Either::right);</span>
     }
 
-    public static &lt;B, R&gt; Either&lt;B, R&gt; pure(B r) {
-<span class="fc" id="L16">        return Either.left(r);</span>
+    public &lt;B&gt; Either&lt;B, R&gt; pure(B r) {
+<span class="fc" id="L20">        return Either.left(r);</span>
     }
 
-    public static &lt;A, B, R&gt; Either&lt;B, R&gt; flatMap(Function&lt;A, Either&lt;B, R&gt;&gt; f, Either&lt;A, R&gt; base) {
-<span class="fc" id="L20">        return base.either(f, Either::right);</span>
+    public &lt;A, B&gt; Either&lt;B, R&gt; flatMap(Function&lt;A, Either&lt;B, R&gt;&gt; f, Either&lt;A, R&gt; base) {
+<span class="fc" id="L24">        return base.either(f, Either::right);</span>
     }
 
-    public static &lt;A, B, R&gt; Either&lt;B, R&gt; fapply(Either&lt;Function&lt;A, B&gt;, R&gt; fEither, Either&lt;A, R&gt; base) {
-<span class="fc" id="L24">        return fEither.either(f -&gt; map(base, f), Either::right);</span>
+    public &lt;A, B&gt; Either&lt;B, R&gt; fapply(Either&lt;Function&lt;A, B&gt;, R&gt; fEither, Either&lt;A, R&gt; base) {
+<span class="fc" id="L28">        return fEither.either(f -&gt; map(base, f), Either::right);</span>
     }
 
-    public static &lt;A, R&gt; Either&lt;A, R&gt; join(Either&lt;Either&lt;A, R&gt;, R&gt; eitherEither) {
-<span class="fc" id="L28">        return eitherEither.either(Function.identity(), Either::right);</span>
+    public &lt;A&gt; Either&lt;A, R&gt; join(Either&lt;Either&lt;A, R&gt;, R&gt; eitherEither) {
+<span class="fc" id="L32">        return eitherEither.either(Function.identity(), Either::right);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

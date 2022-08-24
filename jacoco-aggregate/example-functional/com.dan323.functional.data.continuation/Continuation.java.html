@@ -25,25 +25,4 @@ public interface Continuation&lt;A, R&gt; extends Function&lt;Function&lt;A, R&g
 <span class="fc" id="L25">        return k -&gt; cc.apply(c1 -&gt; c1.apply(k));</span>
     }
 }
-
-/*
-public interface Continuation&lt;A,R&gt; extends Function&lt;Function&lt;A,R&gt;,R&gt;, Functor&lt;A,Continuation&lt;?,R&gt;&gt; {
-
-    @Override
-    default  &lt;S&gt; Continuation&lt;S, R&gt; pure(S r) {
-        return f -&gt; f.apply(r);
-    }
-
-    @Override
-    default  &lt;S&gt; Continuation&lt;S, R&gt; join(Monad&lt;Monad&lt;S, Continuation&lt;?, R&gt;&gt;, Continuation&lt;?, R&gt;&gt; monadMonad) {
-        return k -&gt; ((Continuation&lt;Continuation&lt;S,R&gt;,R&gt;)(Monad&lt;?,?&gt;)monadMonad).apply(f -&gt; f.apply(k));
-    }
-
-    @Override
-    default &lt;Q&gt; Continuation&lt;Q, R&gt; fapply(Applicative&lt;Function&lt;A, Q&gt;, Continuation&lt;?, R&gt;&gt; ff){
-        var fg = (Continuation&lt;Function&lt;A,Q&gt;,R&gt;) ff;
-        return u -&gt; fg.apply(q -&gt; apply(u.compose(q)));
-    }
-}
-*/
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

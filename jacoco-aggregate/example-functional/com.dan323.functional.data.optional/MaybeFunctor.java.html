@@ -12,10 +12,12 @@ public class MaybeFunctor implements IFunctor&lt;Maybe&lt;?&gt;&gt; {
 
     }
 
-<span class="fc" id="L15">    public static final MaybeFunctor MAYBE = new MaybeFunctor();</span>
+<span class="fc" id="L15">    public static MaybeFunctor MAYBE_FUNCTOR = new MaybeFunctor();</span>
+
+<span class="fc" id="L17">    public static final MaybeFunctor MAYBE = new MaybeFunctor();</span>
 
     public static &lt;A,R&gt; Maybe&lt;R&gt; map(Maybe&lt;A&gt; base, Function&lt;A, R&gt; f){
-<span class="fc" id="L18">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
+<span class="fc" id="L20">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
     }
 
 }

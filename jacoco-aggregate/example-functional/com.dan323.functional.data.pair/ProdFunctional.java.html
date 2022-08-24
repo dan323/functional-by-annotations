@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ProdFunctional.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.pair</a> &gt; <span class="el_source">ProdFunctional.java</span></div><h1>ProdFunctional.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.pair;
+
+import com.dan323.functional.annotation.funcs.Functional;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.stream.Stream;
+
+public abstract class ProdFunctional&lt;M,N&gt; implements Functional {
+    protected final Functional mFunctor;
+    protected final Functional nFunctor;
+    protected final Class&lt;M&gt; mClass;
+    protected final Class&lt;N&gt; nClass;
+
+<span class="fc" id="L16">    public ProdFunctional(Functional fm, Functional fn) {</span>
+<span class="fc" id="L17">        this.mFunctor = fm;</span>
+<span class="fc" id="L18">        this.nFunctor = fn;</span>
+<span class="fc" id="L19">        this.nClass = extractClass(fn);</span>
+<span class="fc" id="L20">        this.mClass = extractClass(fm);</span>
+<span class="fc" id="L21">    }</span>
+
+    private &lt;U&gt; Class&lt;U&gt; extractClass(Functional fu) {
+<span class="fc" id="L24">        return Stream.of(fu.getClass()</span>
+<span class="fc" id="L25">                        .getGenericInterfaces()).filter(this::isRightFunctional)</span>
+<span class="fc" id="L26">                .findFirst()</span>
+<span class="fc" id="L27">                .map(u -&gt; {</span>
+                    try {
+<span class="fc" id="L29">                        return (Class&lt;U&gt;) Class.forName(((ParameterizedType) ((ParameterizedType) u).getActualTypeArguments()[0]).getRawType().getTypeName());</span>
+<span class="nc" id="L30">                    } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L31">                        throw new RuntimeException(e);</span>
+                    }
+<span class="fc" id="L33">                }).orElseThrow();</span>
+    }
+
+    public abstract boolean isRightFunctional(Type type);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

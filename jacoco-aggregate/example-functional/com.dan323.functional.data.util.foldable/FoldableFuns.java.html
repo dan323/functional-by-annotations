@@ -11,30 +11,52 @@ import static com.dan323.functional.annotation.util.FoldableUtil.foldMap;
 
 public final class FoldableFuns {
 
-<span class="nc" id="L14">    private FoldableFuns(){</span>
+<span class="nc" id="L14">    private FoldableFuns() {</span>
 <span class="nc" id="L15">        throw new UnsupportedOperationException();</span>
     }
 
     /**
      * Test if the foldable is empty
      *
-     * @param foldable implementation of {@link com.dan323.functional.annotation.funcs.IFoldable}
-     * @param fClass class of the type constructor that was made a foldable by {@param foldable}
-     * @param felement element of type {@param fClass} appplied to some type {@code A}
-     * @return true iff {@param felement} has no elements to be folded
-     * @param &lt;FA&gt;
-     * @param &lt;F&gt;
+     * @param foldable implementation of {@link IFoldable&lt;F&gt;}
+     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
+     * @param felement element of type {@code fClass} appplied to some type {@code A}
+     * @param &lt;FA&gt;     Type of {@code felement}
+     * @param &lt;F&gt;      Type of {@code fClass}
+     * @return true iff {@code felement} has no elements to be folded
      */
-    public static &lt;FA extends F,F&gt; boolean isEmpty(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement){
+    public static &lt;FA extends F, F&gt; boolean isEmpty(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement) {
 <span class="nc" id="L29">        return foldMap(foldable, AndMonoid.AND_MONOID, fClass, x -&gt; Boolean.FALSE, felement);</span>
     }
 
-    public static &lt;FA extends F,F&gt; int length(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement){
-<span class="nc" id="L33">        return foldMap(foldable, SumMonoid.SUM_MONOID, fClass, x -&gt; 1, felement);</span>
+    /**
+     * Size of the foldable element
+     *
+     * @param foldable implementation of {@link IFoldable&lt;F&gt;}
+     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
+     * @param felement element of type {@code fClass} appplied to some type {@code A}
+     * @param &lt;FA&gt;     Type of {@code felement}
+     * @param &lt;F&gt;      Type of {@code fClass}
+     * @return number of elements in {@code felement}
+     */
+    public static &lt;FA extends F, F&gt; int length(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement) {
+<span class="nc" id="L43">        return foldMap(foldable, SumMonoid.SUM_MONOID, fClass, x -&gt; 1, felement);</span>
     }
 
-    public static &lt;G,FA extends F,F,A&gt; boolean contains(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, A elem, FA felement){
-<span class="nc" id="L37">        return foldMap(foldable, OrMonoid.OR_MONOID, fClass, x -&gt; Objects.equals(x,elem), felement);</span>
+    /**
+     * Test if the foldable element contains a specific element
+     *
+     * @param foldable implementation of {@link IFoldable&lt;F&gt;}
+     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
+     * @param felement element of type {@code fClass} appplied to some type {@code A}
+     * @param elem     elemnt to look for
+     * @param &lt;FA&gt;     Type of {@code felement}
+     * @param &lt;F&gt;      Type of {@code fClass}
+     * @param &lt;A&gt;      Type of {@code elem}
+     * @return true iff {@code elem} is in {@code felement}
+     */
+    public static &lt;FA extends F, F, A&gt; boolean contains(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, A elem, FA felement) {
+<span class="nc" id="L59">        return foldMap(foldable, OrMonoid.OR_MONOID, fClass, x -&gt; Objects.equals(x, elem), felement);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

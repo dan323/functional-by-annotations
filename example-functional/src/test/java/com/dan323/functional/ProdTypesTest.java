@@ -1,5 +1,8 @@
 package com.dan323.functional;
 
+import com.dan323.functional.annotation.util.FunctorUtil;
+import com.dan323.functional.data.either.Either;
+import com.dan323.functional.data.either.LeftEither;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.FiniteListFunctional;
 import com.dan323.functional.data.optional.Maybe;
@@ -23,11 +26,19 @@ public class ProdTypesTest {
     }
 
     @Test
-    public void prodFunctor() {
+    public void prodFunctorWithApplicative() {
         var pairFunctor = new ProdFunctor<>(FiniteListFunctional.getInstance(), MaybeApplicative.MAYBE);
         var pair = new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(1, 2, 3), Maybe.of(5));
         var sol = pairFunctor.map(pair, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(2, 4, 6), Maybe.of(10)), sol);
+    }
+
+    @Test
+    public void prodFunctorWithMonad() {
+        var pairFunctor = new ProdFunctor<>(FiniteListFunctional.getInstance(), LeftEither.<Integer>getInstance());
+        var pair = new PairTypeContructor<FiniteList<?>, Either<?, Integer>, Integer>(FiniteList.of(1, 2, 3), Either.left(8));
+        var sol = pairFunctor.map(pair, (Integer x) -> x * 2);
+        assertEquals(new PairTypeContructor<FiniteList<?>, Either<?, Integer>, Integer>(FiniteList.of(2, 4, 6), Either.left(16)), sol);
     }
 
     @Test
@@ -44,6 +55,14 @@ public class ProdTypesTest {
         var pairFunctor = new ProdApplicative<>(FiniteListFunctional.getInstance(), MaybeApplicative.MAYBE);
         var pair = new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(1, 2, 3), Maybe.of(5));
         var sol = pairFunctor.map(pair, (Integer x) -> x * 2);
+        assertEquals(new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(2, 4, 6), Maybe.of(10)), sol);
+    }
+
+    @Test
+    public void prodApplicativeAsFunctorRefl() {
+        var pairFunctor = new ProdApplicative<>(FiniteListFunctional.getInstance(), MaybeApplicative.MAYBE);
+        var pair = new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(1, 2, 3), Maybe.of(5));
+        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, pair, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(2, 4, 6), Maybe.of(10)), sol);
     }
 }

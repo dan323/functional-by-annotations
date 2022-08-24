@@ -18,7 +18,7 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryTree,0,11,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctional,6,42,0,0,2,12,0,3,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,PairTypeContructor,17,39,4,4,2,9,5,4,1,4
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,57,0,4,0,5,0,6,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,17,40,1,3,1,4,2,4,1,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,48,0,0,0,5,0,6,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,1,43,2,4,0,4,2,4,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Generating,5,34,2,2,0,8,2,4,0,4
@@ -38,7 +38,7 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Nothing,5,13,1,1,1,3,2,3,1,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,JOptionalFunctor,0,9,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Just,13,30,3,3,1,8,4,3,1,3
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeFunctor,0,21,0,0,0,3,0,3,0,3
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeApplicative,9,28,0,0,2,3,2,5,2,5
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Either,0,10,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftEither,3,34,0,0,1,5,1,6,1,6
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Left,14,30,4,4,2,8,5,3,1,3

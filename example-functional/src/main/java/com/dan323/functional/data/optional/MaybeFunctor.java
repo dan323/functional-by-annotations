@@ -12,6 +12,8 @@ public class MaybeFunctor implements IFunctor<Maybe<?>> {
 
     }
 
+    public static MaybeFunctor MAYBE_FUNCTOR = new MaybeFunctor();
+
     public static final MaybeFunctor MAYBE = new MaybeFunctor();
 
     public static <A,R> Maybe<R> map(Maybe<A> base, Function<A, R> f){

@@ -16,6 +16,7 @@ import javax.tools.Diagnostic;
 public final class SemigroupCompiler implements Compiler {
     private final Elements elementUtils;
     private final Messager messager;
+
     SemigroupCompiler(Messager messager, Elements elements) {
         this.messager = messager;
         this.elementUtils = elements;
@@ -39,12 +40,16 @@ public final class SemigroupCompiler implements Compiler {
             error("The element %s is not implementing the interface Semigroup", element.getQualifiedName());
         }
         boolean success = false;
-        // Look for the public methods called pure and fapply and verify its signature
+        // Look for the public method called op and verify its signature
         for (var elem : element.getEnclosedElements()) {
             if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
                 if (elem.getSimpleName().toString().equals(ISemigroup.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
                     success = true;
+                } else {
+                    warning(elem.getSimpleName().toString() + " is not an op method.");
                 }
+            } else {
+                warning(elem.getSimpleName().toString() + " is not an op method.");
             }
         }
         if (!success) {
@@ -55,14 +60,10 @@ public final class SemigroupCompiler implements Compiler {
     private boolean checkOp(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = iFace.getTypeArguments();
-            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
-                if (param1.toString().equals(params.get(0).toString()) && param2.toString().equals(params.get(0).toString()) && returnType.toString().equals(params.get(0).toString())) {
-                    return true;
-                } else {
-                    warning("There is a op method, but the input types and the return type are not as expected");
-                }
+            if (method.getParameters().get(0).asType().toString().equals(params.get(0).toString()) && method.getParameters().get(1).asType().toString().equals(params.get(0).toString()) && method.getReturnType().toString().equals(params.get(0).toString())) {
+                return true;
             } else {
-                warning("There is a op method, but the signature is not parametrized");
+                warning("There is a op method, but the input types and the return type are not as expected");
             }
         }
         return false;

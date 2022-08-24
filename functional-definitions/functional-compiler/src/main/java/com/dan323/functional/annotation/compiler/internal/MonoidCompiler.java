@@ -64,14 +64,10 @@ public final class MonoidCompiler implements Compiler {
     private boolean checkOp(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().size() == 2) {
             var params = iFace.getTypeArguments();
-            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 && method.getParameters().get(1).asType() instanceof DeclaredType param2 && method.getReturnType() instanceof DeclaredType returnType) {
-                if (param1.toString().equals(params.get(0).toString()) && param2.toString().equals(params.get(0).toString()) && returnType.toString().equals(params.get(0).toString())) {
-                    return true;
-                } else {
-                    warning("There is a op method, but the input types and the return type are not as expected");
-                }
+            if (method.getParameters().get(0).asType().toString().equals(params.get(0).toString()) && method.getParameters().get(1).asType().toString().equals(params.get(0).toString()) && method.getReturnType().toString().equals(params.get(0).toString())) {
+                return true;
             } else {
-                warning("There is a op method, but the signature is not parametrized");
+                warning("There is a op method, but the input types and the return type are not as expected");
             }
         }
         return false;
@@ -80,14 +76,10 @@ public final class MonoidCompiler implements Compiler {
     private boolean checkUnit(ExecutableElement method, DeclaredType iFace) {
         if (method.getParameters().isEmpty()) {
             var params = iFace.getTypeArguments();
-            if (method.getReturnType() instanceof DeclaredType returnType) {
-                if (returnType.toString().equals(params.get(0).toString())) {
-                    return true;
-                } else {
-                    warning("There is a unit method, but the return type are not as expected");
-                }
+            if (method.getReturnType().toString().equals(params.get(0).toString())) {
+                return true;
             } else {
-                warning("There is a unit method, but the signature is not parametrized");
+                warning("There is a unit method, but the return type are not as expected");
             }
         }
         return false;

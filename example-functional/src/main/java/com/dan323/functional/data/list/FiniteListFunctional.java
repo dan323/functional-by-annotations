@@ -15,6 +15,15 @@ import static com.dan323.functional.data.list.ListUtils.concat;
 @Monoid
 public final class FiniteListFunctional<A> implements IMonad<FiniteList<?>>, IMonoid<FiniteList<A>> {
 
+    private FiniteListFunctional(){
+    }
+
+    private static final FiniteListFunctional<?> FINITE_LIST_FUNCTIONAL = new FiniteListFunctional<>();
+
+    public static <A> FiniteListFunctional<A> getInstance(){
+        return (FiniteListFunctional<A>) FINITE_LIST_FUNCTIONAL;
+    }
+
     public static <A,B> FiniteList<B> map(FiniteList<A> finiteList, Function<A,B> mapping){
         return finiteList.head().maybe(h -> FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());
     }

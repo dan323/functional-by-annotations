@@ -67,7 +67,7 @@ public final class ApplicativeCompiler implements Compiler {
             }
         }
         if (!success) {
-            error("The public function pure or fapply was not found in %s", element.getQualifiedName());
+            error("The public function pure and, fapply of liftA2 was not found in %s", element.getQualifiedName());
         }
     }
 

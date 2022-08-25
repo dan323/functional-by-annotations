@@ -41,19 +41,26 @@ public final class SemigroupCompiler implements Compiler {
         }
         boolean success = false;
         // Look for the public method called op and verify its signature
-        for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(ISemigroup.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
-                    success = true;
+        do {
+            for (var elem : element.getEnclosedElements()) {
+                if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+                    if (elem.getSimpleName().toString().equals(ISemigroup.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
+                        success = true;
+                    } else {
+                        warning(elem.getSimpleName().toString() + " is not an op method.");
+                    }
                 } else {
                     warning(elem.getSimpleName().toString() + " is not an op method.");
                 }
-            } else {
-                warning(elem.getSimpleName().toString() + " is not an op method.");
             }
-        }
+            if (element.getSuperclass().toString().equals("none")) {
+                break;
+            } else {
+                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
+            }
+        } while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function op was not found in %s", element.getQualifiedName());
+            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

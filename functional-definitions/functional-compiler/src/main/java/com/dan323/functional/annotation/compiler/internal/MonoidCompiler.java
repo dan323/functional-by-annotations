@@ -43,21 +43,28 @@ public final class MonoidCompiler implements Compiler {
         boolean success = false;
         boolean successSemigroup = false;
         boolean successUnity = false;
-        for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
-                    successSemigroup = true;
-                } else if (elem.getSimpleName().toString().equals(IMonoid.UNIT_NAME) && checkUnit((ExecutableElement) elem, iface)) {
-                    successUnity = true;
-                }
-                if (successSemigroup && successUnity) {
-                    success = true;
-                    break;
+        do {
+            for (var elem : element.getEnclosedElements()) {
+                if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+                    if (elem.getSimpleName().toString().equals(IMonoid.OP_NAME) && checkOp((ExecutableElement) elem, iface)) {
+                        successSemigroup = true;
+                    } else if (elem.getSimpleName().toString().equals(IMonoid.UNIT_NAME) && checkUnit((ExecutableElement) elem, iface)) {
+                        successUnity = true;
+                    }
+                    if (successSemigroup && successUnity) {
+                        success = true;
+                        break;
+                    }
                 }
             }
-        }
+            if (element.getSuperclass().toString().equals("none")) {
+                break;
+            } else {
+                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
+            }
+        } while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function op or unit was not found in %s", element.getQualifiedName());
+            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

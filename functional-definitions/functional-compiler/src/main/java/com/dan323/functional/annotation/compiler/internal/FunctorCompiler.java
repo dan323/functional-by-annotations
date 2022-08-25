@@ -39,29 +39,36 @@ public final class FunctorCompiler implements Compiler {
     }
 
     private void validateFunctor(TypeElement element, DeclaredType iface) {
-        if (element.getAnnotation(Functor.class) == null){
+        if (element.getAnnotation(Functor.class) == null) {
             error("The functor interface is not annotated as a functor");
         }
         // Verify that it is a public class
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
-            error("The annotated type %s is not public", element.getQualifiedName());
+            error("The annotated type %s is not public", ((TypeElement) element).getQualifiedName());
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
         if (!iface.asElement().equals(elementUtils.getTypeElement(IFunctor.class.getTypeName()))) {
-            error("The element %s is not implementing the interface Functor", element.getQualifiedName());
+            error("The element %s is not implementing the interface Functor", ((TypeElement) element).getQualifiedName());
         }
         boolean success = false;
         // Look for the public method called map and verify its signature
-        for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {
-                if (checkIfMap((ExecutableElement) elem, element, iface)) {
-                    success = true;
-                    break;
+        do {
+            for (var elem : element.getEnclosedElements()) {
+                if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC) && elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {
+                    if (checkIfMap((ExecutableElement) elem, ((TypeElement) element), iface)) {
+                        success = true;
+                        break;
+                    }
                 }
             }
-        }
+            if (element.getSuperclass().toString().equals("none")) {
+                break;
+            } else {
+                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
+            }
+        } while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function map was not found in %s", element.getQualifiedName());
+            error("The public function map was not found in %s", ((TypeElement) element).getQualifiedName());
         }
     }
 

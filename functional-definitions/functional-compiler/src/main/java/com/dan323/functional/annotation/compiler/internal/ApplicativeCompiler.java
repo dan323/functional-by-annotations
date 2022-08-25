@@ -51,23 +51,31 @@ public final class ApplicativeCompiler implements Compiler {
         boolean successPure = false;
         boolean success = false;
         // Look for the public static called pure and fapply and verify its signature
-        for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) && checkIfPure((ExecutableElement) elem, iface)) {
-                    successPure = true;
-                } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY_NAME) && checkIfFapply((ExecutableElement) elem, iface)) {
-                    successFapply = true;
-                } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2_NAME) && checkIfLiftA2((ExecutableElement) elem, iface)) {
-                    successLiftA2 = true;
-                }
-                if ((successLiftA2 || successFapply) && successPure) {
-                    success = true;
-                    break;
+        do {
+            for (var elem : element.getEnclosedElements()) {
+                if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+                    if (elem.getSimpleName().toString().equals(IApplicative.PURE_NAME) && checkIfPure((ExecutableElement) elem, iface)) {
+                        successPure = true;
+                    } else if (elem.getSimpleName().toString().equals(IApplicative.FAPPLY_NAME) && checkIfFapply((ExecutableElement) elem, iface)) {
+                        successFapply = true;
+                    } else if (elem.getSimpleName().toString().equals(IApplicative.LIFT_A2_NAME) && checkIfLiftA2((ExecutableElement) elem, iface)) {
+                        successLiftA2 = true;
+                    }
+                    if ((successLiftA2 || successFapply) && successPure) {
+                        success = true;
+                        break;
+                    }
                 }
             }
+            if (element.getSuperclass().toString().equals("none")) {
+                break;
+            } else {
+                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
+            }
         }
+        while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function pure and, fapply of liftA2 was not found in %s", element.getQualifiedName());
+            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

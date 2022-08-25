@@ -3,7 +3,6 @@ package com.dan323.functional.annotation.compiler.internal;
 import com.dan323.functional.annotation.Foldable;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.funcs.IFoldable;
-import com.dan323.functional.annotation.funcs.IFunctor;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
@@ -53,21 +52,28 @@ public final class FoldableCompiler implements Compiler {
         boolean successFoldr = false;
         boolean success = false;
         // Look for the public method called map and verify its signature
-        for (var elem : element.getEnclosedElements()) {
-            if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
-                if (elem.getSimpleName().toString().equals(IFoldable.FOLD_MAP_NAME) && checkIfFoldMap((ExecutableElement) elem, element, iface)) {
-                    successFoldMap = true;
-                } else if (elem.getSimpleName().toString().equals(IFoldable.FOLDR_NAME) && checkIfFoldr((ExecutableElement) elem, element, iface)) {
-                    successFoldr = true;
-                }
-                if (successFoldMap || successFoldr) {
-                    success = true;
-                    break;
+        do {
+            for (var elem : element.getEnclosedElements()) {
+                if (elem.getKind().equals(ElementKind.METHOD) && elem.getModifiers().contains(Modifier.PUBLIC)) {
+                    if (elem.getSimpleName().toString().equals(IFoldable.FOLD_MAP_NAME) && checkIfFoldMap((ExecutableElement) elem, element, iface)) {
+                        successFoldMap = true;
+                    } else if (elem.getSimpleName().toString().equals(IFoldable.FOLDR_NAME) && checkIfFoldr((ExecutableElement) elem, element, iface)) {
+                        successFoldr = true;
+                    }
+                    if (successFoldMap || successFoldr) {
+                        success = true;
+                        break;
+                    }
                 }
             }
-        }
+            if (element.getSuperclass().toString().equals("none")) {
+                break;
+            } else {
+                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();
+            }
+        } while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function foldr or foldMap was not found in %s", element.getQualifiedName());
+            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
         }
     }
 

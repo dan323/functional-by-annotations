@@ -36,7 +36,7 @@ public final class MonadCompiler implements Compiler {
 <span class="fc" id="L36">    }</span>
 
     private void validateMonad(TypeElement element, DeclaredType iface) {
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (element.getAnnotation(Monad.class) == null){</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (element.getAnnotation(Monad.class) == null) {</span>
 <span class="nc" id="L40">            error(&quot;The monad interface is not annotated as a monad&quot;);</span>
         }
         // Verify that it is a public class
@@ -56,163 +56,171 @@ public final class MonadCompiler implements Compiler {
 <span class="fc" id="L56">        boolean successApplicative = false;</span>
 <span class="fc" id="L57">        boolean success = false;</span>
         // Look for the public methods called pure and fapply and verify its signature
-<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
-<span class="pc bpc" id="L60" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="pc bpc" id="L61" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP_NAME) &amp;&amp; checkIfFlatmap((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L62">                    successFlatmap = true;</span>
-<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.JOIN_NAME) &amp;&amp; checkIfJoin((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L64">                    successJoin = true;</span>
-<span class="pc bpc" id="L65" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.PURE_NAME) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L66">                    successPure = true;</span>
-<span class="pc bpc" id="L67" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.MAP_NAME) &amp;&amp; checkIfMap((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L68">                    successMap = true;</span>
-<span class="pc bpc" id="L69" title="1 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.FAPPLY_NAME) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L70">                    successFapply = true;</span>
-<span class="pc bpc" id="L71" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IMonad.LIFT_A2_NAME) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
-<span class="fc" id="L72">                    successLiftA2 = true;</span>
+        do {
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            for (var elem : element.getEnclosedElements()) {</span>
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">                if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="pc bpc" id="L62" title="1 of 4 branches missed.">                    if (elem.getSimpleName().toString().equals(IMonad.FLAT_MAP_NAME) &amp;&amp; checkIfFlatmap((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L63">                        successFlatmap = true;</span>
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IMonad.JOIN_NAME) &amp;&amp; checkIfJoin((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L65">                        successJoin = true;</span>
+<span class="pc bpc" id="L66" title="1 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IMonad.PURE_NAME) &amp;&amp; checkIfPure((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L67">                        successPure = true;</span>
+<span class="pc bpc" id="L68" title="1 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IMonad.MAP_NAME) &amp;&amp; checkIfMap((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L69">                        successMap = true;</span>
+<span class="pc bpc" id="L70" title="1 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IMonad.FAPPLY_NAME) &amp;&amp; checkIfFapply((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L71">                        successFapply = true;</span>
+<span class="pc bpc" id="L72" title="2 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IMonad.LIFT_A2_NAME) &amp;&amp; checkIfLiftA2((ExecutableElement) elem, iface)) {</span>
+<span class="fc" id="L73">                        successLiftA2 = true;</span>
+                    }
+<span class="fc bfc" id="L75" title="All 4 branches covered.">                    if (successFapply || successLiftA2) {</span>
+<span class="fc" id="L76">                        successApplicative = true;</span>
+                    }
+<span class="pc bpc" id="L78" title="1 of 10 branches missed.">                    if (((successJoin &amp;&amp; (successMap || successApplicative)) || successFlatmap) &amp;&amp; successPure) {</span>
+<span class="fc" id="L79">                        success = true;</span>
+<span class="fc" id="L80">                        break;</span>
+                    }
                 }
-<span class="fc bfc" id="L74" title="All 4 branches covered.">                if (successFapply || successLiftA2){</span>
-<span class="fc" id="L75">                    successApplicative = true;</span>
-                }
-<span class="pc bpc" id="L77" title="1 of 10 branches missed.">                if (((successJoin &amp;&amp; (successMap || successApplicative)) || successFlatmap) &amp;&amp; successPure) {</span>
-<span class="fc" id="L78">                    success = true;</span>
-<span class="fc" id="L79">                    break;</span>
-                }
+<span class="fc" id="L83">            }</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (element.getSuperclass().toString().equals(&quot;none&quot;)) {</span>
+<span class="nc" id="L85">                break;</span>
+            } else {
+<span class="fc" id="L87">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
             }
-<span class="fc" id="L82">        }</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (!success) {</span>
-<span class="nc" id="L84">            error(&quot;The public functions required to be a monad were not found in %s&quot;, element.getQualifiedName());</span>
+<span class="pc bpc" id="L89" title="3 of 4 branches missed.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (!success) {</span>
+<span class="nc" id="L91">            error(&quot;The public functions required to be a monad were not found in %s&quot;, element.getQualifiedName());</span>
         }
-<span class="fc" id="L86">    }</span>
+
+<span class="fc" id="L94">    }</span>
 
     private boolean checkIfLiftA2(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
-<span class="fc" id="L90">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L91">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(2));</span>
-<span class="fc" id="L92">            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="fc" id="L93">            var input3 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
-<span class="fc" id="L94">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(2), IMonad.class);</span>
-<span class="pc bpc" id="L95" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L96" title="3 of 6 branches missed.">                if (param1.toString().equals(input1.toString()) &amp;&amp; param2.toString().equals(input2.toString()) &amp;&amp; param3.toString().equals(input3.toString())) {</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L98">                        return true;</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
+<span class="fc" id="L98">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L99">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(2));</span>
+<span class="fc" id="L100">            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="fc" id="L101">            var input3 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
+<span class="fc" id="L102">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(2), IMonad.class);</span>
+<span class="pc bpc" id="L103" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L104" title="3 of 6 branches missed.">                if (param1.toString().equals(input1.toString()) &amp;&amp; param2.toString().equals(input2.toString()) &amp;&amp; param3.toString().equals(input3.toString())) {</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">                    if (returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L106">                        return true;</span>
                     } else {
-<span class="nc" id="L100">                        warning(&quot;There is a liftA2 method, but with the wrong return type&quot;);</span>
+<span class="nc" id="L108">                        warning(&quot;There is a liftA2 method, but with the wrong return type&quot;);</span>
                     }
                 } else {
-<span class="nc" id="L103">                    warning(&quot;There is a liftA2 method, but with the wrong input types&quot;);</span>
+<span class="nc" id="L111">                    warning(&quot;There is a liftA2 method, but with the wrong input types&quot;);</span>
                 }
             } else {
-<span class="nc" id="L106">                warning(&quot;There is a liftA2 method, but with the signature is not parametrized&quot;);</span>
+<span class="nc" id="L114">                warning(&quot;There is a liftA2 method, but with the signature is not parametrized&quot;);</span>
 
             }
         }
-<span class="nc" id="L110">        return false;</span>
+<span class="nc" id="L118">        return false;</span>
     }
 
     private boolean checkIfFapply(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
-<span class="fc" id="L115">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L116">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="fc" id="L117">            var func = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)), IMonad.class);</span>
-<span class="fc" id="L118">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
-<span class="pc bpc" id="L119" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L120" title="3 of 6 branches missed.">                if (param1.toString().equals(func.toString()) &amp;&amp; param2.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L121">                    return true;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
+<span class="fc" id="L123">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L124">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="fc" id="L125">            var func = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)), IMonad.class);</span>
+<span class="fc" id="L126">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
+<span class="pc bpc" id="L127" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L128" title="3 of 6 branches missed.">                if (param1.toString().equals(func.toString()) &amp;&amp; param2.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L129">                    return true;</span>
                 } else {
-<span class="nc" id="L123">                    warning(&quot;There is a fapply method, but the input types and the return type are not as expected&quot;);</span>
+<span class="nc" id="L131">                    warning(&quot;There is a fapply method, but the input types and the return type are not as expected&quot;);</span>
                 }
             } else {
-<span class="nc" id="L126">                warning(&quot;There is a fapply method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L134">                warning(&quot;There is a fapply method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L129">        return false;</span>
+<span class="nc" id="L137">        return false;</span>
     }
 
     private boolean checkIfMap(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
-<span class="fc" id="L134">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L135">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="fc" id="L136">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
-<span class="pc bpc" id="L137" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L138" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L139">                    var funcElem = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">                    if (param2.toString().equals(funcElem.toString())) {</span>
-<span class="fc" id="L141">                        return true;</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
+<span class="fc" id="L142">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L143">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="fc" id="L144">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
+<span class="pc bpc" id="L145" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L146" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L147">                    var funcElem = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">                    if (param2.toString().equals(funcElem.toString())) {</span>
+<span class="fc" id="L149">                        return true;</span>
                     } else {
-<span class="nc" id="L143">                        warning(&quot;There is a map method, but for type is not a Function or the type arguments are not matching the rest of the signature&quot;);</span>
+<span class="nc" id="L151">                        warning(&quot;There is a map method, but for type is not a Function or the type arguments are not matching the rest of the signature&quot;);</span>
                     }
-<span class="nc" id="L145">                } else {</span>
-<span class="nc" id="L146">                    warning(&quot;There is a map method, but the first input type and the return type are not the correct signature.&quot;);</span>
+<span class="nc" id="L153">                } else {</span>
+<span class="nc" id="L154">                    warning(&quot;There is a map method, but the first input type and the return type are not the correct signature.&quot;);</span>
                 }
             } else {
-<span class="nc" id="L149">                warning(&quot;There is a map method, but the signature is not parametrized.&quot;);</span>
+<span class="nc" id="L157">                warning(&quot;There is a map method, but the signature is not parametrized.&quot;);</span>
             }
         }
-<span class="nc" id="L152">        return false;</span>
+<span class="nc" id="L160">        return false;</span>
     }
 
     private boolean checkIfJoin(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (method.getParameters().size() == 1) {</span>
-<span class="fc" id="L157">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L158">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class), IMonad.class);</span>
-<span class="fc" id="L159">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="pc bpc" id="L160" title="2 of 4 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L161" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L162">                    return true;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (method.getParameters().size() == 1) {</span>
+<span class="fc" id="L165">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L166">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class), IMonad.class);</span>
+<span class="fc" id="L167">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="pc bpc" id="L168" title="2 of 4 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L170">                    return true;</span>
                 } else {
-<span class="nc" id="L164">                    warning(&quot;There is a join method, but the signature does not match.&quot;);</span>
+<span class="nc" id="L172">                    warning(&quot;There is a join method, but the signature does not match.&quot;);</span>
                 }
             } else {
-<span class="nc" id="L167">                warning(&quot;There is a join method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L175">                warning(&quot;There is a join method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L170">        return false;</span>
+<span class="nc" id="L178">        return false;</span>
     }
 
     private boolean checkIfFlatmap(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
-<span class="fc" id="L175">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L176">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
-<span class="fc" id="L177">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), returnTyp);</span>
-<span class="fc" id="L178">            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="pc bpc" id="L179" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L180" title="3 of 6 branches missed.">                if (param1.toString().equals(input1.toString()) &amp;&amp; param2.toString().equals(input2.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L181">                    return true;</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
+<span class="fc" id="L183">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L184">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IMonad.class);</span>
+<span class="fc" id="L185">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), returnTyp);</span>
+<span class="fc" id="L186">            var input2 = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="pc bpc" id="L187" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L188" title="3 of 6 branches missed.">                if (param1.toString().equals(input1.toString()) &amp;&amp; param2.toString().equals(input2.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L189">                    return true;</span>
                 } else {
-<span class="nc" id="L183">                    warning(&quot;There is a flatMap method, but the signature does not match.&quot;);</span>
+<span class="nc" id="L191">                    warning(&quot;There is a flatMap method, but the signature does not match.&quot;);</span>
                 }
             } else {
-<span class="nc" id="L186">                warning(&quot;There is a flatMap method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L194">                warning(&quot;There is a flatMap method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L189">        return false;</span>
+<span class="nc" id="L197">        return false;</span>
     }
 
     private boolean checkIfPure(ExecutableElement method, DeclaredType iFace) {
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (method.getParameters().size() == 1) {</span>
-<span class="fc" id="L194">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L195">            var input = params.get(0);</span>
-<span class="fc" id="L196">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
-<span class="pc bpc" id="L197" title="2 of 4 branches missed.">            if (method.getParameters().get(0).asType() instanceof TypeVariable param1 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L198" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L199">                    return true;</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (method.getParameters().size() == 1) {</span>
+<span class="fc" id="L202">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L203">            var input = params.get(0);</span>
+<span class="fc" id="L204">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IMonad.class);</span>
+<span class="pc bpc" id="L205" title="2 of 4 branches missed.">            if (method.getParameters().get(0).asType() instanceof TypeVariable param1 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L206" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L207">                    return true;</span>
                 } else {
-<span class="nc" id="L201">                    warning(&quot;There is a pure method, but the input type and the return type should be %s %s&quot;, input.toString(), returnType.toString());</span>
+<span class="nc" id="L209">                    warning(&quot;There is a pure method, but the input type and the return type should be %s %s&quot;, input.toString(), returnType.toString());</span>
                 }
             } else {
-<span class="nc" id="L204">                warning(&quot;There is a pure method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L212">                warning(&quot;There is a pure method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L207">        return false;</span>
+<span class="nc" id="L215">        return false;</span>
     }
 
     private void error(String message, Object... args) {
-<span class="nc" id="L211">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="nc" id="L212">    }</span>
+<span class="nc" id="L219">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="nc" id="L220">    }</span>
 
     private void warning(String message, Object... args) {
-<span class="nc" id="L215">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
-<span class="nc" id="L216">    }</span>
+<span class="nc" id="L223">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
+<span class="nc" id="L224">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

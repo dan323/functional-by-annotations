@@ -3,7 +3,6 @@
 import com.dan323.functional.annotation.Foldable;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.funcs.IFoldable;
-import com.dan323.functional.annotation.funcs.IFunctor;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
@@ -26,94 +25,101 @@ public final class FoldableCompiler implements Compiler {
     private final Types typeUtils;
     private final Elements elementUtils;
 
-<span class="fc" id="L29">    FoldableCompiler(Messager messager, Types types, Elements elements) {</span>
-<span class="fc" id="L30">        this.messager = messager;</span>
-<span class="fc" id="L31">        this.typeUtils = types;</span>
-<span class="fc" id="L32">        this.elementUtils = elements;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L28">    FoldableCompiler(Messager messager, Types types, Elements elements) {</span>
+<span class="fc" id="L29">        this.messager = messager;</span>
+<span class="fc" id="L30">        this.typeUtils = types;</span>
+<span class="fc" id="L31">        this.elementUtils = elements;</span>
+<span class="fc" id="L32">    }</span>
 
     @Override
     public void process(RoundEnvironment roundEnvironment, TypeElement element, DeclaredType iface) {
-<span class="fc" id="L37">        validateFoldable(element, iface);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L36">        validateFoldable(element, iface);</span>
+<span class="fc" id="L37">    }</span>
 
     private void validateFoldable(TypeElement element, DeclaredType iface) {
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (element.getAnnotation(Foldable.class) == null) {</span>
-<span class="nc" id="L42">            error(&quot;The foldable interface is not annotated as a foldable&quot;);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (element.getAnnotation(Foldable.class) == null) {</span>
+<span class="nc" id="L41">            error(&quot;The foldable interface is not annotated as a foldable&quot;);</span>
         }
         // Verify that it is a public class
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="fc" id="L46">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="fc" id="L45">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IFoldable.class.getTypeName()))) {</span>
-<span class="nc" id="L50">            error(&quot;The element %s is not implementing the interface Foldable&quot;, element.getQualifiedName());</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IFoldable.class.getTypeName()))) {</span>
+<span class="nc" id="L49">            error(&quot;The element %s is not implementing the interface Foldable&quot;, element.getQualifiedName());</span>
         }
-<span class="fc" id="L52">        boolean successFoldMap = false;</span>
-<span class="fc" id="L53">        boolean successFoldr = false;</span>
-<span class="fc" id="L54">        boolean success = false;</span>
+<span class="fc" id="L51">        boolean successFoldMap = false;</span>
+<span class="fc" id="L52">        boolean successFoldr = false;</span>
+<span class="fc" id="L53">        boolean success = false;</span>
         // Look for the public method called map and verify its signature
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        for (var elem : element.getEnclosedElements()) {</span>
-<span class="pc bpc" id="L57" title="1 of 4 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="pc bpc" id="L58" title="1 of 4 branches missed.">                if (elem.getSimpleName().toString().equals(IFoldable.FOLD_MAP_NAME) &amp;&amp; checkIfFoldMap((ExecutableElement) elem, element, iface)) {</span>
-<span class="fc" id="L59">                    successFoldMap = true;</span>
-<span class="pc bpc" id="L60" title="2 of 4 branches missed.">                } else if (elem.getSimpleName().toString().equals(IFoldable.FOLDR_NAME) &amp;&amp; checkIfFoldr((ExecutableElement) elem, element, iface)) {</span>
-<span class="fc" id="L61">                    successFoldr = true;</span>
+        do {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            for (var elem : element.getEnclosedElements()) {</span>
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">                if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">                    if (elem.getSimpleName().toString().equals(IFoldable.FOLD_MAP_NAME) &amp;&amp; checkIfFoldMap((ExecutableElement) elem, element, iface)) {</span>
+<span class="fc" id="L59">                        successFoldMap = true;</span>
+<span class="pc bpc" id="L60" title="2 of 4 branches missed.">                    } else if (elem.getSimpleName().toString().equals(IFoldable.FOLDR_NAME) &amp;&amp; checkIfFoldr((ExecutableElement) elem, element, iface)) {</span>
+<span class="fc" id="L61">                        successFoldr = true;</span>
+                    }
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                    if (successFoldMap || successFoldr) {</span>
+<span class="fc" id="L64">                        success = true;</span>
+<span class="fc" id="L65">                        break;</span>
+                    }
                 }
-<span class="pc bpc" id="L63" title="1 of 4 branches missed.">                if (successFoldMap || successFoldr) {</span>
-<span class="fc" id="L64">                    success = true;</span>
-<span class="fc" id="L65">                    break;</span>
-                }
+<span class="fc" id="L68">            }</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">            if (element.getSuperclass().toString().equals(&quot;none&quot;)) {</span>
+<span class="nc" id="L70">                break;</span>
+            } else {
+<span class="fc" id="L72">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
             }
-<span class="fc" id="L68">        }</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (!success) {</span>
-<span class="nc" id="L70">            error(&quot;The public function foldr or foldMap was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="pc bpc" id="L74" title="3 of 4 branches missed.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (!success) {</span>
+<span class="nc" id="L76">            error(&quot;The public functions required to be a monad were not found in %s&quot;, element.getQualifiedName());</span>
         }
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L78">    }</span>
 
     private boolean checkIfFoldr(ExecutableElement method, TypeElement type, DeclaredType iFace) {
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
-<span class="fc" id="L76">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L77">            var biFun = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(1));</span>
-<span class="fc" id="L78">            var foldableA = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
-<span class="pc bpc" id="L79" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof TypeVariable param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
-<span class="pc bpc" id="L80" title="4 of 8 branches missed.">                if (param1.toString().equals(biFun.toString()) &amp;&amp; param2.toString().equals(params.get(1).toString()) &amp;&amp; param3.toString().equals(foldableA.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
-<span class="fc" id="L81">                    return true;</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
+<span class="fc" id="L82">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L83">            var biFun = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(1));</span>
+<span class="fc" id="L84">            var foldableA = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
+<span class="pc bpc" id="L85" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof TypeVariable param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
+<span class="pc bpc" id="L86" title="4 of 8 branches missed.">                if (param1.toString().equals(biFun.toString()) &amp;&amp; param2.toString().equals(params.get(1).toString()) &amp;&amp; param3.toString().equals(foldableA.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
+<span class="fc" id="L87">                    return true;</span>
                 } else {
-<span class="nc" id="L83">                    warning(&quot;There is a foldr method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+<span class="nc" id="L89">                    warning(&quot;There is a foldr method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
                 }
             } else {
-<span class="nc" id="L86">                warning(&quot;There is a foldr method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L92">                warning(&quot;There is a foldr method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L89">        return false;</span>
+<span class="nc" id="L95">        return false;</span>
     }
 
     private boolean checkIfFoldMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
-<span class="fc" id="L94">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L95">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
-<span class="fc" id="L96">            var foldable = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
-<span class="fc" id="L97">            var iMonoid = typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(1));</span>
-<span class="pc bpc" id="L98" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
-<span class="pc bpc" id="L99" title="4 of 8 branches missed.">                if (param1.toString().equals(iMonoid.toString()) &amp;&amp; param2.toString().equals(fun.toString()) &amp;&amp; param3.toString().equals(foldable.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
-<span class="fc" id="L100">                    return true;</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (method.getParameters().size() == 3) {</span>
+<span class="fc" id="L100">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L101">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
+<span class="fc" id="L102">            var foldable = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFoldable.class);</span>
+<span class="fc" id="L103">            var iMonoid = typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(1));</span>
+<span class="pc bpc" id="L104" title="4 of 8 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getParameters().get(2).asType() instanceof DeclaredType param3 &amp;&amp; method.getReturnType() instanceof TypeVariable returnType) {</span>
+<span class="pc bpc" id="L105" title="4 of 8 branches missed.">                if (param1.toString().equals(iMonoid.toString()) &amp;&amp; param2.toString().equals(fun.toString()) &amp;&amp; param3.toString().equals(foldable.toString()) &amp;&amp; returnType.toString().equals(params.get(1).toString())) {</span>
+<span class="fc" id="L106">                    return true;</span>
                 } else {
-<span class="nc" id="L102">                    warning(&quot;There is a foldMap method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+<span class="nc" id="L108">                    warning(&quot;There is a foldMap method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
                 }
             } else {
-<span class="nc" id="L105">                warning(&quot;There is a foldMap method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L111">                warning(&quot;There is a foldMap method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L108">        return false;</span>
+<span class="nc" id="L114">        return false;</span>
     }
 
     private void error(String message, Object... args) {
-<span class="fc" id="L112">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L118">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L119">    }</span>
 
     private void warning(String message, Object... args) {
-<span class="nc" id="L116">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
-<span class="nc" id="L117">    }</span>
+<span class="nc" id="L122">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
+<span class="nc" id="L123">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

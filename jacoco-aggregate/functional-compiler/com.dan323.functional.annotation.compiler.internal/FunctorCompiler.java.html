@@ -39,61 +39,68 @@ public final class FunctorCompiler implements Compiler {
 <span class="fc" id="L39">    }</span>
 
     private void validateFunctor(TypeElement element, DeclaredType iface) {
-<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (element.getAnnotation(Functor.class) == null){</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (element.getAnnotation(Functor.class) == null) {</span>
 <span class="fc" id="L43">            error(&quot;The functor interface is not annotated as a functor&quot;);</span>
         }
         // Verify that it is a public class
 <span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="fc" id="L47">            error(&quot;The annotated type %s is not public&quot;, element.getQualifiedName());</span>
+<span class="fc" id="L47">            error(&quot;The annotated type %s is not public&quot;, ((TypeElement) element).getQualifiedName());</span>
         }
         // Obtain the IFunctor interface it is implementing, or fail if it does not
 <span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (!iface.asElement().equals(elementUtils.getTypeElement(IFunctor.class.getTypeName()))) {</span>
-<span class="nc" id="L51">            error(&quot;The element %s is not implementing the interface Functor&quot;, element.getQualifiedName());</span>
+<span class="nc" id="L51">            error(&quot;The element %s is not implementing the interface Functor&quot;, ((TypeElement) element).getQualifiedName());</span>
         }
 <span class="fc" id="L53">        boolean success = false;</span>
         // Look for the public method called map and verify its signature
-<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (var elem : element.getEnclosedElements()) {</span>
-<span class="pc bpc" id="L56" title="1 of 6 branches missed.">            if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC) &amp;&amp; elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {</span>
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                if (checkIfMap((ExecutableElement) elem, element, iface)) {</span>
-<span class="fc" id="L58">                    success = true;</span>
-<span class="fc" id="L59">                    break;</span>
+        do {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            for (var elem : element.getEnclosedElements()) {</span>
+<span class="pc bpc" id="L57" title="1 of 6 branches missed.">                if (elem.getKind().equals(ElementKind.METHOD) &amp;&amp; elem.getModifiers().contains(Modifier.PUBLIC) &amp;&amp; elem.getSimpleName().toString().equals(IFunctor.MAP_NAME)) {</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">                    if (checkIfMap((ExecutableElement) elem, ((TypeElement) element), iface)) {</span>
+<span class="fc" id="L59">                        success = true;</span>
+<span class="fc" id="L60">                        break;</span>
+                    }
                 }
+<span class="fc" id="L63">            }</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (element.getSuperclass().toString().equals(&quot;none&quot;)) {</span>
+<span class="nc" id="L65">                break;</span>
+            } else {
+<span class="fc" id="L67">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
             }
-<span class="fc" id="L62">        }</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (!success) {</span>
-<span class="fc" id="L64">            error(&quot;The public function map was not found in %s&quot;, element.getQualifiedName());</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (!success) {</span>
+<span class="fc" id="L71">            error(&quot;The public function map was not found in %s&quot;, ((TypeElement) element).getQualifiedName());</span>
         }
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L73">    }</span>
 
     private boolean checkIfMap(ExecutableElement method, TypeElement type, DeclaredType iFace) {
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
-<span class="fc" id="L70">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
-<span class="fc" id="L71">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);</span>
-<span class="fc" id="L72">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IFunctor.class);</span>
-<span class="pc bpc" id="L73" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
-<span class="pc bpc" id="L74" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
-<span class="fc" id="L75">                    var funcElem = elementUtils.getTypeElement(Function.class.getTypeName());</span>
-<span class="pc bpc" id="L76" title="2 of 4 branches missed.">                    if (param2.asElement().equals(funcElem) &amp;&amp; param2.getTypeArguments().equals(params.subList(0, 2))) {</span>
-<span class="fc" id="L77">                        return true;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (method.getParameters().size() == 2) {</span>
+<span class="fc" id="L77">            var params = ((ExecutableType) method.asType()).getTypeVariables();</span>
+<span class="fc" id="L78">            var input = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(0), IFunctor.class);</span>
+<span class="fc" id="L79">            var returnTyp = CompilerUtils.changeWildBy(elementUtils, typeUtils, iFace, params.get(1), IFunctor.class);</span>
+<span class="pc bpc" id="L80" title="3 of 6 branches missed.">            if (method.getParameters().get(0).asType() instanceof DeclaredType param1 &amp;&amp; method.getParameters().get(1).asType() instanceof DeclaredType param2 &amp;&amp; method.getReturnType() instanceof DeclaredType returnType) {</span>
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">                if (param1.toString().equals(input.toString()) &amp;&amp; returnType.toString().equals(returnTyp.toString())) {</span>
+<span class="fc" id="L82">                    var funcElem = elementUtils.getTypeElement(Function.class.getTypeName());</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">                    if (param2.asElement().equals(funcElem) &amp;&amp; param2.getTypeArguments().equals(params.subList(0, 2))) {</span>
+<span class="fc" id="L84">                        return true;</span>
                     } else {
-<span class="nc" id="L79">                        warning(&quot;There is a map method, but for type %s is not a Function or the type arguments are not matching the rest of the signature&quot;, type.getQualifiedName().toString());</span>
+<span class="nc" id="L86">                        warning(&quot;There is a map method, but for type %s is not a Function or the type arguments are not matching the rest of the signature&quot;, type.getQualifiedName().toString());</span>
                     }
-<span class="nc" id="L81">                } else {</span>
-<span class="nc" id="L82">                    warning(&quot;There is a map method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
+<span class="nc" id="L88">                } else {</span>
+<span class="nc" id="L89">                    warning(&quot;There is a map method, but the first input type and the return type should be %s&quot;, type.getQualifiedName());</span>
                 }
             } else {
-<span class="nc" id="L85">                warning(&quot;There is a map method, but the signature is not parametrized&quot;);</span>
+<span class="nc" id="L92">                warning(&quot;There is a map method, but the signature is not parametrized&quot;);</span>
             }
         }
-<span class="nc" id="L88">        return false;</span>
+<span class="nc" id="L95">        return false;</span>
     }
 
     private void error(String message, Object... args) {
-<span class="fc" id="L92">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L99">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L100">    }</span>
 
     private void warning(String message, Object... args) {
-<span class="nc" id="L96">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L103">        messager.printMessage(Diagnostic.Kind.WARNING, String.format(message, args));</span>
+<span class="nc" id="L104">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -30,4 +30,10 @@ public final class Right<A,B> implements Either<A,B> {
     public int hashCode() {
         return 11 * Objects.hashCode(b);
     }
+
+
+    @Override
+    public String toString() {
+        return "R(" + b.toString() + ")";
+    }
 }

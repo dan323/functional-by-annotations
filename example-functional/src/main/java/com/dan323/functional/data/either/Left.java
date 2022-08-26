@@ -30,4 +30,9 @@ public final class Left<A, B> implements Either<A, B> {
     public int hashCode() {
         return 7 * Objects.hashCode(a);
     }
+
+    @Override
+    public String toString() {
+        return "L(" + a.toString() + ")";
+    }
 }

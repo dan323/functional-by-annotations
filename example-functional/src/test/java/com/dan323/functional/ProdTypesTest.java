@@ -14,6 +14,7 @@ import com.dan323.functional.data.pair.ProdApplicative;
 import com.dan323.functional.data.pair.ProdFunctor;
 import com.dan323.functional.data.pair.ProdMonad;
 import com.dan323.mock.SomeApplicative;
+import com.dan323.mock.SomeMonad;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -93,7 +94,7 @@ public class ProdTypesTest {
 
     @Test
     public void monadAndSemigroup() {
-        var pairFunctor = new ProdApplicative<>(new SomeApplicative(), new SomeApplicative());
+        var pairFunctor = new ProdMonad<>(new SomeMonad(), new SomeMonad());
         var par = new PairTypeContructor<>(List.of(1, 2), List.of(2, 3));
         var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);

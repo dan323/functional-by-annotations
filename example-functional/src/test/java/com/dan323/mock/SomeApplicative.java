@@ -2,6 +2,8 @@ package com.dan323.mock;
 
 import com.dan323.functional.annotation.Applicative;
 import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IFunctor;
 
@@ -10,10 +12,15 @@ import java.util.function.Function;
 
 @Functor
 @Applicative
-public class SomeApplicative implements IFunctor<List<?>>, IApplicative<List<?>> {
+@Semigroup
+public class SomeApplicative implements IFunctor<List<?>>, IApplicative<List<?>>, ISemigroup<Integer> {
 
     public static <A> List<A> pure(A a) {
         return List.of(a);
+    }
+
+    public static Integer op(Integer a, Integer b) {
+        return (a + b) % 7;
     }
 
     public static <A, B> List<B> map(List<A> base, Function<A, B> fun) {

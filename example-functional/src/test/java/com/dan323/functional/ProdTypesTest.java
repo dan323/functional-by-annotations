@@ -90,4 +90,12 @@ public class ProdTypesTest {
         var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);
     }
+
+    @Test
+    public void monadAndSemigroup() {
+        var pairFunctor = new ProdApplicative<>(new SomeApplicative(), new SomeApplicative());
+        var par = new PairTypeContructor<>(List.of(1, 2), List.of(2, 3));
+        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
+        assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);
+    }
 }

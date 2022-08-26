@@ -32,47 +32,29 @@ final class Generating&lt;A&gt; implements List&lt;A&gt; {
 <span class="nc" id="L32">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
     }
 
-    @Override
-    public &lt;B, C&gt; List&lt;C&gt; zip(BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; list) {
-<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (list instanceof FiniteList&lt;B&gt; || list instanceof Repeat&lt;B&gt;){</span>
-<span class="nc" id="L38">            return list.zip((x,y) -&gt; zipper.apply(y,x), this);</span>
-        } else {
-<span class="nc" id="L40">            return new Zipped&lt;&gt;(this, zipper, list);</span>
-        }
-    }
-
     protected static final class GeneratingMapped&lt;A,B&gt; implements List&lt;B&gt; {
 
         private final List&lt;A&gt; originalList;
         private final Function&lt;A,B&gt; mapping;
 
-<span class="nc" id="L49">        GeneratingMapped(List&lt;A&gt; originalList, Function&lt;A,B&gt; mapping){</span>
-<span class="nc" id="L50">            this.mapping = mapping;</span>
-<span class="nc" id="L51">            this.originalList = originalList;</span>
-<span class="nc" id="L52">        }</span>
+<span class="nc" id="L40">        GeneratingMapped(List&lt;A&gt; originalList, Function&lt;A,B&gt; mapping){</span>
+<span class="nc" id="L41">            this.mapping = mapping;</span>
+<span class="nc" id="L42">            this.originalList = originalList;</span>
+<span class="nc" id="L43">        }</span>
 
         @Override
         public Maybe&lt;B&gt; head() {
-<span class="nc" id="L56">            return originalList.head().maybe(h -&gt; Maybe.of(mapping.apply(h)), Maybe.of());</span>
+<span class="nc" id="L47">            return originalList.head().maybe(h -&gt; Maybe.of(mapping.apply(h)), Maybe.of());</span>
         }
 
         @Override
         public List&lt;B&gt; tail() {
-<span class="nc" id="L61">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
+<span class="nc" id="L52">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
         }
 
         @Override
         public &lt;B1&gt; List&lt;B1&gt; map(Function&lt;B, B1&gt; mapping) {
-<span class="nc" id="L66">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
-        }
-
-        @Override
-        public &lt;D, C&gt; List&lt;C&gt; zip(BiFunction&lt;B, D, C&gt; zipper, List&lt;D&gt; list) {
-<span class="nc bnc" id="L71" title="All 4 branches missed.">            if (list instanceof FiniteList&lt;D&gt; || list instanceof Repeat&lt;D&gt;){</span>
-<span class="nc" id="L72">                return list.zip((x,y)-&gt; zipper.apply(y,x), this);</span>
-            } else {
-<span class="nc" id="L74">                return new Zipped&lt;&gt;(this, zipper, list);</span>
-            }
+<span class="nc" id="L57">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
         }
     }
 }

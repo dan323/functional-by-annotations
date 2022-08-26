@@ -35,9 +35,5 @@ final class Zipped&lt;A, B, C&gt; implements List&lt;C&gt; {
 <span class="nc" id="L35">        return new Zipped&lt;&gt;(first, zipper.andThen(mapping), second);</span>
     }
 
-    @Override
-    public &lt;D, E&gt; List&lt;E&gt; zip(BiFunction&lt;C, D, E&gt; zipper, List&lt;D&gt; list) {
-<span class="nc" id="L40">        return new Zipped&lt;&gt;(this, zipper, list);</span>
-    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

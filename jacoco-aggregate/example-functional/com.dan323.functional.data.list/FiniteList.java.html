@@ -33,28 +33,23 @@ public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCon
 <span class="nc" id="L33">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());</span>
     }
 
-    @Override
-    default &lt;B, C&gt; FiniteList&lt;C&gt; zip(BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; list) {
-<span class="nc" id="L38">        return head().maybe(a -&gt; list.head().maybe(b -&gt; FiniteList.cons(zipper.apply(a, b), tail().zip(zipper, list.tail())), FiniteList.nil()), FiniteList.nil());</span>
-    }
-
     FiniteList&lt;A&gt; tail();
 
     @SafeVarargs
     static &lt;A&gt; FiniteList&lt;A&gt; of(A... a) {
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (a.length == 0) {</span>
-<span class="nc" id="L46">            return nil();</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (a.length == 0) {</span>
+<span class="nc" id="L41">            return nil();</span>
         } else {
-<span class="nc" id="L48">            return FiniteList.of(0, a);</span>
+<span class="nc" id="L43">            return FiniteList.of(0, a);</span>
         }
     }
 
     @SafeVarargs
     private static &lt;A&gt; FiniteList&lt;A&gt; of(int n, A... a) {
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (n &gt;= a.length) {</span>
-<span class="nc" id="L55">            return nil();</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (n &gt;= a.length) {</span>
+<span class="nc" id="L50">            return nil();</span>
         } else {
-<span class="nc" id="L57">            return cons(a[n], of(n + 1, a));</span>
+<span class="nc" id="L52">            return cons(a[n], of(n + 1, a));</span>
         }
     }
 }

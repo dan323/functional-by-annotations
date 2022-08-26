@@ -39,24 +39,10 @@ final class Cons<A> implements List<A> {
     }
 
     @Override
-    public <B, C> List<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
-        if (list instanceof FiniteList<B> || list instanceof Repeat<B>){
-            return list.zip((b,c) -> zipper.apply(c,b), this);
-        } else {
-            return new Zipped<>(this, zipper, list);
-        }
-    }
-
-    @Override
     public String toString(){
         return "[" + head + "," + tail + "]";
     }
-/*
-    @Override
-    public <R> List<R> flatMap(Function<A, Monad<R,List<?>>> f) {
-        return ListUtils.join((List<List<R>>) (List<?>)map(f));
-    }
-*/
+
     @Override
     public boolean equals(Object obj){
         if (obj == this) return true;

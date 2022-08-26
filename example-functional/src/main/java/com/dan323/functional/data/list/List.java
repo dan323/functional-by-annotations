@@ -8,16 +8,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-@Functor
-public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Repeat, Zipped {
+public sealed interface List<A> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Repeat, Zipped {
 
     Maybe<A> head();
 
     List<A> tail();
 
     <B> List<B> map(Function<A,B> mapping);
-
-    <B,C> List<C> zip(BiFunction<A,B,C> zipper, List<B> list);
 
     default FiniteList<A> limit(int k){
         return head().maybe(h -> limitWithHead(h, k), FiniteList.nil());
@@ -48,10 +45,6 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
 
     static <A> List<A> nil() {
         return (FiniteList<A>) Nil.NIL;
-    }
-
-    static <A,B> List<B> map(List<A> lst, Function<A,B> mapping){
-        return lst.map(mapping);
     }
 
     static <A> List<A> repeat(A a){

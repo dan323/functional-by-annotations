@@ -35,6 +35,7 @@ public final class ApplicativeCompiler implements Compiler {
     }
 
     private void validateApplicative(TypeElement element, DeclaredType iface) {
+        var originalElement = element;
         if (element.getAnnotation(Applicative.class) == null) {
             error("The applicative interface is not annotated as an applicative");
         }
@@ -75,7 +76,7 @@ public final class ApplicativeCompiler implements Compiler {
         }
         while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public functions required to be a monad were not found in %s", element.getQualifiedName());
+            error("The public functions required to be an applicative were not found in %s", originalElement.getQualifiedName());
         }
     }
 

@@ -35,8 +35,4 @@ final class Zipped<A, B, C> implements List<C> {
         return new Zipped<>(first, zipper.andThen(mapping), second);
     }
 
-    @Override
-    public <D, E> List<E> zip(BiFunction<C, D, E> zipper, List<D> list) {
-        return new Zipped<>(this, zipper, list);
-    }
 }

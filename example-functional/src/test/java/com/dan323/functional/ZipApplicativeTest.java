@@ -16,4 +16,11 @@ public class ZipApplicativeTest {
         List<Integer> lst = ApplicativeUtil.pure(zipApplicative, List.class, 6);
         assertEquals(FiniteList.of(6, 6, 6, 6, 6, 6), lst.limit(6));
     }
+
+    @Test
+    public void zipSum() {
+        ZipApplicative zipApplicative = new ZipApplicative();
+        List<Integer> lst = ApplicativeUtil.liftA2(zipApplicative, List.class, Integer::sum, List.repeat(5), FiniteList.of(1, 2, 3));
+        assertEquals(FiniteList.of(6, 7, 8), lst);
+    }
 }

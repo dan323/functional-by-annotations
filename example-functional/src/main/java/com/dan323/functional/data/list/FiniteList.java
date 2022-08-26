@@ -33,11 +33,6 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
         return head().maybe(h -> FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());
     }
 
-    @Override
-    default <B, C> FiniteList<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
-        return head().maybe(a -> list.head().maybe(b -> FiniteList.cons(zipper.apply(a, b), tail().zip(zipper, list.tail())), FiniteList.nil()), FiniteList.nil());
-    }
-
     FiniteList<A> tail();
 
     @SafeVarargs

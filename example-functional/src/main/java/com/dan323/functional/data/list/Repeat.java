@@ -36,12 +36,6 @@ final class Repeat<A> implements List<A> {
     }
 
     @Override
-    public <B, C> List<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
-        Function<B,C> fun = b -> zipper.apply(element, b);
-        return list.map(fun);
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj instanceof Repeat<?>) {

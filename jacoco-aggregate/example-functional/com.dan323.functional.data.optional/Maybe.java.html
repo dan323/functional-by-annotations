@@ -11,30 +11,12 @@ public sealed interface Maybe&lt;A&gt; permits Nothing, Just {
     &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant);
 
     static &lt;A&gt; Maybe&lt;A&gt; of(A element) {
-<span class="fc" id="L14">        return new Just&lt;&gt;(element);</span>
+<span class="nc" id="L14">        return new Just&lt;&gt;(element);</span>
     }
 
     static &lt;A&gt; Maybe&lt;A&gt; of() {
-<span class="fc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
+<span class="nc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
     }
 
-
-    /*
-    @Override
-    &lt;R&gt; Optional&lt;R&gt; flatMap(Function&lt;A, Monad&lt;R, Optional&lt;?&gt;&gt;&gt; f);
-
-    @Override
-    &lt;R&gt; Optional&lt;R&gt; fapply(Applicative&lt;Function&lt;A, R&gt;, Optional&lt;?&gt;&gt; applicative);
-
-    @Override
-    default &lt;Q&gt; Optional&lt;Q&gt; pure(Q a) {
-        return of(a);
-    }
-
-    @Override
-    default &lt;R&gt; Optional&lt;R&gt; join(Monad&lt;Monad&lt;R, Optional&lt;?&gt;&gt;, Optional&lt;?&gt;&gt; monadMonad) {
-        var optOpt = ((Optional&lt;Optional&lt;R&gt;&gt;) (Monad&lt;?, ?&gt;) monadMonad);
-        return optOpt.maybe(Function.identity(), of());
-    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

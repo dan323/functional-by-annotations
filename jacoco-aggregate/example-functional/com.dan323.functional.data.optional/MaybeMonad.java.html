@@ -13,25 +13,25 @@ public class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt; {
     }
 
     public static &lt;A&gt; Maybe&lt;A&gt; join(Maybe&lt;Maybe&lt;A&gt;&gt; maybeMaybe) {
-<span class="fc" id="L16">        return maybeMaybe.maybe(Function.identity(), Maybe.of());</span>
+<span class="nc" id="L16">        return maybeMaybe.maybe(Function.identity(), Maybe.of());</span>
     }
 
     public static &lt;A,B&gt; Maybe&lt;B&gt; fapply(Maybe&lt;Function&lt;A,B&gt;&gt; maybeFun, Maybe&lt;A&gt; base){
-<span class="fc" id="L20">        return maybeFun.maybe(f -&gt; map(base, f), Maybe.of());</span>
+<span class="nc" id="L20">        return maybeFun.maybe(f -&gt; map(base, f), Maybe.of());</span>
     }
 
     public static MaybeMonad getInstance(){
-<span class="fc" id="L24">        return MAYBE;</span>
+<span class="nc" id="L24">        return MAYBE;</span>
     }
 
-<span class="fc" id="L27">    private static final MaybeMonad MAYBE = new MaybeMonad();</span>
+<span class="nc" id="L27">    private static final MaybeMonad MAYBE = new MaybeMonad();</span>
 
     public static &lt;A, R&gt; Maybe&lt;R&gt; map(Maybe&lt;A&gt; base, Function&lt;A, R&gt; f) {
-<span class="fc" id="L30">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
+<span class="nc" id="L30">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
     }
 
     public static &lt;A&gt; Maybe&lt;A&gt; pure(A a) {
-<span class="fc" id="L34">        return Maybe.of(a);</span>
+<span class="nc" id="L34">        return Maybe.of(a);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

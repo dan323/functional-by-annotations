@@ -12,14 +12,14 @@ public class BTreeFunctor implements IFunctor&lt;BinaryTree&lt;?&gt;&gt; {
 
     }
 
-<span class="fc" id="L15">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
+<span class="nc" id="L15">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
 
     public static &lt;A, B&gt; BinaryTree&lt;B&gt; map(BinaryTree&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (base instanceof Leaf&lt;A&gt; baseLeaf) {</span>
-<span class="fc" id="L19">            return new Leaf&lt;&gt;(mapping.apply(baseLeaf.value()));</span>
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        if (base instanceof Leaf&lt;A&gt; baseLeaf) {</span>
+<span class="nc" id="L19">            return new Leaf&lt;&gt;(mapping.apply(baseLeaf.value()));</span>
         } else {
-<span class="fc" id="L21">            BinaryNode&lt;A&gt; baseTree = (BinaryNode&lt;A&gt;) base;</span>
-<span class="fc" id="L22">            return new BinaryNode&lt;&gt;(map(baseTree.left(), mapping), map(baseTree.right(), mapping));</span>
+<span class="nc" id="L21">            BinaryNode&lt;A&gt; baseTree = (BinaryNode&lt;A&gt;) base;</span>
+<span class="nc" id="L22">            return new BinaryNode&lt;&gt;(map(baseTree.left(), mapping), map(baseTree.right(), mapping));</span>
         }
     }
 

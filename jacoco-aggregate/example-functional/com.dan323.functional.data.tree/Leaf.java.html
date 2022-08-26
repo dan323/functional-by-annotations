@@ -6,13 +6,13 @@ public final class Leaf&lt;A&gt; implements BinaryTree&lt;A&gt; {
 
     private final A a;
 
-<span class="fc" id="L9">    Leaf(A a) {</span>
-<span class="pc bpc" id="L10" title="1 of 2 branches missed.">        if (a == null) throw new IllegalArgumentException(&quot;The data must not be null.&quot;);</span>
-<span class="fc" id="L11">        this.a = a;</span>
-<span class="fc" id="L12">    }</span>
+<span class="nc" id="L9">    Leaf(A a) {</span>
+<span class="nc bnc" id="L10" title="All 2 branches missed.">        if (a == null) throw new IllegalArgumentException(&quot;The data must not be null.&quot;);</span>
+<span class="nc" id="L11">        this.a = a;</span>
+<span class="nc" id="L12">    }</span>
 
     public A value() {
-<span class="fc" id="L15">        return a;</span>
+<span class="nc" id="L15">        return a;</span>
     }
 
     @Override
@@ -22,9 +22,9 @@ public final class Leaf&lt;A&gt; implements BinaryTree&lt;A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (obj == this) return true;</span>
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (obj instanceof Leaf&lt;?&gt; leaf) {</span>
-<span class="fc" id="L27">            return Objects.equals(leaf.a, a);</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (obj instanceof Leaf&lt;?&gt; leaf) {</span>
+<span class="nc" id="L27">            return Objects.equals(leaf.a, a);</span>
         } else {
 <span class="nc" id="L29">            return false;</span>
         }

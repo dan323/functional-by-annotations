@@ -3,11 +3,11 @@
 <span class="nc" id="L3">public final class ListUtils {</span>
 
     public static &lt;A&gt; FiniteList&lt;A&gt; reverse(FiniteList&lt;A&gt; lst) {
-<span class="fc" id="L6">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, FiniteList.nil())), FiniteList.nil());</span>
+<span class="nc" id="L6">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, FiniteList.nil())), FiniteList.nil());</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
-<span class="fc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
+<span class="nc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
     }
 /*
     static &lt;C&gt; List&lt;C&gt; join(List&lt;List&lt;C&gt;&gt; lst) {

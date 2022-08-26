@@ -8,18 +8,18 @@ final class FinCons&lt;A&gt; implements FiniteList&lt;A&gt; {
 
     private final Cons&lt;A&gt; cons;
 
-<span class="fc" id="L11">    FinCons(A head, FiniteList&lt;A&gt; tail) {</span>
-<span class="fc" id="L12">        cons = new Cons&lt;&gt;(head, tail);</span>
-<span class="fc" id="L13">    }</span>
+<span class="nc" id="L11">    FinCons(A head, FiniteList&lt;A&gt; tail) {</span>
+<span class="nc" id="L12">        cons = new Cons&lt;&gt;(head, tail);</span>
+<span class="nc" id="L13">    }</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="fc" id="L17">        return cons.head();</span>
+<span class="nc" id="L17">        return cons.head();</span>
     }
 
     @Override
     public FiniteList&lt;A&gt; tail() {
-<span class="fc" id="L22">        return (FiniteList&lt;A&gt;) cons.tail();</span>
+<span class="nc" id="L22">        return (FiniteList&lt;A&gt;) cons.tail();</span>
     }
 
 
@@ -31,10 +31,10 @@ final class FinCons&lt;A&gt; implements FiniteList&lt;A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (obj == this) return true;</span>
-<span class="pc bpc" id="L35" title="1 of 4 branches missed.">        if (obj == null || obj.getClass() != getClass()) return false;</span>
-<span class="fc" id="L36">        FinCons&lt;?&gt; k = ((FinCons&lt;?&gt;) obj);</span>
-<span class="fc" id="L37">        return Objects.equals(k.cons, cons);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">        if (obj == null || obj.getClass() != getClass()) return false;</span>
+<span class="nc" id="L36">        FinCons&lt;?&gt; k = ((FinCons&lt;?&gt;) obj);</span>
+<span class="nc" id="L37">        return Objects.equals(k.cons, cons);</span>
     }
 
     @Override

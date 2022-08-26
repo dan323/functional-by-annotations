@@ -12,26 +12,26 @@ public final class RightEither&lt;R&gt; implements IMonad&lt;Either&lt;R, ?&gt;&
     }
 
     public static &lt;R&gt; RightEither&lt;R&gt; getInstance(){
-<span class="fc" id="L15">        return new RightEither&lt;&gt;();</span>
+<span class="nc" id="L15">        return new RightEither&lt;&gt;();</span>
     }
     public &lt;B, C&gt; Either&lt;R, C&gt; map(Either&lt;R, B&gt; base, Function&lt;B, C&gt; mapping) {
-<span class="fc" id="L18">        return base.either(Either::left, b -&gt; Either.right(mapping.apply(b)));</span>
+<span class="nc" id="L18">        return base.either(Either::left, b -&gt; Either.right(mapping.apply(b)));</span>
     }
 
     public &lt;A&gt; Either&lt;R, A&gt; pure(A r) {
-<span class="fc" id="L22">        return Either.right(r);</span>
+<span class="nc" id="L22">        return Either.right(r);</span>
     }
 
     public &lt;A&gt; Either&lt;R,A&gt; join(Either&lt;R,Either&lt;R,A&gt;&gt; eitherEither) {
-<span class="fc" id="L26">        return eitherEither.either(Either::left,Function.identity());</span>
+<span class="nc" id="L26">        return eitherEither.either(Either::left,Function.identity());</span>
     }
 
     public &lt;A,B&gt; Either&lt;R, B&gt; flatMap(Function&lt;A, Either&lt;R,B&gt;&gt; f, Either&lt;R,A&gt; base) {
-<span class="fc" id="L30">        return base.either(Either::left,f);</span>
+<span class="nc" id="L30">        return base.either(Either::left,f);</span>
     }
 
     public &lt;A,B&gt; Either&lt;R,B&gt; fapply(Either&lt;R,Function&lt;A,B&gt;&gt; ff, Either&lt;R,A&gt; base) {
-<span class="fc" id="L34">        return ff.either(Either::left, f -&gt; map(base,f));</span>
+<span class="nc" id="L34">        return ff.either(Either::left, f -&gt; map(base,f));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

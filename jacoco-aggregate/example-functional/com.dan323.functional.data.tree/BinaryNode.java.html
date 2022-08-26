@@ -6,17 +6,17 @@ public final class BinaryNode&lt;A&gt; implements BinaryTree&lt;A&gt; {
     private final BinaryTree&lt;A&gt; left;
     private final BinaryTree&lt;A&gt; right;
 
-<span class="fc" id="L9">    BinaryNode(BinaryTree&lt;A&gt; left, BinaryTree&lt;A&gt; right) {</span>
-<span class="fc" id="L10">        this.left = left;</span>
-<span class="fc" id="L11">        this.right = right;</span>
-<span class="fc" id="L12">    }</span>
+<span class="nc" id="L9">    BinaryNode(BinaryTree&lt;A&gt; left, BinaryTree&lt;A&gt; right) {</span>
+<span class="nc" id="L10">        this.left = left;</span>
+<span class="nc" id="L11">        this.right = right;</span>
+<span class="nc" id="L12">    }</span>
 
     public BinaryTree&lt;A&gt; left() {
-<span class="fc" id="L15">        return left;</span>
+<span class="nc" id="L15">        return left;</span>
     }
 
     public BinaryTree&lt;A&gt; right() {
-<span class="fc" id="L19">        return right;</span>
+<span class="nc" id="L19">        return right;</span>
     }
 
     @Override
@@ -26,9 +26,9 @@ public final class BinaryNode&lt;A&gt; implements BinaryTree&lt;A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (obj == this) return true;</span>
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (obj instanceof BinaryNode&lt;?&gt; binaryNode) {</span>
-<span class="pc bpc" id="L31" title="2 of 4 branches missed.">            return Objects.equals(binaryNode.left, left) &amp;&amp; Objects.equals(binaryNode.right, right);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (obj instanceof BinaryNode&lt;?&gt; binaryNode) {</span>
+<span class="nc bnc" id="L31" title="All 4 branches missed.">            return Objects.equals(binaryNode.left, left) &amp;&amp; Objects.equals(binaryNode.right, right);</span>
         } else {
 <span class="nc" id="L33">            return false;</span>
         }

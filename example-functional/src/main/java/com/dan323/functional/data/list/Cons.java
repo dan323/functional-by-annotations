@@ -1,7 +1,9 @@
 package com.dan323.functional.data.list;
 import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -34,6 +36,15 @@ final class Cons<A> implements List<A> {
     @Override
     public <B> List<B> map(Function<A, B> mapping) {
         return new Cons<>(mapping.apply(head), tail().map(mapping));
+    }
+
+    @Override
+    public <B, C> List<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
+        if (list instanceof FiniteList<B> || list instanceof Repeat<B>){
+            return list.zip((b,c) -> zipper.apply(c,b), this);
+        } else {
+            return new Zipped<>(this, zipper, list);
+        }
     }
 
     @Override

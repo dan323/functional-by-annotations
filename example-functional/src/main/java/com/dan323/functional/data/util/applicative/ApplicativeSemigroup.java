@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 @Semigroup
 public class ApplicativeSemigroup<FA extends F, F, A> implements ISemigroup<FA> {
 
-    protected final IMonoid<A> monoid;
+    protected final ISemigroup<A> monoid;
     protected final IApplicative<F> applicative;
     protected final Class<F> fClass;
 
-    public ApplicativeSemigroup(IMonoid<A> monoid, IApplicative<F> applicative) {
+    public ApplicativeSemigroup(ISemigroup<A> monoid, IApplicative<F> applicative) {
         this.applicative = applicative;
         this.monoid = monoid;
         this.fClass = extractClass(applicative);

@@ -4,17 +4,20 @@ import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.data.optional.Maybe;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 @Functor
-public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Repeat {
+public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteList, Generating, Generating.GeneratingMapped, Repeat, Zipped {
 
     Maybe<A> head();
 
     List<A> tail();
 
     <B> List<B> map(Function<A,B> mapping);
+
+    <B,C> List<C> zip(BiFunction<A,B,C> zipper, List<B> list);
 
     default FiniteList<A> limit(int k){
         return head().maybe(h -> limitWithHead(h, k), FiniteList.nil());
@@ -36,11 +39,15 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
         if (first == null || tail == null) {
             throw new IllegalArgumentException("No input can be null");
         }
-        return new Cons<>(first, tail);
+        if (tail instanceof FiniteList<A> finiteTail){
+            return new FinCons<>(first, finiteTail);
+        } else {
+            return new Cons<>(first, tail);
+        }
     }
 
     static <A> List<A> nil() {
-        return (List<A>) Nil.NIL;
+        return (FiniteList<A>) Nil.NIL;
     }
 
     static <A,B> List<B> map(List<A> lst, Function<A,B> mapping){
@@ -51,10 +58,3 @@ public sealed interface List<A> extends IFunctor<List<?>> permits Cons, FiniteLi
         return new Repeat<>(a);
     }
 }
-/*
-    @Override
-    default <R> List<R> join(Monad<Monad<R,List<?>>,List<?>> lst){
-        return ListUtils.join((List<List<R>>) (Monad<?,?>) lst);
-    }
-}
-*/

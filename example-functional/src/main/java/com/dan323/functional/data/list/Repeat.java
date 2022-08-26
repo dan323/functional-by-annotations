@@ -3,6 +3,7 @@ package com.dan323.functional.data.list;
 import com.dan323.functional.data.optional.Maybe;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -32,6 +33,12 @@ final class Repeat<A> implements List<A> {
     @Override
     public <B> List<B> map(Function<A, B> mapping) {
         return new Repeat<>(mapping.apply(element));
+    }
+
+    @Override
+    public <B, C> List<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
+        Function<B,C> fun = b -> zipper.apply(element, b);
+        return list.map(fun);
     }
 
     @Override

@@ -1,35 +1,41 @@
 package com.dan323.functional.data.list;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
  * Finite lists are represented by the empty or a finite amount con appends
+ *
  * @param <A>
  */
 public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
 
-    static <A> FiniteList<A> cons(A a, FiniteList<A> tail){
+    static <A> FiniteList<A> cons(A a, FiniteList<A> tail) {
         return new FinCons<>(a, tail);
     }
 
-    static <A> FiniteList<A> nil(){
+    static <A> FiniteList<A> nil() {
         return (FiniteList<A>) Nil.NIL;
     }
 
     /**
      * This default implementation only works finite lists, since otherwise the program does not finish
      *
+     * @param mapping function to transform the elements
+     * @param <B>     final type
+     * @return transformed list
      * @see Repeat
      * @see Generating
      * @see Generating.GeneratingMapped
-     *
-     * @param mapping function to transform the elements
-     * @return transformed list
-     * @param <B> final type
      */
     @Override
-    default <B> FiniteList<B> map(Function<A,B> mapping){
+    default <B> FiniteList<B> map(Function<A, B> mapping) {
         return head().maybe(h -> FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());
+    }
+
+    @Override
+    default <B, C> FiniteList<C> zip(BiFunction<A, B, C> zipper, List<B> list) {
+        return head().maybe(a -> list.head().maybe(b -> FiniteList.cons(zipper.apply(a, b), tail().zip(zipper, list.tail())), FiniteList.nil()), FiniteList.nil());
     }
 
     FiniteList<A> tail();

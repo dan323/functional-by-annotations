@@ -41,9 +41,9 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Just,43,0,6,0,9,0,7,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Either,10,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftEither,40,0,0,0,6,0,7,0,7,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Left,44,0,8,0,10,0,8,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Left,49,0,8,0,11,0,9,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,RightEither,44,0,0,0,6,0,8,0,8,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Right,44,0,8,0,10,0,8,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Right,49,0,8,0,11,0,9,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,AndMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,OrMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeSemigroup,73,0,4,0,15,0,8,0,6,0

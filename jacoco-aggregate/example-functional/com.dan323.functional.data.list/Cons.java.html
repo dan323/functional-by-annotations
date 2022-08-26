@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Cons.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">Cons.java</span></div><h1>Cons.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
 import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -13,32 +15,41 @@ final class Cons&lt;A&gt; implements List&lt;A&gt; {
     private final A head;
     private final List&lt;A&gt; tail;
 
-<span class="nc" id="L16">    Cons(A head, List&lt;A&gt; tail) {</span>
-<span class="nc bnc" id="L17" title="All 4 branches missed.">        if (head == null || tail == null){</span>
-<span class="nc" id="L18">            throw new IllegalArgumentException();</span>
+<span class="nc" id="L18">    Cons(A head, List&lt;A&gt; tail) {</span>
+<span class="nc bnc" id="L19" title="All 4 branches missed.">        if (head == null || tail == null){</span>
+<span class="nc" id="L20">            throw new IllegalArgumentException();</span>
         }
-<span class="nc" id="L20">        this.head = head;</span>
-<span class="nc" id="L21">        this.tail = tail;</span>
-<span class="nc" id="L22">    }</span>
+<span class="nc" id="L22">        this.head = head;</span>
+<span class="nc" id="L23">        this.tail = tail;</span>
+<span class="nc" id="L24">    }</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="nc" id="L26">        return Maybe.of(head);</span>
+<span class="nc" id="L28">        return Maybe.of(head);</span>
     }
 
     @Override
     public List&lt;A&gt; tail() {
-<span class="nc" id="L31">        return tail;</span>
+<span class="nc" id="L33">        return tail;</span>
     }
 
     @Override
     public &lt;B&gt; List&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L36">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
+<span class="nc" id="L38">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
+    }
+
+    @Override
+    public &lt;B, C&gt; List&lt;C&gt; zip(BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; list) {
+<span class="nc bnc" id="L43" title="All 4 branches missed.">        if (list instanceof FiniteList&lt;B&gt; || list instanceof Repeat&lt;B&gt;){</span>
+<span class="nc" id="L44">            return list.zip((b,c) -&gt; zipper.apply(c,b), this);</span>
+        } else {
+<span class="nc" id="L46">            return new Zipped&lt;&gt;(this, zipper, list);</span>
+        }
     }
 
     @Override
     public String toString(){
-<span class="nc" id="L41">        return &quot;[&quot; + head + &quot;,&quot; + tail + &quot;]&quot;;</span>
+<span class="nc" id="L52">        return &quot;[&quot; + head + &quot;,&quot; + tail + &quot;]&quot;;</span>
     }
 /*
     @Override
@@ -48,15 +59,15 @@ final class Cons&lt;A&gt; implements List&lt;A&gt; {
 */
     @Override
     public boolean equals(Object obj){
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (obj == this) return true;</span>
-<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (obj == null || obj.getClass() != getClass()) return false;</span>
-<span class="nc" id="L53">        Cons&lt;?&gt; k = ((Cons&lt;?&gt;)obj);</span>
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        return Objects.equals(k.head, head) &amp;&amp; Objects.equals(k.tail, tail);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L63" title="All 4 branches missed.">        if (obj == null || obj.getClass() != getClass()) return false;</span>
+<span class="nc" id="L64">        Cons&lt;?&gt; k = ((Cons&lt;?&gt;)obj);</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">        return Objects.equals(k.head, head) &amp;&amp; Objects.equals(k.tail, tail);</span>
     }
 
     @Override
     public int hashCode(){
-<span class="nc" id="L59">        return Objects.hash(head, tail);</span>
+<span class="nc" id="L70">        return Objects.hash(head, tail);</span>
     }
 /*
     @Override

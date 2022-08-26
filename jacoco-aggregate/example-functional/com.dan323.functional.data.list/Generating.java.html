@@ -2,6 +2,7 @@
 
 import com.dan323.functional.data.optional.Maybe;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -10,25 +11,34 @@ final class Generating&lt;A&gt; implements List&lt;A&gt; {
     private final A head;
     private final UnaryOperator&lt;A&gt; generator;
 
-<span class="nc" id="L13">    Generating(A first, UnaryOperator&lt;A&gt; generator){</span>
-<span class="nc bnc" id="L14" title="All 4 branches missed.">        if (first == null || generator == null) throw new IllegalArgumentException(&quot;Inputs must not be null&quot;);</span>
-<span class="nc" id="L15">        this.head = first;</span>
-<span class="nc" id="L16">        this.generator = generator;</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L14">    Generating(A first, UnaryOperator&lt;A&gt; generator){</span>
+<span class="nc bnc" id="L15" title="All 4 branches missed.">        if (first == null || generator == null) throw new IllegalArgumentException(&quot;Inputs must not be null&quot;);</span>
+<span class="nc" id="L16">        this.head = first;</span>
+<span class="nc" id="L17">        this.generator = generator;</span>
+<span class="nc" id="L18">    }</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="nc" id="L21">        return Maybe.of(head);</span>
+<span class="nc" id="L22">        return Maybe.of(head);</span>
     }
 
     @Override
     public List&lt;A&gt; tail() {
-<span class="nc" id="L26">        return new Generating&lt;&gt;(generator.apply(head), generator);</span>
+<span class="nc" id="L27">        return new Generating&lt;&gt;(generator.apply(head), generator);</span>
     }
 
     @Override
     public &lt;B&gt; List&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L31">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
+<span class="nc" id="L32">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
+    }
+
+    @Override
+    public &lt;B, C&gt; List&lt;C&gt; zip(BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; list) {
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (list instanceof FiniteList&lt;B&gt; || list instanceof Repeat&lt;B&gt;){</span>
+<span class="nc" id="L38">            return list.zip((x,y) -&gt; zipper.apply(y,x), this);</span>
+        } else {
+<span class="nc" id="L40">            return new Zipped&lt;&gt;(this, zipper, list);</span>
+        }
     }
 
     protected static final class GeneratingMapped&lt;A,B&gt; implements List&lt;B&gt; {
@@ -36,24 +46,33 @@ final class Generating&lt;A&gt; implements List&lt;A&gt; {
         private final List&lt;A&gt; originalList;
         private final Function&lt;A,B&gt; mapping;
 
-<span class="nc" id="L39">        GeneratingMapped(List&lt;A&gt; originalList, Function&lt;A,B&gt; mapping){</span>
-<span class="nc" id="L40">            this.mapping = mapping;</span>
-<span class="nc" id="L41">            this.originalList = originalList;</span>
-<span class="nc" id="L42">        }</span>
+<span class="nc" id="L49">        GeneratingMapped(List&lt;A&gt; originalList, Function&lt;A,B&gt; mapping){</span>
+<span class="nc" id="L50">            this.mapping = mapping;</span>
+<span class="nc" id="L51">            this.originalList = originalList;</span>
+<span class="nc" id="L52">        }</span>
 
         @Override
         public Maybe&lt;B&gt; head() {
-<span class="nc" id="L46">            return originalList.head().maybe(h -&gt; Maybe.of(mapping.apply(h)), Maybe.of());</span>
+<span class="nc" id="L56">            return originalList.head().maybe(h -&gt; Maybe.of(mapping.apply(h)), Maybe.of());</span>
         }
 
         @Override
         public List&lt;B&gt; tail() {
-<span class="nc" id="L51">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
+<span class="nc" id="L61">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
         }
 
         @Override
         public &lt;B1&gt; List&lt;B1&gt; map(Function&lt;B, B1&gt; mapping) {
-<span class="nc" id="L56">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
+<span class="nc" id="L66">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
+        }
+
+        @Override
+        public &lt;D, C&gt; List&lt;C&gt; zip(BiFunction&lt;B, D, C&gt; zipper, List&lt;D&gt; list) {
+<span class="nc bnc" id="L71" title="All 4 branches missed.">            if (list instanceof FiniteList&lt;D&gt; || list instanceof Repeat&lt;D&gt;){</span>
+<span class="nc" id="L72">                return list.zip((x,y)-&gt; zipper.apply(y,x), this);</span>
+            } else {
+<span class="nc" id="L74">                return new Zipped&lt;&gt;(this, zipper, list);</span>
+            }
         }
     }
 }

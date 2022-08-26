@@ -15,7 +15,7 @@ public class ProdApplicative&lt;M, N&gt; extends ProdFunctor&lt;M, N&gt; impleme
 <span class="fc" id="L15">    }</span>
 
     public &lt;A&gt; PairTypeContructor&lt;M, N, A&gt; pure(A a) {
-<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure(mFunctor, mClass, a), ApplicativeUtil.pure(nFunctor, nClass, a));</span>
+<span class="fc" id="L18">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure(mFunctor, mClass, a), ApplicativeUtil.pure(nFunctor, nClass, a));</span>
     }
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; fapply(PairTypeContructor&lt;M, N, Function&lt;A, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; c1) {
@@ -24,7 +24,7 @@ public class ProdApplicative&lt;M, N&gt; extends ProdFunctor&lt;M, N&gt; impleme
 
     @Override
     public boolean isRightFunctional(Type type) {
-<span class="pc bpc" id="L27" title="1 of 4 branches missed.">        return type.getTypeName().contains(&quot;IApplicative&quot;) || type.getTypeName().contains(&quot;IMonad&quot;);</span>
+<span class="pc bpc" id="L27" title="2 of 4 branches missed.">        return type.getTypeName().contains(&quot;IApplicative&quot;) || type.getTypeName().contains(&quot;IMonad&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -270,8 +270,8 @@ public final class FunctionalUtil {
 <span class="fc" id="L270">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
 <span class="fc" id="L271">                    .&lt;FB&gt;map(m -&gt; invokeStaticMethod(monad, m, mapping, fa))</span>
 <span class="fc" id="L272">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)</span>
-<span class="pc" id="L273">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class))</span>
-<span class="pc" id="L274">                            .map(m -&gt; MonadUtil.join(monad, fClass, FunctorUtil.map(monad, fClass, fa, mapping))));</span>
+<span class="fc" id="L273">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class))</span>
+<span class="fc" id="L274">                            .map(m -&gt; MonadUtil.join(monad, fClass, FunctorUtil.map(monad, fClass, fa, mapping))));</span>
         } else {
 <span class="nc" id="L276">            throw new IllegalArgumentException(&quot;The class is not annotated&quot;);</span>
         }
@@ -282,7 +282,7 @@ public final class FunctionalUtil {
     static &lt;G, F, FFA extends F, FA extends F&gt; Optional&lt;FA&gt; monadJoin(G monad, Class&lt;F&gt; fClass, FFA ffa) {
 <span class="pc bpc" id="L283" title="1 of 2 branches missed.">        if (isMonad(monad.getClass())) {</span>
 <span class="fc" id="L284">            return getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)</span>
-<span class="pc" id="L285">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(monad, m, ffa))</span>
+<span class="fc" id="L285">                    .&lt;FA&gt;map(m -&gt; invokeStaticMethod(monad, m, ffa))</span>
 <span class="fc" id="L286">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)</span>
 <span class="fc" id="L287">                            .map(m -&gt; MonadUtil.flatMap(monad, fClass, Function.identity(), ffa)));</span>
         } else {

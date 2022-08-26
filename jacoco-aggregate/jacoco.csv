@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctorUtil,6,37,0,0,2,4,1,4,1,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonadUtil,6,25,0,0,2,4,1,4,1,4
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,300,1096,23,43,28,95,37,79,16,67
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,266,1130,23,43,28,95,34,82,13,70
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,SemigroupUtil,17,12,0,0,2,3,3,1,3,1
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,6,65,0,0,2,7,1,8,1,8
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FoldableUtil,16,31,0,0,2,6,3,4,3,4
@@ -18,9 +18,9 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryTree,0,11,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctional,6,42,0,0,2,12,0,3,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,PairTypeContructor,17,39,4,4,2,9,5,4,1,4
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,17,40,1,3,1,4,2,4,1,3
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,44,0,0,0,4,0,5,0,5,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,1,43,2,4,0,4,2,4,0,3
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,1,56,2,2,0,5,2,4,0,4
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,0,44,0,0,0,4,0,5,0,5
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,1,43,3,3,0,4,3,3,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Generating,5,34,2,2,0,8,2,4,0,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Nil,5,17,1,1,2,4,3,4,2,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,JListFunctor,0,11,0,0,0,2,0,2,0,2
@@ -36,9 +36,9 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipper,15,132,4,4,2,18,5,11,1,11
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Maybe,0,7,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Nothing,5,13,1,1,1,3,2,3,1,3
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeMonad,0,39,0,0,0,6,0,8,0,8
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,JOptionalFunctor,0,9,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Just,13,30,3,3,1,8,4,3,1,3
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeApplicative,9,28,0,0,2,3,2,5,2,5
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Either,0,10,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftEither,0,40,0,0,0,6,0,7,0,7
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Left,14,30,4,4,2,8,5,3,1,3

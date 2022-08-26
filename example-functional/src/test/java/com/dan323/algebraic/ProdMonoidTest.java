@@ -21,12 +21,12 @@ public class ProdMonoidTest {
 
     @Test
     public void prodRefl() {
-        assertEquals(20, SemigroupUtil.op(ProdMonoid.PROD_MONOID, 4, 5));
+        assertEquals(20, SemigroupUtil.op(ProdMonoid.getInstance(), 4, 5));
     }
 
     @Test
     public void neutRefl() {
-        assertEquals(1, MonoidUtil.<ProdMonoid, Integer>unit(ProdMonoid.PROD_MONOID));
+        assertEquals(1, MonoidUtil.<ProdMonoid, Integer>unit(ProdMonoid.getInstance()));
     }
 
 }

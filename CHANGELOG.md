@@ -26,3 +26,5 @@
   - Methods allowed to not be static
 * 23/08/22
   - Added Foldable functional
+* 24/08/22
+  - Allow superclass methods to implement Structures on subclasses

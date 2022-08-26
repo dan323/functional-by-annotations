@@ -17,8 +17,4 @@ public class ApplicativeMonoid<FA extends F, F, A> extends ApplicativeSemigroup<
         return ApplicativeUtil.pure(applicative, fClass, MonoidUtil.unit(monoid));
     }
 
-    @Override
-    public FA op(FA elem1, FA elem2) {
-        return super.op(elem1, elem2);
-    }
 }

@@ -35,7 +35,8 @@ structure requirements.
 
 ## Algebraic Structures
 
-An algebraic structure is a set of operations defined over a type or set of types
+An algebraic structure is a set of operations defined over a type or set of types.
+Methods of super-types also count towards the annotation being implemented.
 
 ### Semigroup
 

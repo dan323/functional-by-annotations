@@ -40,7 +40,7 @@ public final class FoldableFuns {
      * @return number of elements in {@code felement}
      */
     public static <FA extends F, F> int length(IFoldable<F> foldable, Class<F> fClass, FA felement) {
-        return foldMap(foldable, SumMonoid.SUM_MONOID, fClass, x -> 1, felement);
+        return foldMap(foldable, SumMonoid.getInstance(), fClass, x -> 1, felement);
     }
 
     /**

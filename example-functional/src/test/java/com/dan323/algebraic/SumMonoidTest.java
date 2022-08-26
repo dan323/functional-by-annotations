@@ -11,22 +11,22 @@ public class SumMonoidTest {
 
     @Test
     public void sum() {
-        assertEquals(9, SumMonoid.SUM_MONOID.op(4, 5));
+        assertEquals(9, SumMonoid.op(4, 5));
     }
 
     @Test
     public void neutral() {
-        assertEquals(0, SumMonoid.SUM_MONOID.unit());
+        assertEquals(0, SumMonoid.unit());
     }
 
     @Test
     public void sumRefl() {
-        assertEquals(9, SemigroupUtil.op(SumMonoid.SUM_MONOID, 4, 5));
+        assertEquals(9, SemigroupUtil.op(SumMonoid.getInstance(), 4, 5));
     }
 
     @Test
     public void neutRefl() {
-        assertEquals(0, MonoidUtil.<SumMonoid, Integer>unit(SumMonoid.SUM_MONOID));
+        assertEquals(0, MonoidUtil.<SumMonoid, Integer>unit(SumMonoid.getInstance()));
     }
 
 }

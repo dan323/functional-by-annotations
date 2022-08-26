@@ -6,6 +6,12 @@ import com.dan323.functional.annotation.algs.IMonoid;
 @Monoid
 public final class ProdMonoid implements IMonoid<Integer> {
 
+    private ProdMonoid(){}
+
+    public static ProdMonoid getInstance(){
+        return PROD_MONOID;
+    }
+
     public static Integer op(Integer num1, Integer num2) {
         return num1 * num2;
     }
@@ -14,5 +20,5 @@ public final class ProdMonoid implements IMonoid<Integer> {
         return 1;
     }
 
-    public static final ProdMonoid PROD_MONOID = new ProdMonoid();
+    private static final ProdMonoid PROD_MONOID = new ProdMonoid();
 }

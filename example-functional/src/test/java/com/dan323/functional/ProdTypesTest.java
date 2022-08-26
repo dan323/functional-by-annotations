@@ -13,8 +13,10 @@ import com.dan323.functional.data.pair.PairTypeContructor;
 import com.dan323.functional.data.pair.ProdApplicative;
 import com.dan323.functional.data.pair.ProdFunctor;
 import com.dan323.functional.data.pair.ProdMonad;
+import com.dan323.mock.SomeApplicative;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,5 +81,13 @@ public class ProdTypesTest {
         assertEquals(new PairTypeContructor<>(FiniteList.of(1, 2, 3), Maybe.of(8)), sol);
         sol = ApplicativeUtil.pure(pairFunctor, PairTypeContructor.class, 7);
         assertEquals(new PairTypeContructor<>(FiniteList.of(7), Maybe.of(7)), sol);
+    }
+
+    @Test
+    public void applicativeAndFunctor() {
+        var pairFunctor = new ProdApplicative<>(new SomeApplicative(), new SomeApplicative());
+        var par = new PairTypeContructor<>(List.of(1, 2), List.of(2, 3));
+        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
+        assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);
     }
 }

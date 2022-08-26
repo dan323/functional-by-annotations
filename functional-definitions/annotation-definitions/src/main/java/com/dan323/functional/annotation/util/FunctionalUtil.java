@@ -75,7 +75,7 @@ public final class FunctionalUtil {
         try {
             return (O) method.invoke(structure, inputs);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException("The method or inputs were not accessible");
+            throw new IllegalStateException("The method or inputs were not accessible", e);
         } catch (InvocationTargetException e) {
             InvocationTargetException ex = e;
             while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException && illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {

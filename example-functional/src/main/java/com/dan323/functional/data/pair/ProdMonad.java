@@ -1,7 +1,6 @@
 package com.dan323.functional.data.pair;
 
 import com.dan323.functional.annotation.Monad;
-import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IMonad;
 import com.dan323.functional.annotation.util.MonadUtil;
 
@@ -11,7 +10,7 @@ import java.util.function.Function;
 @Monad
 public class ProdMonad<M, N> extends ProdApplicative<M, N> implements IMonad<PairTypeContructor<M, N, ?>> {
 
-    public ProdMonad(IApplicative<M> fm, IApplicative<N> fn) {
+    public ProdMonad(IMonad<M> fm, IMonad<N> fn) {
         super(fm, fn);
     }
 

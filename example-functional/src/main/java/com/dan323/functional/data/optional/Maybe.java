@@ -18,22 +18,4 @@ public sealed interface Maybe<A> permits Nothing, Just {
         return (Maybe<A>) Nothing.NOTHING;
     }
 
-
-    /*
-    @Override
-    <R> Optional<R> flatMap(Function<A, Monad<R, Optional<?>>> f);
-
-    @Override
-    <R> Optional<R> fapply(Applicative<Function<A, R>, Optional<?>> applicative);
-
-    @Override
-    default <Q> Optional<Q> pure(Q a) {
-        return of(a);
-    }
-
-    @Override
-    default <R> Optional<R> join(Monad<Monad<R, Optional<?>>, Optional<?>> monadMonad) {
-        var optOpt = ((Optional<Optional<R>>) (Monad<?, ?>) monadMonad);
-        return optOpt.maybe(Function.identity(), of());
-    }*/
 }

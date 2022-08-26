@@ -52,6 +52,15 @@
                     </annotationProcessors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        --add-exports functional.data/com.dan323.mock=functional.annotations
+                    </argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

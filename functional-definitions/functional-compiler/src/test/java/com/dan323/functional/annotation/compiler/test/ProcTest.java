@@ -1,5 +1,6 @@
-package com.dan323.functional.annotation.compiler;
+package com.dan323.functional.annotation.compiler.test;
 
+import com.dan323.functional.annotation.compiler.FunctionalCompiler;
 import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;

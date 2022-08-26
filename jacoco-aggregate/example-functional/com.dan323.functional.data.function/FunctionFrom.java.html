@@ -7,30 +7,39 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Monad
-<span class="nc" id="L10">public final class FunctionFrom&lt;A&gt; implements IMonad&lt;Function&lt;A, ?&gt;&gt; {</span>
+public final class FunctionFrom&lt;A&gt; implements IMonad&lt;Function&lt;A, ?&gt;&gt; {
 
-    public static &lt;B, C, A&gt; Function&lt;A, C&gt; map(Function&lt;A, B&gt; base, Function&lt;B, C&gt; mapping) {
-<span class="fc" id="L13">        return mapping.compose(base);</span>
+    private FunctionFrom() {
     }
 
-    public static &lt;B, A&gt; Function&lt;A, B&gt; pure(B data) {
-<span class="fc" id="L17">        return x -&gt; data;</span>
+    public static &lt;A&gt; FunctionFrom&lt;A&gt; getInstance() {
+<span class="fc" id="L16">        return (FunctionFrom&lt;A&gt;) FUNCTION_FROM;</span>
     }
 
-    public static &lt;B, C, A&gt; Function&lt;A, C&gt; fapply(Function&lt;A, Function&lt;B, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
-<span class="fc" id="L21">        return x -&gt; ffun.apply(x).apply(g.apply(x));</span>
+<span class="fc" id="L19">    private static final FunctionFrom&lt;?&gt; FUNCTION_FROM = new FunctionFrom&lt;&gt;();</span>
+
+    public &lt;B, C&gt; Function&lt;A, C&gt; map(Function&lt;A, B&gt; base, Function&lt;B, C&gt; mapping) {
+<span class="fc" id="L22">        return mapping.compose(base);</span>
     }
 
-    public static &lt;B, C, D, A&gt; Function&lt;A, D&gt; liftA2(BiFunction&lt;B, C, D&gt; biFun, Function&lt;A, B&gt; fb, Function&lt;A, C&gt; fc) {
-<span class="fc" id="L25">        return x -&gt; biFun.apply(fb.apply(x), fc.apply(x));</span>
+    public &lt;B&gt; Function&lt;A, B&gt; pure(B data) {
+<span class="fc" id="L26">        return x -&gt; data;</span>
     }
 
-    public static &lt;B, C, A&gt; Function&lt;A, C&gt; flatMap(Function&lt;B, Function&lt;A, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
-<span class="fc" id="L29">        return join(ffun.compose(g));</span>
+    public &lt;B, C&gt; Function&lt;A, C&gt; fapply(Function&lt;A, Function&lt;B, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
+<span class="fc" id="L30">        return x -&gt; ffun.apply(x).apply(g.apply(x));</span>
     }
 
-    public static &lt;B, A&gt; Function&lt;A, B&gt; join(Function&lt;A, Function&lt;A, B&gt;&gt; ffun) {
-<span class="fc" id="L33">        return x -&gt; ffun.apply(x).apply(x);</span>
+    public &lt;B, C, D&gt; Function&lt;A, D&gt; liftA2(BiFunction&lt;B, C, D&gt; biFun, Function&lt;A, B&gt; fb, Function&lt;A, C&gt; fc) {
+<span class="fc" id="L34">        return x -&gt; biFun.apply(fb.apply(x), fc.apply(x));</span>
+    }
+
+    public &lt;B, C&gt; Function&lt;A, C&gt; flatMap(Function&lt;B, Function&lt;A, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
+<span class="fc" id="L38">        return join(ffun.compose(g));</span>
+    }
+
+    public &lt;B&gt; Function&lt;A, B&gt; join(Function&lt;A, Function&lt;A, B&gt;&gt; ffun) {
+<span class="fc" id="L42">        return x -&gt; ffun.apply(x).apply(x);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

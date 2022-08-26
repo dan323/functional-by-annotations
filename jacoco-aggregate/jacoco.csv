@@ -7,11 +7,11 @@ Functionals by annotation in Java/annotation-definitions,com.dan323.functional.a
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FoldableUtil,16,31,0,0,2,6,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonoidUtil,3,10,0,0,1,2,1,2,1,2
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil.new IMonoid() {...},9,0,0,0,3,0,3,0,3,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,ContinuationMonad,0,49,0,0,0,5,0,11,0,11
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,EndoMonoid,13,0,0,0,4,0,4,0,4,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,FunctionFrom,3,51,0,0,1,6,1,10,1,10
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,Continuation,0,45,0,0,0,4,0,10,0,10
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,ProdMonoid,0,18,0,0,0,4,0,4,0,4
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,SumMonoid,0,15,0,0,0,3,0,3,0,3
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,FunctionFrom,0,59,0,0,0,8,0,12,0,12
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,ProdMonoid,0,17,0,0,0,4,0,4,0,4
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,SumMonoid,0,17,0,0,0,4,0,4,0,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BTreeFunctor,0,34,0,2,0,5,0,3,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryNode,17,39,4,4,2,9,5,4,1,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,Leaf,15,26,3,3,2,8,4,3,1,3
@@ -47,7 +47,7 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,AndMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,OrMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeSemigroup,73,0,4,0,15,0,8,0,6,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeMonoid,19,0,0,0,4,0,3,0,3,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeMonoid,14,0,0,0,3,0,2,0,2,0
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,ApplicativeCompiler,74,509,29,51,14,61,30,18,1,7
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,MonadCompiler,157,836,58,80,30,92,59,21,2,9
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerUtils,13,156,3,9,4,30,4,14,1,11

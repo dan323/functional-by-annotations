@@ -4,16 +4,22 @@ import com.dan323.functional.annotation.Monoid;
 import com.dan323.functional.annotation.algs.IMonoid;
 
 @Monoid
-<span class="fc" id="L7">public final class ProdMonoid implements IMonoid&lt;Integer&gt; {</span>
+public final class ProdMonoid implements IMonoid&lt;Integer&gt; {
+
+    private ProdMonoid(){}
+
+    public static ProdMonoid getInstance(){
+<span class="fc" id="L12">        return PROD_MONOID;</span>
+    }
 
     public static Integer op(Integer num1, Integer num2) {
-<span class="fc" id="L10">        return num1 * num2;</span>
+<span class="fc" id="L16">        return num1 * num2;</span>
     }
 
     public static Integer unit() {
-<span class="fc" id="L14">        return 1;</span>
+<span class="fc" id="L20">        return 1;</span>
     }
 
-<span class="fc" id="L17">    public static final ProdMonoid PROD_MONOID = new ProdMonoid();</span>
+<span class="fc" id="L23">    private static final ProdMonoid PROD_MONOID = new ProdMonoid();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

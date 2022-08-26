@@ -8,11 +8,11 @@ public final class AndMonoid implements IMonoid&lt;Boolean&gt; {
 
     private AndMonoid(){}
 
-    public Boolean op(Boolean f1, Boolean f2) {
+    public static Boolean op(Boolean f1, Boolean f2) {
 <span class="nc bnc" id="L12" title="All 4 branches missed.">        return f1 &amp;&amp; f2;</span>
     }
 
-    public Boolean unit() {
+    public static Boolean unit() {
 <span class="nc" id="L16">        return Boolean.TRUE;</span>
     }
 

@@ -17,9 +17,5 @@ public class ApplicativeMonoid&lt;FA extends F, F, A&gt; extends ApplicativeSemi
 <span class="nc" id="L17">        return ApplicativeUtil.pure(applicative, fClass, MonoidUtil.unit(monoid));</span>
     }
 
-    @Override
-    public FA op(FA elem1, FA elem2) {
-<span class="nc" id="L22">        return super.op(elem1, elem2);</span>
-    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

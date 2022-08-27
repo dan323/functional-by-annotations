@@ -6,7 +6,7 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import java.util.function.Function;
 
 @Monad
-public class ContinuationMonad<R> implements IMonad<Continuation<?, R>> {
+public final class ContinuationMonad<R> implements IMonad<Continuation<?, R>> {
 
     private ContinuationMonad() {
     }

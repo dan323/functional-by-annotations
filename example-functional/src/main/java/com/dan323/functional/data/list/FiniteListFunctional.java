@@ -28,11 +28,11 @@ public final class FiniteListFunctional<A> implements IMonad<FiniteList<?>>, IMo
         return finiteList.head().maybe(h -> FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());
     }
 
-    public static <A> FiniteList<A> op(FiniteList<A> op1, FiniteList<A> op2){
+    public FiniteList<A> op(FiniteList<A> op1, FiniteList<A> op2){
         return ListUtils.concat(op1,op2);
     }
 
-    public static <A> FiniteList<A> unit(){
+    public FiniteList<A> unit(){
         return FiniteList.nil();
     }
 

@@ -1,13 +1,18 @@
 package com.dan323.functional.annotation.compiler.applicative;
 
 import com.dan323.functional.annotation.Applicative;
+import com.dan323.functional.annotation.compiler.functor.FunctorMock;
 import com.dan323.functional.annotation.funcs.IApplicative;
 
 import java.util.List;
 import java.util.function.Function;
 
 @Applicative
-public class ApplicativeMock implements IApplicative<List<?>> {
+public class ApplicativeMock extends FunctorMock<Integer> implements IApplicative<List<?>> {
+
+    public ApplicativeMock(List<Integer> lst) {
+        super(lst);
+    }
 
     public static <A> List<A> pure(A a) {
         return List.of(a);
@@ -17,7 +22,4 @@ public class ApplicativeMock implements IApplicative<List<?>> {
         return ffunction.stream().flatMap(f -> base.stream().map(f)).toList();
     }
 
-    public static <A, B> List<B> map(List<A> base, Function<A, B> mapping) {
-        return base.stream().map(mapping).toList();
-    }
 }

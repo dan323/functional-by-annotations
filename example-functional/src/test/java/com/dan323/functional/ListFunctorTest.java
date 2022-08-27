@@ -10,6 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ListFunctorTest {
 
     @Test
+    public void constInfiniteMap() {
+        var sol = ZipApplicative.map(List.cons(5, List.repeat(6)), x -> x * 2);
+        assertEquals(FiniteList.of(10, 12, 12), sol.limit(3));
+    }
+
+    @Test
     public void emptyListFunctor() {
         var sol = ZipApplicative.map(List.nil(), Object::toString);
         assertEquals(List.nil(), sol);

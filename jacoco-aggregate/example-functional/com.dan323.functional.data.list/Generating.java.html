@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-final class Generating&lt;A&gt; implements List&lt;A&gt; {
+final class Generating&lt;A&gt; implements InfiniteList&lt;A&gt; {
 
     private final A head;
     private final UnaryOperator&lt;A&gt; generator;
@@ -23,16 +23,16 @@ final class Generating&lt;A&gt; implements List&lt;A&gt; {
     }
 
     @Override
-    public List&lt;A&gt; tail() {
+    public InfiniteList&lt;A&gt; tail() {
 <span class="nc" id="L27">        return new Generating&lt;&gt;(generator.apply(head), generator);</span>
     }
 
     @Override
-    public &lt;B&gt; List&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+    public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
 <span class="nc" id="L32">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
     }
 
-    protected static final class GeneratingMapped&lt;A,B&gt; implements List&lt;B&gt; {
+    protected static final class GeneratingMapped&lt;A,B&gt; implements InfiniteList&lt;B&gt; {
 
         private final List&lt;A&gt; originalList;
         private final Function&lt;A,B&gt; mapping;
@@ -48,12 +48,12 @@ final class Generating&lt;A&gt; implements List&lt;A&gt; {
         }
 
         @Override
-        public List&lt;B&gt; tail() {
+        public InfiniteList&lt;B&gt; tail() {
 <span class="nc" id="L52">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
         }
 
         @Override
-        public &lt;B1&gt; List&lt;B1&gt; map(Function&lt;B, B1&gt; mapping) {
+        public &lt;B1&gt; InfiniteList&lt;B1&gt; map(Function&lt;B, B1&gt; mapping) {
 <span class="nc" id="L57">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
         }
     }

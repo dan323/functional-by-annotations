@@ -7,15 +7,15 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * List of one element in front of another list
+ * List of one element in front of another infinite list
  * @param &lt;A&gt;
  */
-final class Cons&lt;A&gt; implements List&lt;A&gt; {
+final class Cons&lt;A&gt; implements InfiniteList&lt;A&gt; {
 
     private final A head;
-    private final List&lt;A&gt; tail;
+    private final InfiniteList&lt;A&gt; tail;
 
-<span class="nc" id="L18">    Cons(A head, List&lt;A&gt; tail) {</span>
+<span class="nc" id="L18">    Cons(A head, InfiniteList&lt;A&gt; tail) {</span>
 <span class="nc bnc" id="L19" title="All 4 branches missed.">        if (head == null || tail == null){</span>
 <span class="nc" id="L20">            throw new IllegalArgumentException();</span>
         }
@@ -29,12 +29,12 @@ final class Cons&lt;A&gt; implements List&lt;A&gt; {
     }
 
     @Override
-    public List&lt;A&gt; tail() {
+    public InfiniteList&lt;A&gt; tail() {
 <span class="nc" id="L33">        return tail;</span>
     }
 
     @Override
-    public &lt;B&gt; List&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+    public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
 <span class="nc" id="L38">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
     }
 

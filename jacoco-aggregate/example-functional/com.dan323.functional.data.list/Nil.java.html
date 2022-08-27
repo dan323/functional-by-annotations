@@ -4,6 +4,7 @@ import com.dan323.functional.data.optional.Maybe;
 
 /**
  * Empty list
+ *
  * @param &lt;A&gt;
  */
 final class Nil&lt;A&gt; implements FiniteList&lt;A&gt; {
@@ -11,46 +12,31 @@ final class Nil&lt;A&gt; implements FiniteList&lt;A&gt; {
     private Nil() {
     }
 
-<span class="nc" id="L14">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
+<span class="nc" id="L15">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="nc" id="L18">        return Maybe.of();</span>
+<span class="nc" id="L19">        return Maybe.of();</span>
     }
 
     @Override
     public FiniteList&lt;A&gt; tail() {
-<span class="nc" id="L23">        return new Nil&lt;&gt;();</span>
+<span class="nc" id="L24">        return this;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L28">        return &quot;[]&quot;;</span>
+<span class="nc" id="L29">        return &quot;[]&quot;;</span>
     }
-/*
-    @Override
-    public &lt;R&gt; List&lt;R&gt; map(Function&lt;A, R&gt; f) {
-        return (List&lt;R&gt;) NIL;
-    }
-
-    @Override
-    public &lt;R&gt; List&lt;R&gt; flatMap(Function&lt;A, Monad&lt;R, List&lt;?&gt;&gt;&gt; f) {
-        return (List&lt;R&gt;) NIL;
-    }
-
-    @Override
-    public &lt;Q&gt; List&lt;Q&gt; fapply(Applicative&lt;Function&lt;A, Q&gt;, List&lt;?&gt;&gt; ff) {
-        return List.nil();
-    }*/
 
     @Override
     public boolean equals(Object obj) {
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        return obj == NIL;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        return obj == NIL;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L53">        return 7;</span>
+<span class="nc" id="L39">        return 7;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

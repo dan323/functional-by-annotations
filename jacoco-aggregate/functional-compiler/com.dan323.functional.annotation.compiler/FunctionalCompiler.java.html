@@ -44,8 +44,8 @@ import java.util.stream.Collectors;
 <span class="fc bfc" id="L44" title="All 2 branches covered.">            for (var elem : elems) {</span>
 <span class="pc bpc" id="L45" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
 <span class="fc" id="L46">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);</span>
-<span class="fc" id="L47">                    ifaces.stream().map(iface -&gt; Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))</span>
-<span class="fc" id="L48">                            .forEach(comp -&gt; comp.getValue().process(roundEnvironment, telem, comp.getKey()));</span>
+<span class="fc" id="L47">                    ifaces.stream().map(iface -&gt; compilerFactory.from(iface, elementUtils, typeUtils, messager))</span>
+<span class="fc" id="L48">                            .forEach(comp -&gt; comp.process(telem));</span>
                 }
 <span class="fc" id="L50">            }</span>
 <span class="nc" id="L51">        } catch (Throwable e) {</span>

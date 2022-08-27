@@ -1,6 +1,7 @@
 package com.dan323.functional.annotation.util;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public final class ApplicativeUtil {
 
@@ -10,6 +11,15 @@ public final class ApplicativeUtil {
 
     public static <G, F, FA extends F, A> FA pure(G applicative, Class<F> fClass, A a) {
         return FunctionalUtil.<G, F, FA, A>applicativePure(applicative, fClass, a).orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
+    }
+
+    public static <G,F,FA extends F, FB extends F> FA keepLeft(G applicative, Class<F> fClass, FA left, FB right){
+        return liftA2(applicative, fClass, (x,y)-> x, left, right);
+    }
+
+    public static <G,F,FA extends F, FB extends F> FA keepRight(G applicative, Class<F> fClass, FA left, FB right){
+        var aux =FunctorUtil.mapConst(applicative, fClass, left, Function.identity());
+        return fapply(applicative, fClass,right, aux);
     }
 
     public static <G, F, FA extends F, FB extends F, FF extends F> FB fapply(G applicative, Class<F> fClass, FA base, FF ff) {

@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 public final class FunctorUtil {
 
-    private FunctorUtil(){
+    private FunctorUtil() {
         throw new UnsupportedOperationException();
     }
 
@@ -13,6 +13,10 @@ public final class FunctorUtil {
                 .or(() -> FunctionalUtil.applicativeMap(functor, fClass, base, function))
                 .or(() -> FunctionalUtil.monadMap(functor, fClass, base, function))
                 .orElseThrow(() -> new IllegalArgumentException("The monad is not correctly implemented."));
+    }
+
+    public static <G, F, FA extends F, FB extends F, B> FB mapConst(G functor, Class<F> fClass, FA base, B constant) {
+        return map(functor, fClass, base, x -> constant);
     }
 
 }

@@ -44,8 +44,8 @@ public final class FunctionalCompiler extends AbstractProcessor {
             for (var elem : elems) {
                 if (elem instanceof TypeElement telem && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
                     var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);
-                    ifaces.stream().map(iface -> Map.entry(iface, compilerFactory.from(iface, elementUtils, typeUtils, messager)))
-                            .forEach(comp -> comp.getValue().process(roundEnvironment, telem, comp.getKey()));
+                    ifaces.stream().map(iface -> compilerFactory.from(iface, elementUtils, typeUtils, messager))
+                            .forEach(comp -> comp.process(telem));
                 }
             }
         } catch (Throwable e) {

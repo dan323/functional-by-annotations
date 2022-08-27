@@ -9,7 +9,6 @@ import java.util.function.Function;
 @Applicative
 public class ApplicativeMock implements IApplicative<List<?>> {
 
-
     public static <A> List<A> pure(A a) {
         return List.of(a);
     }

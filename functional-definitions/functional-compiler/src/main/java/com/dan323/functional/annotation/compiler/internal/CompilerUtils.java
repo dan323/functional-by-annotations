@@ -13,15 +13,10 @@ import java.util.List;
 
 public final class CompilerUtils {
 
-    public static DeclaredType changeWildBy(Elements elementUtils, Types typeUtils, DeclaredType type, TypeMirror substitute, Class<?> interfaceClass) {
-        var functorI = elementUtils.getTypeElement(interfaceClass.getTypeName());
-        var wilderized = type;
-        if (type.asElement().equals(functorI)) {
-            var lst = type.getTypeArguments();
-            wilderized = (DeclaredType) lst.get(0);
-        } else {
-            throw new IllegalArgumentException();
-        }
+    public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
+        var lst = type.getTypeArguments();
+        var wilderized = (DeclaredType) lst.get(0);
+
         var funcList = wilderized.getTypeArguments().stream()
                 .map((TypeMirror tm) -> {
                     if (tm.getKind().equals(TypeKind.WILDCARD)) {

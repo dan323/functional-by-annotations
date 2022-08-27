@@ -6,7 +6,7 @@ import com.dan323.functional.data.optional.MaybeMonad;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-final class Zipped<A, B, C> implements List<C> {
+final class Zipped<A, B, C> implements InfiniteList<C> {
 
     private final List<A> first;
     private final List<B> second;
@@ -26,12 +26,12 @@ final class Zipped<A, B, C> implements List<C> {
     }
 
     @Override
-    public List<C> tail() {
+    public InfiniteList<C> tail() {
         return new Zipped<>(first.tail(), zipper, second.tail());
     }
 
     @Override
-    public <D> List<D> map(Function<C, D> mapping) {
+    public <D> InfiniteList<D> map(Function<C, D> mapping) {
         return new Zipped<>(first, zipper.andThen(mapping), second);
     }
 

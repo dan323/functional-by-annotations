@@ -11,7 +11,7 @@ import java.util.function.Function;
  *
  * @param <A>
  */
-final class Repeat<A> implements List<A> {
+final class Repeat<A> implements InfiniteList<A> {
 
     private final A element;
 
@@ -26,12 +26,12 @@ final class Repeat<A> implements List<A> {
     }
 
     @Override
-    public List<A> tail() {
+    public InfiniteList<A> tail() {
         return this;
     }
 
     @Override
-    public <B> List<B> map(Function<A, B> mapping) {
+    public <B> InfiniteList<B> map(Function<A, B> mapping) {
         return new Repeat<>(mapping.apply(element));
     }
 

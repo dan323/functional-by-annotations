@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-final class Generating<A> implements List<A> {
+final class Generating<A> implements InfiniteList<A> {
 
     private final A head;
     private final UnaryOperator<A> generator;
@@ -23,16 +23,16 @@ final class Generating<A> implements List<A> {
     }
 
     @Override
-    public List<A> tail() {
+    public InfiniteList<A> tail() {
         return new Generating<>(generator.apply(head), generator);
     }
 
     @Override
-    public <B> List<B> map(Function<A, B> mapping) {
+    public <B> InfiniteList<B> map(Function<A, B> mapping) {
         return new GeneratingMapped<>(this, mapping);
     }
 
-    protected static final class GeneratingMapped<A,B> implements List<B> {
+    protected static final class GeneratingMapped<A,B> implements InfiniteList<B> {
 
         private final List<A> originalList;
         private final Function<A,B> mapping;
@@ -48,12 +48,12 @@ final class Generating<A> implements List<A> {
         }
 
         @Override
-        public List<B> tail() {
+        public InfiniteList<B> tail() {
             return new GeneratingMapped<>(originalList.tail(), mapping);
         }
 
         @Override
-        public <B1> List<B1> map(Function<B, B1> mapping) {
+        public <B1> InfiniteList<B1> map(Function<B, B1> mapping) {
             return new GeneratingMapped<>(originalList, mapping.compose(this.mapping));
         }
     }

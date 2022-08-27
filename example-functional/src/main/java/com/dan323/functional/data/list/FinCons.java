@@ -6,26 +6,28 @@ import java.util.Objects;
 
 final class FinCons<A> implements FiniteList<A> {
 
-    private final Cons<A> cons;
+    private final A head;
+    private final FiniteList<A> tail;
 
     FinCons(A head, FiniteList<A> tail) {
-        cons = new Cons<>(head, tail);
+        this.head = head;
+        this.tail = tail;
     }
 
     @Override
     public Maybe<A> head() {
-        return cons.head();
+        return Maybe.of(head);
     }
 
     @Override
     public FiniteList<A> tail() {
-        return (FiniteList<A>) cons.tail();
+        return tail;
     }
 
 
     @Override
     public String toString() {
-        return cons.toString();
+        return "[" + head + "," + tail + "]";
     }
 
 
@@ -34,11 +36,11 @@ final class FinCons<A> implements FiniteList<A> {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != getClass()) return false;
         FinCons<?> k = ((FinCons<?>) obj);
-        return Objects.equals(k.cons, cons);
+        return Objects.equals(k.head, head) && Objects.equals(k.tail, tail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cons, "finite");
+        return Objects.hash(head, tail, "finite");
     }
 }

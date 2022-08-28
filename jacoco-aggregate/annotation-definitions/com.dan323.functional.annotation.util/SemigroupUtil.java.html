@@ -10,8 +10,7 @@ public final class SemigroupUtil {
 
     public static &lt;G extends ISemigroup&lt;A&gt;, A&gt; A op(G semi, A a, A b) {
 <span class="fc" id="L12">        return FunctionalUtil.semigroupOp(semi, a, b)</span>
-<span class="pc" id="L13">                .or(() -&gt; FunctionalUtil.monoidOp(semi, a, b))</span>
-<span class="pc" id="L14">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monoid is not correctly implemented.&quot;));</span>
+<span class="fc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The semigroup is not correctly implemented.&quot;));</span>
     }
 
 }

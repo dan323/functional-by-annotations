@@ -1,9 +1,9 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctorUtil,15,37,0,0,3,4,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonadUtil,6,25,0,0,2,4,1,4,1,4
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,301,1096,23,43,28,95,37,79,16,67
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,304,1108,23,43,29,99,37,79,16,67
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,SemigroupUtil,17,12,0,0,2,3,3,1,3,1
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,27,65,0,0,5,7,4,8,4,8
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,27,65,0,0,5,8,4,8,4,8
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FoldableUtil,16,31,0,0,2,6,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonoidUtil,3,10,0,0,1,2,1,2,1,2
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil.new IMonoid() {...},9,0,0,0,3,0,3,0,3,0
@@ -18,9 +18,9 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryTree,11,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctional,48,0,0,0,14,0,3,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,PairTypeContructor,56,0,8,0,11,0,9,0,5,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,57,0,4,0,5,0,6,0,4,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,44,0,0,0,4,0,5,0,5,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,44,0,6,0,4,0,6,0,3,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,61,0,4,0,5,0,6,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,46,0,0,0,4,0,5,0,5,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,46,0,6,0,4,0,6,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Generating,39,0,4,0,8,0,6,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Nil,20,0,2,0,6,0,7,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,JListFunctor,11,0,0,0,2,0,2,0,2,0
@@ -51,10 +51,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,AndMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,OrMonoid,18,0,4,0,3,0,5,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeSemigroup,73,0,4,0,15,0,8,0,6,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeMonoid,14,0,0,0,3,0,2,0,2,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeMonoid,15,0,0,0,3,0,2,0,2,0
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerUtils,9,143,2,8,3,26,3,14,1,11
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerFactory,5,111,1,11,1,14,1,7,0,2
-Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,Compiler,6,131,2,14,2,27,3,14,1,8
+Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,Compiler,6,131,1,15,2,27,2,15,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,FunctionalDependencyTree,0,67,0,0,0,18,0,5,0,5
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler,FunctionalCompiler,19,102,2,4,4,19,3,9,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,EmptyNecessaryMethods,0,5,0,0,0,2,0,2,0,2

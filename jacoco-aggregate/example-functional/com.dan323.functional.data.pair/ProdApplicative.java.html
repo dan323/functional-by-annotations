@@ -15,11 +15,11 @@ public class ProdApplicative&lt;M, N&gt; extends ProdFunctor&lt;M, N&gt; impleme
 <span class="nc" id="L15">    }</span>
 
     public &lt;A&gt; PairTypeContructor&lt;M, N, A&gt; pure(A a) {
-<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure(mFunctor, mClass, a), ApplicativeUtil.pure(nFunctor, nClass, a));</span>
+<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure((IApplicative&lt;M&gt;) mFunctor, mClass, a), ApplicativeUtil.pure((IApplicative&lt;N&gt;) nFunctor, nClass, a));</span>
     }
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; fapply(PairTypeContructor&lt;M, N, Function&lt;A, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; c1) {
-<span class="nc" id="L22">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.fapply(mFunctor, mClass, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply(nFunctor, nClass, c1.getSecond(), f.getSecond()));</span>
+<span class="nc" id="L22">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.fapply((IApplicative&lt;M&gt;) mFunctor, mClass, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply((IApplicative&lt;N&gt;) nFunctor, nClass, c1.getSecond(), f.getSecond()));</span>
     }
 
     @Override

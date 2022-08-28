@@ -17,7 +17,7 @@ public class ProdFunctor&lt;M, N&gt; extends ProdFunctional&lt;M,N&gt; implement
 <span class="nc" id="L17">    }</span>
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; map(PairTypeContructor&lt;M, N, A&gt; base, Function&lt;A, B&gt; function) {
-<span class="nc" id="L20">        return new PairTypeContructor&lt;&gt;(FunctorUtil.map(mFunctor, mClass, base.getFirst(), function), FunctorUtil.map(nFunctor, nClass, base.getSecond(), function));</span>
+<span class="nc" id="L20">        return new PairTypeContructor&lt;&gt;(FunctorUtil.map((IFunctor&lt;M&gt;) mFunctor, mClass, base.getFirst(), function), FunctorUtil.map((IFunctor&lt;N&gt;) nFunctor, nClass, base.getSecond(), function));</span>
     }
 
     @Override

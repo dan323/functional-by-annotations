@@ -55,7 +55,7 @@ public class Compiler&lt;F extends Annotation&gt; {
             } else {
 <span class="fc" id="L56">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
             }
-<span class="pc bpc" id="L58" title="1 of 4 branches missed.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
 <span class="fc bfc" id="L59" title="All 2 branches covered.">        if (!success) {</span>
 <span class="fc" id="L60">            error(&quot;The public function map was not found in %s&quot;, originalElement.getQualifiedName());</span>
         }

@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ApplicativeUtil.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">annotation-definitions</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.util</a> &gt; <span class="el_source">ApplicativeUtil.java</span></div><h1>ApplicativeUtil.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.util;
 
+import com.dan323.functional.annotation.funcs.IApplicative;
+
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public final class ApplicativeUtil {
 
-<span class="nc" id="L8">    private ApplicativeUtil(){</span>
-<span class="nc" id="L9">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L10">    private ApplicativeUtil() {</span>
+<span class="nc" id="L11">        throw new UnsupportedOperationException();</span>
     }
 
-    public static &lt;G, F, FA extends F, A&gt; FA pure(G applicative, Class&lt;F&gt; fClass, A a) {
-<span class="fc" id="L13">        return FunctionalUtil.&lt;G, F, FA, A&gt;applicativePure(applicative, fClass, a).orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+    public static &lt;G extends IApplicative&lt;FW&gt;, FW extends F, F, FA extends F, A&gt; FA pure(G applicative, Class&lt;F&gt; fClass, A a) {
+<span class="fc" id="L15">        return FunctionalUtil.&lt;G, FW, F, FA, A&gt;applicativePure(applicative, fClass, a)</span>
+<span class="fc" id="L16">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
-    public static &lt;G,F,FA extends F, FB extends F&gt; FA keepLeft(G applicative, Class&lt;F&gt; fClass, FA left, FB right){
-<span class="nc" id="L17">        return liftA2(applicative, fClass, (x,y)-&gt; x, left, right);</span>
+    public static &lt;G extends IApplicative&lt;FW&gt;, FW extends F, F, FA extends F, FB extends F&gt; FA keepLeft(G applicative, Class&lt;F&gt; fClass, FA left, FB right) {
+<span class="nc" id="L20">        return liftA2(applicative, fClass, (x, y) -&gt; x, left, right);</span>
     }
 
-    public static &lt;G,F,FA extends F, FB extends F&gt; FA keepRight(G applicative, Class&lt;F&gt; fClass, FA left, FB right){
-<span class="nc" id="L21">        var aux =FunctorUtil.mapConst(applicative, fClass, left, Function.identity());</span>
-<span class="nc" id="L22">        return fapply(applicative, fClass,right, aux);</span>
+    public static &lt;G extends IApplicative&lt;FW&gt;, FW extends F, F, FA extends F, FB extends F&gt; FA keepRight(G applicative, Class&lt;F&gt; fClass, FA left, FB right) {
+<span class="nc" id="L24">        var aux = FunctorUtil.mapConst(applicative, fClass, left, Function.identity());</span>
+<span class="nc" id="L25">        return fapply(applicative, fClass, right, aux);</span>
     }
 
-    public static &lt;G, F, FA extends F, FB extends F, FF extends F&gt; FB fapply(G applicative, Class&lt;F&gt; fClass, FA base, FF ff) {
-<span class="fc" id="L26">        return FunctionalUtil.&lt;G, F, FA, FB, FF&gt;applicativeFapply(applicative, fClass, base, ff)</span>
-<span class="fc" id="L27">                .or(() -&gt; FunctionalUtil.monadFapply(applicative, fClass, base, ff))</span>
-<span class="fc" id="L28">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+    public static &lt;G extends IApplicative&lt;FW&gt;, FW extends F, F, FA extends F, FB extends F, FF extends F&gt; FB fapply(G applicative, Class&lt;F&gt; fClass, FA base, FF ff) {
+<span class="fc" id="L29">        return FunctionalUtil.&lt;G, FW, F, FA, FB, FF&gt;applicativeFapply(applicative, fClass, base, ff)</span>
+<span class="fc" id="L30">                .or(() -&gt; FunctionalUtil.monadFapply(applicative, fClass, base, ff))</span>
+<span class="fc" id="L31">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
-    public static &lt;G, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; FC liftA2(G applicative, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; map, FA fa, FB fb) {
-<span class="fc" id="L32">        return FunctionalUtil.&lt;G, F, FA, FB, FC, A, B, C&gt;applicativeLiftA2(applicative, fClass, map, fa, fb)</span>
-<span class="fc" id="L33">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, fClass, map, fa, fb))</span>
-<span class="fc" id="L34">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+    public static &lt;G extends IApplicative&lt;FW&gt;, FW extends F, F, FA extends F, FB extends F, FC extends F, A, B, C&gt; FC liftA2(G applicative, Class&lt;F&gt; fClass, BiFunction&lt;A, B, C&gt; map, FA fa, FB fb) {
+<span class="fc" id="L35">        return FunctionalUtil.&lt;G, FW, F, FA, FB, FC, A, B, C&gt;applicativeLiftA2(applicative, fClass, map, fa, fb)</span>
+<span class="fc" id="L36">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, fClass, map, fa, fb))</span>
+<span class="fc" id="L37">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
 }

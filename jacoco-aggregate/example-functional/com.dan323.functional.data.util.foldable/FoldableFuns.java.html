@@ -25,7 +25,7 @@ public final class FoldableFuns {
      * @param &lt;F&gt;      Type of {@code fClass}
      * @return true iff {@code felement} has no elements to be folded
      */
-    public static &lt;FA extends F, F&gt; boolean isEmpty(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement) {
+    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F&gt; boolean isEmpty(G foldable, Class&lt;F&gt; fClass, FA felement) {
 <span class="nc" id="L29">        return foldMap(foldable, AndMonoid.AND_MONOID, fClass, x -&gt; Boolean.FALSE, felement);</span>
     }
 
@@ -39,7 +39,7 @@ public final class FoldableFuns {
      * @param &lt;F&gt;      Type of {@code fClass}
      * @return number of elements in {@code felement}
      */
-    public static &lt;FA extends F, F&gt; int length(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, FA felement) {
+    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F&gt; int length(G foldable, Class&lt;F&gt; fClass, FA felement) {
 <span class="nc" id="L43">        return foldMap(foldable, SumMonoid.getInstance(), fClass, x -&gt; 1, felement);</span>
     }
 
@@ -55,7 +55,7 @@ public final class FoldableFuns {
      * @param &lt;A&gt;      Type of {@code elem}
      * @return true iff {@code elem} is in {@code felement}
      */
-    public static &lt;FA extends F, F, A&gt; boolean contains(IFoldable&lt;F&gt; foldable, Class&lt;F&gt; fClass, A elem, FA felement) {
+    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F, A&gt; boolean contains(G foldable, Class&lt;F&gt; fClass, A elem, FA felement) {
 <span class="nc" id="L59">        return foldMap(foldable, OrMonoid.OR_MONOID, fClass, x -&gt; Objects.equals(x, elem), felement);</span>
     }
 }

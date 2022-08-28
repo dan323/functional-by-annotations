@@ -15,7 +15,7 @@ public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implement
 <span class="nc" id="L15">    }</span>
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; flatMap(Function&lt;A, PairTypeContructor&lt;M, N, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; base) {
-<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap(mFunctor, mClass, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap(nFunctor, nClass, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
+<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, mClass, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, nClass, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ApplicativeSemigroup&lt;FA extends F, F, A&gt; implements ISemigrou
     }
 
     public FA op(FA elem1, FA elem2) {
-<span class="nc" id="L45">        return ApplicativeUtil.liftA2(applicative, fClass, (x, y) -&gt; SemigroupUtil.op(monoid, x, y), elem1, elem2);</span>
+<span class="nc" id="L45">        return ApplicativeUtil.liftA2(applicative, fClass, (A x,A y) -&gt; SemigroupUtil.op(monoid, x, y), elem1, elem2);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

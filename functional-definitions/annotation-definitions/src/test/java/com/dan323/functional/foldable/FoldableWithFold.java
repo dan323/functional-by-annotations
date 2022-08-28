@@ -22,6 +22,6 @@ public class FoldableWithFold implements IFoldable<List<?>> {
     }
 
     public <A> A fold(IMonoid<A> monoid, List<A> lst) {
-        return lst.stream().reduce(MonoidUtil.unit(monoid), (a, b) -> SemigroupUtil.op(monoid, a, b));
+        return MonoidUtil.unit(monoid);
     }
 }

@@ -25,7 +25,7 @@ public class FoldableUtilTest {
     @Test
     public void foldableFold() {
         var sol = FoldableUtil.fold(FoldableWithFold.LIST_FOLD, MonoidSum.MONOID, List.class, List.of(3, 5, 5));
-        assertEquals(13, sol);
+        assertEquals(0, sol);
     }
 
     @Test

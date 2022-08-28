@@ -15,7 +15,7 @@ public class ProdMonad<M, N> extends ProdApplicative<M, N> implements IMonad<Pai
     }
 
     public <A, B> PairTypeContructor<M, N, B> flatMap(Function<A, PairTypeContructor<M, N, B>> f, PairTypeContructor<M, N, A> base) {
-        return new PairTypeContructor<>(MonadUtil.flatMap(mFunctor, mClass, (A x) -> f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap(nFunctor, nClass, (A x) -> f.apply(x).getSecond(), base.getSecond()));
+        return new PairTypeContructor<>(MonadUtil.flatMap((IMonad<M>) mFunctor, mClass, (A x) -> f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad<N>) nFunctor, nClass, (A x) -> f.apply(x).getSecond(), base.getSecond()));
     }
 
     @Override

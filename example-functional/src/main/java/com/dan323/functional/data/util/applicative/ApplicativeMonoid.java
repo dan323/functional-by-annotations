@@ -14,7 +14,7 @@ public class ApplicativeMonoid<FA extends F, F, A> extends ApplicativeSemigroup<
     }
 
     public FA unit() {
-        return ApplicativeUtil.pure(applicative, fClass, MonoidUtil.unit(monoid));
+        return ApplicativeUtil.pure(applicative, fClass, MonoidUtil.unit((IMonoid<A>)monoid));
     }
 
 }

@@ -87,7 +87,7 @@ public final class FunctionalUtil {
 
     // FOLDABLE
     // Fold
-    static <G, FA extends F, F, A> Optional<A> foldableFold(G foldable, IMonoid<A> monoid, Class<F> fClass, FA base) {
+    static <G extends IFoldable<FW>, FW extends F, FA extends F, F, A> Optional<A> foldableFold(G foldable, IMonoid<A> monoid, Class<F> fClass, FA base) {
         if (isFoldable(foldable.getClass())) {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_NAME, IMonoid.class, fClass)
                     .<A>map(m -> invokeStaticMethod(foldable, m, monoid, base))
@@ -100,7 +100,7 @@ public final class FunctionalUtil {
     }
 
     // FoldMap
-    static <G, FA extends F, F, A, M> Optional<M> foldableFoldMap(G foldable, IMonoid<M> monoid, Class<F> fClass, Function<A, M> function, FA base) {
+    static <G extends IFoldable<FW>, FW extends F, FA extends F, F, A, M> Optional<M> foldableFoldMap(G foldable, IMonoid<M> monoid, Class<F> fClass, Function<A, M> function, FA base) {
         if (isFoldable(foldable.getClass())) {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)
                     .<M>map(m -> invokeStaticMethod(foldable, m, monoid, function, base))
@@ -112,7 +112,7 @@ public final class FunctionalUtil {
     }
 
     // Foldr
-    static <G, M, B, F, FM extends F> Optional<B> foldableFoldr(G foldable, Class<F> fClass, BiFunction<M, B, B> function, B b, FM fm) {
+    static <G extends IFoldable<FW>, FW extends F, M, B, F, FM extends F> Optional<B> foldableFoldr(G foldable, Class<F> fClass, BiFunction<M, B, B> function, B b, FM fm) {
         if (isFoldable(foldable.getClass())) {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass)
                     .<B>map(m -> invokeStaticMethod(foldable, m, function, b, fm))
@@ -133,7 +133,7 @@ public final class FunctionalUtil {
 
     // SEMIGROUP
     // Operation
-    static <G, A> Optional<A> semigroupOp(G semigroup, A a, A b) {
+    static <G extends ISemigroup<A>, A> Optional<A> semigroupOp(G semigroup, A a, A b) {
         if (isSemigroup(semigroup.getClass())) {
             return Stream.of(semigroup.getClass().getGenericInterfaces())
                     .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
@@ -147,8 +147,9 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G, A> Optional<A> monoidOp(G monoid, A a, A b) {
-        if (isMonoid(monoid.getClass())) {
+    static <G extends ISemigroup<A>, A> Optional<A> monoidOp(G semigroup, A a, A b) {
+        if (isMonoid(semigroup.getClass())) {
+            IMonoid<A> monoid = (IMonoid<A>) semigroup;
             return Stream.of(monoid.getClass().getGenericInterfaces())
                     .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
                     .findFirst()
@@ -163,7 +164,7 @@ public final class FunctionalUtil {
 
     // MONOID
     // Unit function
-    static <G, A> Optional<A> monoidUnit(G monoid) {
+    static <G extends IMonoid<A>, A> Optional<A> monoidUnit(G monoid) {
         if (isMonoid(monoid.getClass())) {
             return getMethodIfExists(monoid.getClass(), IMonoid.UNIT_NAME)
                     .map(m -> invokeStaticMethod(monoid, m));
@@ -174,8 +175,9 @@ public final class FunctionalUtil {
 
     // FUNCTOR
     // Map functions
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> applicativeMap(G applicative, Class<F> fClass, FA base, Function<A, B> map) {
-        if (isApplicative(applicative.getClass())) {
+    static <G extends IFunctor<FW>, FW extends F, F, FA extends F, FB extends F, A, B> Optional<FB> applicativeMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
+        if (isApplicative(functor.getClass())) {
+            IApplicative<FW> applicative = (IApplicative<FW>) functor;
             return getMethodIfExists(applicative.getClass(), "fapply", fClass, fClass)
                     .or(() -> getMethodIfExists(applicative.getClass(), "liftA2", BiFunction.class, fClass, fClass))
                     .map(m -> ApplicativeUtil.fapply(applicative, fClass, base, ApplicativeUtil.pure(applicative, fClass, map)));
@@ -184,8 +186,9 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> monadMap(G monad, Class<F> fClass, FA base, Function<A, B> map) {
-        if (isMonad(monad.getClass())) {
+    static <G extends IFunctor<FW>, FW extends F, F, FA extends F, FB extends F, A, B> Optional<FB> monadMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
+        if (isMonad(functor.getClass())) {
+            IMonad<FW> monad = (IMonad<FW>) functor;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
                     .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))
                     .map(m -> MonadUtil.flatMap(monad, fClass, (A a) -> ApplicativeUtil.pure(monad, fClass, map.apply(a)), base));
@@ -194,7 +197,7 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G, F, FA extends F, FB extends F, A, B> Optional<FB> functorMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
+    static <G extends IFunctor<FW>, FW extends F, F, FA extends F, FB extends F, A, B> Optional<FB> functorMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
         if (isFunctor(functor.getClass())) {
             return getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, fClass, Function.class)
                     .map(m -> FunctionalUtil.invokeStaticMethod(functor, m, base, map));
@@ -205,7 +208,7 @@ public final class FunctionalUtil {
 
     // APPLICATIVE
     // Pure functions
-    static <G, F, FA extends F, A> Optional<FA> applicativePure(G applicative, Class<F> fClass, A a) {
+    static <G extends IApplicative<FW>, FW extends F, F, FA extends F, A> Optional<FA> applicativePure(G applicative, Class<F> fClass, A a) {
         if (isApplicative(applicative.getClass())) {
             return getMethodIfExists(applicative.getClass(), IApplicative.PURE_NAME, Object.class)
                     .map(m -> invokeStaticMethod(applicative, m, a));
@@ -216,7 +219,7 @@ public final class FunctionalUtil {
 
     // Fapply functions
 
-    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> applicativeFapply(G applicative, Class<F> fClass, FA base, FF ff) {
+    static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F, FF extends F> Optional<FB> applicativeFapply(G applicative, Class<F> fClass, FA base, FF ff) {
         if (isApplicative(applicative.getClass())) {
             return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, fClass, fClass)
                     .<FB>map(m -> invokeStaticMethod(applicative, m, ff, base))
@@ -227,8 +230,9 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G, F, FA extends F, FB extends F, FF extends F> Optional<FB> monadFapply(G monad, Class<F> fClass, FA base, FF ff) {
-        if (isMonad(monad.getClass())) {
+    static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F, FF extends F> Optional<FB> monadFapply(G applicative, Class<F> fClass, FA base, FF ff) {
+        if (isMonad(applicative.getClass())) {
+            IMonad<FW> monad = (IMonad<FW>) applicative;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
                             .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class)))
@@ -240,7 +244,7 @@ public final class FunctionalUtil {
 
     // LiftA2 functions
 
-    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> applicativeLiftA2(G applicative, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
+    static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> applicativeLiftA2(G applicative, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
         if (isApplicative(applicative.getClass())) {
             return getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass)
                     .<FC>map(m -> invokeStaticMethod(applicative, m, mapping, fa, fb))
@@ -251,8 +255,9 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> monadLiftA2(G monad, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
-        if (isMonad(monad.getClass())) {
+    static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F, FC extends F, A, B, C> Optional<FC> monadLiftA2(G applicative, Class<F> fClass, BiFunction<A, B, C> mapping, FA fa, FB fb) {
+        if (isMonad(applicative.getClass())) {
+            IMonad<FW> monad = (IMonad<FW>) applicative;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
                             .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, fClass, Function.class)))
@@ -265,7 +270,7 @@ public final class FunctionalUtil {
     // MONAD
     // FlatMap functions
 
-    static <G, F, FA extends F, FB extends F, A> Optional<FB> monadFlatMap(G monad, Class<F> fClass, Function<A, FB> mapping, FA fa) {
+    static <G extends IMonad<FW>, FW extends F, F, FA extends F, FB extends F, A> Optional<FB> monadFlatMap(G monad, Class<F> fClass, Function<A, FB> mapping, FA fa) {
         if (isMonad(monad.getClass())) {
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, fClass)
                     .<FB>map(m -> invokeStaticMethod(monad, m, mapping, fa))
@@ -279,7 +284,7 @@ public final class FunctionalUtil {
 
     // Join functions
 
-    static <G, F, FFA extends F, FA extends F> Optional<FA> monadJoin(G monad, Class<F> fClass, FFA ffa) {
+    static <G extends IMonad<FW>, FW extends F, F, FFA extends F, FA extends F> Optional<FA> monadJoin(G monad, Class<F> fClass, FFA ffa) {
         if (isMonad(monad.getClass())) {
             return getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, fClass)
                     .<FA>map(m -> invokeStaticMethod(monad, m, ffa))

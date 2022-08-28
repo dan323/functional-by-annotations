@@ -15,11 +15,11 @@ public class ProdApplicative<M, N> extends ProdFunctor<M, N> implements IApplica
     }
 
     public <A> PairTypeContructor<M, N, A> pure(A a) {
-        return new PairTypeContructor<>(ApplicativeUtil.pure(mFunctor, mClass, a), ApplicativeUtil.pure(nFunctor, nClass, a));
+        return new PairTypeContructor<>(ApplicativeUtil.pure((IApplicative<M>) mFunctor, mClass, a), ApplicativeUtil.pure((IApplicative<N>) nFunctor, nClass, a));
     }
 
     public <A, B> PairTypeContructor<M, N, B> fapply(PairTypeContructor<M, N, Function<A, B>> f, PairTypeContructor<M, N, A> c1) {
-        return new PairTypeContructor<>(ApplicativeUtil.fapply(mFunctor, mClass, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply(nFunctor, nClass, c1.getSecond(), f.getSecond()));
+        return new PairTypeContructor<>(ApplicativeUtil.fapply((IApplicative<M>) mFunctor, mClass, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply((IApplicative<N>) nFunctor, nClass, c1.getSecond(), f.getSecond()));
     }
 
     @Override

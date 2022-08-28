@@ -42,6 +42,6 @@ public class ApplicativeSemigroup<FA extends F, F, A> implements ISemigroup<FA> 
     }
 
     public FA op(FA elem1, FA elem2) {
-        return ApplicativeUtil.liftA2(applicative, fClass, (x, y) -> SemigroupUtil.op(monoid, x, y), elem1, elem2);
+        return ApplicativeUtil.liftA2(applicative, fClass, (A x,A y) -> SemigroupUtil.op(monoid, x, y), elem1, elem2);
     }
 }

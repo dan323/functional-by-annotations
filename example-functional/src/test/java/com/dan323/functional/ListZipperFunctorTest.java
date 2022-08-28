@@ -30,7 +30,7 @@ public class ListZipperFunctorTest {
         var lst = zipped.maybe(zip -> ListZipperFunctor.map(zip, b -> !b), null).toList();
         assertEquals(FiniteList.of(false, false, true), lst);
 
-        lst = zipped.maybe(zip -> FunctorUtil.<ListZipperFunctor, ListZipper, ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipperFunctor.getInstance(), ListZipper.class, zip, (Boolean b) -> !b).toList(), FiniteList.nil());
+        lst = zipped.maybe(zip -> FunctorUtil.<ListZipperFunctor, ListZipper<?>, ListZipper, ListZipper<Boolean>, ListZipper<Boolean>, Boolean, Boolean>map(ListZipperFunctor.getInstance(), ListZipper.class, zip, (Boolean b) -> !b).toList(), FiniteList.nil());
         assertEquals(FiniteList.of(false, false, true), lst);
     }
 }

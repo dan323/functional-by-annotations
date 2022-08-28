@@ -17,7 +17,7 @@ public class ProdFunctor<M, N> extends ProdFunctional<M,N> implements IFunctor<P
     }
 
     public <A, B> PairTypeContructor<M, N, B> map(PairTypeContructor<M, N, A> base, Function<A, B> function) {
-        return new PairTypeContructor<>(FunctorUtil.map(mFunctor, mClass, base.getFirst(), function), FunctorUtil.map(nFunctor, nClass, base.getSecond(), function));
+        return new PairTypeContructor<>(FunctorUtil.map((IFunctor<M>) mFunctor, mClass, base.getFirst(), function), FunctorUtil.map((IFunctor<N>) nFunctor, nClass, base.getSecond(), function));
     }
 
     @Override

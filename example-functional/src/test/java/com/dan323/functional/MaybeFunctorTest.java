@@ -23,11 +23,11 @@ public class MaybeFunctorTest {
     @Test
     public void maybeFunctorUtils() {
         Maybe<Boolean> mb = Maybe.of();
-        Maybe<Boolean> mnotb = FunctorUtil.<MaybeMonad, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
+        Maybe<Boolean> mnotb = FunctorUtil.<MaybeMonad, Maybe<?>, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
         assertEquals(Maybe.of(), mnotb);
 
         mb = Maybe.of(true);
-        mnotb = FunctorUtil.<MaybeMonad, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
+        mnotb = FunctorUtil.<MaybeMonad, Maybe<?>, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
         assertEquals(Maybe.of(false), mnotb);
     }
 }

@@ -1,9 +1,15 @@
 package com.dan323.functional.annotation.util;
 
+import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IMonad;
 
 import java.util.function.Function;
 
+/**
+ * Access all applicative functions in an {@link IMonad} using reflexion
+ *
+ * @author daniel
+ */
 public final class MonadUtil {
 
     private MonadUtil(){

@@ -1,7 +1,13 @@
 package com.dan323.functional.annotation.util;
 
 import com.dan323.functional.annotation.algs.ISemigroup;
+import com.dan323.functional.annotation.funcs.IApplicative;
 
+/**
+ * Access all applicative functions in an {@link ISemigroup} using reflexion
+ *
+ * @author daniel
+ */
 public final class SemigroupUtil {
 
     private SemigroupUtil() {

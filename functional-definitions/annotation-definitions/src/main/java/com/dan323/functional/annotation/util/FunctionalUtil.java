@@ -16,7 +16,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public final class FunctionalUtil {
+final class FunctionalUtil {
 
     private FunctionalUtil() {
         throw new UnsupportedOperationException();
@@ -123,8 +123,19 @@ public final class FunctionalUtil {
         }
     }
 
+    public static <G extends IFunctor<FW>, FW extends F, F, FA extends F, FB extends F, B> Optional<FB> functorMapConst(G functor, Class<F> fClass, FA base, B constant) {
+        if (isFunctor(functor.getClass())) {
+            return getMethodIfExists(functor.getClass(), IFunctor.MAP_CONST_NAME, fClass, Object.class)
+                    .<FB>map(m -> invokeStaticMethod(functor, m, base, constant))
+                    .or(() -> getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, fClass, Function.class)
+                            .map(m -> FunctorUtil.map(functor, fClass, base, x -> constant)));
+        } else {
+            throw new IllegalArgumentException("The functor is not correctly defined");
+        }
+    }
+
     @Monoid
-    private static class EndoMonoid<B> implements IMonoid<Function<B,B>>{
+    private static class EndoMonoid<B> implements IMonoid<Function<B, B>> {
         public Function<B, B> op(Function<B, B> f1, Function<B, B> f2) {
             return f1.compose(f2);
         }
@@ -144,9 +155,9 @@ public final class FunctionalUtil {
                     .findFirst()
                     .map(iface -> ((ParameterizedType) iface).getActualTypeArguments()[0])
                     .map(type -> {
-                        if (type instanceof Class<?> cl){
+                        if (type instanceof Class<?> cl) {
                             return cl;
-                        } else if (type instanceof ParameterizedType ptype){
+                        } else if (type instanceof ParameterizedType ptype) {
                             return (Class<?>) ptype.getRawType();
                         }
                         return Object.class;

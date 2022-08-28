@@ -16,15 +16,20 @@ class FunctionalDependencyTree {
     private final Class<? extends Structure> node;
     private final List<FunctionalDependencyTree> dependency;
 
-    public FunctionalDependencyTree(Class<? extends Structure> node) {
+    private FunctionalDependencyTree(Class<? extends Structure> node) {
         this.node = node;
         this.dependency = new ArrayList<>();
     }
 
-    public void addDependency(FunctionalDependencyTree dependencyTree) {
+    private void addDependency(FunctionalDependencyTree dependencyTree) {
         dependency.add(dependencyTree);
     }
 
+    /**
+     * Obtain the structural dependency tree
+     *
+     * @return the dependency tree of all the {@link Structure}
+     */
     public static List<FunctionalDependencyTree> getActualTree() {
         FunctionalDependencyTree monad = new FunctionalDependencyTree(IMonad.class);
         FunctionalDependencyTree applicative = new FunctionalDependencyTree(IApplicative.class);

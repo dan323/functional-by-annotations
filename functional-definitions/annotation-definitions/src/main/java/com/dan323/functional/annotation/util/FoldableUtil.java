@@ -7,6 +7,11 @@ import com.dan323.functional.annotation.funcs.IFoldable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Access all applicative functions in an {@link IFoldable} using reflexion
+ *
+ * @author daniel
+ */
 public final class FoldableUtil {
 
     private FoldableUtil() {

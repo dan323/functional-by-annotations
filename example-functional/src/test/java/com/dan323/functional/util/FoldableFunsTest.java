@@ -24,6 +24,8 @@ public class FoldableFunsTest {
         assertFalse(hasIt);
         hasIt = FoldableFuns.contains(new SomeFoldable(), List.class, 2, List.of(1, 2, 3));
         assertTrue(hasIt);
+        hasIt = FoldableFuns.contains(new SomeFoldable(), List.class, 5, List.of(1, 2, 3));
+        assertFalse(hasIt);
     }
 
     @Test

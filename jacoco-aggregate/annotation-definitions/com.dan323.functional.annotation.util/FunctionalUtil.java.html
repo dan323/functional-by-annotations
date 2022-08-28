@@ -90,7 +90,7 @@ public final class FunctionalUtil {
     static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F, A&gt; Optional&lt;A&gt; foldableFold(G foldable, IMonoid&lt;A&gt; monoid, Class&lt;F&gt; fClass, FA base) {
 <span class="fc bfc" id="L91" title="All 2 branches covered.">        if (isFoldable(foldable.getClass())) {</span>
 <span class="fc" id="L92">            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_NAME, IMonoid.class, fClass)</span>
-<span class="pc" id="L93">                    .&lt;A&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, base))</span>
+<span class="fc" id="L93">                    .&lt;A&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, base))</span>
 <span class="fc" id="L94">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)</span>
 <span class="fc" id="L95">                            .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass))</span>
 <span class="fc" id="L96">                            .map(m -&gt; FoldableUtil.foldMap(foldable, monoid, fClass, Function.identity(), base)));</span>

@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author daniel
  */
-public sealed class Signature permits Signature.InvalidSignature {
+public class Signature {
     private final List<TypeMirror> inputs;
     private final TypeMirror returnType;
     private final String name;

@@ -4,7 +4,12 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
-public class Signature {
+/**
+ * Abstraction of a signature of a method
+ *
+ * @author daniel
+ */
+public sealed class Signature permits Signature.InvalidSignature {
     private final List<TypeMirror> inputs;
     private final TypeMirror returnType;
     private final String name;
@@ -15,6 +20,12 @@ public class Signature {
         this.name = name;
     }
 
+    /**
+     * Verification if a method satifies the {@link Signature}
+     *
+     * @param method to check against
+     * @return true iff the input method satisfies the signature
+     */
     public boolean verifyMethod(ExecutableElement method) {
         return method.getReturnType().toString().equals(returnType.toString()) &&
                 method.getParameters().size() == inputs.size() &&
@@ -30,11 +41,16 @@ public class Signature {
         return b;
     }
 
+    /**
+     * A signature that always fails
+     *
+     * @return {@link InvalidSignature}
+     */
     static Signature invalid() {
         return InvalidSignature.INVALID;
     }
 
-    private static class InvalidSignature extends Signature {
+    private static final class InvalidSignature extends Signature {
 
         private InvalidSignature() {
             super(List.of(), null, "");

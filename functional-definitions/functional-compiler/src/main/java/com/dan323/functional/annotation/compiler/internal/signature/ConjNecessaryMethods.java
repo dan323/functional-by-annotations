@@ -4,6 +4,11 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for a conjunction of requirements
+ *
+ * @author daniel
+ */
 public class ConjNecessaryMethods implements NecessaryMethods {
 
     private final Set<NecessaryMethods> methods;

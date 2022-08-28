@@ -4,6 +4,11 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for a disjunction of requirements
+ *
+ * @author daniel
+ */
 public class DisjNecessaryMethods implements NecessaryMethods {
     private final Set<NecessaryMethods> methods;
 

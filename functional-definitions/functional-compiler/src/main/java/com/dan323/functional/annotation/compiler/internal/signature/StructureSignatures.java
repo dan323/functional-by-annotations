@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Helper class including all implementations of {@link Signature} and {@link NecessaryMethods} for all {@link com.dan323.functional.annotation.Structure}
+ *
+ * @author daniel
+ */
 public final class StructureSignatures {
 
     private final Elements elementUtils;
@@ -123,7 +128,7 @@ public final class StructureSignatures {
         }
     }
 
-    public Signature createFoldMapSignature(ExecutableType method, DeclaredType iFace) {
+    private Signature createFoldMapSignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (params.size() >= 2) {
             var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));
@@ -175,26 +180,62 @@ public final class StructureSignatures {
         return new FunctionSignature(x -> createFoldMapSignature(x, iface));
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IApplicative} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IApplicative}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IApplicative}
+     */
     public NecessaryMethods applicativeSignatureChecker(DeclaredType iface) {
         return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(fapplySignatureChecker(iface), liftA2SignatureChecker(iface)));
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IFunctor} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IFunctor}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IFunctor}
+     */
     public NecessaryMethods functorSignatureChecker(DeclaredType iface) {
         return mapSignatureChecker(iface);
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IMonad} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IMonad}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IMonad}
+     */
     public NecessaryMethods monadSignatureChecker(DeclaredType iface) {
         return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(flatMapSignatureChecker(iface), new ConjNecessaryMethods(joinSignatureChecker(iface), new DisjNecessaryMethods(functorSignatureChecker(iface), applicativeSignatureChecker(iface)))));
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link ISemigroup} to be correctly implemented
+     *
+     * @param iface type inside {@link ISemigroup}
+     * @return A {@link NecessaryMethods} with requirements for an {@link ISemigroup}
+     */
     public NecessaryMethods semigroupSignatureChecker(DeclaredType iface) {
         return opSignatureChecker(iface);
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IMonoid} to be correctly implemented
+     *
+     * @param iface type inside {@link IMonoid}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IMonoid}
+     */
     public NecessaryMethods monoidSignatureChecker(DeclaredType iface) {
         return new ConjNecessaryMethods(opSignatureChecker(iface), unitSignatureChecker(iface));
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IFoldable} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IFoldable}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IFoldable}
+     */
     public NecessaryMethods foldableSignatureChecker(DeclaredType iface) {
         return new DisjNecessaryMethods(foldrSignatureChecker(iface), foldMapSignatureChecker(iface));
     }

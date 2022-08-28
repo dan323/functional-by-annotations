@@ -9,8 +9,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
 import java.util.function.UnaryOperator;
@@ -27,6 +25,11 @@ public class Compiler<F extends Annotation> {
         this.messager = messager;
     }
 
+    /**
+     * Check if the input has all the necessary methods for all the annotations it has
+     *
+     * @param element type to check at compile time
+     */
     public void process(TypeElement element) {
         TypeElement originalElement = element;
         if (element.getAnnotation(annotation) == null) {
@@ -40,15 +43,15 @@ public class Compiler<F extends Annotation> {
         // Look for the public method called map and verify its signature
         var necessaryMethodsLoop = necessaryMethods;
         do {
-            necessaryMethodsLoop =  element.getEnclosedElements().stream()
+            necessaryMethodsLoop = element.getEnclosedElements().stream()
                     .filter(element1 -> element1.getKind().equals(ElementKind.METHOD) && element1.getModifiers().contains(Modifier.PUBLIC))
                     .map(element1 -> (ExecutableElement) element1)
                     .map(element1 -> (UnaryOperator<NecessaryMethods>) ((NecessaryMethods nec) -> nec.process(element1)))
                     .reduce(necessaryMethodsLoop,
                             (nec, unary) -> unary.apply(nec),
                             (nec1, nec2) -> {
-                        throw new UnsupportedOperationException("This operation is not suppoerted");
-                    });
+                                throw new UnsupportedOperationException("This operation is not suppoerted");
+                            });
             success = necessaryMethodsLoop instanceof EmptyNecessaryMethods;
             if (element.getSuperclass().toString().equals("none")) {
                 break;

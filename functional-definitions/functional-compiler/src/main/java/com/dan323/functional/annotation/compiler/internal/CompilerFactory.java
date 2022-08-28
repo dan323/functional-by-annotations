@@ -16,6 +16,15 @@ import javax.lang.model.util.Types;
 
 public final class CompilerFactory {
 
+    /**
+     * Create a compiler depending on what element we are compiling
+     *
+     * @param iface    interface to check at compile time
+     * @param elements utility class
+     * @param types    utility class
+     * @param messager instance to manage errors
+     * @return A compiler compatible with {@code iface}
+     */
     public Compiler<?> from(DeclaredType iface, Elements elements, Types types, Messager messager) {
         StructureSignatures signatures = new StructureSignatures(elements, types);
         if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {

@@ -117,17 +117,20 @@ public final class FunctionalUtil {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, fClass)
                     .<B>map(m -> invokeStaticMethod(foldable, m, function, b, fm))
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, fClass)
-                            .map(m -> FoldableUtil.foldMap(foldable, new IMonoid<Function<B, B>>() {
-                                public Function<B, B> op(Function<B, B> f1, Function<B, B> f2) {
-                                    return f1.compose(f2);
-                                }
-
-                                public Function<B, B> unit() {
-                                    return Function.identity();
-                                }
-                            }, fClass, (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
+                            .map(m -> FoldableUtil.foldMap(foldable, new EndoMonoid<>(), fClass, (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
         } else {
             throw new IllegalArgumentException("The foldable is not correctly defined");
+        }
+    }
+
+    @Monoid
+    private static class EndoMonoid<B> implements IMonoid<Function<B,B>>{
+        public Function<B, B> op(Function<B, B> f1, Function<B, B> f2) {
+            return f1.compose(f2);
+        }
+
+        public Function<B, B> unit() {
+            return Function.identity();
         }
     }
 
@@ -137,9 +140,17 @@ public final class FunctionalUtil {
         if (isSemigroup(semigroup.getClass())) {
             return Stream.of(semigroup.getClass().getGenericInterfaces())
                     .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
-                    .filter(iface -> iface instanceof ParameterizedType && ((ParameterizedType) iface).getActualTypeArguments()[0] instanceof Class<?>)
+                    .filter(iface -> iface instanceof ParameterizedType)
                     .findFirst()
-                    .map(iface -> (Class<?>) ((ParameterizedType) iface).getActualTypeArguments()[0])
+                    .map(iface -> ((ParameterizedType) iface).getActualTypeArguments()[0])
+                    .map(type -> {
+                        if (type instanceof Class<?> cl){
+                            return cl;
+                        } else if (type instanceof ParameterizedType ptype){
+                            return (Class<?>) ptype.getRawType();
+                        }
+                        return Object.class;
+                    })
                     .flatMap(aClass -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass))
                     .or(() -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))
                     .map(m -> invokeStaticMethod(semigroup, m, a, b));

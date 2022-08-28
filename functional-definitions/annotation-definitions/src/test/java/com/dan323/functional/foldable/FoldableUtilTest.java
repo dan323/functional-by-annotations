@@ -14,6 +14,8 @@ public class FoldableUtilTest {
     public void foldableFoldFomFoldMap() {
         var sol = FoldableUtil.fold(ListFoldFoldMap.LIST_FOLD, MonoidSum.MONOID, List.class, List.of(3, 4, 5));
         assertEquals(12, sol);
+        var sol2 = FoldableUtil.foldr(ListFoldFoldMap.LIST_FOLD, List.class, this::apply, 1, List.of(true, false, true, false));
+        assertEquals(7, sol2);
     }
 
     @Test

@@ -11,7 +11,7 @@ import java.util.function.Function;
  *
  * @param <A>
  */
-final class Repeat<A> implements InfiniteList<A> {
+final class Repeat<A> extends InfiniteList<A> {
 
     private final A element;
 
@@ -33,16 +33,6 @@ final class Repeat<A> implements InfiniteList<A> {
     @Override
     public <B> InfiniteList<B> map(Function<A, B> mapping) {
         return new Repeat<>(mapping.apply(element));
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj instanceof Repeat<?>) {
-            return Objects.equals(element, ((Repeat<?>) obj).element);
-        } else {
-            return false;
-        }
     }
 
     @Override

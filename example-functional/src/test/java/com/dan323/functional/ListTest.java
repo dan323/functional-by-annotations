@@ -11,6 +11,7 @@ public class ListTest {
     @Test
     public void nilTail() {
         assertEquals(List.nil(), List.nil().tail());
+        assertEquals(List.nil(), FiniteList.of());
     }
 
     @Test

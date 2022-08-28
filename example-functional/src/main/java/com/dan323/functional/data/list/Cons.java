@@ -10,7 +10,7 @@ import java.util.function.Function;
  * List of one element in front of another infinite list
  * @param <A>
  */
-final class Cons<A> implements InfiniteList<A> {
+final class Cons<A> extends InfiniteList<A> {
 
     private final A head;
     private final InfiniteList<A> tail;
@@ -44,21 +44,8 @@ final class Cons<A> implements InfiniteList<A> {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != getClass()) return false;
-        Cons<?> k = ((Cons<?>)obj);
-        return Objects.equals(k.head, head) && Objects.equals(k.tail, tail);
-    }
-
-    @Override
     public int hashCode(){
         return Objects.hash(head, tail);
     }
-/*
-    @Override
-    public <Q> List<Q> fapply(Applicative<Function<A, Q>, List<?>> ff) {
-        var fg = (List<Function<A,Q>>) ff;
-        return fg.head().maybe(h -> ListUtils.concat(this.map(h), fapply(fg.tail())), List.nil());
-    }*/
+
 }

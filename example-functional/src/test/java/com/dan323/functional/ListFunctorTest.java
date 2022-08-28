@@ -30,7 +30,7 @@ public class ListFunctorTest {
     @Test
     public void repeatListFunctor() {
         var sol = ZipApplicative.map(List.repeat(5), x -> x * 3);
-        assertEquals(List.repeat(15), sol);
+        assertEquals(List.repeat(15).limit(10), sol.limit(10));
     }
 
     @Test
@@ -41,6 +41,8 @@ public class ListFunctorTest {
 
         var sol2 = ZipApplicative.map(List.generate(1, x -> x + 1), x -> x * 2);
         assertEquals(List.generate(2, x -> x + 2).limit(10), sol2.limit(10));
+        sol2 = ZipApplicative.map(sol2, x -> x + 1);
+        assertEquals(List.generate(3, x -> x + 2).limit(10), sol2.limit(10));
     }
 
 }

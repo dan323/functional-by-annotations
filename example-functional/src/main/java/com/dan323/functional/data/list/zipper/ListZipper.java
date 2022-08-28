@@ -19,7 +19,7 @@ import java.util.function.Function;
  * @author Daniel de la Concepcion
  */
 @Functor
-public class ListZipper<A> implements IFunctor<ListZipper<?>> {
+public class ListZipper<A> {
 
     private final FiniteList<A> left;
     private final A pointer;
@@ -34,12 +34,20 @@ public class ListZipper<A> implements IFunctor<ListZipper<?>> {
         this.pointer = pointer;
     }
 
+    public A get(){
+        return pointer;
+    }
+
+    FiniteList<A> getLeft(){
+        return left;
+    }
+
+    FiniteList<A> getRight(){
+        return right;
+    }
+
     public static <A> Maybe<ListZipper<A>> zipFrom(FiniteList<A> original) {
-        if (original.equals(FiniteList.nil())) {
-            return Maybe.of();
-        } else {
-            return original.head().maybe(h -> Maybe.of(new ListZipper<>(FiniteList.nil(), h, original.tail())), Maybe.of());
-        }
+        return original.head().maybe(h -> Maybe.of(new ListZipper<>(FiniteList.nil(), h, original.tail())), Maybe.of());
     }
 
     public Maybe<ListZipper<A>> moveLeft() {
@@ -64,10 +72,6 @@ public class ListZipper<A> implements IFunctor<ListZipper<?>> {
 
     public List<A> toList() {
         return ListUtils.concat(ListUtils.reverse(left), FiniteList.cons(pointer, right));
-    }
-
-    public static <A, B> ListZipper<B> map(ListZipper<A> base, Function<A, B> mapping) {
-        return new ListZipper<>(FiniteListFunctional.map(base.left, mapping), mapping.apply(base.pointer), FiniteListFunctional.map(base.right, mapping));
     }
 
 }

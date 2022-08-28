@@ -36,11 +36,6 @@ final class Repeat<A> extends InfiniteList<A> {
     }
 
     @Override
-    public int hashCode() {
-        return 7 * element.hashCode();
-    }
-
-    @Override
     public String toString() {
         return "[" + element + ", ...]";
     }

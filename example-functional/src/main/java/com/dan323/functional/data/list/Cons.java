@@ -43,9 +43,4 @@ final class Cons<A> extends InfiniteList<A> {
         return "[" + head + "," + tail + "]";
     }
 
-    @Override
-    public int hashCode(){
-        return Objects.hash(head, tail);
-    }
-
 }

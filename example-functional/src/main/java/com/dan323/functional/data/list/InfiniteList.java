@@ -25,4 +25,9 @@ public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Ge
     public final boolean equals(Object obj) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public int hashCode() {
+        return 7*super.hashCode();
+    }
 }

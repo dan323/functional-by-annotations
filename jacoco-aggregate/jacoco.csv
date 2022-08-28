@@ -26,9 +26,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,JListFunctor,11,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Zipped,59,0,0,0,9,0,6,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Generating.GeneratingMapped,43,0,0,0,7,0,5,0,5,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,InfiniteList,7,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,FiniteListFunctional,58,0,0,0,7,0,9,0,9,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Repeat,54,0,6,0,13,0,10,0,7,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Cons,89,0,14,0,15,0,14,0,7,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Repeat,37,0,2,0,9,0,7,0,6,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,Cons,56,0,4,0,11,0,8,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,FinCons,73,0,10,0,12,0,11,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,FiniteList,51,0,4,0,9,0,8,0,6,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,List,68,0,8,0,12,0,11,0,7,0

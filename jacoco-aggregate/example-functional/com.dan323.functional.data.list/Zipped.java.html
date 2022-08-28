@@ -6,7 +6,7 @@ import com.dan323.functional.data.optional.MaybeMonad;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-final class Zipped&lt;A, B, C&gt; implements InfiniteList&lt;C&gt; {
+final class Zipped&lt;A, B, C&gt; extends InfiniteList&lt;C&gt; {
 
     private final List&lt;A&gt; first;
     private final List&lt;B&gt; second;

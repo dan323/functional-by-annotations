@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-final class Generating&lt;A&gt; implements InfiniteList&lt;A&gt; {
+final class Generating&lt;A&gt; extends InfiniteList&lt;A&gt; {
 
     private final A head;
     private final UnaryOperator&lt;A&gt; generator;
@@ -32,7 +32,7 @@ final class Generating&lt;A&gt; implements InfiniteList&lt;A&gt; {
 <span class="nc" id="L32">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
     }
 
-    protected static final class GeneratingMapped&lt;A,B&gt; implements InfiniteList&lt;B&gt; {
+    protected static final class GeneratingMapped&lt;A,B&gt; extends InfiniteList&lt;B&gt; {
 
         private final List&lt;A&gt; originalList;
         private final Function&lt;A,B&gt; mapping;

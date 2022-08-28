@@ -4,20 +4,31 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.ExecutableType;
 import java.util.function.Function;
 
+/**
+ * Implementation of {@link NecessaryMethods} for just one method
+ *
+ * @author daniel
+ */
 public class FunctionSignature implements NecessaryMethods {
 
     private final Function&lt;ExecutableType, Signature&gt; validator;
 
-<span class="fc" id="L11">    public FunctionSignature(Function&lt;ExecutableType, Signature&gt; validator) {</span>
-<span class="fc" id="L12">        this.validator = validator;</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L16">    public FunctionSignature(Function&lt;ExecutableType, Signature&gt; validator) {</span>
+<span class="fc" id="L17">        this.validator = validator;</span>
+<span class="fc" id="L18">    }</span>
 
+    /**
+     * Validates if the method processed is the one required or not
+     *
+     * @param method to be checked against our necessities
+     * @return an empty necessity if the method checked, itself if the method did not check
+     */
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (validator.apply((ExecutableType) method.asType()).verifyMethod(method)) {</span>
-<span class="fc" id="L18">            return new EmptyNecessaryMethods();</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (validator.apply((ExecutableType) method.asType()).verifyMethod(method)) {</span>
+<span class="fc" id="L29">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="fc" id="L20">            return this;</span>
+<span class="fc" id="L31">            return this;</span>
         }
     }
 }

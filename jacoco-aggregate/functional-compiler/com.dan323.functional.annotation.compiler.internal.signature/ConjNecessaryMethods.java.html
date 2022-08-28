@@ -4,30 +4,35 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for a conjunction of requirements
+ *
+ * @author daniel
+ */
 public class ConjNecessaryMethods implements NecessaryMethods {
 
     private final Set&lt;NecessaryMethods&gt; methods;
 
     public ConjNecessaryMethods(NecessaryMethods methods1, NecessaryMethods methods2) {
-<span class="fc" id="L12">        this(Set.of(methods1, methods2));</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L17">        this(Set.of(methods1, methods2));</span>
+<span class="fc" id="L18">    }</span>
 
-<span class="fc" id="L15">    public ConjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
-<span class="fc" id="L16">        this.methods = methodsSet;</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L20">    public ConjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
+<span class="fc" id="L21">        this.methods = methodsSet;</span>
+<span class="fc" id="L22">    }</span>
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="fc" id="L21">        Set&lt;NecessaryMethods&gt; newSet = this.methods.stream()</span>
-<span class="fc" id="L22">                .map(nec -&gt; nec.process(method))</span>
-<span class="fc bfc" id="L23" title="All 2 branches covered.">                .filter(nec -&gt; !(nec instanceof EmptyNecessaryMethods))</span>
-<span class="fc" id="L24">                .collect(Collectors.toSet());</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (newSet.size() == 1) {</span>
-<span class="fc" id="L26">            return newSet.stream().findFirst().get();</span>
-<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        } else if (newSet.isEmpty()) {</span>
-<span class="nc" id="L28">            return new EmptyNecessaryMethods();</span>
+<span class="fc" id="L26">        Set&lt;NecessaryMethods&gt; newSet = this.methods.stream()</span>
+<span class="fc" id="L27">                .map(nec -&gt; nec.process(method))</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">                .filter(nec -&gt; !(nec instanceof EmptyNecessaryMethods))</span>
+<span class="fc" id="L29">                .collect(Collectors.toSet());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (newSet.size() == 1) {</span>
+<span class="fc" id="L31">            return newSet.stream().findFirst().get();</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        } else if (newSet.isEmpty()) {</span>
+<span class="nc" id="L33">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="fc" id="L30">            return new ConjNecessaryMethods(newSet);</span>
+<span class="fc" id="L35">            return new ConjNecessaryMethods(newSet);</span>
         }
     }
 }

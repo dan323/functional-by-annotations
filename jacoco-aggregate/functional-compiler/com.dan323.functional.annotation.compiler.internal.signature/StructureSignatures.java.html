@@ -16,187 +16,228 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * Helper class including all implementations of {@link Signature} and {@link NecessaryMethods} for all {@link com.dan323.functional.annotation.Structure}
+ *
+ * @author daniel
+ */
 public final class StructureSignatures {
 
     private final Elements elementUtils;
     private final Types typeUtils;
 
-<span class="fc" id="L24">    public StructureSignatures(Elements elements, Types types) {</span>
-<span class="fc" id="L25">        this.elementUtils = elements;</span>
-<span class="fc" id="L26">        this.typeUtils = types;</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L29">    public StructureSignatures(Elements elements, Types types) {</span>
+<span class="fc" id="L30">        this.elementUtils = elements;</span>
+<span class="fc" id="L31">        this.typeUtils = types;</span>
+<span class="fc" id="L32">    }</span>
 
     private Signature createMapSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L30">        var params = method.getTypeVariables();</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
-<span class="fc" id="L32">            return new Signature(List.of(CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)),</span>
-<span class="fc" id="L33">                    typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1))),</span>
-<span class="fc" id="L34">                    CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1)), IFunctor.MAP_NAME);</span>
+<span class="fc" id="L35">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L37">            return new Signature(List.of(CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)),</span>
+<span class="fc" id="L38">                    typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1))),</span>
+<span class="fc" id="L39">                    CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1)), IFunctor.MAP_NAME);</span>
         } else {
-<span class="fc" id="L36">            return Signature.invalid();</span>
+<span class="fc" id="L41">            return Signature.invalid();</span>
         }
     }
 
     private Signature createPureSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L41">        var params = method.getTypeVariables();</span>
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
-<span class="fc" id="L43">            return new Signature(List.of(params.get(0)), CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)), IApplicative.PURE_NAME);</span>
+<span class="fc" id="L46">        var params = method.getTypeVariables();</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
+<span class="fc" id="L48">            return new Signature(List.of(params.get(0)), CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)), IApplicative.PURE_NAME);</span>
         } else {
-<span class="nc" id="L45">            return Signature.invalid();</span>
+<span class="nc" id="L50">            return Signature.invalid();</span>
         }
     }
 
     private Signature createFapplySignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L50">        var params = method.getTypeVariables();</span>
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
-<span class="fc" id="L52">            var input = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L53">            var func = CompilerUtils.changeWildBy(typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)));</span>
-<span class="fc" id="L54">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
-<span class="fc" id="L55">            return new Signature(List.of(func, input), returnTyp, IApplicative.FAPPLY_NAME);</span>
+<span class="fc" id="L55">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L57">            var input = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L58">            var func = CompilerUtils.changeWildBy(typeUtils, iFace, typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1)));</span>
+<span class="fc" id="L59">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
+<span class="fc" id="L60">            return new Signature(List.of(func, input), returnTyp, IApplicative.FAPPLY_NAME);</span>
         } else {
-<span class="fc" id="L57">            return Signature.invalid();</span>
+<span class="fc" id="L62">            return Signature.invalid();</span>
         }
     }
 
     private Signature createLiftA2Signature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L62">        var params = method.getTypeVariables();</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (params.size() &gt;= 3) {</span>
-<span class="fc" id="L64">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(2));</span>
-<span class="fc" id="L65">            var input2 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L66">            var input3 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
-<span class="fc" id="L67">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(2));</span>
-<span class="fc" id="L68">            return new Signature(List.of(input1, input2, input3), returnTyp, IApplicative.LIFT_A2_NAME);</span>
+<span class="fc" id="L67">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (params.size() &gt;= 3) {</span>
+<span class="fc" id="L69">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(2));</span>
+<span class="fc" id="L70">            var input2 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L71">            var input3 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
+<span class="fc" id="L72">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(2));</span>
+<span class="fc" id="L73">            return new Signature(List.of(input1, input2, input3), returnTyp, IApplicative.LIFT_A2_NAME);</span>
         } else {
-<span class="fc" id="L70">            return Signature.invalid();</span>
+<span class="fc" id="L75">            return Signature.invalid();</span>
         }
     }
 
     private Signature createJoinSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L75">        var params = method.getTypeVariables();</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
-<span class="fc" id="L77">            var input = CompilerUtils.changeWildBy(typeUtils, iFace, CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)));</span>
-<span class="fc" id="L78">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L79">            return new Signature(List.of(input), returnTyp, IMonad.JOIN_NAME);</span>
+<span class="fc" id="L80">        var params = method.getTypeVariables();</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
+<span class="fc" id="L82">            var input = CompilerUtils.changeWildBy(typeUtils, iFace, CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)));</span>
+<span class="fc" id="L83">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L84">            return new Signature(List.of(input), returnTyp, IMonad.JOIN_NAME);</span>
         } else {
-<span class="nc" id="L81">            return Signature.invalid();</span>
+<span class="nc" id="L86">            return Signature.invalid();</span>
         }
     }
 
     private Signature createFlatMapSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L86">        var params = method.getTypeVariables();</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
-<span class="fc" id="L88">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
-<span class="fc" id="L89">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), returnTyp);</span>
-<span class="fc" id="L90">            var input2 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L91">            return new Signature(List.of(input1, input2), returnTyp, IMonad.FLAT_MAP_NAME);</span>
+<span class="fc" id="L91">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L93">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
+<span class="fc" id="L94">            var input1 = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), returnTyp);</span>
+<span class="fc" id="L95">            var input2 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L96">            return new Signature(List.of(input1, input2), returnTyp, IMonad.FLAT_MAP_NAME);</span>
         } else {
-<span class="fc" id="L93">            return Signature.invalid();</span>
+<span class="fc" id="L98">            return Signature.invalid();</span>
         }
     }
 
     private Signature createOpSignature(DeclaredType iFace) {
-<span class="fc" id="L98">        var params = iFace.getTypeArguments();</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!params.isEmpty()) {</span>
-<span class="fc" id="L100">            return new Signature(List.of(params.get(0), params.get(0)), params.get(0), ISemigroup.OP_NAME);</span>
+<span class="fc" id="L103">        var params = iFace.getTypeArguments();</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (!params.isEmpty()) {</span>
+<span class="fc" id="L105">            return new Signature(List.of(params.get(0), params.get(0)), params.get(0), ISemigroup.OP_NAME);</span>
         } else {
-<span class="nc" id="L102">            return Signature.invalid();</span>
+<span class="nc" id="L107">            return Signature.invalid();</span>
         }
     }
 
     private Signature createUnitSignature(DeclaredType iFace) {
-<span class="fc" id="L107">        var params = iFace.getTypeArguments();</span>
-<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (!params.isEmpty()) {</span>
-<span class="fc" id="L109">            return new Signature(List.of(), params.get(0), IMonoid.UNIT_NAME);</span>
+<span class="fc" id="L112">        var params = iFace.getTypeArguments();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (!params.isEmpty()) {</span>
+<span class="fc" id="L114">            return new Signature(List.of(), params.get(0), IMonoid.UNIT_NAME);</span>
         } else {
-<span class="nc" id="L111">            return Signature.invalid();</span>
+<span class="nc" id="L116">            return Signature.invalid();</span>
         }
     }
 
     private Signature createFoldrSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L116">        var params = method.getTypeVariables();</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (params.size() &gt;= 2) {</span>
-<span class="fc" id="L118">            var biFun = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(1));</span>
-<span class="fc" id="L119">            var foldableA = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L120">            return new Signature(List.of(biFun, params.get(1), foldableA), params.get(1), IFoldable.FOLDR_NAME);</span>
+<span class="fc" id="L121">        var params = method.getTypeVariables();</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L123">            var biFun = typeUtils.getDeclaredType(elementUtils.getTypeElement(BiFunction.class.getTypeName()), params.get(0), params.get(1), params.get(1));</span>
+<span class="fc" id="L124">            var foldableA = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L125">            return new Signature(List.of(biFun, params.get(1), foldableA), params.get(1), IFoldable.FOLDR_NAME);</span>
         } else {
-<span class="nc" id="L122">            return Signature.invalid();</span>
+<span class="nc" id="L127">            return Signature.invalid();</span>
         }
     }
 
-    public Signature createFoldMapSignature(ExecutableType method, DeclaredType iFace) {
-<span class="fc" id="L127">        var params = method.getTypeVariables();</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (params.size() &gt;= 2) {</span>
-<span class="fc" id="L129">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
-<span class="fc" id="L130">            var foldable = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="fc" id="L131">            var iMonoid = typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(1));</span>
-<span class="fc" id="L132">            return new Signature(List.of(iMonoid, fun, foldable), params.get(1), IFoldable.FOLD_MAP_NAME);</span>
+    private Signature createFoldMapSignature(ExecutableType method, DeclaredType iFace) {
+<span class="fc" id="L132">        var params = method.getTypeVariables();</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L134">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(0), params.get(1));</span>
+<span class="fc" id="L135">            var foldable = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L136">            var iMonoid = typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(1));</span>
+<span class="fc" id="L137">            return new Signature(List.of(iMonoid, fun, foldable), params.get(1), IFoldable.FOLD_MAP_NAME);</span>
         } else {
-<span class="nc" id="L134">            return Signature.invalid();</span>
+<span class="nc" id="L139">            return Signature.invalid();</span>
         }
     }
 
     private NecessaryMethods mapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L139">        return new FunctionSignature(x -&gt; createMapSignature(x, iface));</span>
+<span class="fc" id="L144">        return new FunctionSignature(x -&gt; createMapSignature(x, iface));</span>
     }
 
     private NecessaryMethods pureSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L143">        return new FunctionSignature(x -&gt; createPureSignature(x, iface));</span>
+<span class="fc" id="L148">        return new FunctionSignature(x -&gt; createPureSignature(x, iface));</span>
     }
 
     private NecessaryMethods fapplySignatureChecker(DeclaredType iface) {
-<span class="fc" id="L147">        return new FunctionSignature(x -&gt; createFapplySignature(x, iface));</span>
+<span class="fc" id="L152">        return new FunctionSignature(x -&gt; createFapplySignature(x, iface));</span>
     }
 
     private NecessaryMethods liftA2SignatureChecker(DeclaredType iface) {
-<span class="fc" id="L151">        return new FunctionSignature(x -&gt; createLiftA2Signature(x, iface));</span>
+<span class="fc" id="L156">        return new FunctionSignature(x -&gt; createLiftA2Signature(x, iface));</span>
     }
 
     private NecessaryMethods joinSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L155">        return new FunctionSignature(x -&gt; createJoinSignature(x, iface));</span>
+<span class="fc" id="L160">        return new FunctionSignature(x -&gt; createJoinSignature(x, iface));</span>
     }
 
     private NecessaryMethods flatMapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L159">        return new FunctionSignature(x -&gt; createFlatMapSignature(x, iface));</span>
+<span class="fc" id="L164">        return new FunctionSignature(x -&gt; createFlatMapSignature(x, iface));</span>
     }
 
     private NecessaryMethods opSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L163">        return new FunctionSignature(x -&gt; createOpSignature(iface));</span>
+<span class="fc" id="L168">        return new FunctionSignature(x -&gt; createOpSignature(iface));</span>
     }
 
     private NecessaryMethods unitSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L167">        return new FunctionSignature(x -&gt; createUnitSignature(iface));</span>
+<span class="fc" id="L172">        return new FunctionSignature(x -&gt; createUnitSignature(iface));</span>
     }
 
     private NecessaryMethods foldrSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L171">        return new FunctionSignature(x -&gt; createFoldrSignature(x, iface));</span>
+<span class="fc" id="L176">        return new FunctionSignature(x -&gt; createFoldrSignature(x, iface));</span>
     }
 
     private NecessaryMethods foldMapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L175">        return new FunctionSignature(x -&gt; createFoldMapSignature(x, iface));</span>
+<span class="fc" id="L180">        return new FunctionSignature(x -&gt; createFoldMapSignature(x, iface));</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IApplicative} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IApplicative}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IApplicative}
+     */
     public NecessaryMethods applicativeSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L179">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(fapplySignatureChecker(iface), liftA2SignatureChecker(iface)));</span>
+<span class="fc" id="L190">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(fapplySignatureChecker(iface), liftA2SignatureChecker(iface)));</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IFunctor} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IFunctor}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IFunctor}
+     */
     public NecessaryMethods functorSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L183">        return mapSignatureChecker(iface);</span>
+<span class="fc" id="L200">        return mapSignatureChecker(iface);</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IMonad} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IMonad}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IMonad}
+     */
     public NecessaryMethods monadSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L187">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(flatMapSignatureChecker(iface), new ConjNecessaryMethods(joinSignatureChecker(iface), new DisjNecessaryMethods(functorSignatureChecker(iface), applicativeSignatureChecker(iface)))));</span>
+<span class="fc" id="L210">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(flatMapSignatureChecker(iface), new ConjNecessaryMethods(joinSignatureChecker(iface), new DisjNecessaryMethods(functorSignatureChecker(iface), applicativeSignatureChecker(iface)))));</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link ISemigroup} to be correctly implemented
+     *
+     * @param iface type inside {@link ISemigroup}
+     * @return A {@link NecessaryMethods} with requirements for an {@link ISemigroup}
+     */
     public NecessaryMethods semigroupSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L191">        return opSignatureChecker(iface);</span>
+<span class="fc" id="L220">        return opSignatureChecker(iface);</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IMonoid} to be correctly implemented
+     *
+     * @param iface type inside {@link IMonoid}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IMonoid}
+     */
     public NecessaryMethods monoidSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L195">        return new ConjNecessaryMethods(opSignatureChecker(iface), unitSignatureChecker(iface));</span>
+<span class="fc" id="L230">        return new ConjNecessaryMethods(opSignatureChecker(iface), unitSignatureChecker(iface));</span>
     }
 
+    /**
+     * {@link NecessaryMethods} for an {@link IFoldable} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IFoldable}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IFoldable}
+     */
     public NecessaryMethods foldableSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L199">        return new DisjNecessaryMethods(foldrSignatureChecker(iface), foldMapSignatureChecker(iface));</span>
+<span class="fc" id="L240">        return new DisjNecessaryMethods(foldrSignatureChecker(iface), foldMapSignatureChecker(iface));</span>
     }
 
 }

@@ -4,25 +4,30 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for a disjunction of requirements
+ *
+ * @author daniel
+ */
 public class DisjNecessaryMethods implements NecessaryMethods {
     private final Set&lt;NecessaryMethods&gt; methods;
 
     public DisjNecessaryMethods(NecessaryMethods methods1, NecessaryMethods methods2) {
-<span class="fc" id="L11">        this(Set.of(methods1, methods2));</span>
-<span class="fc" id="L12">    }</span>
+<span class="fc" id="L16">        this(Set.of(methods1, methods2));</span>
+<span class="fc" id="L17">    }</span>
 
-<span class="fc" id="L14">    public DisjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
-<span class="fc" id="L15">        this.methods = methodsSet;</span>
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L19">    public DisjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
+<span class="fc" id="L20">        this.methods = methodsSet;</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="fc" id="L20">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
-<span class="fc" id="L21">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
-<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (anyMatch) {</span>
-<span class="fc" id="L23">            return new EmptyNecessaryMethods();</span>
+<span class="fc" id="L25">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
+<span class="fc" id="L26">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (anyMatch) {</span>
+<span class="fc" id="L28">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="fc" id="L25">            return new DisjNecessaryMethods(newMethods);</span>
+<span class="fc" id="L30">            return new DisjNecessaryMethods(newMethods);</span>
         }
     }
 }

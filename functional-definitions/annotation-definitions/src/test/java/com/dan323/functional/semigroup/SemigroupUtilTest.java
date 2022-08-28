@@ -14,12 +14,18 @@ public class SemigroupUtilTest {
     }
 
     @Test
-    public void semigroupNoAnnotationError(){
+    public void semigroupComposition() {
+        var sol = SemigroupUtil.op(new SemigroupComposition<>(SemigroupInt.SEMIGROUP), 5, 6);
+        assertEquals(11, sol);
+    }
+
+    @Test
+    public void semigroupNoAnnotationError() {
         assertThrows(IllegalArgumentException.class, () -> SemigroupUtil.op(SemigroupNoAnnotation.SEMIGROUP, 5, 6));
     }
 
     @Test
-    public void semigroupNoMethodError(){
+    public void semigroupNoMethodError() {
         assertThrows(IllegalArgumentException.class, () -> SemigroupUtil.op(EmptySemigroup.SEMIGROUP, 5, 6));
     }
 }

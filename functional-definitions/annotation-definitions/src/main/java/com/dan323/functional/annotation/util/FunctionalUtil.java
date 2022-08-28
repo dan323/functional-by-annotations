@@ -137,6 +137,7 @@ public final class FunctionalUtil {
         if (isSemigroup(semigroup.getClass())) {
             return Stream.of(semigroup.getClass().getGenericInterfaces())
                     .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
+                    .filter(iface -> iface instanceof ParameterizedType && ((ParameterizedType) iface).getActualTypeArguments()[0] instanceof Class<?>)
                     .findFirst()
                     .map(iface -> (Class<?>) ((ParameterizedType) iface).getActualTypeArguments()[0])
                     .flatMap(aClass -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass))

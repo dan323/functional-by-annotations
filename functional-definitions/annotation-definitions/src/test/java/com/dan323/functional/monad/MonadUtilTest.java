@@ -16,9 +16,9 @@ public class MonadUtilTest {
     @Test
     public void monadFapplyError() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<MonadNoPure, List<?>, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(MonadNoPure.MONAD, List.class, List.of(1, 2), List.of((Integer x) -> x + 1, (Integer x) -> x * 2)));
-        assertTrue(ex.getMessage().contains("The monad is not correctly implemented"));
+        assertTrue(ex.getMessage().contains("The functor is not correctly implemented"));
         IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad, List<?>, List, List<Integer>, List<Integer>, List<Function<Integer, Integer>>>fapply(EmptyMonad.MONAD, List.class, List.of(1, 2), List.of(x -> x + 1, x -> x * 2)));
-        assertTrue(ex2.getMessage().contains("The monad is not correctly implemented"));
+        assertTrue(ex2.getMessage().contains("The applicative is not correctly implemented"));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class MonadUtilTest {
         assertEquals(List.of(4, 3, 5, 4), q);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicativeUtil.<EmptyMonad, List<?>, List, List<Integer>, List<Integer>, List<Integer>, Integer, Integer, Integer>liftA2(EmptyMonad.MONAD, List.class, Integer::sum, v, w));
-        assertTrue(exception.getMessage().contains("The monad is not correctly implemented"));
+        assertTrue(exception.getMessage().contains("The applicative is not correctly implemented"));
     }
 
     @Test

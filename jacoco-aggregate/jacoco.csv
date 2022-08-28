@@ -1,12 +1,12 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctorUtil,15,37,0,0,3,4,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonadUtil,6,25,0,0,2,4,1,4,1,4
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,191,1139,19,45,21,98,28,82,9,69
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,143,1197,18,46,19,105,23,88,5,74
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,SemigroupUtil,7,12,0,0,2,2,1,2,1,2
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,27,65,0,0,5,8,4,8,4,8
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FoldableUtil,16,31,0,0,2,6,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonoidUtil,3,10,0,0,1,2,1,2,1,2
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil.new IMonoid() {...},9,0,0,0,3,0,3,0,3,0
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil.EndoMonoid,0,6,0,0,0,2,0,2,0,2
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,ContinuationMonad,49,0,0,0,5,0,11,0,11,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,EndoMonoid,13,0,0,0,4,0,4,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,FunctionFrom,59,0,0,0,8,0,12,0,12,0

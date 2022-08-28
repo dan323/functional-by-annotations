@@ -25,5 +25,10 @@ import java.util.function.Function;
     public final boolean equals(Object obj) {
 <span class="nc" id="L26">        throw new UnsupportedOperationException();</span>
     }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L31">        return 7*super.hashCode();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -19,7 +19,7 @@ import java.util.function.Function;
  * @author Daniel de la Concepcion
  */
 @Functor
-public class ListZipper&lt;A&gt; implements IFunctor&lt;ListZipper&lt;?&gt;&gt; {
+public class ListZipper&lt;A&gt; {
 
     private final FiniteList&lt;A&gt; left;
     private final A pointer;
@@ -34,40 +34,44 @@ public class ListZipper&lt;A&gt; implements IFunctor&lt;ListZipper&lt;?&gt;&gt; 
 <span class="nc" id="L34">        this.pointer = pointer;</span>
 <span class="nc" id="L35">    }</span>
 
+    public A get(){
+<span class="nc" id="L38">        return pointer;</span>
+    }
+
+    FiniteList&lt;A&gt; getLeft(){
+<span class="nc" id="L42">        return left;</span>
+    }
+
+    FiniteList&lt;A&gt; getRight(){
+<span class="nc" id="L46">        return right;</span>
+    }
+
     public static &lt;A&gt; Maybe&lt;ListZipper&lt;A&gt;&gt; zipFrom(FiniteList&lt;A&gt; original) {
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (original.equals(FiniteList.nil())) {</span>
-<span class="nc" id="L39">            return Maybe.of();</span>
-        } else {
-<span class="nc" id="L41">            return original.head().maybe(h -&gt; Maybe.of(new ListZipper&lt;&gt;(FiniteList.nil(), h, original.tail())), Maybe.of());</span>
-        }
+<span class="nc" id="L50">        return original.head().maybe(h -&gt; Maybe.of(new ListZipper&lt;&gt;(FiniteList.nil(), h, original.tail())), Maybe.of());</span>
     }
 
     public Maybe&lt;ListZipper&lt;A&gt;&gt; moveLeft() {
-<span class="nc" id="L46">        var newLeft = left.tail();</span>
-<span class="nc" id="L47">        var newRight = FiniteList.cons(pointer, right);</span>
-<span class="nc" id="L48">        return left.head().maybe(x -&gt; Maybe.of(new ListZipper&lt;&gt;(newLeft, x, newRight)), Maybe.of());</span>
+<span class="nc" id="L54">        var newLeft = left.tail();</span>
+<span class="nc" id="L55">        var newRight = FiniteList.cons(pointer, right);</span>
+<span class="nc" id="L56">        return left.head().maybe(x -&gt; Maybe.of(new ListZipper&lt;&gt;(newLeft, x, newRight)), Maybe.of());</span>
     }
 
     public Maybe&lt;ListZipper&lt;A&gt;&gt; moveRight() {
-<span class="nc" id="L52">        var newLeft = FiniteList.cons(pointer, left);</span>
-<span class="nc" id="L53">        var newRight = right.tail();</span>
-<span class="nc" id="L54">        return right.head().maybe(x -&gt; Maybe.of(new ListZipper&lt;&gt;(newLeft, x, newRight)), Maybe.of());</span>
+<span class="nc" id="L60">        var newLeft = FiniteList.cons(pointer, left);</span>
+<span class="nc" id="L61">        var newRight = right.tail();</span>
+<span class="nc" id="L62">        return right.head().maybe(x -&gt; Maybe.of(new ListZipper&lt;&gt;(newLeft, x, newRight)), Maybe.of());</span>
     }
 
     public ListZipper&lt;A&gt; modify(Function&lt;A, A&gt; map) {
-<span class="nc" id="L58">        return new ListZipper&lt;&gt;(left, map.apply(pointer), right);</span>
+<span class="nc" id="L66">        return new ListZipper&lt;&gt;(left, map.apply(pointer), right);</span>
     }
 
     public ListZipper&lt;A&gt; set(A b) {
-<span class="nc" id="L62">        return modify(x -&gt; b);</span>
+<span class="nc" id="L70">        return modify(x -&gt; b);</span>
     }
 
     public List&lt;A&gt; toList() {
-<span class="nc" id="L66">        return ListUtils.concat(ListUtils.reverse(left), FiniteList.cons(pointer, right));</span>
-    }
-
-    public static &lt;A, B&gt; ListZipper&lt;B&gt; map(ListZipper&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L70">        return new ListZipper&lt;&gt;(FiniteListFunctional.map(base.left, mapping), mapping.apply(base.pointer), FiniteListFunctional.map(base.right, mapping));</span>
+<span class="nc" id="L74">        return ListUtils.concat(ListUtils.reverse(left), FiniteList.cons(pointer, right));</span>
     }
 
 }

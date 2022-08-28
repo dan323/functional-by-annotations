@@ -36,7 +36,8 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,ZipApplicative,159,0,8,0,14,0,16,0,12,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,ListUtils,35,0,0,0,3,0,5,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.foldable,FoldableFuns,44,0,0,0,5,0,7,0,7,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipper,147,0,8,0,20,0,16,0,12,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipperFunctor,26,0,0,0,4,0,4,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipper,134,0,6,0,20,0,17,0,14,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Maybe,7,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Nothing,18,0,2,0,4,0,5,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeMonad,39,0,0,0,6,0,8,0,8,0

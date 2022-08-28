@@ -6,6 +6,7 @@ import com.dan323.functional.annotation.util.MonadUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +72,16 @@ public class MonadUtilTest {
     public void monandMap() {
         var sol = FunctorUtil.<MonadMock, List<?>, List, List<Integer>, List<Integer>, Integer, Integer>map(MonadMock.MONAD, List.class, List.of(2, 3, 4), x -> x + 2);
         assertEquals(List.of(4, 5, 6), sol);
+    }
+
+    @Test
+    public void flatMapFromJoin() {
+        var sol = MonadUtil.join(new MonadJoin(), Optional.class, Optional.empty());
+        assertEquals(Optional.empty(), sol);
+        sol = MonadUtil.join(new MonadJoin(), Optional.class, Optional.of(Optional.empty()));
+        assertEquals(Optional.empty(), sol);
+        sol = MonadUtil.join(new MonadJoin(), Optional.class, Optional.of(Optional.of(5)));
+        assertEquals(Optional.of(5), sol);
     }
 
 }

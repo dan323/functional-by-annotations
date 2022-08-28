@@ -147,21 +147,6 @@ public final class FunctionalUtil {
         }
     }
 
-    static <G extends ISemigroup<A>, A> Optional<A> monoidOp(G semigroup, A a, A b) {
-        if (isMonoid(semigroup.getClass())) {
-            IMonoid<A> monoid = (IMonoid<A>) semigroup;
-            return Stream.of(monoid.getClass().getGenericInterfaces())
-                    .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
-                    .findFirst()
-                    .map(iface -> (Class<?>) ((ParameterizedType) iface).getActualTypeArguments()[0])
-                    .flatMap(aClass -> getMethodIfExists(monoid.getClass(), IMonoid.OP_NAME, aClass, aClass))
-                    .or(() -> getMethodIfExists(monoid.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))
-                    .map(m -> invokeStaticMethod(monoid, m, a, b));
-        } else {
-            throw new IllegalArgumentException("The monoid is not correctly defined");
-        }
-    }
-
     // MONOID
     // Unit function
     static <G extends IMonoid<A>, A> Optional<A> monoidUnit(G monoid) {

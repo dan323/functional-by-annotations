@@ -23,6 +23,12 @@ public class FoldableUtilTest {
     }
 
     @Test
+    public void foldableFold() {
+        var sol = FoldableUtil.fold(FoldableWithFold.LIST_FOLD, MonoidSum.MONOID, List.class, List.of(3, 5, 5));
+        assertEquals(13, sol);
+    }
+
+    @Test
     public void foldableFoldrRun() {
         var sol = FoldableUtil.foldr(ListFoldFoldr.LIST_FOLD, List.class, this::apply, 1, List.of(true, false, true, false));
         assertEquals(7, sol);

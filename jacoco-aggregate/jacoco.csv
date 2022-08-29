@@ -1,9 +1,9 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctorUtil,11,45,0,0,2,6,2,5,2,5
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonadUtil,6,25,0,0,2,4,1,4,1,4
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,148,1271,19,47,20,110,24,93,5,79
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil,186,1352,21,49,22,118,28,98,7,84
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,SemigroupUtil,7,12,0,0,2,2,1,2,1,2
-Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,27,65,0,0,5,8,4,8,4,8
+Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,ApplicativeUtil,16,81,0,0,2,12,3,10,3,10
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FoldableUtil,16,31,0,0,2,6,3,4,3,4
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,MonoidUtil,3,10,0,0,1,2,1,2,1,2
 Functionals by annotation in Java/annotation-definitions,com.dan323.functional.annotation.util,FunctionalUtil.EndoMonoid,0,6,0,0,0,2,0,2,0,2

@@ -3,7 +3,6 @@ package com.dan323.functional.annotation.util;
 import com.dan323.functional.annotation.funcs.IApplicative;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Access all applicative functions in an {@link IApplicative} using reflexion
@@ -35,12 +34,13 @@ public final class ApplicativeUtil {
 
     // TODO allow this functions to be implemented
     public static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F> FA keepLeft(G applicative, Class<F> fClass, FA left, FB right) {
-        return liftA2(applicative, fClass, (x, y) -> x, left, right);
+        return FunctionalUtil.applicativeKeepLeft(applicative, fClass, left, right)
+                .orElseThrow(() -> new IllegalArgumentException("The applicative is not correctly implemented."));
     }
 
-    public static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F> FA keepRight(G applicative, Class<F> fClass, FA left, FB right) {
-        var aux = FunctorUtil.mapConst(applicative, fClass, left, Function.identity());
-        return fapply(applicative, fClass, right, aux);
+    public static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F> FB keepRight(G applicative, Class<F> fClass, FA left, FB right) {
+        return FunctionalUtil.applicativeKeepRight(applicative, fClass, left, right)
+                .orElseThrow(() -> new IllegalArgumentException("The applicative is not correctly implemented."));
     }
 
 }

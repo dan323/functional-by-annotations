@@ -134,6 +134,26 @@ final class FunctionalUtil {
         }
     }
 
+    public static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F> Optional<FA> applicativeKeepLeft(G applicative, Class<F> fClass, FA left, FB right) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, fClass, fClass)
+                    .<FA>map(m -> invokeStaticMethod(applicative, m, left, right))
+                    .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, fClass, (x, y) -> x, left, right)));
+        } else {
+            throw new IllegalArgumentException("The functor is not correctly defined");
+        }
+    }
+
+    public static <G extends IApplicative<FW>, FW extends F, F, FA extends F, FB extends F> Optional<FB> applicativeKeepRight(G applicative, Class<F> fClass, FA left, FB right) {
+        if (isApplicative(applicative.getClass())) {
+            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, fClass, fClass)
+                    .<FB>map(m -> invokeStaticMethod(applicative, m, left, right))
+                    .or(() -> Optional.of(ApplicativeUtil.fapply(applicative, fClass, right, FunctorUtil.mapConst(applicative, fClass, left, Function.identity()))));
+        } else {
+            throw new IllegalArgumentException("The functor is not correctly defined");
+        }
+    }
+
     @Monoid
     private static class EndoMonoid<B> implements IMonoid<Function<B, B>> {
         public Function<B, B> op(Function<B, B> f1, Function<B, B> f2) {
@@ -186,8 +206,8 @@ final class FunctionalUtil {
     static <G extends IFunctor<FW>, FW extends F, F, FA extends F, FB extends F, A, B> Optional<FB> applicativeMap(G functor, Class<F> fClass, FA base, Function<A, B> map) {
         if (isApplicative(functor.getClass())) {
             IApplicative<FW> applicative = (IApplicative<FW>) functor;
-            return getMethodIfExists(applicative.getClass(), "fapply", fClass, fClass)
-                    .or(() -> getMethodIfExists(applicative.getClass(), "liftA2", BiFunction.class, fClass, fClass))
+            return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, fClass, fClass)
+                    .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, fClass, fClass))
                     .map(m -> ApplicativeUtil.fapply(applicative, fClass, base, ApplicativeUtil.pure(applicative, fClass, map)));
         } else {
             throw new IllegalArgumentException("The functor is not correctly defined");

@@ -18,6 +18,22 @@ public class ApplicativeUtilTest {
     }
 
     @Test
+    public void keepLeftTest() {
+        var sol = ApplicativeUtil.keepLeft(ApplicativeMock.APPLICATIVE, Identity.class, new Identity<>(2), new Identity<>(5));
+        assertEquals(2, sol.get());
+        sol = ApplicativeUtil.keepLeft(ApplicativeMock.APPLICATIVE, Identity.class, new Identity<>(3), new Identity<>(5));
+        assertEquals(3, sol.get());
+    }
+
+    @Test
+    public void keepRightTest() {
+        var sol = ApplicativeUtil.keepRight(ApplicativeMock.APPLICATIVE, Identity.class, new Identity<>(2), new Identity<>(5));
+        assertEquals(5, sol.get());
+        sol = ApplicativeUtil.keepRight(ApplicativeMock.APPLICATIVE, Identity.class, new Identity<>(3), new Identity<>(5));
+        assertEquals(5, sol.get());
+    }
+
+    @Test
     public void fapplyTest() {
         Identity<Function<Integer, Integer>> ff = new Identity<>(x -> x + 1);
         Identity<Integer> base = new Identity<>(6);

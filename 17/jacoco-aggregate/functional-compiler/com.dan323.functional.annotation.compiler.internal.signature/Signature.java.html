@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Signature.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.internal.signature</a> &gt; <span class="el_source">Signature.java</span></div><h1>Signature.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.internal.signature;
+
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
+import java.util.List;
+
+/**
+ * Abstraction of a signature of a method
+ *
+ * @author daniel
+ */
+public class Signature {
+    private final List&lt;TypeMirror&gt; inputs;
+    private final TypeMirror returnType;
+    private final String name;
+
+<span class="fc" id="L17">    Signature(List&lt;TypeMirror&gt; inputs, TypeMirror returnType, String name) {</span>
+<span class="fc" id="L18">        this.inputs = inputs;</span>
+<span class="fc" id="L19">        this.returnType = returnType;</span>
+<span class="fc" id="L20">        this.name = name;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Verification if a method satifies the {@link Signature}
+     *
+     * @param method to check against
+     * @return true iff the input method satisfies the signature
+     */
+    public boolean verifyMethod(ExecutableElement method) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        return method.getReturnType().toString().equals(returnType.toString()) &amp;&amp;</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">                method.getParameters().size() == inputs.size() &amp;&amp;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">                method.getSimpleName().toString().equals(name) &amp;&amp;</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">                verifyInputs(method);</span>
+    }
+
+    private boolean verifyInputs(ExecutableElement method) {
+<span class="fc" id="L37">        boolean b = true;</span>
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">        for (int i = 0; b &amp;&amp; i &lt; inputs.size(); i++) {</span>
+<span class="fc" id="L39">            b = method.getParameters().get(i).asType().toString().equals(inputs.get(i).toString());</span>
+        }
+<span class="fc" id="L41">        return b;</span>
+    }
+
+    /**
+     * A signature that always fails
+     *
+     * @return {@link InvalidSignature}
+     */
+    static Signature invalid() {
+<span class="fc" id="L50">        return InvalidSignature.INVALID;</span>
+    }
+
+    private static final class InvalidSignature extends Signature {
+
+        private InvalidSignature() {
+<span class="fc" id="L56">            super(List.of(), null, &quot;&quot;);</span>
+<span class="fc" id="L57">        }</span>
+
+<span class="fc" id="L59">        private static final Signature INVALID = new InvalidSignature();</span>
+
+        @Override
+        public boolean verifyMethod(ExecutableElement method) {
+<span class="fc" id="L63">            return false;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

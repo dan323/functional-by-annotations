@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ProdMonad.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.pair</a> &gt; <span class="el_source">ProdMonad.java</span></div><h1>ProdMonad.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.pair;
+
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.annotation.util.MonadUtil;
+
+import java.lang.reflect.Type;
+import java.util.function.Function;
+
+@Monad
+public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implements IMonad&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; {
+
+    public ProdMonad(IMonad&lt;M&gt; fm, IMonad&lt;N&gt; fn) {
+<span class="nc" id="L14">        super(fm, fn);</span>
+<span class="nc" id="L15">    }</span>
+
+    public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; flatMap(Function&lt;A, PairTypeContructor&lt;M, N, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; base) {
+<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, mClass, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, nClass, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
+    }
+
+    @Override
+    public boolean isRightFunctional(Type type) {
+<span class="nc" id="L23">        return type.getTypeName().contains(&quot;IMonad&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

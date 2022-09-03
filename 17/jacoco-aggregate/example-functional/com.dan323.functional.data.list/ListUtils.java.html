@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ListUtils.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">ListUtils.java</span></div><h1>ListUtils.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+<span class="nc" id="L3">public final class ListUtils {</span>
+
+    public static &lt;A&gt; FiniteList&lt;A&gt; reverse(FiniteList&lt;A&gt; lst) {
+<span class="nc" id="L6">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, FiniteList.nil())), FiniteList.nil());</span>
+    }
+
+    public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
+<span class="nc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
+    }
+/*
+    static &lt;C&gt; List&lt;C&gt; join(List&lt;List&lt;C&gt;&gt; lst) {
+        Maybe&lt;List&lt;C&gt;&gt; first = lst.head();
+        return first.maybe(list -&gt; {
+            if (list instanceof Repeat&lt;C&gt; || list instanceof Generating&lt;C&gt; || list instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {
+                return list;
+            } else {
+                return ListUtils.concat(list, join(lst.tail()));
+            }
+        }, List.nil());
+    }*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

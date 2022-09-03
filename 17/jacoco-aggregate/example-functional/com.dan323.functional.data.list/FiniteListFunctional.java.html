@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FiniteListFunctional.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">FiniteListFunctional.java</span></div><h1>FiniteListFunctional.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.Monoid;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.funcs.IFunctor;
+import com.dan323.functional.annotation.funcs.IMonad;
+
+import java.util.function.Function;
+
+import static com.dan323.functional.data.list.ListUtils.concat;
+
+@Monad
+@Monoid
+public final class FiniteListFunctional&lt;A&gt; implements IMonad&lt;FiniteList&lt;?&gt;&gt;, IMonoid&lt;FiniteList&lt;A&gt;&gt; {
+
+    private FiniteListFunctional(){
+    }
+
+<span class="nc" id="L21">    private static final FiniteListFunctional&lt;?&gt; FINITE_LIST_FUNCTIONAL = new FiniteListFunctional&lt;&gt;();</span>
+
+    public static &lt;A&gt; FiniteListFunctional&lt;A&gt; getInstance(){
+<span class="nc" id="L24">        return (FiniteListFunctional&lt;A&gt;) FINITE_LIST_FUNCTIONAL;</span>
+    }
+
+    public static &lt;A,B&gt; FiniteList&lt;B&gt; map(FiniteList&lt;A&gt; finiteList, Function&lt;A,B&gt; mapping){
+<span class="nc" id="L28">        return finiteList.head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());</span>
+    }
+
+    public FiniteList&lt;A&gt; op(FiniteList&lt;A&gt; op1, FiniteList&lt;A&gt; op2){
+<span class="nc" id="L32">        return ListUtils.concat(op1,op2);</span>
+    }
+
+    public FiniteList&lt;A&gt; unit(){
+<span class="nc" id="L36">        return FiniteList.nil();</span>
+    }
+
+    public static &lt;A&gt; FiniteList&lt;A&gt; pure(A a){
+<span class="nc" id="L40">        return FiniteList.of(a);</span>
+    }
+
+    public static &lt;A,B&gt; FiniteList&lt;B&gt; flatMap(Function&lt;A,FiniteList&lt;B&gt;&gt; f, FiniteList&lt;A&gt; base){
+<span class="nc" id="L44">        return base.head().maybe(h -&gt; concat(f.apply(h),flatMap(f, base.tail())), FiniteList.nil());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

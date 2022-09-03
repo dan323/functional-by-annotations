@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ApplicativeSemigroup.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.util.applicative</a> &gt; <span class="el_source">ApplicativeSemigroup.java</span></div><h1>ApplicativeSemigroup.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.util.applicative;
+
+import com.dan323.functional.annotation.Semigroup;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.ISemigroup;
+import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.util.ApplicativeUtil;
+import com.dan323.functional.annotation.util.SemigroupUtil;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.stream.Stream;
+
+@Semigroup
+public class ApplicativeSemigroup&lt;FA extends F, F, A&gt; implements ISemigroup&lt;FA&gt; {
+
+    protected final ISemigroup&lt;A&gt; monoid;
+    protected final IApplicative&lt;F&gt; applicative;
+    protected final Class&lt;F&gt; fClass;
+
+<span class="nc" id="L21">    public ApplicativeSemigroup(ISemigroup&lt;A&gt; monoid, IApplicative&lt;F&gt; applicative) {</span>
+<span class="nc" id="L22">        this.applicative = applicative;</span>
+<span class="nc" id="L23">        this.monoid = monoid;</span>
+<span class="nc" id="L24">        this.fClass = extractClass(applicative);</span>
+<span class="nc" id="L25">    }</span>
+
+    private Class&lt;F&gt; extractClass(IApplicative&lt;F&gt; fu) {
+<span class="nc" id="L28">        return Stream.of(fu.getClass()</span>
+<span class="nc" id="L29">                        .getGenericInterfaces()).filter(this::isApplicative)</span>
+<span class="nc" id="L30">                .findFirst()</span>
+<span class="nc" id="L31">                .map(u -&gt; {</span>
+                    try {
+<span class="nc" id="L33">                        return (Class&lt;F&gt;) Class.forName(((ParameterizedType) ((ParameterizedType) u).getActualTypeArguments()[0]).getRawType().getTypeName());</span>
+<span class="nc" id="L34">                    } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L35">                        throw new RuntimeException(e);</span>
+                    }
+<span class="nc" id="L37">                }).orElseThrow();</span>
+    }
+
+    private boolean isApplicative(Type type) {
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        return type.getTypeName().contains(&quot;IApplicative&quot;) || type.getTypeName().contains(&quot;IMonad&quot;);</span>
+    }
+
+    public FA op(FA elem1, FA elem2) {
+<span class="nc" id="L45">        return ApplicativeUtil.liftA2(applicative, fClass, (A x,A y) -&gt; SemigroupUtil.op(monoid, x, y), elem1, elem2);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

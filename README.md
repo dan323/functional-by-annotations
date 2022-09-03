@@ -96,7 +96,7 @@ and it satisfies the following laws (adding the ones from applicative):
 ````
 flatMap(id, ffa) == join(ffa)
 flatMap(pure . f, base) == map(f, base)
-fapply(f, base) == flatMap(g -> map(g, base)), f)
+fapply(f, base) == flatMap(g -> map(g, base), f))
 join(pure(fa)) == fa
 ````
 

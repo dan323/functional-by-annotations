@@ -16,11 +16,11 @@ public class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt; {
 <span class="nc" id="L16">        return maybeMaybe.maybe(Function.identity(), Maybe.of());</span>
     }
 
-    public static &lt;A,B&gt; Maybe&lt;B&gt; fapply(Maybe&lt;Function&lt;A,B&gt;&gt; maybeFun, Maybe&lt;A&gt; base){
+    public static &lt;A, B&gt; Maybe&lt;B&gt; fapply(Maybe&lt;Function&lt;A, B&gt;&gt; maybeFun, Maybe&lt;A&gt; base) {
 <span class="nc" id="L20">        return maybeFun.maybe(f -&gt; map(base, f), Maybe.of());</span>
     }
 
-    public static MaybeMonad getInstance(){
+    public static MaybeMonad getInstance() {
 <span class="nc" id="L24">        return MAYBE;</span>
     }
 
@@ -32,6 +32,11 @@ public class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt; {
 
     public static &lt;A&gt; Maybe&lt;A&gt; pure(A a) {
 <span class="nc" id="L34">        return Maybe.of(a);</span>
+    }
+
+    @Override
+    public Class&lt;Maybe&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L39">        return (Class&lt;Maybe&lt;?&gt;&gt;) (Class) Maybe.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

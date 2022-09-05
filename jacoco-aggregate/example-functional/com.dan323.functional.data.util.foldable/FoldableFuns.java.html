@@ -7,7 +7,7 @@ import com.dan323.functional.data.integer.SumMonoid;
 
 import java.util.Objects;
 
-import static com.dan323.functional.annotation.util.FoldableUtil.foldMap;
+import static com.dan323.functional.annotation.compiler.util.FoldableUtil.foldMap;
 
 public final class FoldableFuns {
 
@@ -19,44 +19,39 @@ public final class FoldableFuns {
      * Test if the foldable is empty
      *
      * @param foldable implementation of {@link IFoldable&lt;F&gt;}
-     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
      * @param felement element of type {@code fClass} appplied to some type {@code A}
-     * @param &lt;FA&gt;     Type of {@code felement}
      * @param &lt;F&gt;      Type of {@code fClass}
      * @return true iff {@code felement} has no elements to be folded
      */
-    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F&gt; boolean isEmpty(G foldable, Class&lt;F&gt; fClass, FA felement) {
-<span class="nc" id="L29">        return foldMap(foldable, AndMonoid.AND_MONOID, fClass, x -&gt; Boolean.FALSE, felement);</span>
+    public static &lt;F&gt; boolean isEmpty(IFoldable&lt;? extends F&gt; foldable, F felement) {
+<span class="nc" id="L27">        return foldMap(foldable, AndMonoid.AND_MONOID, x -&gt; Boolean.FALSE, felement);</span>
     }
 
     /**
      * Size of the foldable element
      *
      * @param foldable implementation of {@link IFoldable&lt;F&gt;}
-     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
      * @param felement element of type {@code fClass} appplied to some type {@code A}
      * @param &lt;FA&gt;     Type of {@code felement}
      * @param &lt;F&gt;      Type of {@code fClass}
      * @return number of elements in {@code felement}
      */
-    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F&gt; int length(G foldable, Class&lt;F&gt; fClass, FA felement) {
-<span class="nc" id="L43">        return foldMap(foldable, SumMonoid.getInstance(), fClass, x -&gt; 1, felement);</span>
+    public static &lt;F&gt; int length(IFoldable&lt;? extends F&gt; foldable, F felement) {
+<span class="nc" id="L40">        return foldMap(foldable, SumMonoid.getInstance(), x -&gt; 1, felement);</span>
     }
 
     /**
      * Test if the foldable element contains a specific element
      *
      * @param foldable implementation of {@link IFoldable&lt;F&gt;}
-     * @param fClass   class of the type constructor that was made a foldable by {@code foldable}
      * @param felement element of type {@code fClass} appplied to some type {@code A}
      * @param elem     elemnt to look for
-     * @param &lt;FA&gt;     Type of {@code felement}
      * @param &lt;F&gt;      Type of {@code fClass}
      * @param &lt;A&gt;      Type of {@code elem}
      * @return true iff {@code elem} is in {@code felement}
      */
-    public static &lt;G extends IFoldable&lt;FW&gt;, FW extends F, FA extends F, F, A&gt; boolean contains(G foldable, Class&lt;F&gt; fClass, A elem, FA felement) {
-<span class="nc" id="L59">        return foldMap(foldable, OrMonoid.OR_MONOID, fClass, x -&gt; Objects.equals(x, elem), felement);</span>
+    public static &lt;F, A&gt; boolean contains(IFoldable&lt;? extends F&gt; foldable, A elem, F felement) {
+<span class="nc" id="L54">        return foldMap(foldable, OrMonoid.OR_MONOID, x -&gt; Objects.equals(x, elem), felement);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

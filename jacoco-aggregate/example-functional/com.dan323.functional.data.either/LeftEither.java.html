@@ -31,5 +31,10 @@ public final class LeftEither&lt;R&gt; implements IMonad&lt;Either&lt;?, R&gt;&g
     public &lt;A&gt; Either&lt;A, R&gt; join(Either&lt;Either&lt;A, R&gt;, R&gt; eitherEither) {
 <span class="nc" id="L32">        return eitherEither.either(Function.identity(), Either::right);</span>
     }
+
+    @Override
+    public Class&lt;Either&lt;?,R&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L37">        return (Class&lt;Either&lt;?,R&gt;&gt;)(Class) Either.class;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

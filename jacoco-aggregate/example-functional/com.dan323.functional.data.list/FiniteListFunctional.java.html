@@ -43,5 +43,10 @@ public final class FiniteListFunctional&lt;A&gt; implements IMonad&lt;FiniteList
     public static &lt;A,B&gt; FiniteList&lt;B&gt; flatMap(Function&lt;A,FiniteList&lt;B&gt;&gt; f, FiniteList&lt;A&gt; base){
 <span class="nc" id="L44">        return base.head().maybe(h -&gt; concat(f.apply(h),flatMap(f, base.tail())), FiniteList.nil());</span>
     }
+
+    @Override
+    public Class&lt;FiniteList&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L49">        return (Class&lt;FiniteList&lt;?&gt;&gt;)(Class) FiniteList.class;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

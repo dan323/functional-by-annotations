@@ -34,5 +34,10 @@ import java.util.function.Function;
     public static &lt;A, B&gt; List&lt;B&gt; map(List&lt;A&gt; base, Function&lt;A, B&gt; map) {
 <span class="nc" id="L35">        return base.map(map);</span>
     }
+
+    @Override
+    public Class&lt;List&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L40">        return (Class&lt;List&lt;?&gt;&gt;) (Class) List.class;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

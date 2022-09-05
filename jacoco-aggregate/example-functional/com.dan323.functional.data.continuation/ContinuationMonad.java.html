@@ -30,5 +30,10 @@ public final class ContinuationMonad&lt;R&gt; implements IMonad&lt;Continuation&
     public &lt;R1&gt; Continuation&lt;R1, R&gt; join(Continuation&lt;Continuation&lt;R1, R&gt;, R&gt; cc) {
 <span class="nc" id="L31">        return k -&gt; cc.apply(c1 -&gt; c1.apply(k));</span>
     }
+
+    @Override
+    public Class&lt;Continuation&lt;?,R&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L36">        return (Class&lt;Continuation&lt;?,R&gt;&gt;)(Class) Continuation.class;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

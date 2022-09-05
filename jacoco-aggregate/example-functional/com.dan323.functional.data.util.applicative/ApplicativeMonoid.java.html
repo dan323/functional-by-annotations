@@ -2,9 +2,9 @@
 
 import com.dan323.functional.annotation.Monoid;
 import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
 import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.util.ApplicativeUtil;
-import com.dan323.functional.annotation.util.MonoidUtil;
 
 @Monoid
 public class ApplicativeMonoid&lt;FA extends F, F, A&gt; extends ApplicativeSemigroup&lt;FA, F, A&gt; implements IMonoid&lt;FA&gt; {
@@ -14,7 +14,7 @@ public class ApplicativeMonoid&lt;FA extends F, F, A&gt; extends ApplicativeSemi
 <span class="nc" id="L14">    }</span>
 
     public FA unit() {
-<span class="nc" id="L17">        return ApplicativeUtil.pure(applicative, fClass, MonoidUtil.unit((IMonoid&lt;A&gt;)monoid));</span>
+<span class="nc" id="L17">        return (FA) ApplicativeUtil.pure(applicative, MonoidUtil.unit((IMonoid&lt;A&gt;)monoid));</span>
     }
 
 }

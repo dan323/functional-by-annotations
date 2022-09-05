@@ -9,7 +9,7 @@ import java.util.function.Function;
 @Functor
 public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {
 
-    private JOptionalFunctor(){
+    private JOptionalFunctor() {
 
     }
 
@@ -17,6 +17,11 @@ public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {
 
     public static &lt;A, B&gt; Optional&lt;B&gt; map(Optional&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
 <span class="nc" id="L19">        return base.map(mapping);</span>
+    }
+
+    @Override
+    public Class&lt;Optional&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L24">        return (Class&lt;Optional&lt;?&gt;&gt;) (Class) Optional.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

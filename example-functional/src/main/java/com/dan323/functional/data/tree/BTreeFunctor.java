@@ -23,4 +23,9 @@ public class BTreeFunctor implements IFunctor<BinaryTree<?>> {
         }
     }
 
+
+    @Override
+    public Class<BinaryTree<?>> getClassAtRuntime() {
+        return (Class<BinaryTree<?>>) (Class)BinaryTree.class;
+    }
 }

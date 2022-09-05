@@ -1,7 +1,7 @@
 package com.dan323.algebraic;
 
-import com.dan323.functional.annotation.util.MonoidUtil;
-import com.dan323.functional.annotation.util.SemigroupUtil;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
+import com.dan323.functional.annotation.compiler.util.SemigroupUtil;
 import com.dan323.functional.data.integer.SumMonoid;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ public class SumMonoidTest {
 
     @Test
     public void neutRefl() {
-        assertEquals(0, MonoidUtil.<SumMonoid, Integer>unit(SumMonoid.getInstance()));
+        assertEquals(0, MonoidUtil.unit(SumMonoid.getInstance()));
     }
 
 }

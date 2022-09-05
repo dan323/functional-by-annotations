@@ -17,4 +17,9 @@ public class JListFunctor implements IFunctor<List<?>> {
     public static <A,B> List<B> map(List<A> base, Function<A,B> mapping){
         return base.stream().map(mapping).toList();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

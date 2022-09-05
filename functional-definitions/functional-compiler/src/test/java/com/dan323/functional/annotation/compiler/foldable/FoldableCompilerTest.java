@@ -39,7 +39,15 @@ public class FoldableCompilerTest {
 
     @Test
     public void foldableFoldMapRun(){
-        var args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/foldable/FoldableMapOpt")
+        var args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/foldable/FoldableMapOpt",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/MonoidUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/FunctionalUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/FoldableUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/FunctorUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/ApplicativeUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/MonadUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/TraversalUtil",
+                        "src/main/java/com/dan323/functional/annotation/compiler/util/SemigroupUtil")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
         args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.0-SNAPSHOT.jar", "--add-modules", "functional.annotations"));

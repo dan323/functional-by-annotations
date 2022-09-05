@@ -3,10 +3,7 @@ package com.dan323.functional.annotation.compiler.internal.signature;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
-import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.funcs.IFoldable;
-import com.dan323.functional.annotation.funcs.IFunctor;
-import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.annotation.funcs.*;
 
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
@@ -140,6 +137,31 @@ public final class StructureSignatures {
         }
     }
 
+    private Signature createTraverseSignature(ExecutableType method, DeclaredType iFace) {
+        var params = method.getTypeVariables();
+        if (params.size() >= 2) {
+            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(1), params.get(0));
+            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));
+            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));
+            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));
+            return new Signature(List.of(iApplicative, clazz, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);
+        } else {
+            return Signature.invalid();
+        }
+    }
+
+    private Signature createSequenceASignature(ExecutableType method, DeclaredType iFace) {
+        var params = method.getTypeVariables();
+        if (params.size() >= 1) {
+            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
+            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));
+            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));
+            return new Signature(List.of(iApplicative, clazz, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);
+        } else {
+            return Signature.invalid();
+        }
+    }
+
     private NecessaryMethods mapSignatureChecker(DeclaredType iface) {
         return new FunctionSignature(x -> createMapSignature(x, iface));
     }
@@ -178,6 +200,14 @@ public final class StructureSignatures {
 
     private NecessaryMethods foldMapSignatureChecker(DeclaredType iface) {
         return new FunctionSignature(x -> createFoldMapSignature(x, iface));
+    }
+
+    private NecessaryMethods traverseSignatureChecker(DeclaredType iface){
+        return new FunctionSignature(x -> createTraverseSignature(x,iface));
+    }
+
+    private NecessaryMethods sequenceASignatureChecker(DeclaredType iface){
+        return new FunctionSignature(x -> createSequenceASignature(x,iface));
     }
 
     /**

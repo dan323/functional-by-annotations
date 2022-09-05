@@ -41,4 +41,9 @@ public final class FunctionFrom<A> implements IMonad<Function<A, ?>> {
     public <B> Function<A, B> join(Function<A, Function<A, B>> ffun) {
         return x -> ffun.apply(x).apply(x);
     }
+
+    @Override
+    public Class<Function<A,?>> getClassAtRuntime() {
+        return (Class<Function<A,?>>)(Class) Function.class;
+    }
 }

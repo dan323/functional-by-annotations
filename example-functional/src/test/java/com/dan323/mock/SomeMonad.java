@@ -23,4 +23,9 @@ public class SomeMonad implements ISemigroup<Integer>, IMonad<List<?>> {
     public <A, B> List<B> flatMap(Function<A, List<B>> fun, List<A> base) {
         return base.stream().map(fun).flatMap(List::stream).toList();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class) List.class;
+    }
 }

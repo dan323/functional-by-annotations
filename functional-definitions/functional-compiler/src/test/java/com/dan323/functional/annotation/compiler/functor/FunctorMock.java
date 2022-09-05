@@ -22,4 +22,9 @@ public class FunctorMock<A> implements IFunctor<List<?>> {
     public List<A> toList(){
         return lst;
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

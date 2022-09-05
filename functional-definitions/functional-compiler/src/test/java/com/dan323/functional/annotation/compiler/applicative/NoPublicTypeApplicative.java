@@ -13,6 +13,11 @@ class NoPublicTypeApplicative implements IApplicative<List<?>> {
         return List.of(a);
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
+
     public static <A,B> List<B> fapply(List<Function<A, B>> ffunction, List<A> base){
         return List.of();
     }

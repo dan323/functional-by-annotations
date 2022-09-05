@@ -20,4 +20,9 @@ public class MonadJoinApplicativeFapply implements IMonad<List<?>> {
     public static <B> List<B> join(List<List<B>> base) {
         return List.of();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

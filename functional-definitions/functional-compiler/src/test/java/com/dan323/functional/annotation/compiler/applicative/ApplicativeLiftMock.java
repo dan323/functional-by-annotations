@@ -17,4 +17,8 @@ public class ApplicativeLiftMock implements IApplicative<List<?>> {
         return List.of(a);
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

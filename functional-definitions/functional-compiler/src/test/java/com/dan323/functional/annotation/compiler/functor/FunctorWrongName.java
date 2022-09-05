@@ -13,4 +13,8 @@ public class FunctorWrongName<A> implements IFunctor<List<?>> {
         return base.stream().map(mapping).toList();
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

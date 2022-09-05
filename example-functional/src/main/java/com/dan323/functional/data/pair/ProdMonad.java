@@ -1,8 +1,8 @@
 package com.dan323.functional.data.pair;
 
 import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.compiler.util.MonadUtil;
 import com.dan323.functional.annotation.funcs.IMonad;
-import com.dan323.functional.annotation.util.MonadUtil;
 
 import java.lang.reflect.Type;
 import java.util.function.Function;
@@ -15,11 +15,6 @@ public class ProdMonad<M, N> extends ProdApplicative<M, N> implements IMonad<Pai
     }
 
     public <A, B> PairTypeContructor<M, N, B> flatMap(Function<A, PairTypeContructor<M, N, B>> f, PairTypeContructor<M, N, A> base) {
-        return new PairTypeContructor<>(MonadUtil.flatMap((IMonad<M>) mFunctor, mClass, (A x) -> f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad<N>) nFunctor, nClass, (A x) -> f.apply(x).getSecond(), base.getSecond()));
-    }
-
-    @Override
-    public boolean isRightFunctional(Type type) {
-        return type.getTypeName().contains("IMonad");
+        return new PairTypeContructor<>(MonadUtil.flatMap((IMonad<M>) mFunctor, (A x) -> f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad<N>) nFunctor, (A x) -> f.apply(x).getSecond(), base.getSecond()));
     }
 }

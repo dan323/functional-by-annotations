@@ -5,4 +5,5 @@ module functional.compiler {
     provides javax.annotation.processing.Processor with com.dan323.functional.annotation.compiler.FunctionalCompiler;
 
     exports com.dan323.functional.annotation.compiler;
+    exports com.dan323.functional.annotation.compiler.util;
 }

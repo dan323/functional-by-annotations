@@ -16,4 +16,9 @@ public class ApplicativeFunctor implements IApplicative<List<?>> {
     public static <A, B, C> List<C> liftA2(BiFunction<A, B, C> function, List<A> base1, List<B> base2) {
         return List.of();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

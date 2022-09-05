@@ -22,4 +22,9 @@ public class ApplicativeMock extends FunctorMock<Integer> implements IApplicativ
         return ffunction.stream().flatMap(f -> base.stream().map(f)).toList();
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
+
 }

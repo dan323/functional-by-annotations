@@ -42,7 +42,7 @@ Methods of super-types also count towards the annotation being implemented.
 
 A semigroup requires only one operation
 ````java
-public T op(T a, T b)
+public T op(T a, T b);
 ````
 and it should satisfy the associative property:
 ````
@@ -56,7 +56,7 @@ op(x,op(y,z)) == op(op(x,y),z)
 
 A functor requires only one function
 ```java
-public <A,B> F<B> map(F<A> base, Function<A,B> map)
+public <A,B> F<B> map(F<A> base, Function<A,B> map);
 ```
 and it satisfies the following laws:
 ```
@@ -70,9 +70,9 @@ The miminal required is the only function it has: *map*
 
 Any applicative is a functor, so it also has a map function added to the following:
 ````java
-public <A> F<A> pure(A a)
-public <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base)
-public <A,B,C> F<C> liftA2(BiFunction<A,B,C> map, F<A> fa, F<B> fb)
+public <A> F<A> pure(A a);
+public <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base);
+public <A,B,C> F<C> liftA2(BiFunction<A,B,C> map, F<A> fa, F<B> fb);
 ````
 and it satisfies the following laws (adding the ones from functor):
 ````
@@ -89,14 +89,14 @@ The mimimal required is *pure* and, either *fapply* or *liftA2*.
 
 Any monad is an applicative, and hence a functor, so it has all their functions plus the following:
 ````java
-public <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base)
-public <A> F<A> join(F<F<A>> doubleMonad)
+public <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base);
+public <A> F<A> join(F<F<A>> doubleMonad);
 ````
 and it satisfies the following laws (adding the ones from applicative):
 ````
 flatMap(id, ffa) == join(ffa)
 flatMap(pure . f, base) == map(f, base)
-fapply(f, base) == flatMap(g -> map(g, base), f))
+fapply(f, base) == flatMap(g -> map(g, base), f)
 join(pure(fa)) == fa
 ````
 

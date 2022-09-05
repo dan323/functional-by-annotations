@@ -12,4 +12,10 @@ public class FoldableROpt implements IFoldable<Optional<?>> {
     public <A, B> B foldr(BiFunction<A, B, B> function, B b, Optional<A> opt) {
         return opt.map(y -> function.apply(y, b)).orElse(b);
     }
+
+
+    @Override
+    public Class<Optional<?>> getClassAtRuntime() {
+        return (Class<Optional<?>>)(Class) Optional.class;
+    }
 }

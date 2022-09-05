@@ -1,6 +1,6 @@
 package com.dan323.functional;
 
-import com.dan323.functional.annotation.util.FunctorUtil;
+import com.dan323.functional.annotation.compiler.util.FunctorUtil;
 import com.dan323.functional.data.list.JListFunctor;
 import com.dan323.functional.data.optional.JOptionalFunctor;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class JavaFunctorsTest {
         opt = JOptionalFunctor.<Integer, Integer>map(Optional.empty(), k -> k + 1);
         assertEquals(Optional.empty(), opt);
 
-        opt = FunctorUtil.<JOptionalFunctor, Optional<?>, Optional, Optional<Integer>, Optional<Integer>, Integer, Integer>map(JOptionalFunctor.FUNCTOR, Optional.class, Optional.empty(), k -> k + 1);
+        opt = (Optional<Integer>) FunctorUtil.map(JOptionalFunctor.FUNCTOR, Optional.empty(), (Integer k) -> k + 1);
         assertEquals(Optional.empty(), opt);
     }
 
@@ -28,7 +28,7 @@ public class JavaFunctorsTest {
     public void javaListFunctor() {
         var lst = JListFunctor.map(List.of(3, 3, 4), k -> k * k);
         assertEquals(List.of(9, 9, 16), lst);
-        lst = FunctorUtil.<JListFunctor, List<?>, List, List<Integer>, List<Integer>, Integer, Integer>map(JListFunctor.FUNCTOR, List.class, List.of(3, 3, 4), k -> k * k);
+        lst = (List<Integer>) FunctorUtil.map(JListFunctor.FUNCTOR, List.of(3, 3, 4), (Integer k) -> k * k);
         assertEquals(List.of(9, 9, 16), lst);
     }
 }

@@ -1,7 +1,7 @@
 package com.dan323.algebraic;
 
-import com.dan323.functional.annotation.util.MonoidUtil;
-import com.dan323.functional.annotation.util.SemigroupUtil;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
+import com.dan323.functional.annotation.compiler.util.SemigroupUtil;
 import com.dan323.functional.data.integer.ProdMonoid;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ public class ProdMonoidTest {
 
     @Test
     public void neutRefl() {
-        assertEquals(1, MonoidUtil.<ProdMonoid, Integer>unit(ProdMonoid.getInstance()));
+        assertEquals(1, MonoidUtil.unit(ProdMonoid.getInstance()));
     }
 
 }

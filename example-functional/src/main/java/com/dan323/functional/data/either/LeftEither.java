@@ -31,4 +31,9 @@ public final class LeftEither<R> implements IMonad<Either<?, R>> {
     public <A> Either<A, R> join(Either<Either<A, R>, R> eitherEither) {
         return eitherEither.either(Function.identity(), Either::right);
     }
+
+    @Override
+    public Class<Either<?,R>> getClassAtRuntime() {
+        return (Class<Either<?,R>>)(Class) Either.class;
+    }
 }

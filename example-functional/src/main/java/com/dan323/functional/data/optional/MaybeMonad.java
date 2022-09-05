@@ -16,11 +16,11 @@ public class MaybeMonad implements IMonad<Maybe<?>> {
         return maybeMaybe.maybe(Function.identity(), Maybe.of());
     }
 
-    public static <A,B> Maybe<B> fapply(Maybe<Function<A,B>> maybeFun, Maybe<A> base){
+    public static <A, B> Maybe<B> fapply(Maybe<Function<A, B>> maybeFun, Maybe<A> base) {
         return maybeFun.maybe(f -> map(base, f), Maybe.of());
     }
 
-    public static MaybeMonad getInstance(){
+    public static MaybeMonad getInstance() {
         return MAYBE;
     }
 
@@ -32,5 +32,10 @@ public class MaybeMonad implements IMonad<Maybe<?>> {
 
     public static <A> Maybe<A> pure(A a) {
         return Maybe.of(a);
+    }
+
+    @Override
+    public Class<Maybe<?>> getClassAtRuntime() {
+        return (Class<Maybe<?>>) (Class) Maybe.class;
     }
 }

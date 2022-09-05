@@ -30,4 +30,9 @@ public class SomeApplicative implements IFunctor<List<?>>, IApplicative<List<?>>
     public static <A, B> List<B> fapply(List<Function<A, B>> funList, List<A> base) {
         return funList.stream().flatMap(f -> base.stream().map(f)).toList();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class)List.class;
+    }
 }

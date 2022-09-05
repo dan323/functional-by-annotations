@@ -12,4 +12,9 @@ public class NoPublicMapFunctor implements IFunctor<List<?>> {
     static <A, B> List<B> map(List<A> lst, Function<A, B> mapping) {
         return List.of();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

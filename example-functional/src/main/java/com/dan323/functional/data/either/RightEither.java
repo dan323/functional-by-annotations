@@ -33,4 +33,9 @@ public final class RightEither<R> implements IMonad<Either<R, ?>> {
     public <A,B> Either<R,B> fapply(Either<R,Function<A,B>> ff, Either<R,A> base) {
         return ff.either(Either::left, f -> map(base,f));
     }
+
+    @Override
+    public Class<Either<R,?>> getClassAtRuntime() {
+        return (Class<Either<R,?>>)(Class) Either.class;
+    }
 }

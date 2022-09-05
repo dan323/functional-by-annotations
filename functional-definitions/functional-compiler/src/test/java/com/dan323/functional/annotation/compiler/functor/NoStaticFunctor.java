@@ -13,4 +13,8 @@ public class NoStaticFunctor implements IFunctor<List<?>> {
         return List.of();
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

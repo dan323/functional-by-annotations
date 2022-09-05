@@ -3,10 +3,7 @@ package com.dan323.functional.annotation.compiler.internal;
 import com.dan323.functional.annotation.Structure;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
-import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.funcs.IFoldable;
-import com.dan323.functional.annotation.funcs.IFunctor;
-import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.annotation.funcs.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +34,13 @@ class FunctionalDependencyTree {
         FunctionalDependencyTree semigroup = new FunctionalDependencyTree(ISemigroup.class);
         FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);
         FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);
+        FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);
         monad.addDependency(applicative);
         applicative.addDependency(functor);
         monoid.addDependency(semigroup);
-        return List.of(monad, monoid, foldable);
+        traversal.addDependency(functor);
+        traversal.addDependency(foldable);
+        return List.of(monad, monoid, traversal);
     }
 
     public Class<? extends Structure> getNode() {

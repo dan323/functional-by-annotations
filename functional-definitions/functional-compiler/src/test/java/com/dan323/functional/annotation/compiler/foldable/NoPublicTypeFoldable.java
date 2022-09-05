@@ -13,4 +13,8 @@ class NoPublicTypeFoldable implements IFoldable<Optional<?>> {
         return opt.map(y -> function.apply(y, b)).orElse(b);
     }
 
+    @Override
+    public Class<Optional<?>> getClassAtRuntime() {
+        return (Class<Optional<?>>)(Class) Optional.class;
+    }
 }

@@ -43,4 +43,9 @@ public final class FiniteListFunctional<A> implements IMonad<FiniteList<?>>, IMo
     public static <A,B> FiniteList<B> flatMap(Function<A,FiniteList<B>> f, FiniteList<A> base){
         return base.head().maybe(h -> concat(f.apply(h),flatMap(f, base.tail())), FiniteList.nil());
     }
+
+    @Override
+    public Class<FiniteList<?>> getClassAtRuntime() {
+        return (Class<FiniteList<?>>)(Class) FiniteList.class;
+    }
 }

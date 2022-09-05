@@ -60,7 +60,7 @@ public class Compiler<F extends Annotation> {
             }
         } while (!success && !element.toString().equals("java.lang.Object"));
         if (!success) {
-            error("The public function map was not found in %s", originalElement.getQualifiedName());
+            error("The public functions needed were not found in %s", originalElement.getQualifiedName());
         }
     }
 

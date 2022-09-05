@@ -34,4 +34,9 @@ public final class ZipApplicative implements IApplicative<List<?>> {
     public static <A, B> List<B> map(List<A> base, Function<A, B> map) {
         return base.map(map);
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class) List.class;
+    }
 }

@@ -12,4 +12,8 @@ public class EitherF<A,B> implements IFunctor<EitherF<A,?>> {
         return null;
     }
 
+    @Override
+    public Class<EitherF<A,?>> getClassAtRuntime() {
+        return (Class<EitherF<A,?>>)(Class) EitherF.class;
+    }
 }

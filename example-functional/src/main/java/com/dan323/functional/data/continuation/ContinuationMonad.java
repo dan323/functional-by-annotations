@@ -30,4 +30,9 @@ public final class ContinuationMonad<R> implements IMonad<Continuation<?, R>> {
     public <R1> Continuation<R1, R> join(Continuation<Continuation<R1, R>, R> cc) {
         return k -> cc.apply(c1 -> c1.apply(k));
     }
+
+    @Override
+    public Class<Continuation<?,R>> getClassAtRuntime() {
+        return (Class<Continuation<?,R>>)(Class) Continuation.class;
+    }
 }

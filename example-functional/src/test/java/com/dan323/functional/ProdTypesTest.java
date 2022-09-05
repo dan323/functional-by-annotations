@@ -1,8 +1,8 @@
 package com.dan323.functional;
 
-import com.dan323.functional.annotation.util.ApplicativeUtil;
-import com.dan323.functional.annotation.util.FunctorUtil;
-import com.dan323.functional.annotation.util.MonadUtil;
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
+import com.dan323.functional.annotation.compiler.util.FunctorUtil;
+import com.dan323.functional.annotation.compiler.util.MonadUtil;
 import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.either.LeftEither;
 import com.dan323.functional.data.list.FiniteList;
@@ -70,7 +70,7 @@ public class ProdTypesTest {
     public void prodApplicativeAsFunctorRefl() {
         var pairFunctor = new ProdApplicative<>(FiniteListFunctional.getInstance(), MaybeMonad.getInstance());
         var pair = new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(1, 2, 3), Maybe.of(5));
-        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, pair, (Integer x) -> x * 2);
+        var sol = FunctorUtil.map(pairFunctor, pair, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<FiniteList<?>, Maybe<?>, Integer>(FiniteList.of(2, 4, 6), Maybe.of(10)), sol);
     }
 
@@ -78,9 +78,9 @@ public class ProdTypesTest {
     public void prodMonad() {
         var pairFunctor = new ProdMonad<>(FiniteListFunctional.getInstance(), MaybeMonad.getInstance());
         var pair = new PairTypeContructor<>(FiniteList.of(1, 2, 3), Maybe.of(5));
-        var sol = MonadUtil.flatMap(pairFunctor, PairTypeContructor.class, (Integer x) -> new PairTypeContructor<>(FiniteList.of(x), Maybe.of(x + 3)), pair);
+        var sol = MonadUtil.flatMap(pairFunctor, (Integer x) -> new PairTypeContructor<>(FiniteList.of(x), Maybe.of(x + 3)), pair);
         assertEquals(new PairTypeContructor<>(FiniteList.of(1, 2, 3), Maybe.of(8)), sol);
-        sol = ApplicativeUtil.pure(pairFunctor, PairTypeContructor.class, 7);
+        sol = ApplicativeUtil.pure(pairFunctor, 7);
         assertEquals(new PairTypeContructor<>(FiniteList.of(7), Maybe.of(7)), sol);
     }
 
@@ -88,7 +88,7 @@ public class ProdTypesTest {
     public void applicativeAndFunctor() {
         var pairFunctor = new ProdApplicative<>(new SomeApplicative(), new SomeApplicative());
         var par = new PairTypeContructor<>(List.of(1, 2), List.of(2, 3));
-        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
+        var sol = FunctorUtil.map(pairFunctor, par, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);
     }
 
@@ -96,7 +96,7 @@ public class ProdTypesTest {
     public void monadAndSemigroup() {
         var pairFunctor = new ProdMonad<>(new SomeMonad(), new SomeMonad());
         var par = new PairTypeContructor<>(List.of(1, 2), List.of(2, 3));
-        var sol = FunctorUtil.map(pairFunctor, PairTypeContructor.class, par, (Integer x) -> x * 2);
+        var sol = FunctorUtil.map(pairFunctor, par, (Integer x) -> x * 2);
         assertEquals(new PairTypeContructor<>(List.of(2, 4), List.of(4, 6)), sol);
     }
 }

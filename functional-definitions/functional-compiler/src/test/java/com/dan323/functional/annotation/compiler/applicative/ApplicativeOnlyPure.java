@@ -11,4 +11,9 @@ public class ApplicativeOnlyPure implements IApplicative<List<?>> {
     public static <A> List<A> pure(A a){
         return List.of();
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

@@ -14,4 +14,8 @@ public class FunctorWrongReturnType implements IFunctor<List<?>> {
         return base.stream().map(mapping).findFirst();
     }
 
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class<?>) List.class;
+    }
 }

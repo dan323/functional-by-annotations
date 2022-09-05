@@ -16,4 +16,9 @@ public class SomeFoldable implements IFoldable<List<?>> {
                 .reduce(Function.identity(), (f, g) -> g.compose(f))
                 .apply(b);
     }
+
+    @Override
+    public Class<List<?>> getClassAtRuntime() {
+        return (Class<List<?>>) (Class) List.class;
+    }
 }

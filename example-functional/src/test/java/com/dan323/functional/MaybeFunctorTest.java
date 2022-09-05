@@ -1,6 +1,6 @@
 package com.dan323.functional;
 
-import com.dan323.functional.annotation.util.FunctorUtil;
+import com.dan323.functional.annotation.compiler.util.FunctorUtil;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.optional.MaybeMonad;
 import org.junit.jupiter.api.Test;
@@ -23,11 +23,11 @@ public class MaybeFunctorTest {
     @Test
     public void maybeFunctorUtils() {
         Maybe<Boolean> mb = Maybe.of();
-        Maybe<Boolean> mnotb = FunctorUtil.<MaybeMonad, Maybe<?>, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
+        Maybe<Boolean> mnotb = (Maybe<Boolean>) FunctorUtil.map(MaybeMonad.getInstance(), mb, (Boolean b) -> !b);
         assertEquals(Maybe.of(), mnotb);
 
         mb = Maybe.of(true);
-        mnotb = FunctorUtil.<MaybeMonad, Maybe<?>, Maybe, Maybe<Boolean>, Maybe<Boolean>, Boolean, Boolean>map(MaybeMonad.getInstance(), Maybe.class, mb, b -> !b);
+        mnotb = (Maybe<Boolean>) FunctorUtil.map(MaybeMonad.getInstance(), mb, (Boolean b) -> !b);
         assertEquals(Maybe.of(false), mnotb);
     }
 }

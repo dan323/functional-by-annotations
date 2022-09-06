@@ -104,3 +104,28 @@ The minimal required is *pure* and one of the following lists:
 1. *flatMap*
 2. *join* and the minimal Functor
 3. *join* and the minimal Applicative
+
+### Foldable
+
+A foldable structure is one we can collapse. Up to now it has 3 functions defined:
+
+````java
+public <A> A fold(IMonoid<A> monoid, F<A> a);
+public <A, M> M foldMap(IMonoid<M> monoid, Function<A,M> function, F<A> base);
+public <A, B> B foldr(BiFunction<A,B,B> function, B b, F<A> fa);
+````
+
+and they satisfy the following laws:
+````
+fold(m, b) = foldMap(m, Function.identity(), b)
+foldr(f, z, t) = appEndo(foldMap(EndoMonoid, f, t), z)
+appEndo(g, z) = g(z)
+````
+
+where *EndoMonoid(A)* is the monoid defined over the functions from and to *A* with *op(f,g) = f . g*
+
+The minimal required is *foldr* or *foldMap*
+
+### Traversable
+
+**TODO**

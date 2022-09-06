@@ -28,3 +28,6 @@
   - Added Foldable functional
 * 24/08/22
   - Allow superclass methods to implement Structures on subclasses
+* 05/09/22
+  - Added Foldable functional
+  - Structures are now aware of their type constructor class

@@ -31,3 +31,7 @@
 * 05/09/22
   - Added Foldable functional
   - Structures are now aware of their type constructor class
+* 07/09/22
+  - Added Traversal functional
+* 11/09/22
+  - Added Alternative functional

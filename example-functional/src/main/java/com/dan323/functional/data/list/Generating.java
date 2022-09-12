@@ -12,7 +12,9 @@ final class Generating<A> extends InfiniteList<A> {
     private final UnaryOperator<A> generator;
 
     Generating(A first, UnaryOperator<A> generator){
-        if (first == null || generator == null) throw new IllegalArgumentException("Inputs must not be null");
+        if (first == null || generator == null){
+            throw new IllegalArgumentException("Inputs must not be null");
+        }
         this.head = first;
         this.generator = generator;
     }

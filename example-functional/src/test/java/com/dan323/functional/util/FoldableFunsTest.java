@@ -1,5 +1,7 @@
 package com.dan323.functional.util;
 
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.FiniteListFunctional;
 import com.dan323.functional.data.util.foldable.FoldableFuns;
 import com.dan323.mock.SomeFoldable;
 import org.junit.jupiter.api.Test;
@@ -34,5 +36,11 @@ public class FoldableFunsTest {
         assertEquals(0, len);
         len = FoldableFuns.length(new SomeFoldable(), List.of(1, 2, 3));
         assertEquals(3, len);
+    }
+
+    @Test
+    void filterTest() {
+        var filtered = FoldableFuns.filter(new SomeFoldable(), FiniteListFunctional.getInstance(), FiniteListFunctional.getAlternativeMonoid(), List.of(1, 2, 3, 4), (Integer x) -> x % 2 == 0);
+        assertEquals(FiniteList.of(2,4), filtered);
     }
 }

@@ -1,5 +1,6 @@
 package com.dan323.functional.util.traversal;
 
+import com.dan323.functional.annotation.compiler.util.FunctorUtil;
 import com.dan323.functional.annotation.compiler.util.TraversalUtil;
 import com.dan323.functional.util.Identity;
 import com.dan323.functional.util.applicative.ApplicativeMock;
@@ -28,5 +29,15 @@ public class TraversalUtilTest {
         assertEquals(List.of(1, 2, 3), sol.get());
         var sol2 = (new TraversalSequenceA()).sequenceA(ApplicativeMock.APPLICATIVE, (List) Stream.of(1, 2, 3).map(Identity::new).toList());
         assertEquals(List.of(1, 2, 3), sol.get());
+    }
+
+    @Test
+    public void sequenceAMapTest() {
+        TraversalList tList = new TraversalList();
+        var sol = FunctorUtil.map(tList, List.of(1, 2, 3), (Integer x) -> x * 5 - 2);
+        assertEquals(List.of(3, 8, 13), sol);
+        TraversalSequenceA tList2 = new TraversalSequenceA();
+        sol = FunctorUtil.map(tList2, List.of(1, 2, 3), (Integer x) -> x + 1);
+        assertEquals(List.of(2, 3, 4), sol);
     }
 }

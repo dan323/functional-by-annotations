@@ -29,18 +29,8 @@ public final class Just<A> implements Maybe<A> {
         return Objects.hash(element);
     }
 
-/*    @Override
-    public <R> Optional<R> map(Function<A, R> f) {
-        return new Just<>(f.apply(element));
-    }
-
     @Override
-    public <R> Optional<R> flatMap(Function<A, Monad<R, Optional<?>>> f) {
-        return (Optional<R>) f.apply(element);
+    public String toString() {
+        return "Just["+element.toString()+"]";
     }
-
-    @Override
-    public <R> Optional<R> fapply(Applicative<Function<A, R>, Optional<?>> applicative) {
-        return ((Optional<Function<A, R>>) applicative).maybe(f -> Optional.of(f.apply(element)), Optional.of());
-    }*/
 }

@@ -8,6 +8,8 @@ import com.dan323.functional.annotation.funcs.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -22,8 +24,12 @@ final class FunctionalUtil {
         return gClass.getAnnotation(Traversal.class) != null;
     }
 
+    private static <G> boolean isAlternative(Class<G> gClass) {
+        return gClass.getAnnotation(Alternative.class) != null;
+    }
+
     private static <G> boolean isApplicative(Class<G> gClass) {
-        return gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null;
+        return gClass.getAnnotation(Applicative.class) != null || isMonad(gClass) || isAlternative(gClass);
     }
 
     private static <G> boolean isMonad(Class<G> gClass) {
@@ -31,15 +37,15 @@ final class FunctionalUtil {
     }
 
     private static <G> boolean isFunctor(Class<G> gClass) {
-        return gClass.getAnnotation(Functor.class) != null || gClass.getAnnotation(Applicative.class) != null || gClass.getAnnotation(Monad.class) != null || gClass.getAnnotation(Traversal.class) != null;
+        return gClass.getAnnotation(Functor.class) != null || isApplicative(gClass) || gClass.getAnnotation(Traversal.class) != null;
     }
 
     private static <G> boolean isSemigroup(Class<G> gClassz) {
-        return gClassz.getAnnotation(Semigroup.class) != null || gClassz.getAnnotation(Monoid.class) != null;
+        return gClassz.getAnnotation(Semigroup.class) != null || isMonoid(gClassz);
     }
 
     private static <G> boolean isFoldable(Class<G> gClass) {
-        return gClass.getAnnotation(Foldable.class) != null || gClass.getAnnotation(Traversal.class) != null;
+        return gClass.getAnnotation(Foldable.class) != null || isTraversal(gClass);
     }
 
     private static <G> boolean isMonoid(Class<G> gClassz) {
@@ -95,7 +101,7 @@ final class FunctionalUtil {
                             .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime()))
                             .map(m -> FoldableUtil.foldMap(foldable, monoid, Function.identity(), base)));
         } else {
-            throw new IllegalArgumentException("The foldable is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -107,7 +113,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime())
                             .map(m -> FoldableUtil.foldr(foldable, (A x, M y) -> SemigroupUtil.op(monoid, function.apply(x), y), MonoidUtil.unit(monoid), base)));
         } else {
-            throw new IllegalArgumentException("The foldable is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -119,7 +125,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())
                             .map(m -> FoldableUtil.foldMap(foldable, new EndoMonoid<>(), (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
         } else {
-            throw new IllegalArgumentException("The foldable is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -130,27 +136,27 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)
                             .map(m -> FunctorUtil.map(functor, base, x -> constant)));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
         }
     }
 
     public static <F> Optional<F> applicativeKeepLeft(IApplicative<? extends F> applicative, F left, F right) {
         if (isApplicative(applicative.getClass())) {
-            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME,  applicative.getClassAtRuntime(),  applicative.getClassAtRuntime())
+            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, left, right))
                     .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -> x, left, right)));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
         }
     }
 
     public static <F> Optional<F> applicativeKeepRight(IApplicative<? extends F> applicative, F left, F right) {
         if (isApplicative(applicative.getClass())) {
-            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME,  applicative.getClassAtRuntime(),  applicative.getClassAtRuntime())
+            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, left, right))
                     .or(() -> Optional.of(ApplicativeUtil.fapply(applicative, right, FunctorUtil.mapConst(applicative, left, Function.identity()))));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -163,7 +169,7 @@ final class FunctionalUtil {
                             .map(m -> TraversalUtil.sequenceA(traversal, applicative, FunctorUtil.map(traversal, fa, mapping)))
                     );
         } else {
-            throw new IllegalArgumentException("The traversal is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -176,7 +182,7 @@ final class FunctionalUtil {
                             .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, functor.getClassAtRuntime()))
                             .map(m -> ((Identity<F>) (Identity<?>) TraversalUtil.<Identity, F, A>traverse(traversal, new IdentityApplicative(), ((Function<B, Identity<B>>) IdentityApplicative::pure).compose(map), base)).get()));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -187,7 +193,25 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())
                             .map(m -> TraversalUtil.traverse(traversal, applicative, Function.identity(), fa)));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
+        }
+    }
+
+    public static <F> Optional<F> alternativeEmpty(IAlternative<? extends F> alternative) {
+        if (isAlternative(alternative.getClass())) {
+            return getMethodIfExists(alternative.getClass(), IAlternative.EMPTY_NAME)
+                    .map(m -> invokeStaticMethod(alternative, m));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static <F> Optional<F> alternativeDisj(IAlternative<? extends F> alternative, F fa, F fb) {
+        if (isAlternative(alternative.getClass())) {
+            return getMethodIfExists(alternative.getClass(), IAlternative.DISJ_NAME, alternative.getClassAtRuntime(), alternative.getClassAtRuntime())
+                    .map(m -> invokeStaticMethod(alternative, m, fa, fb));
+        } else {
+            return Optional.empty();
         }
     }
 
@@ -198,7 +222,7 @@ final class FunctionalUtil {
             return new Identity<>(a);
         }
 
-        public static <A, B> Identity<B> fapply(Identity<Function<A,B>> map, Identity<A> idA) {
+        public static <A, B> Identity<B> fapply(Identity<Function<A, B>> map, Identity<A> idA) {
             return new Identity<>(map.get().apply(idA.get()));
         }
 
@@ -208,7 +232,7 @@ final class FunctionalUtil {
 
         @Override
         public Class<Identity<?>> getClassAtRuntime() {
-            return (Class<Identity<?>>)(Class<?>) Identity.class;
+            return (Class<Identity<?>>) (Class<?>) Identity.class;
         }
     }
 
@@ -256,7 +280,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))
                     .map(m -> invokeStaticMethod(semigroup, m, a, b));
         } else {
-            throw new IllegalArgumentException("The semigroup is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -267,7 +291,7 @@ final class FunctionalUtil {
             return getMethodIfExists(monoid.getClass(), IMonoid.UNIT_NAME)
                     .map(m -> invokeStaticMethod(monoid, m));
         } else {
-            throw new IllegalArgumentException("The monoid is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -280,7 +304,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, functor.getClassAtRuntime(), functor.getClassAtRuntime()))
                     .map(m -> ApplicativeUtil.fapply(applicative, base, ApplicativeUtil.pure(applicative, map)));
         } else {
-            throw new IllegalArgumentException("The functor is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -291,7 +315,7 @@ final class FunctionalUtil {
                     .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))
                     .map(m -> MonadUtil.flatMap(monad, (A a) -> ApplicativeUtil.pure(monad, map.apply(a)), base));
         } else {
-            throw new IllegalArgumentException("The applicative is not correctly defined");
+            return Optional.empty();
         }
     }
 
@@ -300,7 +324,7 @@ final class FunctionalUtil {
             return getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)
                     .map(m -> FunctionalUtil.invokeStaticMethod(functor, m, base, map));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
@@ -311,7 +335,7 @@ final class FunctionalUtil {
             return getMethodIfExists(applicative.getClass(), IApplicative.PURE_NAME, Object.class)
                     .map(m -> invokeStaticMethod(applicative, m, a));
         } else {
-            throw new IllegalArgumentException("The applicative is not correctly defined.");
+            return Optional.empty();
         }
     }
 
@@ -324,7 +348,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                             .map(m -> ApplicativeUtil.liftA2(applicative, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
@@ -332,11 +356,11 @@ final class FunctionalUtil {
         if (isMonad(applicative.getClass())) {
             IMonad<? extends F> monad = (IMonad<? extends F>) applicative;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())
-                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME,  applicative.getClassAtRuntime())
-                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME,  applicative.getClassAtRuntime(), Function.class)))
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())
+                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
                     .map(m -> MonadUtil.flatMap(monad, f -> FunctorUtil.map(monad, base, (Function<?, ?>) f), ff));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
@@ -344,24 +368,24 @@ final class FunctionalUtil {
 
     static <F, A, B, C> Optional<F> applicativeLiftA2(IApplicative<? extends F> applicative, BiFunction<A, B, C> mapping, F fa, F fb) {
         if (isApplicative(applicative.getClass())) {
-            return getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class,  applicative.getClassAtRuntime(),  applicative.getClassAtRuntime())
+            return getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, mapping, fa, fb))
-                    .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME,  applicative.getClassAtRuntime(),  applicative.getClassAtRuntime())
+                    .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                             .map(m -> ApplicativeUtil.fapply(applicative, fb, FunctorUtil.map(applicative, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b))))));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
     static <F, A, B, C> Optional<F> monadLiftA2(IApplicative<? extends F> applicative, BiFunction<A, B, C> mapping, F fa, F fb) {
         if (isMonad(applicative.getClass())) {
             IMonad<? extends F> monad = (IMonad<? extends F>) applicative;
-            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class,  applicative.getClassAtRuntime())
-                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME,  applicative.getClassAtRuntime())
-                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME,  applicative.getClassAtRuntime(), Function.class)))
+            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())
+                    .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())
+                            .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
                     .map(m -> ApplicativeUtil.fapply(monad, fb, FunctorUtil.map(monad, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
@@ -376,7 +400,7 @@ final class FunctionalUtil {
                             .flatMap(m -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))
                             .map(m -> MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 
@@ -389,7 +413,7 @@ final class FunctionalUtil {
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())
                             .map(m -> MonadUtil.flatMap(monad, Function.identity(), ffa)));
         } else {
-            throw new IllegalArgumentException("The class is not annotated");
+            return Optional.empty();
         }
     }
 

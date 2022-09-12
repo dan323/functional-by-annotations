@@ -10,7 +10,6 @@ import java.util.function.Function;
 public class JListFunctor implements IFunctor<List<?>> {
 
     private JListFunctor(){
-
     }
 
     public static final JListFunctor FUNCTOR = new JListFunctor();

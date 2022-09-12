@@ -12,6 +12,11 @@ final class Nil<A> implements FiniteList<A> {
     private Nil() {
     }
 
+    @Override
+    public int length() {
+        return 0;
+    }
+
     static Nil<?> NIL = new Nil<>();
 
     @Override

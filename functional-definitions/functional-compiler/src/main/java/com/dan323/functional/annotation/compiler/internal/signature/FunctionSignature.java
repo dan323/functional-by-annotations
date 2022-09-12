@@ -12,9 +12,11 @@ import java.util.function.Function;
 public class FunctionSignature implements NecessaryMethods {
 
     private final Function<ExecutableType, Signature> validator;
+    private final String name;
 
-    public FunctionSignature(Function<ExecutableType, Signature> validator) {
+    public FunctionSignature(Function<ExecutableType, Signature> validator, String name) {
         this.validator = validator;
+        this.name = name;
     }
 
     /**
@@ -30,5 +32,9 @@ public class FunctionSignature implements NecessaryMethods {
         } else {
             return this;
         }
+    }
+
+    public String toString(){
+        return name + " method";
     }
 }

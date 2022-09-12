@@ -2,6 +2,7 @@ package com.dan323.functional.data.list.zipper;
 
 import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.FiniteListFunctional;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.list.ListUtils;
 import com.dan323.functional.data.optional.Maybe;
@@ -17,11 +18,14 @@ import java.util.function.Function;
  * @param <A>
  * @author Daniel de la Concepcion
  */
-@Functor
-public class ListZipper<A> {
+public final class ListZipper<A> {
 
     private final FiniteList<A> left;
     private final FiniteList<A> right;
+
+    public int index(){
+        return left.length();
+    }
 
     ListZipper(FiniteList<A> left, A pointer, FiniteList<A> right) {
         this(left, FiniteList.cons(pointer, right));
@@ -60,11 +64,11 @@ public class ListZipper<A> {
     }
 
     public Maybe<ListZipper<A>> moveLeft() {
-        return left.head().maybe(x -> Maybe.of(new ListZipper<>(left.tail(), x, right)), Maybe.of());
+        return MaybeMonad.map(left.head(), x -> new ListZipper<A>(left.tail(), x, right));
     }
 
     public Maybe<ListZipper<A>> moveRight() {
-        return right.head().maybe(x -> Maybe.of(new ListZipper<>(FiniteList.cons(x, left), right.tail())), Maybe.of());
+        return MaybeMonad.map(right.head(), x -> new ListZipper<>(FiniteList.cons(x, left), right.tail()));
     }
 
     public ListZipper<A> modify(Function<A, A> map) {
@@ -79,4 +83,8 @@ public class ListZipper<A> {
         return ListUtils.concat(ListUtils.reverse(left), right);
     }
 
+    @Override
+    public String toString() {
+        return toList().toString();
+    }
 }

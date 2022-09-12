@@ -12,7 +12,6 @@ final class Zipped<A, B, C> extends InfiniteList<C> {
     private final List<B> second;
     private final BiFunction<A, B, C> zipper;
 
-
     Zipped(List<A> first, BiFunction<A, B, C> zipper, List<B> second) {
         this.first = first;
         this.zipper = zipper;

@@ -25,19 +25,8 @@ public final class Nothing<A> implements Maybe<A> {
         return Objects.hashCode(9);
     }
 
-    /*
     @Override
-    public <R> Optional<R> map(Function<A, R> f) {
-        return Optional.of();
+    public String toString() {
+        return "NOTHING";
     }
-
-    @Override
-    public <R> Optional<R> flatMap(Function<A, Monad<R, Optional<?>>> f) {
-        return Optional.of();
-    }
-
-    @Override
-    public <Q> Optional<Q> fapply(Applicative<Function<A, Q>, Optional<?>> ff) {
-        return Optional.of();
-    }*/
 }

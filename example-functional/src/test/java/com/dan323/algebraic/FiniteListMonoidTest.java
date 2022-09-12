@@ -11,16 +11,12 @@ public class FiniteListMonoidTest {
 
     @Test
     public void operationTest() {
-        FiniteListFunctional<Maybe<Boolean>> functional = FiniteListFunctional.getInstance();
-
-        var sol = functional.op(FiniteList.of(Maybe.of(), Maybe.of(true)), FiniteList.of(Maybe.of(false)));
+        var sol = FiniteListFunctional.getAlternativeMonoid().op(FiniteList.of(Maybe.of(), Maybe.of(true)), FiniteList.of(Maybe.of(false)));
         assertEquals(FiniteList.of(Maybe.of(), Maybe.of(true), Maybe.of(false)), sol);
     }
 
     @Test
     public void unitTest() {
-        FiniteListFunctional<Maybe<Boolean>> functional = FiniteListFunctional.getInstance();
-
-        assertEquals(FiniteList.nil(), functional.unit());
+        assertEquals(FiniteList.nil(), FiniteListFunctional.getAlternativeMonoid().unit());
     }
 }

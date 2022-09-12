@@ -4,10 +4,7 @@ import com.dan323.functional.annotation.*;
 import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.compiler.internal.signature.StructureSignatures;
-import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.funcs.IFoldable;
-import com.dan323.functional.annotation.funcs.IFunctor;
-import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.annotation.funcs.*;
 
 import javax.annotation.processing.Messager;
 import javax.lang.model.type.DeclaredType;
@@ -39,7 +36,9 @@ public final class CompilerFactory {
             return new Compiler<>(signatures.monoidSignatureChecker(iface), Monoid.class, messager);
         } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {
             return new Compiler<>(signatures.foldableSignatureChecker(iface), Foldable.class, messager);
+        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))){
+            return new Compiler<>(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);
         }
-        throw new IllegalArgumentException("The interfaces does not represent an implemented functional");
+        throw new IllegalArgumentException(String.format("The interfaces %s does not represent an implemented functional", iface));
     }
 }

@@ -13,4 +13,8 @@ public class EmptyNecessaryMethods implements NecessaryMethods {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "";
+    }
 }

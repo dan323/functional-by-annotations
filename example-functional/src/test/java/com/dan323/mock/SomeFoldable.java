@@ -13,7 +13,7 @@ public class SomeFoldable implements IFoldable<List<?>> {
     public <A, B> B foldr(BiFunction<A, B, B> function, B b, List<A> fa) {
         return fa.stream()
                 .map(x -> (Function<B, B>) ((B y) -> function.apply(x, y)))
-                .reduce(Function.identity(), (f, g) -> g.compose(f))
+                .reduce(Function.identity(), Function::compose)
                 .apply(b);
     }
 

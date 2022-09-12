@@ -13,5 +13,6 @@ module functional.data {
     exports com.dan323.functional.data.integer;
     exports com.dan323.functional.data.pair;
     exports com.dan323.functional.data.util.applicative;
-
+    exports com.dan323.functional.data.util.alternative;
+    exports com.dan323.functional.data.util.foldable;
 }

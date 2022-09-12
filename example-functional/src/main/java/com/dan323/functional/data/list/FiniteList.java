@@ -52,4 +52,6 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
             return cons(a[n], of(n + 1, a));
         }
     }
+
+    int length();
 }

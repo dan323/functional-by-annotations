@@ -1,6 +1,7 @@
 package com.dan323.functional.annotation.compiler.internal.signature;
 
 import javax.lang.model.element.ExecutableElement;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,5 +30,10 @@ public class DisjNecessaryMethods implements NecessaryMethods {
         } else {
             return new DisjNecessaryMethods(newMethods);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "[" + methods.stream().map(Objects::toString).collect(Collectors.joining(" OR ")) + "]";
     }
 }

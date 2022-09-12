@@ -14,6 +14,10 @@ final class FinCons<A> implements FiniteList<A> {
         this.tail = tail;
     }
 
+    public int length(){
+        return 1 + tail.length();
+    }
+
     @Override
     public Maybe<A> head() {
         return Maybe.of(head);

@@ -35,12 +35,14 @@ class FunctionalDependencyTree {
         FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);
         FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);
         FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);
+        FunctionalDependencyTree alternative = new FunctionalDependencyTree(IAlternative.class);
         monad.addDependency(applicative);
+        alternative.addDependency(applicative);
         applicative.addDependency(functor);
         monoid.addDependency(semigroup);
         traversal.addDependency(functor);
         traversal.addDependency(foldable);
-        return List.of(monad, monoid, traversal);
+        return List.of(monad, monoid, traversal, alternative);
     }
 
     public Class<? extends Structure> getNode() {

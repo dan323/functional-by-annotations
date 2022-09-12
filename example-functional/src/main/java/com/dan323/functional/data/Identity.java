@@ -1,9 +1,6 @@
 package com.dan323.functional.data;
 
-import com.dan323.functional.annotation.Monad;
-import com.dan323.functional.annotation.funcs.IMonad;
-
-public class Identity<A> {
+public final class Identity<A> {
 
     private final A a;
 

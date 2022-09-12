@@ -12,31 +12,36 @@ final class Nil&lt;A&gt; implements FiniteList&lt;A&gt; {
     private Nil() {
     }
 
-<span class="nc" id="L15">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
+    @Override
+    public int length() {
+<span class="nc" id="L17">        return 0;</span>
+    }
+
+<span class="nc" id="L20">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="nc" id="L19">        return Maybe.of();</span>
+<span class="nc" id="L24">        return Maybe.of();</span>
     }
 
     @Override
     public FiniteList&lt;A&gt; tail() {
-<span class="nc" id="L24">        return this;</span>
+<span class="nc" id="L29">        return this;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L29">        return &quot;[]&quot;;</span>
+<span class="nc" id="L34">        return &quot;[]&quot;;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        return obj == NIL;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        return obj == NIL;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L39">        return 7;</span>
+<span class="nc" id="L44">        return 7;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

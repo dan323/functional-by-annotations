@@ -29,19 +29,9 @@ public final class Just&lt;A&gt; implements Maybe&lt;A&gt; {
 <span class="nc" id="L29">        return Objects.hash(element);</span>
     }
 
-/*    @Override
-    public &lt;R&gt; Optional&lt;R&gt; map(Function&lt;A, R&gt; f) {
-        return new Just&lt;&gt;(f.apply(element));
-    }
-
     @Override
-    public &lt;R&gt; Optional&lt;R&gt; flatMap(Function&lt;A, Monad&lt;R, Optional&lt;?&gt;&gt;&gt; f) {
-        return (Optional&lt;R&gt;) f.apply(element);
+    public String toString() {
+<span class="nc" id="L34">        return &quot;Just[&quot;+element.toString()+&quot;]&quot;;</span>
     }
-
-    @Override
-    public &lt;R&gt; Optional&lt;R&gt; fapply(Applicative&lt;Function&lt;A, R&gt;, Optional&lt;?&gt;&gt; applicative) {
-        return ((Optional&lt;Function&lt;A, R&gt;&gt;) applicative).maybe(f -&gt; Optional.of(f.apply(element)), Optional.of());
-    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -25,20 +25,9 @@ public final class Nothing&lt;A&gt; implements Maybe&lt;A&gt; {
 <span class="nc" id="L25">        return Objects.hashCode(9);</span>
     }
 
-    /*
     @Override
-    public &lt;R&gt; Optional&lt;R&gt; map(Function&lt;A, R&gt; f) {
-        return Optional.of();
+    public String toString() {
+<span class="nc" id="L30">        return &quot;NOTHING&quot;;</span>
     }
-
-    @Override
-    public &lt;R&gt; Optional&lt;R&gt; flatMap(Function&lt;A, Monad&lt;R, Optional&lt;?&gt;&gt;&gt; f) {
-        return Optional.of();
-    }
-
-    @Override
-    public &lt;Q&gt; Optional&lt;Q&gt; fapply(Applicative&lt;Function&lt;A, Q&gt;, Optional&lt;?&gt;&gt; ff) {
-        return Optional.of();
-    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

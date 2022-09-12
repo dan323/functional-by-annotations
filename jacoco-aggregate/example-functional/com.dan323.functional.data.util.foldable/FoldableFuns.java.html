@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FoldableFuns.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.util.foldable</a> &gt; <span class="el_source">FoldableFuns.java</span></div><h1>FoldableFuns.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.util.foldable;
 
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
+import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.IFoldable;
 import com.dan323.functional.data.bool.AndMonoid;
 import com.dan323.functional.data.bool.OrMonoid;
 import com.dan323.functional.data.integer.SumMonoid;
 
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import static com.dan323.functional.annotation.compiler.util.FoldableUtil.foldMap;
 
 public final class FoldableFuns {
 
-<span class="nc" id="L14">    private FoldableFuns() {</span>
-<span class="nc" id="L15">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L19">    private FoldableFuns() {</span>
+<span class="nc" id="L20">        throw new UnsupportedOperationException();</span>
     }
 
     /**
@@ -24,7 +29,7 @@ public final class FoldableFuns {
      * @return true iff {@code felement} has no elements to be folded
      */
     public static &lt;F&gt; boolean isEmpty(IFoldable&lt;? extends F&gt; foldable, F felement) {
-<span class="nc" id="L27">        return foldMap(foldable, AndMonoid.AND_MONOID, x -&gt; Boolean.FALSE, felement);</span>
+<span class="nc" id="L32">        return foldMap(foldable, AndMonoid.AND_MONOID, x -&gt; Boolean.FALSE, felement);</span>
     }
 
     /**
@@ -32,12 +37,11 @@ public final class FoldableFuns {
      *
      * @param foldable implementation of {@link IFoldable&lt;F&gt;}
      * @param felement element of type {@code fClass} appplied to some type {@code A}
-     * @param &lt;FA&gt;     Type of {@code felement}
      * @param &lt;F&gt;      Type of {@code fClass}
      * @return number of elements in {@code felement}
      */
     public static &lt;F&gt; int length(IFoldable&lt;? extends F&gt; foldable, F felement) {
-<span class="nc" id="L40">        return foldMap(foldable, SumMonoid.getInstance(), x -&gt; 1, felement);</span>
+<span class="nc" id="L44">        return foldMap(foldable, SumMonoid.getInstance(), x -&gt; 1, felement);</span>
     }
 
     /**
@@ -51,7 +55,23 @@ public final class FoldableFuns {
      * @return true iff {@code elem} is in {@code felement}
      */
     public static &lt;F, A&gt; boolean contains(IFoldable&lt;? extends F&gt; foldable, A elem, F felement) {
-<span class="nc" id="L54">        return foldMap(foldable, OrMonoid.OR_MONOID, x -&gt; Objects.equals(x, elem), felement);</span>
+<span class="nc" id="L58">        return foldMap(foldable, OrMonoid.OR_MONOID, x -&gt; Objects.equals(x, elem), felement);</span>
+    }
+
+    /**
+     * Keep elements that satisfy the predicate
+     *
+     * @param foldable foldable implementation for F
+     * @param applicative applicative implementation for F
+     * @param monoid monoid implementation F
+     * @param fold container of F type
+     * @param predicate Predicate on contained elements
+     * @return a container of type F whose elements are in fold, and satisfy the predicate
+     * @param &lt;F&gt; type of container
+     * @param &lt;A&gt; type of the contained elements
+     */
+    public static &lt;F, A&gt; F filter(IFoldable&lt;? extends F&gt; foldable, IApplicative&lt;? extends F&gt; applicative, IMonoid&lt;? extends F&gt; monoid, F fold, Predicate&lt;A&gt; predicate) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        return foldMap(foldable, monoid, (A x) -&gt; predicate.test(x) ? ApplicativeUtil.pure(applicative, x) : MonoidUtil.unit(monoid), fold);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -9,16 +9,5 @@
     public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
 <span class="nc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
     }
-/*
-    static &lt;C&gt; List&lt;C&gt; join(List&lt;List&lt;C&gt;&gt; lst) {
-        Maybe&lt;List&lt;C&gt;&gt; first = lst.head();
-        return first.maybe(list -&gt; {
-            if (list instanceof Repeat&lt;C&gt; || list instanceof Generating&lt;C&gt; || list instanceof Generating.GeneratingMapped&lt;?, ?&gt;) {
-                return list;
-            } else {
-                return ListUtils.concat(list, join(lst.tail()));
-            }
-        }, List.nil());
-    }*/
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

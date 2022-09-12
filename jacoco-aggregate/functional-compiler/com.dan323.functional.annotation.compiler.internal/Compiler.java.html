@@ -60,7 +60,7 @@ public class Compiler&lt;F extends Annotation&gt; {
             }
 <span class="fc bfc" id="L61" title="All 4 branches covered.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
 <span class="fc bfc" id="L62" title="All 2 branches covered.">        if (!success) {</span>
-<span class="fc" id="L63">            error(&quot;The public functions needed were not found in %s&quot;, originalElement.getQualifiedName());</span>
+<span class="fc" id="L63">            error(&quot;The public functions needed were not found in %s: %s&quot;, originalElement.getQualifiedName(), necessaryMethodsLoop);</span>
         }
 <span class="fc" id="L65">    }</span>
 

@@ -35,20 +35,22 @@ class FunctionalDependencyTree {
 <span class="fc" id="L35">        FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);</span>
 <span class="fc" id="L36">        FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);</span>
 <span class="fc" id="L37">        FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);</span>
-<span class="fc" id="L38">        monad.addDependency(applicative);</span>
-<span class="fc" id="L39">        applicative.addDependency(functor);</span>
-<span class="fc" id="L40">        monoid.addDependency(semigroup);</span>
-<span class="fc" id="L41">        traversal.addDependency(functor);</span>
-<span class="fc" id="L42">        traversal.addDependency(foldable);</span>
-<span class="fc" id="L43">        return List.of(monad, monoid, traversal);</span>
+<span class="fc" id="L38">        FunctionalDependencyTree alternative = new FunctionalDependencyTree(IAlternative.class);</span>
+<span class="fc" id="L39">        monad.addDependency(applicative);</span>
+<span class="fc" id="L40">        alternative.addDependency(applicative);</span>
+<span class="fc" id="L41">        applicative.addDependency(functor);</span>
+<span class="fc" id="L42">        monoid.addDependency(semigroup);</span>
+<span class="fc" id="L43">        traversal.addDependency(functor);</span>
+<span class="fc" id="L44">        traversal.addDependency(foldable);</span>
+<span class="fc" id="L45">        return List.of(monad, monoid, traversal, alternative);</span>
     }
 
     public Class&lt;? extends Structure&gt; getNode() {
-<span class="fc" id="L47">        return node;</span>
+<span class="fc" id="L49">        return node;</span>
     }
 
     public static List&lt;FunctionalDependencyTree&gt; getNextLine(FunctionalDependencyTree tree) {
-<span class="fc" id="L51">        return tree.dependency;</span>
+<span class="fc" id="L53">        return tree.dependency;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

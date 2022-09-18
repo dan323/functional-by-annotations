@@ -26,7 +26,7 @@ public final class Stack<A> implements State<Maybe<A>, FiniteList<A>> {
         return new Stack<>(s -> new Pair<>(s.head(), s.tail()));
     }
 
-    public static <A> Stack<A> empty() {
+    public static <A> Stack<A> reset() {
         return new Stack<>(s -> new Pair<>(Maybe.of(), FiniteList.nil()));
     }
 
@@ -35,11 +35,11 @@ public final class Stack<A> implements State<Maybe<A>, FiniteList<A>> {
     }
 
     public static <A> Stack<A> dup() {
-        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> push(x).then(push(x)), empty()));
+        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> push(x).then(push(x)), reset()));
     }
 
     public static <A> Stack<A> over() {
-        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> Stack.<A>pop().thenByPopped(n -> n.maybe(h -> Stack.<A>push(x).then(push(h)), push(x))), empty()));
+        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> Stack.<A>pop().thenByPopped(n -> n.maybe(h -> Stack.<A>push(x).then(push(h)), push(x))), reset()));
     }
 
     public Stack<A> thenByPopped(Function<Maybe<A>, Stack<A>> fun) {

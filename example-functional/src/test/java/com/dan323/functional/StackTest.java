@@ -25,9 +25,14 @@ public class StackTest {
     @Test
     public void popTest() {
         Stack<Integer> stack = push(4).then(pop());
-
         assertEquals(Maybe.of(4), stack.evaluate(FiniteList.nil()));
         assertEquals(Maybe.of(4), stack.evaluate(FiniteList.of(1, 23, 13)));
+
+        stack = pop();
+        assertEquals(Maybe.of(), stack.evaluate(FiniteList.nil()));
+        assertEquals(FiniteList.of(), stack.execute(FiniteList.nil()));
+        assertEquals(Maybe.of(1), stack.evaluate(FiniteList.of(1, 23, 13)));
+        assertEquals(FiniteList.of(23, 13), stack.execute(FiniteList.of(1, 23, 13)));
     }
 
     @Test
@@ -49,5 +54,21 @@ public class StackTest {
         assertEquals(FiniteList.of(), stack2.execute(FiniteList.nil()));
         assertEquals(Maybe.of(), stack2.evaluate(FiniteList.nil()));
     }
+
+    @Test
+    public void overTest() {
+        Stack<Integer> stack = push(4).then(push(6)).then(over());
+        assertEquals(FiniteList.of(4, 6), stack.execute(FiniteList.nil()));
+        assertEquals(Maybe.of(), stack.evaluate(FiniteList.nil()));
+
+        stack = push(4).then(over());
+        assertEquals(FiniteList.of(4), stack.execute(FiniteList.nil()));
+        assertEquals(Maybe.of(), stack.evaluate(FiniteList.nil()));
+
+        stack = over();
+        assertEquals(FiniteList.of(), stack.execute(FiniteList.nil()));
+        assertEquals(Maybe.of(), stack.evaluate(FiniteList.nil()));
+    }
+
 
 }

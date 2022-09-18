@@ -37,6 +37,6 @@ public final class ZipApplicative implements IApplicative<List<?>> {
 
     @Override
     public Class<List<?>> getClassAtRuntime() {
-        return (Class<List<?>>) (Class) List.class;
+        return (Class<List<?>>) (Class<?>) List.class;
     }
 }

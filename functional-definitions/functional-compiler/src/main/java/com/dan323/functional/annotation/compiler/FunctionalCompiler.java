@@ -15,7 +15,6 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,12 @@ public final class FunctionalCompiler extends AbstractProcessor {
     private Types typeUtils;
     private CompilerFactory compilerFactory;
 
-    private static final Set<Class<? extends Annotation>> annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class, Foldable.class);
+    private static final Set<Class<? extends Annotation>> annotations = Set.of(
+            Functor.class, Applicative.class, Monad.class,
+            Semigroup.class, Monoid.class, Ring.class,
+            Foldable.class, Traversal.class,
+            Alternative.class
+    );
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {

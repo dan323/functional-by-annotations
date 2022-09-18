@@ -11,7 +11,7 @@ import com.dan323.functional.data.optional.MaybeMonad;
 import java.util.function.Function;
 
 /**
- * Zipper representing the list rev(left)++[pointer]++right
+ * Zipper representing the list rev(left)++right
  * <p>
  * It represents only finite lists
  *
@@ -64,7 +64,7 @@ public final class ListZipper<A> {
     }
 
     public Maybe<ListZipper<A>> moveLeft() {
-        return MaybeMonad.map(left.head(), x -> new ListZipper<A>(left.tail(), x, right));
+        return MaybeMonad.map(left.head(), x -> new ListZipper<>(left.tail(), x, right));
     }
 
     public Maybe<ListZipper<A>> moveRight() {

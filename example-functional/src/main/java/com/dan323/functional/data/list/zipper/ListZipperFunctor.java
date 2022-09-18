@@ -27,6 +27,6 @@ public final class ListZipperFunctor implements IFunctor<ListZipper<?>> {
 
     @Override
     public Class<ListZipper<?>> getClassAtRuntime() {
-        return (Class<ListZipper<?>>) (Class) ListZipper.class;
+        return (Class<ListZipper<?>>) (Class<?>) ListZipper.class;
     }
 }

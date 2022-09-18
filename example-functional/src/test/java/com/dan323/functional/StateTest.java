@@ -1,9 +1,13 @@
 package com.dan323.functional;
 
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
+import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.state.State;
 import com.dan323.functional.data.state.StateMonad;
 import org.junit.jupiter.api.Test;
+
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +29,31 @@ public class StateTest {
         assertEquals(7, state.evaluate(4));
         state = stateMonad.map(falseState, x -> x ? 7 : 9);
         assertEquals(9, state.evaluate(4));
+    }
+
+    @Test
+    public void stateGet() {
+        State<Integer, Integer> st = State.get();
+        assertEquals(4, st.execute(4));
+        assertEquals(5, st.evaluate(5));
+    }
+
+    @Test
+    public void statePut() {
+        State<Maybe<Void>, Integer> st = State.put(8);
+        assertEquals(Maybe.of(), st.evaluate(7));
+        assertEquals(8, st.execute(7));
+    }
+
+    @Test
+    public void stateFapply() {
+        State<Integer, Integer> base = s -> new Pair<>(4, s - 1);
+        State<Function<Integer, Integer>, Integer> ff = s -> new Pair<>(x -> x + 4, s - 1);
+
+        var k = ApplicativeUtil.fapply(StateMonad.<Integer>getInstance(), base, ff);
+
+        assertEquals(5, k.execute(7));
+        assertEquals(8, k.evaluate(7));
     }
 
     @Test

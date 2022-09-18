@@ -2,6 +2,7 @@ package com.dan323.functional.annotation.compiler.internal;
 
 import com.dan323.functional.annotation.*;
 import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.IRing;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.compiler.internal.signature.StructureSignatures;
 import com.dan323.functional.annotation.funcs.*;
@@ -38,6 +39,8 @@ public final class CompilerFactory {
             return new Compiler<>(signatures.foldableSignatureChecker(iface), Foldable.class, messager);
         } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))){
             return new Compiler<>(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);
+        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))){
+            return new Compiler<>(signatures.ringSignatureChecker(iface), Ring.class, messager);
         }
         throw new IllegalArgumentException(String.format("The interfaces %s does not represent an implemented functional", iface));
     }

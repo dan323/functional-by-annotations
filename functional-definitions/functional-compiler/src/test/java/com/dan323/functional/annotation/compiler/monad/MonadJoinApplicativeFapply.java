@@ -10,7 +10,7 @@ import java.util.function.Function;
 public class MonadJoinApplicativeFapply implements IMonad<List<?>> {
 
     public static <A> List<A> pure(A a) {
-        return List.of();
+        return List.of(a);
     }
 
     public static <A, B> List<B> fapply(List<Function<A, B>> ffunction, List<A> base) {

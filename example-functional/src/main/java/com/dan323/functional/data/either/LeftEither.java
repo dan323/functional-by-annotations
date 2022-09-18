@@ -34,6 +34,6 @@ public class LeftEither<R> implements IMonad<Either<?, R>> {
 
     @Override
     public Class<Either<?,R>> getClassAtRuntime() {
-        return (Class<Either<?,R>>)(Class) Either.class;
+        return (Class<Either<?,R>>)(Class<?>) Either.class;
     }
 }

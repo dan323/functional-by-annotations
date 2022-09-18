@@ -1,7 +1,9 @@
 package com.dan323.functional.annotation.compiler.internal;
 
+import com.dan323.functional.annotation.Ring;
 import com.dan323.functional.annotation.Structure;
 import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.IRing;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.funcs.*;
 
@@ -36,13 +38,14 @@ class FunctionalDependencyTree {
         FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);
         FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);
         FunctionalDependencyTree alternative = new FunctionalDependencyTree(IAlternative.class);
+        FunctionalDependencyTree ring = new FunctionalDependencyTree(IRing.class);
         monad.addDependency(applicative);
         alternative.addDependency(applicative);
         applicative.addDependency(functor);
         monoid.addDependency(semigroup);
         traversal.addDependency(functor);
         traversal.addDependency(foldable);
-        return List.of(monad, monoid, traversal, alternative);
+        return List.of(monad, monoid, traversal, alternative, ring);
     }
 
     public Class<? extends Structure> getNode() {

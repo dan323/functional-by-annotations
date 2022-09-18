@@ -70,8 +70,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <argLine>
-                                --add-exports functional.data/com.dan323.mock=functional.compiler
-                                ${surefire.argLine}
+                                ${surefire.argLine} --add-exports functional.data/com.dan323.mock=functional.compiler
                             </argLine>
                         </configuration>
                     </plugin>

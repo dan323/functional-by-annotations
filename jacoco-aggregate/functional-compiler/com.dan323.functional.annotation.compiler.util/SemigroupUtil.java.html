@@ -15,7 +15,7 @@ public final class SemigroupUtil {
 
     public static &lt;A&gt; A op(ISemigroup&lt;? extends A&gt; semi, A a, A b) {
 <span class="fc" id="L17">        return FunctionalUtil.semigroupOp(semi, a, b)</span>
-<span class="fc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The semigroup is not correctly implemented.&quot;));</span>
+<span class="pc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The semigroup is not correctly implemented.&quot;));</span>
     }
 
 }

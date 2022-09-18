@@ -9,13 +9,13 @@ public final class OrMonoid implements IMonoid&lt;Boolean&gt; {
     private OrMonoid(){}
 
     public static Boolean op(Boolean b1, Boolean b2){
-<span class="nc bnc" id="L12" title="All 4 branches missed.">        return b1 || b2;</span>
+<span class="fc bfc" id="L12" title="All 4 branches covered.">        return b1 || b2;</span>
     }
 
     public static Boolean unit(){
-<span class="nc" id="L16">        return Boolean.FALSE;</span>
+<span class="fc" id="L16">        return Boolean.FALSE;</span>
     }
 
-<span class="nc" id="L19">    public static final OrMonoid OR_MONOID = new OrMonoid();</span>
+<span class="fc" id="L19">    public static final OrMonoid OR_MONOID = new OrMonoid();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -10,16 +10,16 @@ public final class AlternativeMonoid&lt;FA extends F, F&gt; implements IMonoid&l
 
     private final IAlternative&lt;F&gt; alternative;
 
-<span class="nc" id="L13">    public AlternativeMonoid(IAlternative&lt;F&gt; alternative) {</span>
-<span class="nc" id="L14">        this.alternative = alternative;</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L13">    public AlternativeMonoid(IAlternative&lt;F&gt; alternative) {</span>
+<span class="fc" id="L14">        this.alternative = alternative;</span>
+<span class="fc" id="L15">    }</span>
 
     public FA op(FA first, FA second) {
-<span class="nc" id="L18">        return (FA) AlternativeUtil.disj(alternative, first, second);</span>
+<span class="fc" id="L18">        return (FA) AlternativeUtil.disj(alternative, first, second);</span>
     }
 
     public FA unit() {
-<span class="nc" id="L22">        return (FA) AlternativeUtil.empty(alternative);</span>
+<span class="fc" id="L22">        return (FA) AlternativeUtil.empty(alternative);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

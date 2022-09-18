@@ -11,14 +11,14 @@ public abstract class ProdFunctional&lt;M,N&gt; implements Functional&lt;PairTyp
     protected final Functional&lt;? extends M&gt; mFunctor;
     protected final Functional&lt;? extends N&gt; nFunctor;
 
-<span class="nc" id="L14">    public ProdFunctional(Functional&lt;? extends M&gt; fm, Functional&lt;? extends N&gt; fn) {</span>
-<span class="nc" id="L15">        this.mFunctor = fm;</span>
-<span class="nc" id="L16">        this.nFunctor = fn;</span>
-<span class="nc" id="L17">    }</span>
+<span class="fc" id="L14">    public ProdFunctional(Functional&lt;? extends M&gt; fm, Functional&lt;? extends N&gt; fn) {</span>
+<span class="fc" id="L15">        this.mFunctor = fm;</span>
+<span class="fc" id="L16">        this.nFunctor = fn;</span>
+<span class="fc" id="L17">    }</span>
 
     @Override
     public Class&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L21">        return (Class&lt;PairTypeContructor&lt;M, N, ?&gt;&gt;)(Class&lt;?&gt;) PairTypeContructor.class;</span>
+<span class="fc" id="L21">        return (Class&lt;PairTypeContructor&lt;M, N, ?&gt;&gt;)(Class&lt;?&gt;) PairTypeContructor.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

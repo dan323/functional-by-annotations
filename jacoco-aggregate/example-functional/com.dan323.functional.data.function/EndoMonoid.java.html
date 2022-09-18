@@ -11,17 +11,17 @@ public final class EndoMonoid&lt;A&gt; implements IMonoid&lt;Function&lt;A, A&gt
     private EndoMonoid(){}
 
     public Function&lt;A, A&gt; op(Function&lt;A, A&gt; f1, Function&lt;A, A&gt; f2) {
-<span class="nc" id="L14">        return f1.compose(f2);</span>
+<span class="fc" id="L14">        return f1.compose(f2);</span>
     }
 
     public Function&lt;A, A&gt; unit() {
-<span class="nc" id="L18">        return Function.identity();</span>
+<span class="fc" id="L18">        return Function.identity();</span>
     }
 
     public static &lt;A&gt; EndoMonoid&lt;A&gt; getInstance(){
-<span class="nc" id="L22">        return (EndoMonoid&lt;A&gt;) ENDO_MONOID;</span>
+<span class="fc" id="L22">        return (EndoMonoid&lt;A&gt;) ENDO_MONOID;</span>
     }
 
-<span class="nc" id="L25">    private static final EndoMonoid&lt;?&gt; ENDO_MONOID = new EndoMonoid&lt;&gt;();</span>
+<span class="fc" id="L25">    private static final EndoMonoid&lt;?&gt; ENDO_MONOID = new EndoMonoid&lt;&gt;();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

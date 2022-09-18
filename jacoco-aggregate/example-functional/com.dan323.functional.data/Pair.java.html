@@ -10,18 +10,18 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
 
     private final Map.Entry&lt;U, V&gt; entry;
 
-<span class="nc" id="L13">    public Pair(U u, V v) {</span>
-<span class="nc" id="L14">        entry = new AbstractMap.SimpleImmutableEntry&lt;&gt;(u, v);</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L13">    public Pair(U u, V v) {</span>
+<span class="fc" id="L14">        entry = new AbstractMap.SimpleImmutableEntry&lt;&gt;(u, v);</span>
+<span class="fc" id="L15">    }</span>
 
     @Override
     public U getKey() {
-<span class="nc" id="L19">        return entry.getKey();</span>
+<span class="fc" id="L19">        return entry.getKey();</span>
     }
 
     @Override
     public V getValue() {
-<span class="nc" id="L24">        return entry.getValue();</span>
+<span class="fc" id="L24">        return entry.getValue();</span>
     }
 
     @Override
@@ -30,7 +30,7 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
     }
 
     public &lt;U1&gt; Pair&lt;U1, V&gt; mapFirst(Function&lt;U, U1&gt; function) {
-<span class="nc" id="L33">        return new Pair&lt;&gt;(function.apply(entry.getKey()), entry.getValue());</span>
+<span class="fc" id="L33">        return new Pair&lt;&gt;(function.apply(entry.getKey()), entry.getValue());</span>
     }
 
     public &lt;V1&gt; Pair&lt;U, V1&gt; mapSecond(Function&lt;V, V1&gt; function) {
@@ -42,7 +42,7 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
     }
 
     public &lt;S&gt; S map(BiFunction&lt;U, V, S&gt; first) {
-<span class="nc" id="L45">        return first.apply(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L45">        return first.apply(entry.getKey(), entry.getValue());</span>
     }
 
     public String toString() {

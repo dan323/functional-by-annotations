@@ -8,16 +8,16 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, List&lt;A&
 
     private final State&lt;Maybe&lt;A&gt;, List&lt;A&gt;&gt; state;
 
-<span class="nc" id="L11">    public Stack(State&lt;Maybe&lt;A&gt;, List&lt;A&gt;&gt; state) {</span>
-<span class="nc" id="L12">        this.state = state;</span>
-<span class="nc" id="L13">    }</span>
+<span class="fc" id="L11">    public Stack(State&lt;Maybe&lt;A&gt;, List&lt;A&gt;&gt; state) {</span>
+<span class="fc" id="L12">        this.state = state;</span>
+<span class="fc" id="L13">    }</span>
 
     public static &lt;A&gt; Stack&lt;A&gt; push(A x) {
-<span class="nc" id="L16">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), List.cons(x, s)));</span>
+<span class="fc" id="L16">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), List.cons(x, s)));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; pop() {
-<span class="nc" id="L20">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
+<span class="fc" id="L20">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
     }
 
     /**
@@ -31,7 +31,7 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, List&lt;A&
 
     @Override
     public Pair&lt;Maybe&lt;A&gt;, List&lt;A&gt;&gt; apply(List&lt;A&gt; aList) {
-<span class="nc" id="L34">        return state.apply(aList);</span>
+<span class="fc" id="L34">        return state.apply(aList);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

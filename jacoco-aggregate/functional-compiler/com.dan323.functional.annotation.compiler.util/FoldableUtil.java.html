@@ -18,8 +18,8 @@ public final class FoldableUtil {
     }
 
     public static &lt;F, A&gt; A fold(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends A&gt; monoid, F a) {
-<span class="fc" id="L21">        return FunctionalUtil.foldableFold(foldable, monoid, a)</span>
-<span class="fc" id="L22">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The foldable is not correctly implemented.&quot;));</span>
+<span class="nc" id="L21">        return FunctionalUtil.foldableFold(foldable, monoid, a)</span>
+<span class="nc" id="L22">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The foldable is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F, A, M&gt; M foldMap(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends M&gt; monoid, Function&lt;A,M&gt; function, F base){

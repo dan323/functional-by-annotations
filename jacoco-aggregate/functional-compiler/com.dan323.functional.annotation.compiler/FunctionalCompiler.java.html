@@ -19,39 +19,39 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-<span class="fc" id="L22">public final class FunctionalCompiler extends AbstractProcessor {</span>
+<span class="nc" id="L22">public final class FunctionalCompiler extends AbstractProcessor {</span>
 
     private Elements elementUtils;
     private Messager messager;
     private Types typeUtils;
     private CompilerFactory compilerFactory;
 
-<span class="fc" id="L29">    private static final Set&lt;Class&lt;? extends Annotation&gt;&gt; annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class, Foldable.class);</span>
+<span class="nc" id="L29">    private static final Set&lt;Class&lt;? extends Annotation&gt;&gt; annotations = Set.of(Functor.class, Applicative.class, Monad.class, Semigroup.class, Monoid.class, Foldable.class);</span>
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
-<span class="fc" id="L33">        super.init(processingEnv);</span>
-<span class="fc" id="L34">        compilerFactory = new CompilerFactory();</span>
-<span class="fc" id="L35">        elementUtils = processingEnv.getElementUtils();</span>
-<span class="fc" id="L36">        messager = processingEnv.getMessager();</span>
-<span class="fc" id="L37">        typeUtils = processingEnv.getTypeUtils();</span>
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L33">        super.init(processingEnv);</span>
+<span class="nc" id="L34">        compilerFactory = new CompilerFactory();</span>
+<span class="nc" id="L35">        elementUtils = processingEnv.getElementUtils();</span>
+<span class="nc" id="L36">        messager = processingEnv.getMessager();</span>
+<span class="nc" id="L37">        typeUtils = processingEnv.getTypeUtils();</span>
+<span class="nc" id="L38">    }</span>
 
     @Override
     public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment) {
         try {
-<span class="fc" id="L43">            var elems = roundEnvironment.getElementsAnnotatedWithAny(annotations);</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">            for (var elem : elems) {</span>
-<span class="pc bpc" id="L45" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
-<span class="fc" id="L46">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);</span>
-<span class="fc" id="L47">                    ifaces.stream().map(iface -&gt; compilerFactory.from(iface, elementUtils, typeUtils, messager))</span>
-<span class="fc" id="L48">                            .forEach(comp -&gt; comp.process(telem));</span>
+<span class="nc" id="L43">            var elems = roundEnvironment.getElementsAnnotatedWithAny(annotations);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            for (var elem : elems) {</span>
+<span class="nc bnc" id="L45" title="All 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
+<span class="nc" id="L46">                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);</span>
+<span class="nc" id="L47">                    ifaces.stream().map(iface -&gt; compilerFactory.from(iface, elementUtils, typeUtils, messager))</span>
+<span class="nc" id="L48">                            .forEach(comp -&gt; comp.process(telem));</span>
                 }
-<span class="fc" id="L50">            }</span>
+<span class="nc" id="L50">            }</span>
 <span class="nc" id="L51">        } catch (Throwable e) {</span>
 <span class="nc" id="L52">            error(&quot;There was an exception or error launched: %s&quot;, e.getMessage());</span>
-<span class="fc" id="L53">        }</span>
-<span class="fc" id="L54">        return true;</span>
+<span class="nc" id="L53">        }</span>
+<span class="nc" id="L54">        return true;</span>
     }
 
     private void error(String message, Object... args) {
@@ -60,12 +60,12 @@ import java.util.stream.Collectors;
 
     @Override
     public Set&lt;String&gt; getSupportedAnnotationTypes() {
-<span class="fc" id="L63">        return annotations.stream().map(Class::getCanonicalName).collect(Collectors.toSet());</span>
+<span class="nc" id="L63">        return annotations.stream().map(Class::getCanonicalName).collect(Collectors.toSet());</span>
     }
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-<span class="fc" id="L68">        return SourceVersion.latestSupported();</span>
+<span class="nc" id="L68">        return SourceVersion.latestSupported();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

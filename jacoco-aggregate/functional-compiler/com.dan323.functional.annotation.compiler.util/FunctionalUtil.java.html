@@ -21,7 +21,7 @@ final class FunctionalUtil {
     }
 
     private static &lt;G&gt; boolean isTraversal(Class&lt;G&gt; gClass) {
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        return gClass.getAnnotation(Traversal.class) != null;</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        return gClass.getAnnotation(Traversal.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean isAlternative(Class&lt;G&gt; gClass) {
@@ -29,27 +29,27 @@ final class FunctionalUtil {
     }
 
     private static &lt;G&gt; boolean isApplicative(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L32" title="1 of 6 branches missed.">        return gClass.getAnnotation(Applicative.class) != null || isMonad(gClass) || isAlternative(gClass);</span>
+<span class="pc bpc" id="L32" title="3 of 6 branches missed.">        return gClass.getAnnotation(Applicative.class) != null || isMonad(gClass) || isAlternative(gClass);</span>
     }
 
     private static &lt;G&gt; boolean isMonad(Class&lt;G&gt; gClass) {
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        return gClass.getAnnotation(Monad.class) != null;</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        return gClass.getAnnotation(Monad.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean isFunctor(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L40" title="1 of 6 branches missed.">        return gClass.getAnnotation(Functor.class) != null || isApplicative(gClass) || gClass.getAnnotation(Traversal.class) != null;</span>
+<span class="pc bpc" id="L40" title="3 of 6 branches missed.">        return gClass.getAnnotation(Functor.class) != null || isApplicative(gClass) || gClass.getAnnotation(Traversal.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean isSemigroup(Class&lt;G&gt; gClassz) {
-<span class="fc bfc" id="L44" title="All 4 branches covered.">        return gClassz.getAnnotation(Semigroup.class) != null || isMonoid(gClassz);</span>
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        return gClassz.getAnnotation(Semigroup.class) != null || isMonoid(gClassz);</span>
     }
 
     private static &lt;G&gt; boolean isFoldable(Class&lt;G&gt; gClass) {
-<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        return gClass.getAnnotation(Foldable.class) != null || isTraversal(gClass);</span>
+<span class="pc bpc" id="L48" title="3 of 4 branches missed.">        return gClass.getAnnotation(Foldable.class) != null || isTraversal(gClass);</span>
     }
 
     private static &lt;G&gt; boolean isMonoid(Class&lt;G&gt; gClassz) {
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        return gClassz.getAnnotation(Monoid.class) != null;</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        return gClassz.getAnnotation(Monoid.class) != null;</span>
     }
 
     private static &lt;G&gt; boolean implementsStaticMethod(Class&lt;G&gt; gClass, String name, Class&lt;?&gt;... inputs) {
@@ -82,26 +82,26 @@ final class FunctionalUtil {
 <span class="fc" id="L82">            return (O) method.invoke(structure, inputs);</span>
 <span class="nc" id="L83">        } catch (IllegalAccessException e) {</span>
 <span class="nc" id="L84">            throw new IllegalStateException(String.format(&quot;The method %s or inputs were not accessible&quot;, method.getName()), e);</span>
-<span class="fc" id="L85">        } catch (InvocationTargetException e) {</span>
-<span class="fc" id="L86">            InvocationTargetException ex = e;</span>
-<span class="pc bpc" id="L87" title="2 of 4 branches missed.">            while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException &amp;&amp; illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {</span>
+<span class="nc" id="L85">        } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L86">            InvocationTargetException ex = e;</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">            while (ex.getTargetException() instanceof IllegalArgumentException illegalArgumentException &amp;&amp; illegalArgumentException.getCause() instanceof InvocationTargetException invocationTargetException) {</span>
 <span class="nc" id="L88">                ex = invocationTargetException;</span>
             }
-<span class="fc" id="L90">            throw new IllegalArgumentException(String.format(&quot;There was an error executing %s: %s&quot;, method.getName(), ex.getTargetException().getMessage()), ex);</span>
+<span class="nc" id="L90">            throw new IllegalArgumentException(String.format(&quot;There was an error executing %s: %s&quot;, method.getName(), ex.getTargetException().getMessage()), ex);</span>
         }
     }
 
     // FOLDABLE
     // Fold
     static &lt;F, A&gt; Optional&lt;A&gt; foldableFold(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends A&gt; monoid, F base) {
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (isFoldable(foldable.getClass())) {</span>
-<span class="fc" id="L98">            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_NAME, IMonoid.class, foldable.getClassAtRuntime())</span>
-<span class="fc" id="L99">                    .&lt;A&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, base))</span>
-<span class="fc" id="L100">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())</span>
-<span class="fc" id="L101">                            .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime()))</span>
-<span class="fc" id="L102">                            .map(m -&gt; FoldableUtil.foldMap(foldable, monoid, Function.identity(), base)));</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (isFoldable(foldable.getClass())) {</span>
+<span class="nc" id="L98">            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_NAME, IMonoid.class, foldable.getClassAtRuntime())</span>
+<span class="nc" id="L99">                    .&lt;A&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, base))</span>
+<span class="nc" id="L100">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())</span>
+<span class="nc" id="L101">                            .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime()))</span>
+<span class="nc" id="L102">                            .map(m -&gt; FoldableUtil.foldMap(foldable, monoid, Function.identity(), base)));</span>
         } else {
-<span class="fc" id="L104">            return Optional.empty();</span>
+<span class="nc" id="L104">            return Optional.empty();</span>
         }
     }
 
@@ -109,7 +109,7 @@ final class FunctionalUtil {
     static &lt;F, A, M&gt; Optional&lt;M&gt; foldableFoldMap(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends M&gt; monoid, Function&lt;A, M&gt; function, F base) {
 <span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if (isFoldable(foldable.getClass())) {</span>
 <span class="fc" id="L111">            return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())</span>
-<span class="fc" id="L112">                    .&lt;M&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, function, base))</span>
+<span class="pc" id="L112">                    .&lt;M&gt;map(m -&gt; invokeStaticMethod(foldable, m, monoid, function, base))</span>
 <span class="fc" id="L113">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime())</span>
 <span class="fc" id="L114">                            .map(m -&gt; FoldableUtil.foldr(foldable, (A x, M y) -&gt; SemigroupUtil.op(monoid, function.apply(x), y), MonoidUtil.unit(monoid), base)));</span>
         } else {
@@ -122,51 +122,51 @@ final class FunctionalUtil {
 <span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (isFoldable(foldable.getClass())) {</span>
 <span class="fc" id="L123">            return getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime())</span>
 <span class="fc" id="L124">                    .&lt;B&gt;map(m -&gt; invokeStaticMethod(foldable, m, function, b, fm))</span>
-<span class="fc" id="L125">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())</span>
-<span class="fc" id="L126">                            .map(m -&gt; FoldableUtil.foldMap(foldable, new EndoMonoid&lt;&gt;(), (Function&lt;M, Function&lt;B, B&gt;&gt;) (M x) -&gt; ((B y) -&gt; function.apply(x, y)), fm).apply(b)));</span>
+<span class="pc" id="L125">                    .or(() -&gt; getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())</span>
+<span class="nc" id="L126">                            .map(m -&gt; FoldableUtil.foldMap(foldable, new EndoMonoid&lt;&gt;(), (Function&lt;M, Function&lt;B, B&gt;&gt;) (M x) -&gt; ((B y) -&gt; function.apply(x, y)), fm).apply(b)));</span>
         } else {
 <span class="nc" id="L128">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F, B&gt; Optional&lt;F&gt; functorMapConst(IFunctor&lt;? extends F&gt; functor, F base, B constant) {
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (isFunctor(functor.getClass())) {</span>
-<span class="fc" id="L134">            return getMethodIfExists(functor.getClass(), IFunctor.MAP_CONST_NAME, functor.getClassAtRuntime(), Object.class)</span>
-<span class="fc" id="L135">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(functor, m, base, constant))</span>
-<span class="fc" id="L136">                    .or(() -&gt; getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)</span>
-<span class="fc" id="L137">                            .map(m -&gt; FunctorUtil.map(functor, base, x -&gt; constant)));</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (isFunctor(functor.getClass())) {</span>
+<span class="nc" id="L134">            return getMethodIfExists(functor.getClass(), IFunctor.MAP_CONST_NAME, functor.getClassAtRuntime(), Object.class)</span>
+<span class="nc" id="L135">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(functor, m, base, constant))</span>
+<span class="nc" id="L136">                    .or(() -&gt; getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)</span>
+<span class="nc" id="L137">                            .map(m -&gt; FunctorUtil.map(functor, base, x -&gt; constant)));</span>
         } else {
 <span class="nc" id="L139">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F&gt; Optional&lt;F&gt; applicativeKeepLeft(IApplicative&lt;? extends F&gt; applicative, F left, F right) {
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (isApplicative(applicative.getClass())) {</span>
-<span class="fc" id="L145">            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
-<span class="pc" id="L146">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, left, right))</span>
-<span class="fc" id="L147">                    .or(() -&gt; Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -&gt; x, left, right)));</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (isApplicative(applicative.getClass())) {</span>
+<span class="nc" id="L145">            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
+<span class="nc" id="L146">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, left, right))</span>
+<span class="nc" id="L147">                    .or(() -&gt; Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -&gt; x, left, right)));</span>
         } else {
 <span class="nc" id="L149">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F&gt; Optional&lt;F&gt; applicativeKeepRight(IApplicative&lt;? extends F&gt; applicative, F left, F right) {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (isApplicative(applicative.getClass())) {</span>
-<span class="fc" id="L155">            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
-<span class="pc" id="L156">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, left, right))</span>
-<span class="fc" id="L157">                    .or(() -&gt; Optional.of(ApplicativeUtil.fapply(applicative, right, FunctorUtil.mapConst(applicative, left, Function.identity()))));</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (isApplicative(applicative.getClass())) {</span>
+<span class="nc" id="L155">            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
+<span class="nc" id="L156">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, left, right))</span>
+<span class="nc" id="L157">                    .or(() -&gt; Optional.of(ApplicativeUtil.fapply(applicative, right, FunctorUtil.mapConst(applicative, left, Function.identity()))));</span>
         } else {
 <span class="nc" id="L159">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F, A, K&gt; Optional&lt;K&gt; travesalTraverse(ITraversal&lt;? extends F&gt; traversal, IApplicative&lt;? extends K&gt; applicative, Function&lt;A, ? extends K&gt; mapping, F fa) {
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (isTraversal(traversal.getClass())) {</span>
-<span class="fc" id="L165">            return getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())</span>
-<span class="fc" id="L166">                    .&lt;K&gt;map(m -&gt; invokeStaticMethod(traversal, m, applicative, mapping, fa))</span>
-<span class="fc" id="L167">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())</span>
-<span class="fc" id="L168">                            .flatMap(m -&gt; getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, traversal.getClassAtRuntime(), Function.class))</span>
-<span class="fc" id="L169">                            .map(m -&gt; TraversalUtil.sequenceA(traversal, applicative, FunctorUtil.map(traversal, fa, mapping)))</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (isTraversal(traversal.getClass())) {</span>
+<span class="nc" id="L165">            return getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())</span>
+<span class="nc" id="L166">                    .&lt;K&gt;map(m -&gt; invokeStaticMethod(traversal, m, applicative, mapping, fa))</span>
+<span class="nc" id="L167">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())</span>
+<span class="nc" id="L168">                            .flatMap(m -&gt; getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, traversal.getClassAtRuntime(), Function.class))</span>
+<span class="nc" id="L169">                            .map(m -&gt; TraversalUtil.sequenceA(traversal, applicative, FunctorUtil.map(traversal, fa, mapping)))</span>
                     );
         } else {
 <span class="nc" id="L172">            return Optional.empty();</span>
@@ -174,148 +174,148 @@ final class FunctionalUtil {
     }
 
     public static &lt;F, A, B&gt; Optional&lt;F&gt; traversalMap(IFunctor&lt;? extends F&gt; functor, F base, Function&lt;A, B&gt; map) {
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (isTraversal(functor.getClass())) {</span>
-<span class="fc" id="L178">            ITraversal&lt;? extends F&gt; traversal = (ITraversal&lt;? extends F&gt;) functor;</span>
-<span class="fc" id="L179">            return getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)</span>
-<span class="pc" id="L180">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(traversal, m, base, map))</span>
-<span class="fc" id="L181">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, functor.getClassAtRuntime())</span>
-<span class="pc" id="L182">                            .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, functor.getClassAtRuntime()))</span>
-<span class="fc" id="L183">                            .map(m -&gt; ((Identity&lt;F&gt;) (Identity&lt;?&gt;) TraversalUtil.&lt;Identity, F, A&gt;traverse(traversal, new IdentityApplicative(), ((Function&lt;B, Identity&lt;B&gt;&gt;) IdentityApplicative::pure).compose(map), base)).get()));</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (isTraversal(functor.getClass())) {</span>
+<span class="nc" id="L178">            ITraversal&lt;? extends F&gt; traversal = (ITraversal&lt;? extends F&gt;) functor;</span>
+<span class="nc" id="L179">            return getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)</span>
+<span class="nc" id="L180">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(traversal, m, base, map))</span>
+<span class="nc" id="L181">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, functor.getClassAtRuntime())</span>
+<span class="nc" id="L182">                            .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, functor.getClassAtRuntime()))</span>
+<span class="nc" id="L183">                            .map(m -&gt; ((Identity&lt;F&gt;) (Identity&lt;?&gt;) TraversalUtil.&lt;Identity, F, A&gt;traverse(traversal, new IdentityApplicative(), ((Function&lt;B, Identity&lt;B&gt;&gt;) IdentityApplicative::pure).compose(map), base)).get()));</span>
         } else {
-<span class="fc" id="L185">            return Optional.empty();</span>
+<span class="nc" id="L185">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F, K&gt; Optional&lt;K&gt; traversalSequenceA(ITraversal&lt;? extends F&gt; traversal, IApplicative&lt;? extends K&gt; applicative, F fa) {
-<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        if (isTraversal(traversal.getClass())) {</span>
-<span class="fc" id="L191">            return getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())</span>
-<span class="fc" id="L192">                    .&lt;K&gt;map(m -&gt; invokeStaticMethod(traversal, m, applicative, fa))</span>
-<span class="fc" id="L193">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())</span>
-<span class="fc" id="L194">                            .map(m -&gt; TraversalUtil.traverse(traversal, applicative, Function.identity(), fa)));</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (isTraversal(traversal.getClass())) {</span>
+<span class="nc" id="L191">            return getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())</span>
+<span class="nc" id="L192">                    .&lt;K&gt;map(m -&gt; invokeStaticMethod(traversal, m, applicative, fa))</span>
+<span class="nc" id="L193">                    .or(() -&gt; getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())</span>
+<span class="nc" id="L194">                            .map(m -&gt; TraversalUtil.traverse(traversal, applicative, Function.identity(), fa)));</span>
         } else {
 <span class="nc" id="L196">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F&gt; Optional&lt;F&gt; alternativeEmpty(IAlternative&lt;? extends F&gt; alternative) {
-<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (isAlternative(alternative.getClass())) {</span>
-<span class="nc" id="L202">            return getMethodIfExists(alternative.getClass(), IAlternative.EMPTY_NAME)</span>
-<span class="nc" id="L203">                    .map(m -&gt; invokeStaticMethod(alternative, m));</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (isAlternative(alternative.getClass())) {</span>
+<span class="fc" id="L202">            return getMethodIfExists(alternative.getClass(), IAlternative.EMPTY_NAME)</span>
+<span class="fc" id="L203">                    .map(m -&gt; invokeStaticMethod(alternative, m));</span>
         } else {
 <span class="nc" id="L205">            return Optional.empty();</span>
         }
     }
 
     public static &lt;F&gt; Optional&lt;F&gt; alternativeDisj(IAlternative&lt;? extends F&gt; alternative, F fa, F fb) {
-<span class="nc bnc" id="L210" title="All 2 branches missed.">        if (isAlternative(alternative.getClass())) {</span>
-<span class="nc" id="L211">            return getMethodIfExists(alternative.getClass(), IAlternative.DISJ_NAME, alternative.getClassAtRuntime(), alternative.getClassAtRuntime())</span>
-<span class="nc" id="L212">                    .map(m -&gt; invokeStaticMethod(alternative, m, fa, fb));</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (isAlternative(alternative.getClass())) {</span>
+<span class="fc" id="L211">            return getMethodIfExists(alternative.getClass(), IAlternative.DISJ_NAME, alternative.getClassAtRuntime(), alternative.getClassAtRuntime())</span>
+<span class="fc" id="L212">                    .map(m -&gt; invokeStaticMethod(alternative, m, fa, fb));</span>
         } else {
 <span class="nc" id="L214">            return Optional.empty();</span>
         }
     }
 
     @Applicative
-<span class="fc" id="L219">    public static class IdentityApplicative implements IApplicative&lt;Identity&lt;?&gt;&gt; {</span>
+<span class="nc" id="L219">    public static class IdentityApplicative implements IApplicative&lt;Identity&lt;?&gt;&gt; {</span>
 
         public static &lt;A&gt; Identity&lt;A&gt; pure(A a) {
-<span class="fc" id="L222">            return new Identity&lt;&gt;(a);</span>
+<span class="nc" id="L222">            return new Identity&lt;&gt;(a);</span>
         }
 
         public static &lt;A, B&gt; Identity&lt;B&gt; fapply(Identity&lt;Function&lt;A, B&gt;&gt; map, Identity&lt;A&gt; idA) {
-<span class="fc" id="L226">            return new Identity&lt;&gt;(map.get().apply(idA.get()));</span>
+<span class="nc" id="L226">            return new Identity&lt;&gt;(map.get().apply(idA.get()));</span>
         }
 
         public static &lt;A, B&gt; Identity&lt;B&gt; map(Identity&lt;A&gt; ida, Function&lt;A, B&gt; map) {
-<span class="fc" id="L230">            return new Identity&lt;&gt;(map.apply(ida.get()));</span>
+<span class="nc" id="L230">            return new Identity&lt;&gt;(map.apply(ida.get()));</span>
         }
 
         @Override
         public Class&lt;Identity&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L235">            return (Class&lt;Identity&lt;?&gt;&gt;) (Class&lt;?&gt;) Identity.class;</span>
+<span class="nc" id="L235">            return (Class&lt;Identity&lt;?&gt;&gt;) (Class&lt;?&gt;) Identity.class;</span>
         }
     }
 
     private static class Identity&lt;A&gt; {
         private final A a;
 
-<span class="fc" id="L242">        Identity(A a) {</span>
-<span class="fc" id="L243">            this.a = a;</span>
-<span class="fc" id="L244">        }</span>
+<span class="nc" id="L242">        Identity(A a) {</span>
+<span class="nc" id="L243">            this.a = a;</span>
+<span class="nc" id="L244">        }</span>
 
         A get() {
-<span class="fc" id="L247">            return a;</span>
+<span class="nc" id="L247">            return a;</span>
         }
     }
 
     @Monoid
-<span class="fc" id="L252">    public static class EndoMonoid&lt;B&gt; implements IMonoid&lt;Function&lt;B, B&gt;&gt; {</span>
+<span class="nc" id="L252">    public static class EndoMonoid&lt;B&gt; implements IMonoid&lt;Function&lt;B, B&gt;&gt; {</span>
         public Function&lt;B, B&gt; op(Function&lt;B, B&gt; f1, Function&lt;B, B&gt; f2) {
-<span class="fc" id="L254">            return f1.compose(f2);</span>
+<span class="nc" id="L254">            return f1.compose(f2);</span>
         }
 
         public Function&lt;B, B&gt; unit() {
-<span class="fc" id="L258">            return Function.identity();</span>
+<span class="nc" id="L258">            return Function.identity();</span>
         }
     }
 
     // SEMIGROUP
     // Operation
     static &lt;A&gt; Optional&lt;A&gt; semigroupOp(ISemigroup&lt;? extends A&gt; semigroup, A a, A b) {
-<span class="fc bfc" id="L265" title="All 2 branches covered.">        if (isSemigroup(semigroup.getClass())) {</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">        if (isSemigroup(semigroup.getClass())) {</span>
 <span class="fc" id="L266">            return Stream.of(semigroup.getClass().getGenericInterfaces())</span>
-<span class="pc bpc" id="L267" title="1 of 4 branches missed.">                    .filter(iface -&gt; iface.getTypeName().contains(&quot;IMonoid&quot;) || iface.getTypeName().contains(&quot;ISemigroup&quot;))</span>
+<span class="pc bpc" id="L267" title="3 of 4 branches missed.">                    .filter(iface -&gt; iface.getTypeName().contains(&quot;IMonoid&quot;) || iface.getTypeName().contains(&quot;ISemigroup&quot;))</span>
 <span class="fc" id="L268">                    .filter(iface -&gt; iface instanceof ParameterizedType)</span>
 <span class="fc" id="L269">                    .findFirst()</span>
 <span class="fc" id="L270">                    .map(iface -&gt; ((ParameterizedType) iface).getActualTypeArguments()[0])</span>
 <span class="fc" id="L271">                    .map(type -&gt; {</span>
 <span class="fc bfc" id="L272" title="All 2 branches covered.">                        if (type instanceof Class&lt;?&gt; cl) {</span>
 <span class="fc" id="L273">                            return cl;</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">                        } else if (type instanceof ParameterizedType ptype) {</span>
-<span class="fc" id="L275">                            return (Class&lt;?&gt;) ptype.getRawType();</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">                        } else if (type instanceof ParameterizedType ptype) {</span>
+<span class="nc" id="L275">                            return (Class&lt;?&gt;) ptype.getRawType();</span>
                         }
 <span class="fc" id="L277">                        return Object.class;</span>
                     })
 <span class="fc" id="L279">                    .flatMap(aClass -&gt; getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, aClass, aClass))</span>
-<span class="fc" id="L280">                    .or(() -&gt; getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))</span>
+<span class="pc" id="L280">                    .or(() -&gt; getMethodIfExists(semigroup.getClass(), ISemigroup.OP_NAME, Object.class, Object.class))</span>
 <span class="fc" id="L281">                    .map(m -&gt; invokeStaticMethod(semigroup, m, a, b));</span>
         } else {
-<span class="fc" id="L283">            return Optional.empty();</span>
+<span class="nc" id="L283">            return Optional.empty();</span>
         }
     }
 
     // MONOID
     // Unit function
     static &lt;A&gt; Optional&lt;A&gt; monoidUnit(IMonoid&lt;? extends A&gt; monoid) {
-<span class="fc bfc" id="L290" title="All 2 branches covered.">        if (isMonoid(monoid.getClass())) {</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">        if (isMonoid(monoid.getClass())) {</span>
 <span class="fc" id="L291">            return getMethodIfExists(monoid.getClass(), IMonoid.UNIT_NAME)</span>
 <span class="fc" id="L292">                    .map(m -&gt; invokeStaticMethod(monoid, m));</span>
         } else {
-<span class="fc" id="L294">            return Optional.empty();</span>
+<span class="nc" id="L294">            return Optional.empty();</span>
         }
     }
 
     // FUNCTOR
     // Map functions
     static &lt;F, A, B&gt; Optional&lt;F&gt; applicativeMap(IFunctor&lt;? extends F&gt; functor, F base, Function&lt;A, B&gt; map) {
-<span class="fc bfc" id="L301" title="All 2 branches covered.">        if (isApplicative(functor.getClass())) {</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">        if (isApplicative(functor.getClass())) {</span>
 <span class="fc" id="L302">            IApplicative&lt;? extends F&gt; applicative = (IApplicative&lt;? extends F&gt;) functor;</span>
 <span class="fc" id="L303">            return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, functor.getClassAtRuntime(), functor.getClassAtRuntime())</span>
 <span class="fc" id="L304">                    .or(() -&gt; getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, functor.getClassAtRuntime(), functor.getClassAtRuntime()))</span>
-<span class="fc" id="L305">                    .map(m -&gt; ApplicativeUtil.fapply(applicative, base, ApplicativeUtil.pure(applicative, map)));</span>
+<span class="pc" id="L305">                    .map(m -&gt; ApplicativeUtil.fapply(applicative, base, ApplicativeUtil.pure(applicative, map)));</span>
         } else {
-<span class="fc" id="L307">            return Optional.empty();</span>
+<span class="nc" id="L307">            return Optional.empty();</span>
         }
     }
 
     static &lt;F, A, B&gt; Optional&lt;F&gt; monadMap(IFunctor&lt;? extends F&gt; functor, F base, Function&lt;A, B&gt; map) {
-<span class="fc bfc" id="L312" title="All 2 branches covered.">        if (isMonad(functor.getClass())) {</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">        if (isMonad(functor.getClass())) {</span>
 <span class="fc" id="L313">            IMonad&lt;? extends F&gt; monad = (IMonad&lt;? extends F&gt;) functor;</span>
 <span class="fc" id="L314">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, functor.getClassAtRuntime())</span>
 <span class="fc" id="L315">                    .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))</span>
 <span class="fc" id="L316">                    .map(m -&gt; MonadUtil.flatMap(monad, (A a) -&gt; ApplicativeUtil.pure(monad, map.apply(a)), base));</span>
         } else {
-<span class="fc" id="L318">            return Optional.empty();</span>
+<span class="nc" id="L318">            return Optional.empty();</span>
         }
     }
 
@@ -346,7 +346,7 @@ final class FunctionalUtil {
 <span class="fc" id="L346">            return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
 <span class="fc" id="L347">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, ff, base))</span>
 <span class="fc" id="L348">                    .or(() -&gt; getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
-<span class="fc" id="L349">                            .map(m -&gt; ApplicativeUtil.liftA2(applicative, (Function&lt;Object, Object&gt; a, Object b) -&gt; a.apply(b), ff, base)));</span>
+<span class="pc" id="L349">                            .map(m -&gt; ApplicativeUtil.liftA2(applicative, (Function&lt;Object, Object&gt; a, Object b) -&gt; a.apply(b), ff, base)));</span>
         } else {
 <span class="nc" id="L351">            return Optional.empty();</span>
         }
@@ -356,8 +356,8 @@ final class FunctionalUtil {
 <span class="pc bpc" id="L356" title="1 of 2 branches missed.">        if (isMonad(applicative.getClass())) {</span>
 <span class="fc" id="L357">            IMonad&lt;? extends F&gt; monad = (IMonad&lt;? extends F&gt;) applicative;</span>
 <span class="fc" id="L358">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())</span>
-<span class="fc" id="L359">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())</span>
-<span class="pc" id="L360">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))</span>
+<span class="pc" id="L359">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())</span>
+<span class="nc" id="L360">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))</span>
 <span class="fc" id="L361">                    .map(m -&gt; MonadUtil.flatMap(monad, f -&gt; FunctorUtil.map(monad, base, (Function&lt;?, ?&gt;) f), ff));</span>
         } else {
 <span class="nc" id="L363">            return Optional.empty();</span>
@@ -378,12 +378,12 @@ final class FunctionalUtil {
     }
 
     static &lt;F, A, B, C&gt; Optional&lt;F&gt; monadLiftA2(IApplicative&lt;? extends F&gt; applicative, BiFunction&lt;A, B, C&gt; mapping, F fa, F fb) {
-<span class="pc bpc" id="L381" title="1 of 2 branches missed.">        if (isMonad(applicative.getClass())) {</span>
-<span class="fc" id="L382">            IMonad&lt;? extends F&gt; monad = (IMonad&lt;? extends F&gt;) applicative;</span>
-<span class="fc" id="L383">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())</span>
-<span class="fc" id="L384">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())</span>
-<span class="pc" id="L385">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))</span>
-<span class="fc" id="L386">                    .map(m -&gt; ApplicativeUtil.fapply(monad, fb, FunctorUtil.map(monad, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        if (isMonad(applicative.getClass())) {</span>
+<span class="nc" id="L382">            IMonad&lt;? extends F&gt; monad = (IMonad&lt;? extends F&gt;) applicative;</span>
+<span class="nc" id="L383">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())</span>
+<span class="nc" id="L384">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())</span>
+<span class="nc" id="L385">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))</span>
+<span class="nc" id="L386">                    .map(m -&gt; ApplicativeUtil.fapply(monad, fb, FunctorUtil.map(monad, fa, (A a) -&gt; (Function&lt;B, C&gt;) (b -&gt; mapping.apply(a, b)))));</span>
         } else {
 <span class="nc" id="L388">            return Optional.empty();</span>
         }
@@ -397,8 +397,8 @@ final class FunctionalUtil {
 <span class="fc" id="L397">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())</span>
 <span class="fc" id="L398">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(monad, m, mapping, fa))</span>
 <span class="fc" id="L399">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, monad.getClassAtRuntime())</span>
-<span class="pc" id="L400">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))</span>
-<span class="pc" id="L401">                            .map(m -&gt; MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));</span>
+<span class="fc" id="L400">                            .flatMap(m -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))</span>
+<span class="fc" id="L401">                            .map(m -&gt; MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));</span>
         } else {
 <span class="nc" id="L403">            return Optional.empty();</span>
         }
@@ -410,8 +410,8 @@ final class FunctionalUtil {
 <span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (isMonad(monad.getClass())) {</span>
 <span class="fc" id="L411">            return getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, monad.getClassAtRuntime())</span>
 <span class="fc" id="L412">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(monad, m, ffa))</span>
-<span class="fc" id="L413">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())</span>
-<span class="fc" id="L414">                            .map(m -&gt; MonadUtil.flatMap(monad, Function.identity(), ffa)));</span>
+<span class="pc" id="L413">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())</span>
+<span class="nc" id="L414">                            .map(m -&gt; MonadUtil.flatMap(monad, Function.identity(), ffa)));</span>
         } else {
 <span class="nc" id="L416">            return Optional.empty();</span>
         }

@@ -8,11 +8,11 @@ import java.util.function.Function;
 public interface State&lt;A, S&gt; extends Function&lt;S, Pair&lt;A, S&gt;&gt; {
 
     default S execute(S s) {
-<span class="nc" id="L11">        return apply(s).getValue();</span>
+<span class="fc" id="L11">        return apply(s).getValue();</span>
     }
 
     default A evaluate(S s) {
-<span class="nc" id="L15">        return apply(s).getKey();</span>
+<span class="fc" id="L15">        return apply(s).getKey();</span>
     }
 
     static &lt;S&gt; State&lt;S, S&gt; get() {

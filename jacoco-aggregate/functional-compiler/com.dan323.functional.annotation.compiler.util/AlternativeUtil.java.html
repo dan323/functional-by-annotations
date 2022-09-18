@@ -9,13 +9,13 @@ public final class AlternativeUtil {
     }
 
     public static &lt;F&gt; F empty(IAlternative&lt;? extends F&gt; alternative) {
-<span class="nc" id="L12">        return FunctionalUtil.&lt;F&gt;alternativeEmpty(alternative)</span>
-<span class="nc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The alternative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L12">        return FunctionalUtil.&lt;F&gt;alternativeEmpty(alternative)</span>
+<span class="pc" id="L13">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The alternative is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F&gt; F disj(IAlternative&lt;? extends F&gt; alternative, F fa, F fb) {
-<span class="nc" id="L17">        return FunctionalUtil.alternativeDisj(alternative, fa, fb)</span>
-<span class="nc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The alternative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L17">        return FunctionalUtil.alternativeDisj(alternative, fa, fb)</span>
+<span class="pc" id="L18">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The alternative is not correctly implemented.&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

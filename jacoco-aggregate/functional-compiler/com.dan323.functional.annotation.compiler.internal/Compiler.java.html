@@ -19,11 +19,11 @@ public class Compiler&lt;F extends Annotation&gt; {
     private final Class&lt;F&gt; annotation;
     private final Messager messager;
 
-<span class="fc" id="L22">    Compiler(NecessaryMethods necessaryMethods, Class&lt;F&gt; fClass, Messager messager) {</span>
-<span class="fc" id="L23">        this.necessaryMethods = necessaryMethods;</span>
-<span class="fc" id="L24">        this.annotation = fClass;</span>
-<span class="fc" id="L25">        this.messager = messager;</span>
-<span class="fc" id="L26">    }</span>
+<span class="nc" id="L22">    Compiler(NecessaryMethods necessaryMethods, Class&lt;F&gt; fClass, Messager messager) {</span>
+<span class="nc" id="L23">        this.necessaryMethods = necessaryMethods;</span>
+<span class="nc" id="L24">        this.annotation = fClass;</span>
+<span class="nc" id="L25">        this.messager = messager;</span>
+<span class="nc" id="L26">    }</span>
 
     /**
      * Check if the input has all the necessary methods for all the annotations it has
@@ -31,41 +31,41 @@ public class Compiler&lt;F extends Annotation&gt; {
      * @param element type to check at compile time
      */
     public void process(TypeElement element) {
-<span class="fc" id="L34">        TypeElement originalElement = element;</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (element.getAnnotation(annotation) == null) {</span>
-<span class="fc" id="L36">            error(&quot;The functor interface is not annotated as a functor&quot;);</span>
+<span class="nc" id="L34">        TypeElement originalElement = element;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (element.getAnnotation(annotation) == null) {</span>
+<span class="nc" id="L36">            error(&quot;The functor interface is not annotated as a functor&quot;);</span>
         }
         // Verify that it is a public class
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
-<span class="fc" id="L40">            error(&quot;The annotated type %s is not public&quot;, originalElement.getQualifiedName());</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
+<span class="nc" id="L40">            error(&quot;The annotated type %s is not public&quot;, originalElement.getQualifiedName());</span>
         }
-<span class="fc" id="L42">        boolean success = false;</span>
+<span class="nc" id="L42">        boolean success = false;</span>
         // Look for the public method called map and verify its signature
-<span class="fc" id="L44">        var necessaryMethodsLoop = necessaryMethods;</span>
+<span class="nc" id="L44">        var necessaryMethodsLoop = necessaryMethods;</span>
         do {
-<span class="fc" id="L46">            necessaryMethodsLoop = element.getEnclosedElements().stream()</span>
-<span class="fc bfc" id="L47" title="All 4 branches covered.">                    .filter(element1 -&gt; element1.getKind().equals(ElementKind.METHOD) &amp;&amp; element1.getModifiers().contains(Modifier.PUBLIC))</span>
-<span class="fc" id="L48">                    .map(element1 -&gt; (ExecutableElement) element1)</span>
-<span class="fc" id="L49">                    .map(element1 -&gt; (UnaryOperator&lt;NecessaryMethods&gt;) ((NecessaryMethods nec) -&gt; nec.process(element1)))</span>
-<span class="fc" id="L50">                    .reduce(necessaryMethodsLoop,</span>
-<span class="fc" id="L51">                            (nec, unary) -&gt; unary.apply(nec),</span>
+<span class="nc" id="L46">            necessaryMethodsLoop = element.getEnclosedElements().stream()</span>
+<span class="nc bnc" id="L47" title="All 4 branches missed.">                    .filter(element1 -&gt; element1.getKind().equals(ElementKind.METHOD) &amp;&amp; element1.getModifiers().contains(Modifier.PUBLIC))</span>
+<span class="nc" id="L48">                    .map(element1 -&gt; (ExecutableElement) element1)</span>
+<span class="nc" id="L49">                    .map(element1 -&gt; (UnaryOperator&lt;NecessaryMethods&gt;) ((NecessaryMethods nec) -&gt; nec.process(element1)))</span>
+<span class="nc" id="L50">                    .reduce(necessaryMethodsLoop,</span>
+<span class="nc" id="L51">                            (nec, unary) -&gt; unary.apply(nec),</span>
                             (nec1, nec2) -&gt; {
 <span class="nc" id="L53">                                throw new UnsupportedOperationException(&quot;This operation is not suppoerted&quot;);</span>
                             });
-<span class="fc" id="L55">            success = necessaryMethodsLoop instanceof EmptyNecessaryMethods;</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            if (element.getSuperclass().toString().equals(&quot;none&quot;)) {</span>
+<span class="nc" id="L55">            success = necessaryMethodsLoop instanceof EmptyNecessaryMethods;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (element.getSuperclass().toString().equals(&quot;none&quot;)) {</span>
 <span class="nc" id="L57">                break;</span>
             } else {
-<span class="fc" id="L59">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
+<span class="nc" id="L59">                element = (TypeElement) ((DeclaredType) element.getSuperclass()).asElement();</span>
             }
-<span class="fc bfc" id="L61" title="All 4 branches covered.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (!success) {</span>
-<span class="fc" id="L63">            error(&quot;The public functions needed were not found in %s: %s&quot;, originalElement.getQualifiedName(), necessaryMethodsLoop);</span>
+<span class="nc bnc" id="L61" title="All 4 branches missed.">        } while (!success &amp;&amp; !element.toString().equals(&quot;java.lang.Object&quot;));</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (!success) {</span>
+<span class="nc" id="L63">            error(&quot;The public functions needed were not found in %s: %s&quot;, originalElement.getQualifiedName(), necessaryMethodsLoop);</span>
         }
-<span class="fc" id="L65">    }</span>
+<span class="nc" id="L65">    }</span>
 
     private void error(String message, Object... args) {
-<span class="fc" id="L68">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
-<span class="fc" id="L69">    }</span>
+<span class="nc" id="L68">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="nc" id="L69">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

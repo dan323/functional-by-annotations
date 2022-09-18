@@ -13,14 +13,14 @@ class FunctionalDependencyTree {
     private final Class&lt;? extends Structure&gt; node;
     private final List&lt;FunctionalDependencyTree&gt; dependency;
 
-<span class="fc" id="L16">    private FunctionalDependencyTree(Class&lt;? extends Structure&gt; node) {</span>
-<span class="fc" id="L17">        this.node = node;</span>
-<span class="fc" id="L18">        this.dependency = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L19">    }</span>
+<span class="nc" id="L16">    private FunctionalDependencyTree(Class&lt;? extends Structure&gt; node) {</span>
+<span class="nc" id="L17">        this.node = node;</span>
+<span class="nc" id="L18">        this.dependency = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L19">    }</span>
 
     private void addDependency(FunctionalDependencyTree dependencyTree) {
-<span class="fc" id="L22">        dependency.add(dependencyTree);</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L22">        dependency.add(dependencyTree);</span>
+<span class="nc" id="L23">    }</span>
 
     /**
      * Obtain the structural dependency tree
@@ -28,29 +28,29 @@ class FunctionalDependencyTree {
      * @return the dependency tree of all the {@link Structure}
      */
     public static List&lt;FunctionalDependencyTree&gt; getActualTree() {
-<span class="fc" id="L31">        FunctionalDependencyTree monad = new FunctionalDependencyTree(IMonad.class);</span>
-<span class="fc" id="L32">        FunctionalDependencyTree applicative = new FunctionalDependencyTree(IApplicative.class);</span>
-<span class="fc" id="L33">        FunctionalDependencyTree functor = new FunctionalDependencyTree(IFunctor.class);</span>
-<span class="fc" id="L34">        FunctionalDependencyTree semigroup = new FunctionalDependencyTree(ISemigroup.class);</span>
-<span class="fc" id="L35">        FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);</span>
-<span class="fc" id="L36">        FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);</span>
-<span class="fc" id="L37">        FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);</span>
-<span class="fc" id="L38">        FunctionalDependencyTree alternative = new FunctionalDependencyTree(IAlternative.class);</span>
-<span class="fc" id="L39">        monad.addDependency(applicative);</span>
-<span class="fc" id="L40">        alternative.addDependency(applicative);</span>
-<span class="fc" id="L41">        applicative.addDependency(functor);</span>
-<span class="fc" id="L42">        monoid.addDependency(semigroup);</span>
-<span class="fc" id="L43">        traversal.addDependency(functor);</span>
-<span class="fc" id="L44">        traversal.addDependency(foldable);</span>
-<span class="fc" id="L45">        return List.of(monad, monoid, traversal, alternative);</span>
+<span class="nc" id="L31">        FunctionalDependencyTree monad = new FunctionalDependencyTree(IMonad.class);</span>
+<span class="nc" id="L32">        FunctionalDependencyTree applicative = new FunctionalDependencyTree(IApplicative.class);</span>
+<span class="nc" id="L33">        FunctionalDependencyTree functor = new FunctionalDependencyTree(IFunctor.class);</span>
+<span class="nc" id="L34">        FunctionalDependencyTree semigroup = new FunctionalDependencyTree(ISemigroup.class);</span>
+<span class="nc" id="L35">        FunctionalDependencyTree monoid = new FunctionalDependencyTree(IMonoid.class);</span>
+<span class="nc" id="L36">        FunctionalDependencyTree foldable = new FunctionalDependencyTree(IFoldable.class);</span>
+<span class="nc" id="L37">        FunctionalDependencyTree traversal = new FunctionalDependencyTree(ITraversal.class);</span>
+<span class="nc" id="L38">        FunctionalDependencyTree alternative = new FunctionalDependencyTree(IAlternative.class);</span>
+<span class="nc" id="L39">        monad.addDependency(applicative);</span>
+<span class="nc" id="L40">        alternative.addDependency(applicative);</span>
+<span class="nc" id="L41">        applicative.addDependency(functor);</span>
+<span class="nc" id="L42">        monoid.addDependency(semigroup);</span>
+<span class="nc" id="L43">        traversal.addDependency(functor);</span>
+<span class="nc" id="L44">        traversal.addDependency(foldable);</span>
+<span class="nc" id="L45">        return List.of(monad, monoid, traversal, alternative);</span>
     }
 
     public Class&lt;? extends Structure&gt; getNode() {
-<span class="fc" id="L49">        return node;</span>
+<span class="nc" id="L49">        return node;</span>
     }
 
     public static List&lt;FunctionalDependencyTree&gt; getNextLine(FunctionalDependencyTree tree) {
-<span class="fc" id="L53">        return tree.dependency;</span>
+<span class="nc" id="L53">        return tree.dependency;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

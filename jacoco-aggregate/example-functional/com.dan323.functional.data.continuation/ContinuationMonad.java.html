@@ -12,23 +12,23 @@ public final class ContinuationMonad&lt;R&gt; implements IMonad&lt;Continuation&
     }
 
     public static &lt;R&gt; ContinuationMonad&lt;R&gt; getInstance() {
-<span class="nc" id="L15">        return new ContinuationMonad&lt;&gt;();</span>
+<span class="fc" id="L15">        return new ContinuationMonad&lt;&gt;();</span>
     }
 
     public &lt;R1, R2&gt; Continuation&lt;R2, R&gt; map(Continuation&lt;R1, R&gt; base, Function&lt;R1, R2&gt; mapping) {
-<span class="nc" id="L19">        return k -&gt; base.apply(k.compose(mapping));</span>
+<span class="fc" id="L19">        return k -&gt; base.apply(k.compose(mapping));</span>
     }
 
     public &lt;R1&gt; Continuation&lt;R1, R&gt; pure(R1 r) {
-<span class="nc" id="L23">        return k -&gt; k.apply(r);</span>
+<span class="fc" id="L23">        return k -&gt; k.apply(r);</span>
     }
 
     public &lt;R1, R2&gt; Continuation&lt;R2, R&gt; fapply(Continuation&lt;Function&lt;R1, R2&gt;, R&gt; f, Continuation&lt;R1, R&gt; c1) {
-<span class="nc" id="L27">        return k -&gt; f.apply(h -&gt; c1.apply(k.compose(h)));</span>
+<span class="fc" id="L27">        return k -&gt; f.apply(h -&gt; c1.apply(k.compose(h)));</span>
     }
 
     public &lt;R1&gt; Continuation&lt;R1, R&gt; join(Continuation&lt;Continuation&lt;R1, R&gt;, R&gt; cc) {
-<span class="nc" id="L31">        return k -&gt; cc.apply(c1 -&gt; c1.apply(k));</span>
+<span class="fc" id="L31">        return k -&gt; cc.apply(c1 -&gt; c1.apply(k));</span>
     }
 
     @Override

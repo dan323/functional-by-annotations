@@ -36,7 +36,7 @@ import static com.dan323.functional.data.Identity.runIdentity;
 
     @Override
     public Class&lt;Identity&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L39">        return (Class&lt;Identity&lt;?&gt;&gt;) (Class) Identity.class;</span>
+<span class="nc" id="L39">        return (Class&lt;Identity&lt;?&gt;&gt;) (Class&lt;?&gt;) Identity.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

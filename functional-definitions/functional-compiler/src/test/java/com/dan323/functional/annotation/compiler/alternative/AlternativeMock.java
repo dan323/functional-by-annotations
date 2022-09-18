@@ -17,7 +17,7 @@ public class AlternativeMock implements IAlternative<List<?>> {
         return lst;
     }
 
-    public <A, B> List<B> fapply(Function<A, List<B>> fun, List<A> lst) {
+    public <A, B> List<B> flatMap(Function<A, List<B>> fun, List<A> lst) {
         return lst.stream().flatMap(x -> fun.apply(x).stream()).toList();
     }
 

@@ -15,7 +15,7 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Nothing,5,13,1,1,2,3,3,3,2,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,MaybeMonad,13,41,0,0,3,7,3,9,3,9
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.optional,Just,18,30,3,3,2,8,5,3,2,3
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.stack,Stack,42,91,0,0,2,12,7,14,7,14
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.stack,Stack,7,126,0,0,1,13,1,20,1,20
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,ContinuationMonad,2,49,0,0,1,5,1,11,1,11
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,Continuation,0,4,0,0,0,1,0,1,0,1
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,FunctionFrom,2,59,0,0,1,8,1,12,1,12

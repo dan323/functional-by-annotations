@@ -26,8 +26,8 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, FiniteList
 <span class="fc" id="L26">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
     }
 
-    public static &lt;A&gt; Stack&lt;A&gt; empty() {
-<span class="pc" id="L30">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
+    public static &lt;A&gt; Stack&lt;A&gt; reset() {
+<span class="fc" id="L30">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; doNothing() {
@@ -35,11 +35,11 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, FiniteList
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; dup() {
-<span class="fc" id="L38">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), empty()));</span>
+<span class="fc" id="L38">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), reset()));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; over() {
-<span class="nc" id="L42">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; Stack.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; Stack.&lt;A&gt;push(x).then(push(h)), push(x))), empty()));</span>
+<span class="fc" id="L42">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; Stack.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; Stack.&lt;A&gt;push(x).then(push(h)), push(x))), reset()));</span>
     }
 
     public Stack&lt;A&gt; thenByPopped(Function&lt;Maybe&lt;A&gt;, Stack&lt;A&gt;&gt; fun) {

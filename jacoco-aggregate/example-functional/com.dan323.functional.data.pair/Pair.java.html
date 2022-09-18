@@ -34,11 +34,11 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
     }
 
     public &lt;V1&gt; Pair&lt;U, V1&gt; mapSecond(Function&lt;V, V1&gt; function) {
-<span class="nc" id="L37">        return new Pair&lt;&gt;(entry.getKey(), function.apply(entry.getValue()));</span>
+<span class="fc" id="L37">        return new Pair&lt;&gt;(entry.getKey(), function.apply(entry.getValue()));</span>
     }
 
     public &lt;S, T&gt; Pair&lt;S, T&gt; biMap(BiFunction&lt;U, V, S&gt; first, BiFunction&lt;U, V, T&gt; second) {
-<span class="nc" id="L41">        return new Pair&lt;&gt;(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));</span>
+<span class="fc" id="L41">        return new Pair&lt;&gt;(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));</span>
     }
 
     public &lt;S&gt; S map(BiFunction&lt;U, V, S&gt; first) {

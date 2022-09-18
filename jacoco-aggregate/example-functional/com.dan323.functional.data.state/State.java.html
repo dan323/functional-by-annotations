@@ -16,11 +16,11 @@ public interface State&lt;A, S&gt; extends Function&lt;S, Pair&lt;A, S&gt;&gt; {
     }
 
     static &lt;S&gt; State&lt;S, S&gt; get() {
-<span class="nc" id="L19">        return s -&gt; new Pair&lt;&gt;(s, s);</span>
+<span class="fc" id="L19">        return s -&gt; new Pair&lt;&gt;(s, s);</span>
     }
 
     static &lt;S&gt; State&lt;Maybe&lt;Void&gt;, S&gt; put(S x) {
-<span class="nc" id="L23">        return s -&gt; new Pair&lt;&gt;(Maybe.of(), x);</span>
+<span class="fc" id="L23">        return s -&gt; new Pair&lt;&gt;(Maybe.of(), x);</span>
     }
 
 }

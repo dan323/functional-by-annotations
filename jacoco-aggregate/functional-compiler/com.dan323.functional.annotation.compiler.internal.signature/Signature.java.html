@@ -30,12 +30,12 @@ public class Signature {
 <span class="fc bfc" id="L30" title="All 2 branches covered.">        return method.getReturnType().toString().equals(returnType.toString()) &amp;&amp;</span>
 <span class="fc bfc" id="L31" title="All 2 branches covered.">                method.getParameters().size() == inputs.size() &amp;&amp;</span>
 <span class="fc bfc" id="L32" title="All 2 branches covered.">                method.getSimpleName().toString().equals(name) &amp;&amp;</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">                verifyInputs(method);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                verifyInputs(method);</span>
     }
 
     private boolean verifyInputs(ExecutableElement method) {
 <span class="fc" id="L37">        boolean b = true;</span>
-<span class="pc bpc" id="L38" title="1 of 4 branches missed.">        for (int i = 0; b &amp;&amp; i &lt; inputs.size(); i++) {</span>
+<span class="fc bfc" id="L38" title="All 4 branches covered.">        for (int i = 0; b &amp;&amp; i &lt; inputs.size(); i++) {</span>
 <span class="fc" id="L39">            b = method.getParameters().get(i).asType().toString().equals(inputs.get(i).toString());</span>
         }
 <span class="fc" id="L41">        return b;</span>

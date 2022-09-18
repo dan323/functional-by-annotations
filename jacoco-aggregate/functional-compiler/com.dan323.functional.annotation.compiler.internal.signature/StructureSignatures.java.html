@@ -94,10 +94,10 @@ public final class StructureSignatures {
     }
 
     private Signature createDisjSignature(ExecutableType method, DeclaredType iFace) {
-<span class="nc" id="L97">        var params = method.getTypeVariables();</span>
-<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (params.size() &gt;= 1) {</span>
-<span class="nc" id="L99">            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="nc" id="L100">            return new Signature(List.of(input1, input1), input1, IAlternative.DISJ_NAME);</span>
+<span class="fc" id="L97">        var params = method.getTypeVariables();</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
+<span class="fc" id="L99">            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L100">            return new Signature(List.of(input1, input1), input1, IAlternative.DISJ_NAME);</span>
         } else {
 <span class="nc" id="L102">            return Signature.invalid();</span>
         }
@@ -105,23 +105,23 @@ public final class StructureSignatures {
 
 
     private Signature createEmptySignature(ExecutableType method, DeclaredType iFace) {
-<span class="nc" id="L108">        var params = method.getTypeVariables();</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (params.size() &gt;= 1) {</span>
-<span class="nc" id="L110">            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="nc" id="L111">            return new Signature(List.of(), input1, IAlternative.EMPTY_NAME);</span>
+<span class="fc" id="L108">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (params.size() &gt;= 1) {</span>
+<span class="fc" id="L110">            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="fc" id="L111">            return new Signature(List.of(), input1, IAlternative.EMPTY_NAME);</span>
         } else {
-<span class="nc" id="L113">            return Signature.invalid();</span>
+<span class="fc" id="L113">            return Signature.invalid();</span>
         }
     }
 
     private Signature createJoinSignature(ExecutableType method, DeclaredType iFace) {
 <span class="fc" id="L118">        var params = method.getTypeVariables();</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (params.size() &gt;= 1) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (params.size() &gt;= 1) {</span>
 <span class="fc" id="L120">            var input = CompilerUtils.changeWildBy(typeUtils, iFace, CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)));</span>
 <span class="fc" id="L121">            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
 <span class="fc" id="L122">            return new Signature(List.of(input), returnTyp, IMonad.JOIN_NAME);</span>
         } else {
-<span class="nc" id="L124">            return Signature.invalid();</span>
+<span class="fc" id="L124">            return Signature.invalid();</span>
         }
     }
 
@@ -220,11 +220,11 @@ public final class StructureSignatures {
     }
 
     private NecessaryMethods emptySignatureChecker(DeclaredType iface) {
-<span class="nc" id="L223">        return new FunctionSignature(x -&gt; createEmptySignature(x, iface), IAlternative.EMPTY_NAME);</span>
+<span class="fc" id="L223">        return new FunctionSignature(x -&gt; createEmptySignature(x, iface), IAlternative.EMPTY_NAME);</span>
     }
 
     private NecessaryMethods disjSignatureChecker(DeclaredType ifaca) {
-<span class="nc" id="L227">        return new FunctionSignature(x -&gt; createDisjSignature(x, ifaca), IAlternative.DISJ_NAME);</span>
+<span class="fc" id="L227">        return new FunctionSignature(x -&gt; createDisjSignature(x, ifaca), IAlternative.DISJ_NAME);</span>
     }
 
     private NecessaryMethods fapplySignatureChecker(DeclaredType iface) {
@@ -285,7 +285,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IAlternative}
      */
     public NecessaryMethods alternativeSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L288">        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface), emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));</span>
+<span class="fc" id="L288">        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface), emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));</span>
     }
 
     /**

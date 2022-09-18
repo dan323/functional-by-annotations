@@ -1,6 +1,7 @@
 package com.dan323.functional.annotation.compiler.internal.signature;
 
 import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.IRing;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
 import com.dan323.functional.annotation.funcs.*;
@@ -44,6 +45,24 @@ public final class StructureSignatures {
         var params = method.getTypeVariables();
         if (params.size() >= 1) {
             return new Signature(List.of(params.get(0)), CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)), IApplicative.PURE_NAME);
+        } else {
+            return Signature.invalid();
+        }
+    }
+
+    private Signature createSumSignature(ExecutableType method, DeclaredType iFace) {
+        var params = iFace.getTypeArguments();
+        if (params.size() >= 1) {
+            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(0)), IRing.SUM_NAME);
+        } else {
+            return Signature.invalid();
+        }
+    }
+
+    private Signature createProdSignature(ExecutableType method, DeclaredType iFace) {
+        var params = iFace.getTypeArguments();
+        if (params.size() >= 1) {
+            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(ISemigroup.class.getTypeName()), params.get(0)), IRing.PROD_NAME);
         } else {
             return Signature.invalid();
         }
@@ -192,6 +211,14 @@ public final class StructureSignatures {
         return new FunctionSignature(x -> createPureSignature(x, iface), IApplicative.PURE_NAME);
     }
 
+    private NecessaryMethods sumSignatureChecker(DeclaredType iface) {
+        return new FunctionSignature(x -> createSumSignature(x, iface), IRing.SUM_NAME);
+    }
+
+    private NecessaryMethods prodSignatureChecker(DeclaredType iface) {
+        return new FunctionSignature(x -> createProdSignature(x, iface), IRing.PROD_NAME);
+    }
+
     private NecessaryMethods emptySignatureChecker(DeclaredType iface) {
         return new FunctionSignature(x -> createEmptySignature(x, iface), IAlternative.EMPTY_NAME);
     }
@@ -258,7 +285,17 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IAlternative}
      */
     public NecessaryMethods alternativeSignatureChecker(DeclaredType iface) {
-        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface),  emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));
+        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface), emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));
+    }
+
+    /**
+     * {@link NecessaryMethods} for an {@link IRing} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link IRing}
+     * @return A {@link NecessaryMethods} with requirements for an {@link IRing}
+     */
+    public NecessaryMethods ringSignatureChecker(DeclaredType iface) {
+        return new ConjNecessaryMethods(sumSignatureChecker(iface), prodSignatureChecker(iface));
     }
 
     /**

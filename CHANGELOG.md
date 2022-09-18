@@ -35,3 +35,7 @@
   - Added Traversal functional
 * 11/09/22
   - Added Alternative functional
+* 17/09/22
+  - Added State functional as monad
+  - Added Stack data based on State
+  - Ring algebraic (no tests yet)

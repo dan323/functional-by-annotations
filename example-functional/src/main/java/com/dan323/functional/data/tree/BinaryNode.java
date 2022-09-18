@@ -4,10 +4,13 @@ import java.util.Objects;
 
 public final class BinaryNode<A> implements BinaryTree<A> {
     private final BinaryTree<A> left;
+
+    private final A data;
     private final BinaryTree<A> right;
 
-    BinaryNode(BinaryTree<A> left, BinaryTree<A> right) {
+    BinaryNode(BinaryTree<A> left, A data, BinaryTree<A> right) {
         this.left = left;
+        this.data = data;
         this.right = right;
     }
 
@@ -17,6 +20,10 @@ public final class BinaryNode<A> implements BinaryTree<A> {
 
     public BinaryTree<A> right() {
         return right;
+    }
+
+    public A data() {
+        return data;
     }
 
     @Override
@@ -32,5 +39,10 @@ public final class BinaryNode<A> implements BinaryTree<A> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "[(" + left + ";" + data + ";" + right + ")]";
     }
 }

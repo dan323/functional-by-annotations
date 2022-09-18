@@ -7,12 +7,12 @@ import java.util.function.Function;
 
 public sealed interface BinaryTree<A> permits BinaryNode, Leaf {
 
-    static <A> BinaryTree<A> leaf(A a) {
-        return new Leaf<>(a);
+    static <A> BinaryTree<A> leaf() {
+        return (BinaryTree<A>) Leaf.LEAF;
     }
 
-    static <A> BinaryTree<A> node(BinaryTree<A> left, BinaryTree<A> right) {
-        return new BinaryNode<>(left, right);
+    static <A> BinaryTree<A> node(BinaryTree<A> left, A point, BinaryTree<A> right) {
+        return new BinaryNode<>(left, point, right);
     }
 
 }

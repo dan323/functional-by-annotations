@@ -42,6 +42,7 @@ Methods of super-types also count towards the annotation being implemented.
 
 A semigroup requires only one operation
 ````java
+@Semigroup
 public interface ASemigroup<T> extends ISemigroup<T> { 
     T op(T a, T b);
 }
@@ -56,7 +57,8 @@ op(x,op(y,z)) == op(op(x,y),z)
 A monoid is a semigroup with a neutral element:
 
 ````java
-public interface AMonoid<T> extends ASemigroup<T>, IMonoid<T> {
+@Monoid
+public interface AMonoid<T> extends IMonoid<T> {
     T unit();
 }
 ````
@@ -73,6 +75,7 @@ op(unit(), x) == x
 
 A functor requires only one function
 ```java
+@Functor
 public interface AFunctor extends IFunctor<F<?>> {
     <A,B> F<B> map(F<A> base, Function<A,B> map);
 }
@@ -89,6 +92,7 @@ The miminal required is the only function it has: *map*
 
 Any applicative is a functor, so it also has a map function added to the following:
 ````java
+@Applicative
 public interface AnApplicative extends IApplicative<F<?>> { 
     <A> F<A> pure(A a);
     <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base);
@@ -110,6 +114,7 @@ The mimimal required is *pure* and, either *fapply* or *liftA2*.
 
 Any monad is an applicative, and hence a functor, so it has all their functions plus the following:
 ````java
+@Monad
 public interface AMonad extends IMonad<F<?>> {
     <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base);
     <A> F<A> join(F<F<A>> doubleMonad);
@@ -133,6 +138,7 @@ The minimal required is *pure* and one of the following lists:
 A foldable structure is one we can collapse. Up to now it has 3 functions defined:
 
 ````java
+@Foldable
 public interface AFoldable extends IFoldable<F<?>> {
     <A> A fold(IMonoid<A> monoid, F<A> a);
     <A, M> M foldMap(IMonoid<M> monoid, Function<A,M> function, F<A> base);

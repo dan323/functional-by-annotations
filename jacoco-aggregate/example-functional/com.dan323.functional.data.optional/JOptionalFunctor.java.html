@@ -10,18 +10,17 @@ import java.util.function.Function;
 public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {
 
     private JOptionalFunctor() {
-
     }
 
-<span class="fc" id="L16">    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();</span>
+<span class="fc" id="L15">    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();</span>
 
     public static &lt;A, B&gt; Optional&lt;B&gt; map(Optional&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L19">        return base.map(mapping);</span>
+<span class="fc" id="L18">        return base.map(mapping);</span>
     }
 
     @Override
     public Class&lt;Optional&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L24">        return (Class&lt;Optional&lt;?&gt;&gt;) (Class) Optional.class;</span>
+<span class="fc" id="L23">        return (Class&lt;Optional&lt;?&gt;&gt;) (Class&lt;?&gt;) Optional.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

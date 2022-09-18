@@ -33,7 +33,7 @@ public final class ContinuationMonad&lt;R&gt; implements IMonad&lt;Continuation&
 
     @Override
     public Class&lt;Continuation&lt;?,R&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L36">        return (Class&lt;Continuation&lt;?,R&gt;&gt;)(Class) Continuation.class;</span>
+<span class="nc" id="L36">        return (Class&lt;Continuation&lt;?,R&gt;&gt;)(Class&lt;?&gt;) Continuation.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -6,10 +6,10 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import java.util.function.Function;
 
 @Monad
-public final class RightEither&lt;R&gt; implements IMonad&lt;Either&lt;R, ?&gt;&gt; {
+public class RightEither&lt;R&gt; implements IMonad&lt;Either&lt;R, ?&gt;&gt; {
 
-    private RightEither(){
-    }
+<span class="fc" id="L11">    RightEither(){</span>
+<span class="fc" id="L12">    }</span>
 
     public static &lt;R&gt; RightEither&lt;R&gt; getInstance(){
 <span class="fc" id="L15">        return new RightEither&lt;&gt;();</span>

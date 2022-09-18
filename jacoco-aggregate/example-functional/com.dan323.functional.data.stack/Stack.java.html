@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Stack.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.stack</a> &gt; <span class="el_source">Stack.java</span></div><h1>Stack.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.stack;
+
+import com.dan323.functional.data.function.FunctionFrom;
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.List;
+import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
+import com.dan323.functional.data.pair.Pair;
+import com.dan323.functional.data.state.State;
+import com.dan323.functional.data.state.StateMonad;
+
+import java.util.function.Function;
+
+public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; {
+
+    private final State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; state;
+
+<span class="fc" id="L18">    private Stack(State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; state) {</span>
+<span class="fc" id="L19">        this.state = state;</span>
+<span class="fc" id="L20">    }</span>
+
+    public static &lt;A&gt; Stack&lt;A&gt; push(A x) {
+<span class="fc" id="L23">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
+    }
+
+    public static &lt;A&gt; Stack&lt;A&gt; pop() {
+<span class="fc" id="L27">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
+    }
+
+    public static &lt;A&gt; Stack&lt;A&gt; empty() {
+<span class="pc" id="L31">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
+    }
+
+    public static &lt;A&gt; Stack&lt;A&gt; doNothing() {
+<span class="nc" id="L35">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), s));</span>
+    }
+
+    public static &lt;A&gt; Stack&lt;A&gt; dup() {
+<span class="fc" id="L39">        return Stack.&lt;A&gt;pop().flatMap(m -&gt; m.maybe(x -&gt; push(x).flatMap(t -&gt; push(x)), empty()));</span>
+    }
+
+    public Stack&lt;A&gt; flatMap(Function&lt;Maybe&lt;A&gt;, Stack&lt;A&gt;&gt; fun) {
+<span class="fc" id="L43">        Function&lt;Maybe&lt;A&gt;, State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt;&gt; ff = fun::apply;</span>
+<span class="fc" id="L44">        return new Stack&lt;&gt;(StateMonad.&lt;FiniteList&lt;A&gt;&gt;getInstance().flatMap(ff, this));</span>
+    }
+
+    public Stack&lt;A&gt; map(Stack&lt;A&gt; st) {
+<span class="fc" id="L48">        return this.flatMap(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
+    }
+
+    /**
+     * Print the final pair {@link Maybe&lt;A&gt;} and {@link List&lt;A&gt;} of the stack starting with an empty list
+     *
+     * @return {@link Pair#toString()} applied to the pair resulting from an empty list
+     */
+    public String toString() {
+<span class="nc" id="L57">        return state.apply(FiniteList.nil()).toString();</span>
+    }
+
+    @Override
+    public Pair&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; apply(FiniteList&lt;A&gt; aList) {
+<span class="fc" id="L62">        return state.apply(aList);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

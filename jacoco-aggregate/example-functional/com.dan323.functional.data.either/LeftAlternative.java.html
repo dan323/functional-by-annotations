@@ -6,11 +6,11 @@ import com.dan323.functional.annotation.compiler.util.MonoidUtil;
 import com.dan323.functional.annotation.funcs.IAlternative;
 
 @Alternative
-public class LeftAlternative&lt;R&gt; extends LeftEither&lt;R&gt; implements IAlternative&lt;Either&lt;?, R&gt;&gt; {
+public final class LeftAlternative&lt;R&gt; extends LeftEither&lt;R&gt; implements IAlternative&lt;Either&lt;?, R&gt;&gt; {
 
     private final IMonoid&lt;R&gt; rMonoid;
 
-<span class="nc" id="L13">    private LeftAlternative(IMonoid&lt;R&gt; rMonoid){</span>
+<span class="nc" id="L13">    public LeftAlternative(IMonoid&lt;R&gt; rMonoid){</span>
 <span class="nc" id="L14">        this.rMonoid = rMonoid;</span>
 <span class="nc" id="L15">    }</span>
 

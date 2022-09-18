@@ -44,7 +44,7 @@ public final class FunctionFrom&lt;A&gt; implements IMonad&lt;Function&lt;A, ?&g
 
     @Override
     public Class&lt;Function&lt;A,?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L47">        return (Class&lt;Function&lt;A,?&gt;&gt;)(Class) Function.class;</span>
+<span class="nc" id="L47">        return (Class&lt;Function&lt;A,?&gt;&gt;)(Class&lt;?&gt;) Function.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

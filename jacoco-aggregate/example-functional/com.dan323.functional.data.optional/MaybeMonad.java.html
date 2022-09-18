@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 @Monad
 @Alternative
-public class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt;, IAlternative&lt;Maybe&lt;?&gt;&gt; {
+public final class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt;, IAlternative&lt;Maybe&lt;?&gt;&gt; {
 
     private MaybeMonad() {
     }
@@ -52,7 +52,7 @@ public class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt;, IAlternative&lt
 
     @Override
     public Class&lt;Maybe&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L55">        return (Class&lt;Maybe&lt;?&gt;&gt;) (Class) Maybe.class;</span>
+<span class="fc" id="L55">        return (Class&lt;Maybe&lt;?&gt;&gt;) (Class&lt;?&gt;) Maybe.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

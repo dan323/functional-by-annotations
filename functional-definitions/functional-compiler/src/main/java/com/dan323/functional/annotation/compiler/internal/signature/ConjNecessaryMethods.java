@@ -29,7 +29,7 @@ public class ConjNecessaryMethods implements NecessaryMethods {
                 .filter(nec -> !(nec instanceof EmptyNecessaryMethods))
                 .collect(Collectors.toSet());
         if (newSet.size() == 1) {
-            return newSet.stream().findFirst().get();
+            return newSet.stream().toList().get(0);
         } else if (newSet.isEmpty()) {
             return new EmptyNecessaryMethods();
         } else {

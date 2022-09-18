@@ -21,15 +21,9 @@
     <dependencies>
         <dependency>
             <groupId>com.dan323</groupId>
-            <artifactId>annotation-definitions</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dan323</groupId>
             <artifactId>example-functional</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.dan323</groupId>
             <artifactId>functional-compiler</artifactId>
@@ -53,7 +47,6 @@
                                     <goal>report-aggregate</goal>
                                 </goals>
                                 <configuration>
-                                    <includeCurrentProject>false</includeCurrentProject>
                                     <title>Functionals by annotation in Java</title>
                                 </configuration>
                             </execution>

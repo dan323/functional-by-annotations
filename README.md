@@ -42,7 +42,9 @@ Methods of super-types also count towards the annotation being implemented.
 
 A semigroup requires only one operation
 ````java
-public T op(T a, T b);
+public interface ASemigroup<T> extends ISemigroup<T> { 
+    T op(T a, T b);
+}
 ````
 and it should satisfy the associative property:
 ````
@@ -54,7 +56,9 @@ op(x,op(y,z)) == op(op(x,y),z)
 A monoid is a semigroup with a neutral element:
 
 ````java
-public T unit();
+public interface AMonoid<T> extends ASemigroup<T>, IMonoid<T> {
+    T unit();
+}
 ````
 and it should satisfy the neutral property:
 ````
@@ -69,7 +73,9 @@ op(unit(), x) == x
 
 A functor requires only one function
 ```java
-public <A,B> F<B> map(F<A> base, Function<A,B> map);
+public interface AFunctor extends IFunctor<F<?>> {
+    <A,B> F<B> map(F<A> base, Function<A,B> map);
+}
 ```
 and it satisfies the following laws:
 ```
@@ -83,9 +89,11 @@ The miminal required is the only function it has: *map*
 
 Any applicative is a functor, so it also has a map function added to the following:
 ````java
-public <A> F<A> pure(A a);
-public <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base);
-public <A,B,C> F<C> liftA2(BiFunction<A,B,C> map, F<A> fa, F<B> fb);
+public interface AnApplicative extends IApplicative<F<?>> { 
+    <A> F<A> pure(A a);
+    <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base);
+    <A,B,C> F<C> liftA2(BiFunction<A,B,C> map, F<A> fa, F<B> fb);
+}
 ````
 and it satisfies the following laws (adding the ones from functor):
 ````
@@ -102,8 +110,10 @@ The mimimal required is *pure* and, either *fapply* or *liftA2*.
 
 Any monad is an applicative, and hence a functor, so it has all their functions plus the following:
 ````java
-public <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base);
-public <A> F<A> join(F<F<A>> doubleMonad);
+public interface AMonad extends IMonad<F<?>> {
+    <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base);
+    <A> F<A> join(F<F<A>> doubleMonad);
+}
 ````
 and it satisfies the following laws (adding the ones from applicative):
 ````
@@ -123,9 +133,11 @@ The minimal required is *pure* and one of the following lists:
 A foldable structure is one we can collapse. Up to now it has 3 functions defined:
 
 ````java
-public <A> A fold(IMonoid<A> monoid, F<A> a);
-public <A, M> M foldMap(IMonoid<M> monoid, Function<A,M> function, F<A> base);
-public <A, B> B foldr(BiFunction<A,B,B> function, B b, F<A> fa);
+public interface AFoldable extends IFoldable<F<?>> {
+    <A> A fold(IMonoid<A> monoid, F<A> a);
+    <A, M> M foldMap(IMonoid<M> monoid, Function<A,M> function, F<A> base);
+    <A, B> B foldr(BiFunction<A,B,B> function, B b, F<A> fa);
+}
 ````
 
 and they satisfy the following laws:

@@ -3,7 +3,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.alternative,AlternativeMonoid,16,0,0,0,5,0,3,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,ProdMonoid,17,0,0,0,4,0,4,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,SumMonoid,17,0,0,0,4,0,4,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.state,State,29,0,0,0,4,0,6,0,6,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.state,StateMonad,85,0,0,0,20,0,17,0,17,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data,IdentityMonad,40,0,0,0,8,0,8,0,8,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data,Pair,114,0,8,0,15,0,14,0,10,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data,Identity,9,0,0,0,4,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.foldable,FoldableFuns,61,0,2,0,6,0,10,0,9,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipperFunctor,41,0,0,0,7,0,6,0,6,0
@@ -17,10 +20,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.continuation,Continuation,23,0,0,0,3,0,5,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,FunctionFrom,61,0,0,0,9,0,13,0,13,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.function,EndoMonoid,13,0,0,0,4,0,4,0,4,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryNode,56,0,8,0,11,0,9,0,5,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BTreeFunctor,36,0,2,0,6,0,4,0,3,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,Leaf,41,0,6,0,10,0,7,0,4,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryTree,11,0,0,0,2,0,2,0,2,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryNode,70,0,8,0,14,0,11,0,7,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BTreeFunctor,42,0,4,0,8,0,6,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,Leaf,12,0,0,0,4,0,4,0,4,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.tree,BinaryTree,9,0,0,0,2,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdApplicative,39,0,0,0,4,0,3,0,3,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdMonad,37,0,0,0,3,0,4,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.pair,ProdFunctor,23,0,0,0,3,0,2,0,2,0
@@ -40,9 +43,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,FinCons,79,0,10,0,13,0,12,0,7,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,List,68,0,8,0,12,0,11,0,7,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list,ListUtils,35,0,0,0,3,0,5,0,5,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftAlternative,22,0,0,0,6,0,5,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Right,49,0,8,0,11,0,9,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Either,10,0,0,0,2,0,2,0,2,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftEither,42,0,0,0,7,0,8,0,8,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,LeftEither,45,0,0,0,8,0,9,0,9,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,Left,49,0,8,0,11,0,9,0,5,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.either,RightEither,46,0,0,0,7,0,9,0,9,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,AndMonoid,18,0,4,0,3,0,5,0,3,0
@@ -54,7 +58,7 @@ Functionals by annotation in Java/functional-compiler,com.dan323.functional.anno
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerUtils,9,143,2,8,3,26,3,14,1,11
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,Compiler,6,135,1,15,2,27,2,15,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler,FunctionalCompiler,19,102,2,4,4,19,3,9,1,8
-Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,StructureSignatures,297,703,14,14,36,73,23,41,13,37
+Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,StructureSignatures,397,703,18,14,47,73,32,41,20,37
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,ConjNecessaryMethods,15,53,1,5,2,13,2,7,1,5
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,DisjNecessaryMethods,0,56,0,2,0,11,0,7,0,6
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,EmptyNecessaryMethods,2,5,0,0,1,2,1,2,1,2

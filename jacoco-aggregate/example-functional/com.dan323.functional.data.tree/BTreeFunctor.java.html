@@ -8,25 +8,28 @@ import java.util.function.Function;
 @Functor
 public class BTreeFunctor implements IFunctor&lt;BinaryTree&lt;?&gt;&gt; {
 
-    private BTreeFunctor(){
-
+    private BTreeFunctor() {
     }
 
-<span class="nc" id="L15">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
+<span class="nc" id="L14">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
 
     public static &lt;A, B&gt; BinaryTree&lt;B&gt; map(BinaryTree&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="nc bnc" id="L18" title="All 2 branches missed.">        if (base instanceof Leaf&lt;A&gt; baseLeaf) {</span>
-<span class="nc" id="L19">            return new Leaf&lt;&gt;(mapping.apply(baseLeaf.value()));</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (base instanceof Leaf&lt;A&gt;) {</span>
+<span class="nc" id="L18">            return BinaryTree.leaf();</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        } else if (base instanceof BinaryNode&lt;A&gt; node) {</span>
+<span class="nc" id="L20">            return BinaryTree.node(map(node.left(), mapping), mapping.apply(node.data()), map(node.right(), mapping));</span>
         } else {
-<span class="nc" id="L21">            BinaryNode&lt;A&gt; baseTree = (BinaryNode&lt;A&gt;) base;</span>
-<span class="nc" id="L22">            return new BinaryNode&lt;&gt;(map(baseTree.left(), mapping), map(baseTree.right(), mapping));</span>
+<span class="nc" id="L22">            throw new IllegalStateException(&quot;There are more instances that implemented&quot;);</span>
         }
     }
 
+    public static &lt;A&gt; BinaryTree&lt;A&gt; pure(A a) {
+<span class="nc" id="L27">        return BinaryTree.node(BinaryTree.leaf(), a, BinaryTree.leaf());</span>
+    }
 
     @Override
     public Class&lt;BinaryTree&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L29">        return (Class&lt;BinaryTree&lt;?&gt;&gt;) (Class)BinaryTree.class;</span>
+<span class="nc" id="L32">        return (Class&lt;BinaryTree&lt;?&gt;&gt;) (Class) BinaryTree.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

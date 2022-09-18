@@ -6,9 +6,9 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import java.util.function.Function;
 
 @Monad
-public final class LeftEither&lt;R&gt; implements IMonad&lt;Either&lt;?, R&gt;&gt; {
+public class LeftEither&lt;R&gt; implements IMonad&lt;Either&lt;?, R&gt;&gt; {
 
-    private LeftEither(){}
+<span class="nc" id="L11">    LeftEither(){}</span>
     public static &lt;R&gt; LeftEither&lt;R&gt; getInstance(){
 <span class="nc" id="L13">        return new LeftEither&lt;&gt;();</span>
     }

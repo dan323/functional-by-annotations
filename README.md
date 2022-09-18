@@ -49,6 +49,19 @@ and it should satisfy the associative property:
 op(x,op(y,z)) == op(op(x,y),z)
 ````
 
+### Monoid
+
+A monoid is a semigroup with a neutral element:
+
+````java
+public T unit();
+````
+and it should satisfy the neutral property:
+````
+op(x, unit()) == x
+op(unit(), x) == x
+````
+
 ## Functionals
 
 
@@ -117,9 +130,9 @@ public <A, B> B foldr(BiFunction<A,B,B> function, B b, F<A> fa);
 
 and they satisfy the following laws:
 ````
-fold(m, b) = foldMap(m, Function.identity(), b)
-foldr(f, z, t) = appEndo(foldMap(EndoMonoid, f, t), z)
-appEndo(g, z) = g(z)
+fold(m, b) == foldMap(m, Function.identity(), b)
+foldr(f, z, t) == (foldMap(EndoMonoid, f, t))(z)
+foldMap(m, f, b) == foldr((x,y) -> m.op(f(x), y) , m.unit(), b)
 ````
 
 where *EndoMonoid(A)* is the monoid defined over the functions from and to *A* with *op(f,g) = f . g*
@@ -127,5 +140,9 @@ where *EndoMonoid(A)* is the monoid defined over the functions from and to *A* w
 The minimal required is *foldr* or *foldMap*
 
 ### Traversable
+
+**TODO**
+
+### Alternative
 
 **TODO**

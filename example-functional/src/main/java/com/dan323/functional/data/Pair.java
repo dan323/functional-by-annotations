@@ -37,8 +37,12 @@ public final class Pair<U, V> implements Map.Entry<U, V> {
         return new Pair<>(entry.getKey(), function.apply(entry.getValue()));
     }
 
-    public <S, T> Pair<S, T> map(BiFunction<U, V, S> first, BiFunction<U, V, T> second) {
+    public <S, T> Pair<S, T> biMap(BiFunction<U, V, S> first, BiFunction<U, V, T> second) {
         return new Pair<>(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));
+    }
+
+    public <S> S map(BiFunction<U, V, S> first) {
+        return first.apply(entry.getKey(), entry.getValue());
     }
 
     public String toString() {

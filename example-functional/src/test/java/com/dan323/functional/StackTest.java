@@ -1,21 +1,21 @@
 package com.dan323.functional;
 
-import com.dan323.Stack;
+import com.dan323.functional.data.Stack;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.state.StateMonad;
 import org.junit.jupiter.api.Test;
 
-import static com.dan323.Stack.pop;
-import static com.dan323.Stack.push;
+import static com.dan323.functional.data.Stack.pop;
+import static com.dan323.functional.data.Stack.push;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StackTest {
 
     @Test
     public void test() {
-        StateMonad<List<Integer>> stateMonad = new StateMonad<>();
+        StateMonad<List<Integer>> stateMonad = StateMonad.getInstance();
         Stack<Integer> stack = push(4);
         stack = new Stack<>(stateMonad.flatMap(x -> push(6), stack));
         stack = new Stack<>(stateMonad.flatMap(x -> pop(), stack));

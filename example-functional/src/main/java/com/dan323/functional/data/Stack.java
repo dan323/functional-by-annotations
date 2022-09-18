@@ -1,6 +1,5 @@
-package com.dan323;
+package com.dan323.functional.data;
 
-import com.dan323.functional.data.Pair;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.state.State;

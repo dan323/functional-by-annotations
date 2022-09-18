@@ -9,10 +9,14 @@ import java.util.function.Function;
 @Monad
 public class StateMonad<S> implements IMonad<State<?, S>> {
 
-    public StateMonad() {
+    private StateMonad() {
     }
 
     private static final StateMonad<?> STATE_FUNCTOR = new StateMonad<>();
+
+    public static <R> StateMonad<R> getInstance() {
+        return (StateMonad<R>) STATE_FUNCTOR;
+    }
 
     public <A, B> State<B, S> map(State<A, S> state, Function<A, B> fun) {
         return s -> state
@@ -28,21 +32,19 @@ public class StateMonad<S> implements IMonad<State<?, S>> {
         return s -> functionState
                 .apply(s)
                 .mapSecond(state)
-                .map((f, p) -> p.mapFirst(f).getKey(), (f, p) -> p.getValue());
+                .biMap((f, p) -> p.mapFirst(f).getKey(), (f, p) -> p.getValue());
     }
 
-    public <A> State<A,S> join(State<State<A,S>,S> stateSState) {
+    public <A> State<A, S> join(State<State<A, S>, S> stateSState) {
         return s -> stateSState.apply(s)
-                .map(Function::apply, (st, s1) -> s1)
-                .getKey();
+                .map(Function::apply);
     }
 
-    public <A,B> State<B,S> flatMap(Function<A,State<B,S>> fun, State<A,S> state) {
+    public <A, B> State<B, S> flatMap(Function<A, State<B, S>> fun, State<A, S> state) {
         return s -> state
                 .apply(s)
                 .mapFirst(fun)
-                .map(Function::apply,(st, s1) -> s1)
-                .getKey();
+                .map(Function::apply);
     }
 
     @Override

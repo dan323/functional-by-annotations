@@ -6,11 +6,11 @@ import com.dan323.functional.annotation.compiler.util.MonoidUtil;
 import com.dan323.functional.annotation.funcs.IAlternative;
 
 @Alternative
-public class LeftAlternative<R> extends LeftEither<R> implements IAlternative<Either<?, R>> {
+public final class LeftAlternative<R> extends LeftEither<R> implements IAlternative<Either<?, R>> {
 
     private final IMonoid<R> rMonoid;
 
-    private LeftAlternative(IMonoid<R> rMonoid){
+    public LeftAlternative(IMonoid<R> rMonoid){
         this.rMonoid = rMonoid;
     }
 

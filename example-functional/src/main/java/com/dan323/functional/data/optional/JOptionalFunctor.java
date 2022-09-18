@@ -10,7 +10,6 @@ import java.util.function.Function;
 public class JOptionalFunctor implements IFunctor<Optional<?>> {
 
     private JOptionalFunctor() {
-
     }
 
     public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();
@@ -21,6 +20,6 @@ public class JOptionalFunctor implements IFunctor<Optional<?>> {
 
     @Override
     public Class<Optional<?>> getClassAtRuntime() {
-        return (Class<Optional<?>>) (Class) Optional.class;
+        return (Class<Optional<?>>) (Class<?>) Optional.class;
     }
 }

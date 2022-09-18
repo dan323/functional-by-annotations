@@ -22,7 +22,7 @@ public final class Nothing<A> implements Maybe<A> {
 
     @Override
     public int hashCode(){
-        return Objects.hashCode(9);
+        return 90;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.dan323.functional.data.state;
 
-import com.dan323.functional.data.Pair;
+import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.optional.Maybe;
 
 import java.util.function.Function;

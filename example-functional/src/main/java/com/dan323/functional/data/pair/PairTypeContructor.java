@@ -2,7 +2,7 @@ package com.dan323.functional.data.pair;
 
 import java.util.Objects;
 
-public class PairTypeContructor<M, N, A> {
+public final class PairTypeContructor<M, N, A> {
 
     private final M a;
     private final N b;

@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 @Monad
 @Alternative
-public class MaybeMonad implements IMonad<Maybe<?>>, IAlternative<Maybe<?>> {
+public final class MaybeMonad implements IMonad<Maybe<?>>, IAlternative<Maybe<?>> {
 
     private MaybeMonad() {
     }
@@ -52,6 +52,6 @@ public class MaybeMonad implements IMonad<Maybe<?>>, IAlternative<Maybe<?>> {
 
     @Override
     public Class<Maybe<?>> getClassAtRuntime() {
-        return (Class<Maybe<?>>) (Class) Maybe.class;
+        return (Class<Maybe<?>>) (Class<?>) Maybe.class;
     }
 }

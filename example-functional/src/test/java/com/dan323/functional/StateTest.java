@@ -1,6 +1,6 @@
 package com.dan323.functional;
 
-import com.dan323.functional.data.Pair;
+import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.state.State;
 import com.dan323.functional.data.state.StateMonad;
 import org.junit.jupiter.api.Test;

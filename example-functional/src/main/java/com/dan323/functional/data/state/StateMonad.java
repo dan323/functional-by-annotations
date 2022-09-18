@@ -2,7 +2,7 @@ package com.dan323.functional.data.state;
 
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.funcs.IMonad;
-import com.dan323.functional.data.Pair;
+import com.dan323.functional.data.pair.Pair;
 
 import java.util.function.Function;
 

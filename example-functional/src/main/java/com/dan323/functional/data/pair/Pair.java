@@ -1,4 +1,4 @@
-package com.dan323.functional.data;
+package com.dan323.functional.data.pair;
 
 import java.util.AbstractMap;
 import java.util.Map;

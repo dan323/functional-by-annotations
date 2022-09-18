@@ -33,6 +33,6 @@ public final class ContinuationMonad<R> implements IMonad<Continuation<?, R>> {
 
     @Override
     public Class<Continuation<?,R>> getClassAtRuntime() {
-        return (Class<Continuation<?,R>>)(Class) Continuation.class;
+        return (Class<Continuation<?,R>>)(Class<?>) Continuation.class;
     }
 }

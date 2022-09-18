@@ -44,6 +44,6 @@ public final class FunctionFrom<A> implements IMonad<Function<A, ?>> {
 
     @Override
     public Class<Function<A,?>> getClassAtRuntime() {
-        return (Class<Function<A,?>>)(Class) Function.class;
+        return (Class<Function<A,?>>)(Class<?>) Function.class;
     }
 }

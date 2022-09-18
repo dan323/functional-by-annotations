@@ -6,9 +6,9 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import java.util.function.Function;
 
 @Monad
-public final class RightEither<R> implements IMonad<Either<R, ?>> {
+public class RightEither<R> implements IMonad<Either<R, ?>> {
 
-    private RightEither(){
+    RightEither(){
     }
 
     public static <R> RightEither<R> getInstance(){

@@ -36,6 +36,6 @@ public class IdentityMonad implements IMonad<Identity<?>> {
 
     @Override
     public Class<Identity<?>> getClassAtRuntime() {
-        return (Class<Identity<?>>) (Class) Identity.class;
+        return (Class<Identity<?>>) (Class<?>) Identity.class;
     }
 }

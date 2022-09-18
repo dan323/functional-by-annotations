@@ -1,13 +1,12 @@
 package com.dan323.functional.data.list;
-import com.dan323.functional.data.optional.Maybe;
-import com.dan323.functional.data.optional.MaybeMonad;
 
-import java.util.Objects;
-import java.util.function.BiFunction;
+import com.dan323.functional.data.optional.Maybe;
+
 import java.util.function.Function;
 
 /**
  * List of one element in front of another infinite list
+ *
  * @param <A>
  */
 final class Cons<A> extends InfiniteList<A> {
@@ -16,7 +15,7 @@ final class Cons<A> extends InfiniteList<A> {
     private final InfiniteList<A> tail;
 
     Cons(A head, InfiniteList<A> tail) {
-        if (head == null || tail == null){
+        if (head == null || tail == null) {
             throw new IllegalArgumentException();
         }
         this.head = head;
@@ -39,7 +38,7 @@ final class Cons<A> extends InfiniteList<A> {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "[" + head + "," + tail + "]";
     }
 

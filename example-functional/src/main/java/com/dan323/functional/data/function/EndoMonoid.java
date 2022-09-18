@@ -3,22 +3,23 @@ package com.dan323.functional.data.function;
 import com.dan323.functional.annotation.Monoid;
 import com.dan323.functional.annotation.algs.IMonoid;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 @Monoid
-public final class EndoMonoid<A> implements IMonoid<Function<A, A>> {
+public final class EndoMonoid<A> implements IMonoid<UnaryOperator<A>> {
 
-    private EndoMonoid(){}
-
-    public Function<A, A> op(Function<A, A> f1, Function<A, A> f2) {
-        return f1.compose(f2);
+    private EndoMonoid() {
     }
 
-    public Function<A, A> unit() {
-        return Function.identity();
+    public UnaryOperator<A> op(UnaryOperator<A> f1, UnaryOperator<A> f2) {
+        return (f1.compose(f2))::apply;
     }
 
-    public static <A> EndoMonoid<A> getInstance(){
+    public UnaryOperator<A> unit() {
+        return UnaryOperator.identity();
+    }
+
+    public static <A> EndoMonoid<A> getInstance() {
         return (EndoMonoid<A>) ENDO_MONOID;
     }
 

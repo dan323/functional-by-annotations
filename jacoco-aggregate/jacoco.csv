@@ -60,7 +60,7 @@ Functionals by annotation in Java/functional-compiler,com.dan323.functional.anno
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,Compiler,6,135,1,15,2,27,2,15,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler,FunctionalCompiler,19,102,2,4,4,19,3,9,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,StructureSignatures,397,703,18,14,47,73,32,41,20,37
-Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,ConjNecessaryMethods,15,53,1,5,2,13,2,7,1,5
+Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,ConjNecessaryMethods,15,54,1,5,2,13,2,7,1,5
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,DisjNecessaryMethods,0,56,0,2,0,11,0,7,0,6
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,EmptyNecessaryMethods,2,5,0,0,1,2,1,2,1,2
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal.signature,Signature.InvalidSignature,0,13,0,0,0,4,0,3,0,3

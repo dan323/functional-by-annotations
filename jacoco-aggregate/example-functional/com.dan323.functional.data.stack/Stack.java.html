@@ -4,7 +4,6 @@ import com.dan323.functional.data.function.FunctionFrom;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
-import com.dan323.functional.data.optional.MaybeMonad;
 import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.state.State;
 import com.dan323.functional.data.state.StateMonad;
@@ -15,37 +14,41 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, FiniteList
 
     private final State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; state;
 
-<span class="fc" id="L18">    private Stack(State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; state) {</span>
-<span class="fc" id="L19">        this.state = state;</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L17">    private Stack(State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; state) {</span>
+<span class="fc" id="L18">        this.state = state;</span>
+<span class="fc" id="L19">    }</span>
 
     public static &lt;A&gt; Stack&lt;A&gt; push(A x) {
-<span class="fc" id="L23">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
+<span class="fc" id="L22">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; pop() {
-<span class="fc" id="L27">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
+<span class="fc" id="L26">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(s.head(), s.tail()));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; empty() {
-<span class="pc" id="L31">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
+<span class="pc" id="L30">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; doNothing() {
-<span class="nc" id="L35">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), s));</span>
+<span class="fc" id="L34">        return new Stack&lt;&gt;(s -&gt; new Pair&lt;&gt;(Maybe.of(), s));</span>
     }
 
     public static &lt;A&gt; Stack&lt;A&gt; dup() {
-<span class="fc" id="L39">        return Stack.&lt;A&gt;pop().flatMap(m -&gt; m.maybe(x -&gt; push(x).flatMap(t -&gt; push(x)), empty()));</span>
+<span class="fc" id="L38">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), empty()));</span>
     }
 
-    public Stack&lt;A&gt; flatMap(Function&lt;Maybe&lt;A&gt;, Stack&lt;A&gt;&gt; fun) {
-<span class="fc" id="L43">        Function&lt;Maybe&lt;A&gt;, State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt;&gt; ff = fun::apply;</span>
-<span class="fc" id="L44">        return new Stack&lt;&gt;(StateMonad.&lt;FiniteList&lt;A&gt;&gt;getInstance().flatMap(ff, this));</span>
+    public static &lt;A&gt; Stack&lt;A&gt; over() {
+<span class="nc" id="L42">        return Stack.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; Stack.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; Stack.&lt;A&gt;push(x).then(push(h)), push(x))), empty()));</span>
     }
 
-    public Stack&lt;A&gt; map(Stack&lt;A&gt; st) {
-<span class="fc" id="L48">        return this.flatMap(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
+    public Stack&lt;A&gt; thenByPopped(Function&lt;Maybe&lt;A&gt;, Stack&lt;A&gt;&gt; fun) {
+<span class="fc" id="L46">        Function&lt;Maybe&lt;A&gt;, State&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt;&gt; ff = fun::apply;</span>
+<span class="fc" id="L47">        return new Stack&lt;&gt;(StateMonad.&lt;FiniteList&lt;A&gt;&gt;getInstance().flatMap(ff, this));</span>
+    }
+
+    public Stack&lt;A&gt; then(Stack&lt;A&gt; st) {
+<span class="fc" id="L51">        return this.thenByPopped(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
     }
 
     /**
@@ -54,12 +57,12 @@ public final class Stack&lt;A&gt; implements State&lt;Maybe&lt;A&gt;, FiniteList
      * @return {@link Pair#toString()} applied to the pair resulting from an empty list
      */
     public String toString() {
-<span class="nc" id="L57">        return state.apply(FiniteList.nil()).toString();</span>
+<span class="nc" id="L60">        return state.apply(FiniteList.nil()).toString();</span>
     }
 
     @Override
     public Pair&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;&gt; apply(FiniteList&lt;A&gt; aList) {
-<span class="fc" id="L62">        return state.apply(aList);</span>
+<span class="fc" id="L65">        return state.apply(aList);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

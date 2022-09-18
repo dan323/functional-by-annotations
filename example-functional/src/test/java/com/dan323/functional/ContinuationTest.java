@@ -17,6 +17,12 @@ public class ContinuationTest {
     }
 
     @Test
+    public void evalTest() {
+        Function<Integer, Continuation<Integer, Integer>> succ = q -> k -> k.apply(q + 1);
+        assertEquals(7, Continuation.eval(succ.apply(6)));
+    }
+
+    @Test
     public void continuationFunctor() {
         Function<Integer, Continuation<Integer, String>> succ = q -> k -> k.apply(q + 1);
         Continuation<Integer, String> mapped = ContinuationMonad.<String>getInstance().map(succ.apply(7), k -> k + 2);

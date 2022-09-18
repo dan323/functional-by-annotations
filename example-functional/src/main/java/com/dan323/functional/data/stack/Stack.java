@@ -4,7 +4,6 @@ import com.dan323.functional.data.function.FunctionFrom;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
-import com.dan323.functional.data.optional.MaybeMonad;
 import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.state.State;
 import com.dan323.functional.data.state.StateMonad;
@@ -36,16 +35,20 @@ public final class Stack<A> implements State<Maybe<A>, FiniteList<A>> {
     }
 
     public static <A> Stack<A> dup() {
-        return Stack.<A>pop().flatMap(m -> m.maybe(x -> push(x).flatMap(t -> push(x)), empty()));
+        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> push(x).then(push(x)), empty()));
     }
 
-    public Stack<A> flatMap(Function<Maybe<A>, Stack<A>> fun) {
+    public static <A> Stack<A> over() {
+        return Stack.<A>pop().thenByPopped(m -> m.maybe(x -> Stack.<A>pop().thenByPopped(n -> n.maybe(h -> Stack.<A>push(x).then(push(h)), push(x))), empty()));
+    }
+
+    public Stack<A> thenByPopped(Function<Maybe<A>, Stack<A>> fun) {
         Function<Maybe<A>, State<Maybe<A>, FiniteList<A>>> ff = fun::apply;
         return new Stack<>(StateMonad.<FiniteList<A>>getInstance().flatMap(ff, this));
     }
 
-    public Stack<A> map(Stack<A> st) {
-        return this.flatMap(FunctionFrom.<Maybe<A>>getInstance().pure(st));
+    public Stack<A> then(Stack<A> st) {
+        return this.thenByPopped(FunctionFrom.<Maybe<A>>getInstance().pure(st));
     }
 
     /**

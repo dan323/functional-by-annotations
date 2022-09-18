@@ -12,13 +12,13 @@ public final class TraversalUtil {
     }
 
     public static &lt;K, F, A&gt; K traverse(ITraversal&lt;? extends F&gt; traversal, IApplicative&lt;? extends K&gt; applicative, Function&lt;A, ? extends K&gt; mapping, F fa) {
-<span class="nc" id="L15">        return FunctionalUtil.travesalTraverse(traversal, applicative, mapping, fa)</span>
-<span class="nc" id="L16">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The traversal is not correctly implemented.&quot;));</span>
+<span class="fc" id="L15">        return FunctionalUtil.travesalTraverse(traversal, applicative, mapping, fa)</span>
+<span class="pc" id="L16">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The traversal is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;K, F&gt; K sequenceA(ITraversal&lt;? extends F&gt; traversal, IApplicative&lt;? extends K&gt; applicative, F fa) {
-<span class="nc" id="L20">        return FunctionalUtil.traversalSequenceA(traversal, applicative, fa)</span>
-<span class="nc" id="L21">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The traversal is not correctly implemented.&quot;));</span>
+<span class="fc" id="L20">        return FunctionalUtil.traversalSequenceA(traversal, applicative, fa)</span>
+<span class="pc" id="L21">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The traversal is not correctly implemented.&quot;));</span>
     }
 
 }

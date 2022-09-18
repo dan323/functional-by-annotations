@@ -14,52 +14,52 @@ import java.util.List;
 <span class="nc" id="L14">public final class CompilerUtils {</span>
 
     public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
-<span class="nc" id="L17">        var lst = type.getTypeArguments();</span>
-<span class="nc" id="L18">        var wilderized = (DeclaredType) lst.get(0);</span>
+<span class="fc" id="L17">        var lst = type.getTypeArguments();</span>
+<span class="fc" id="L18">        var wilderized = (DeclaredType) lst.get(0);</span>
 
-<span class="nc" id="L20">        var funcList = wilderized.getTypeArguments().stream()</span>
-<span class="nc" id="L21">                .map((TypeMirror tm) -&gt; {</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">                    if (tm.getKind().equals(TypeKind.WILDCARD)) {</span>
-<span class="nc" id="L23">                        return substitute;</span>
+<span class="fc" id="L20">        var funcList = wilderized.getTypeArguments().stream()</span>
+<span class="fc" id="L21">                .map((TypeMirror tm) -&gt; {</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">                    if (tm.getKind().equals(TypeKind.WILDCARD)) {</span>
+<span class="fc" id="L23">                        return substitute;</span>
                     } else {
-<span class="nc" id="L25">                        return tm;</span>
+<span class="fc" id="L25">                        return tm;</span>
                     }
-<span class="nc" id="L27">                }).toList().toArray(new TypeMirror[]{});</span>
-<span class="nc" id="L28">        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);</span>
+<span class="fc" id="L27">                }).toList().toArray(new TypeMirror[]{});</span>
+<span class="fc" id="L28">        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);</span>
     }
 
     public static List&lt;DeclaredType&gt; getAllMaximalFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
-<span class="nc" id="L32">        var lst = element.getInterfaces().stream()</span>
-<span class="nc" id="L33">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
-<span class="nc" id="L34">                .filter(type -&gt; CompilerUtils.isStrucutre(elementUtils, types, type))</span>
-<span class="nc" id="L35">                .toList();</span>
-<span class="nc" id="L36">        return lst.stream().filter(type -&gt; isMaximal(elementUtils, type, lst)).toList();</span>
+<span class="fc" id="L32">        var lst = element.getInterfaces().stream()</span>
+<span class="fc" id="L33">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
+<span class="fc" id="L34">                .filter(type -&gt; CompilerUtils.isStrucutre(elementUtils, types, type))</span>
+<span class="fc" id="L35">                .toList();</span>
+<span class="fc" id="L36">        return lst.stream().filter(type -&gt; isMaximal(elementUtils, type, lst)).toList();</span>
     }
 
     private static boolean isMaximal(Elements elements, DeclaredType type, List&lt;DeclaredType&gt; types) {
-<span class="nc" id="L40">        var forest = FunctionalDependencyTree.getActualTree();</span>
-<span class="nc" id="L41">        return isMaximalRec(elements, forest, type, types);</span>
+<span class="fc" id="L40">        var forest = FunctionalDependencyTree.getActualTree();</span>
+<span class="fc" id="L41">        return isMaximalRec(elements, forest, type, types);</span>
     }
 
     private static boolean isMaximalRec(Elements elements, List&lt;FunctionalDependencyTree&gt; forest, DeclaredType type, List&lt;DeclaredType&gt; types) {
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (forest.isEmpty()) {</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (forest.isEmpty()) {</span>
 <span class="nc" id="L46">            return false;</span>
         } else {
-<span class="nc" id="L48">            var lst = new ArrayList&lt;&gt;(forest);</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">            for (var tree : forest) {</span>
-<span class="nc" id="L50">                var treeElement = elements.getTypeElement(tree.getNode().getTypeName());</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (type.asElement().equals(treeElement)) {</span>
-<span class="nc" id="L52">                    return true;</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">                } else if (types.stream().map(DeclaredType::asElement).anyMatch(element -&gt; element.equals(treeElement))) {</span>
+<span class="fc" id="L48">            var lst = new ArrayList&lt;&gt;(forest);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            for (var tree : forest) {</span>
+<span class="fc" id="L50">                var treeElement = elements.getTypeElement(tree.getNode().getTypeName());</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">                if (type.asElement().equals(treeElement)) {</span>
+<span class="fc" id="L52">                    return true;</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">                } else if (types.stream().map(DeclaredType::asElement).anyMatch(element -&gt; element.equals(treeElement))) {</span>
 <span class="nc" id="L54">                    lst.remove(tree);</span>
                 }
-<span class="nc" id="L56">            }</span>
-<span class="nc" id="L57">            return isMaximalRec(elements, lst.stream().flatMap(tr -&gt; FunctionalDependencyTree.getNextLine(tr).stream()).toList(), type, types);</span>
+<span class="fc" id="L56">            }</span>
+<span class="fc" id="L57">            return isMaximalRec(elements, lst.stream().flatMap(tr -&gt; FunctionalDependencyTree.getNextLine(tr).stream()).toList(), type, types);</span>
         }
     }
 
     private static boolean isStrucutre(Elements elementUtils, Types types, DeclaredType type) {
-<span class="nc" id="L62">        return types.isAssignable(type, elementUtils.getTypeElement(Structure.class.getTypeName()).asType());</span>
+<span class="fc" id="L62">        return types.isAssignable(type, elementUtils.getTypeElement(Structure.class.getTypeName()).asType());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

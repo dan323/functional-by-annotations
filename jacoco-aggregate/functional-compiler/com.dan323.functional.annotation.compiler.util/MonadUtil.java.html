@@ -17,12 +17,12 @@ public final class MonadUtil {
 
     public static &lt;F, A&gt; F flatMap(IMonad&lt;? extends F&gt; monad, Function&lt;A, F&gt; mapping, F fa) {
 <span class="fc" id="L19">        return FunctionalUtil.monadFlatMap(monad, mapping, fa)</span>
-<span class="pc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+<span class="fc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F&gt; F join(IMonad&lt;? extends F&gt; monad, F ffa) {
 <span class="fc" id="L24">        return FunctionalUtil.&lt;F&gt;monadJoin(monad, ffa)</span>
-<span class="pc" id="L25">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
+<span class="fc" id="L25">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monad is not correctly implemented.&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

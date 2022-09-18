@@ -14,27 +14,27 @@ public class DisjNecessaryMethods implements NecessaryMethods {
     private final Set&lt;NecessaryMethods&gt; methods;
 
     public DisjNecessaryMethods(NecessaryMethods methods1, NecessaryMethods methods2) {
-<span class="nc" id="L17">        this(Set.of(methods1, methods2));</span>
-<span class="nc" id="L18">    }</span>
+<span class="fc" id="L17">        this(Set.of(methods1, methods2));</span>
+<span class="fc" id="L18">    }</span>
 
-<span class="nc" id="L20">    public DisjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
-<span class="nc" id="L21">        this.methods = methodsSet;</span>
-<span class="nc" id="L22">    }</span>
+<span class="fc" id="L20">    public DisjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
+<span class="fc" id="L21">        this.methods = methodsSet;</span>
+<span class="fc" id="L22">    }</span>
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="nc" id="L26">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
-<span class="nc" id="L27">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (anyMatch) {</span>
-<span class="nc" id="L29">            return new EmptyNecessaryMethods();</span>
+<span class="fc" id="L26">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
+<span class="fc" id="L27">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (anyMatch) {</span>
+<span class="fc" id="L29">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="nc" id="L31">            return new DisjNecessaryMethods(newMethods);</span>
+<span class="fc" id="L31">            return new DisjNecessaryMethods(newMethods);</span>
         }
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L37">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; OR &quot;)) + &quot;]&quot;;</span>
+<span class="fc" id="L37">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; OR &quot;)) + &quot;]&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -14,10 +14,10 @@ public class FunctionSignature implements NecessaryMethods {
     private final Function&lt;ExecutableType, Signature&gt; validator;
     private final String name;
 
-<span class="nc" id="L17">    public FunctionSignature(Function&lt;ExecutableType, Signature&gt; validator, String name) {</span>
-<span class="nc" id="L18">        this.validator = validator;</span>
-<span class="nc" id="L19">        this.name = name;</span>
-<span class="nc" id="L20">    }</span>
+<span class="fc" id="L17">    public FunctionSignature(Function&lt;ExecutableType, Signature&gt; validator, String name) {</span>
+<span class="fc" id="L18">        this.validator = validator;</span>
+<span class="fc" id="L19">        this.name = name;</span>
+<span class="fc" id="L20">    }</span>
 
     /**
      * Validates if the method processed is the one required or not
@@ -27,15 +27,15 @@ public class FunctionSignature implements NecessaryMethods {
      */
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (validator.apply((ExecutableType) method.asType()).verifyMethod(method)) {</span>
-<span class="nc" id="L31">            return new EmptyNecessaryMethods();</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (validator.apply((ExecutableType) method.asType()).verifyMethod(method)) {</span>
+<span class="fc" id="L31">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="nc" id="L33">            return this;</span>
+<span class="fc" id="L33">            return this;</span>
         }
     }
 
     public String toString(){
-<span class="nc" id="L38">        return name + &quot; method&quot;;</span>
+<span class="fc" id="L38">        return name + &quot; method&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

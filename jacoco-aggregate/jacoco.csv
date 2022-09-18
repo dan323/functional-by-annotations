@@ -4,9 +4,10 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,ProdMonoid,17,0,0,0,4,0,4,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,SumMonoid,17,0,0,0,4,0,4,0,4,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.state,State,29,0,0,0,4,0,6,0,6,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.state,StateMonad,85,0,0,0,20,0,17,0,17,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.state,StateMonad,76,0,0,0,17,0,15,0,15,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data,Stack,46,0,0,0,7,0,7,0,7,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data,IdentityMonad,40,0,0,0,8,0,8,0,8,0
-Functionals by annotation in Java/example-functional,com.dan323.functional.data,Pair,114,0,8,0,15,0,14,0,10,0
+Functionals by annotation in Java/example-functional,com.dan323.functional.data,Pair,123,0,8,0,16,0,15,0,11,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data,Identity,9,0,0,0,4,0,2,0,2,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.foldable,FoldableFuns,61,0,2,0,6,0,10,0,9,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.list.zipper,ListZipperFunctor,41,0,0,0,7,0,6,0,6,0

@@ -9,45 +9,47 @@ import java.util.function.Function;
 @Monad
 public class StateMonad&lt;S&gt; implements IMonad&lt;State&lt;?, S&gt;&gt; {
 
-<span class="nc" id="L12">    public StateMonad() {</span>
-<span class="nc" id="L13">    }</span>
+    private StateMonad() {
+    }
 
 <span class="nc" id="L15">    private static final StateMonad&lt;?&gt; STATE_FUNCTOR = new StateMonad&lt;&gt;();</span>
 
+    public static &lt;R&gt; StateMonad&lt;R&gt; getInstance() {
+<span class="nc" id="L18">        return (StateMonad&lt;R&gt;) STATE_FUNCTOR;</span>
+    }
+
     public &lt;A, B&gt; State&lt;B, S&gt; map(State&lt;A, S&gt; state, Function&lt;A, B&gt; fun) {
-<span class="nc" id="L18">        return s -&gt; state</span>
-<span class="nc" id="L19">                .apply(s)</span>
-<span class="nc" id="L20">                .mapFirst(fun);</span>
+<span class="nc" id="L22">        return s -&gt; state</span>
+<span class="nc" id="L23">                .apply(s)</span>
+<span class="nc" id="L24">                .mapFirst(fun);</span>
     }
 
     public &lt;A&gt; State&lt;A, S&gt; pure(A a) {
-<span class="nc" id="L24">        return s -&gt; new Pair&lt;&gt;(a, s);</span>
+<span class="nc" id="L28">        return s -&gt; new Pair&lt;&gt;(a, s);</span>
     }
 
     public &lt;A, B&gt; State&lt;B, S&gt; fapply(State&lt;Function&lt;A, B&gt;, S&gt; functionState, State&lt;A, S&gt; state) {
-<span class="nc" id="L28">        return s -&gt; functionState</span>
-<span class="nc" id="L29">                .apply(s)</span>
-<span class="nc" id="L30">                .mapSecond(state)</span>
-<span class="nc" id="L31">                .map((f, p) -&gt; p.mapFirst(f).getKey(), (f, p) -&gt; p.getValue());</span>
+<span class="nc" id="L32">        return s -&gt; functionState</span>
+<span class="nc" id="L33">                .apply(s)</span>
+<span class="nc" id="L34">                .mapSecond(state)</span>
+<span class="nc" id="L35">                .biMap((f, p) -&gt; p.mapFirst(f).getKey(), (f, p) -&gt; p.getValue());</span>
     }
 
-    public &lt;A&gt; State&lt;A,S&gt; join(State&lt;State&lt;A,S&gt;,S&gt; stateSState) {
-<span class="nc" id="L35">        return s -&gt; stateSState.apply(s)</span>
-<span class="nc" id="L36">                .map(Function::apply, (st, s1) -&gt; s1)</span>
-<span class="nc" id="L37">                .getKey();</span>
+    public &lt;A&gt; State&lt;A, S&gt; join(State&lt;State&lt;A, S&gt;, S&gt; stateSState) {
+<span class="nc" id="L39">        return s -&gt; stateSState.apply(s)</span>
+<span class="nc" id="L40">                .map(Function::apply);</span>
     }
 
-    public &lt;A,B&gt; State&lt;B,S&gt; flatMap(Function&lt;A,State&lt;B,S&gt;&gt; fun, State&lt;A,S&gt; state) {
-<span class="nc" id="L41">        return s -&gt; state</span>
-<span class="nc" id="L42">                .apply(s)</span>
-<span class="nc" id="L43">                .mapFirst(fun)</span>
-<span class="nc" id="L44">                .map(Function::apply,(st, s1) -&gt; s1)</span>
-<span class="nc" id="L45">                .getKey();</span>
+    public &lt;A, B&gt; State&lt;B, S&gt; flatMap(Function&lt;A, State&lt;B, S&gt;&gt; fun, State&lt;A, S&gt; state) {
+<span class="nc" id="L44">        return s -&gt; state</span>
+<span class="nc" id="L45">                .apply(s)</span>
+<span class="nc" id="L46">                .mapFirst(fun)</span>
+<span class="nc" id="L47">                .map(Function::apply);</span>
     }
 
     @Override
     public Class&lt;State&lt;?, S&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L50">        return (Class&lt;State&lt;?, S&gt;&gt;) (Class&lt;?&gt;) State.class;</span>
+<span class="nc" id="L52">        return (Class&lt;State&lt;?, S&gt;&gt;) (Class&lt;?&gt;) State.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

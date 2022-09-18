@@ -55,8 +55,8 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.bool,OrMonoid,0,18,0,4,0,3,0,5,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeSemigroup,0,23,0,0,0,5,0,3,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.applicative,ApplicativeMonoid,0,13,0,0,0,3,0,2,0,2
-Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerFactory,29,111,3,11,3,14,2,7,0,2
-Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,FunctionalDependencyTree,0,87,0,0,0,23,0,5,0,5
+Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerFactory,46,111,5,11,5,14,3,7,0,2
+Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,FunctionalDependencyTree,0,93,0,0,0,24,0,5,0,5
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,CompilerUtils,9,143,2,8,3,26,3,14,1,11
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler.internal,Compiler,6,135,1,15,2,27,2,15,1,8
 Functionals by annotation in Java/functional-compiler,com.dan323.functional.annotation.compiler,FunctionalCompiler,19,102,2,4,4,19,3,9,1,8

@@ -2,6 +2,7 @@
 
 import com.dan323.functional.annotation.*;
 import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.IRing;
 import com.dan323.functional.annotation.algs.ISemigroup;
 import com.dan323.functional.annotation.compiler.internal.signature.StructureSignatures;
 import com.dan323.functional.annotation.funcs.*;
@@ -11,7 +12,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-<span class="fc" id="L14">public final class CompilerFactory {</span>
+<span class="fc" id="L15">public final class CompilerFactory {</span>
 
     /**
      * Create a compiler depending on what element we are compiling
@@ -23,23 +24,25 @@ import javax.lang.model.util.Types;
      * @return A compiler compatible with {@code iface}
      */
     public Compiler&lt;?&gt; from(DeclaredType iface, Elements elements, Types types, Messager messager) {
-<span class="fc" id="L26">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
-<span class="fc" id="L28">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
-<span class="fc bfc" id="L29" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
-<span class="fc" id="L30">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
-<span class="fc" id="L32">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
-<span class="fc" id="L34">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
-<span class="fc" id="L36">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
-<span class="fc" id="L38">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))){</span>
-<span class="nc" id="L40">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
+<span class="fc" id="L27">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
+<span class="fc" id="L29">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
+<span class="fc" id="L31">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
+<span class="fc" id="L33">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
+<span class="fc" id="L35">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
+<span class="fc" id="L37">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
+<span class="fc" id="L39">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))){</span>
+<span class="nc" id="L41">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))){</span>
+<span class="nc" id="L43">            return new Compiler&lt;&gt;(signatures.ringSignatureChecker(iface), Ring.class, messager);</span>
         }
-<span class="nc" id="L42">        throw new IllegalArgumentException(String.format(&quot;The interfaces %s does not represent an implemented functional&quot;, iface));</span>
+<span class="nc" id="L45">        throw new IllegalArgumentException(String.format(&quot;The interfaces %s does not represent an implemented functional&quot;, iface));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

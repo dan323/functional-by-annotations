@@ -10,21 +10,21 @@ public final class LeftAlternative&lt;R&gt; extends LeftEither&lt;R&gt; implemen
 
     private final IMonoid&lt;R&gt; rMonoid;
 
-<span class="fc" id="L13">    public LeftAlternative(IMonoid&lt;R&gt; rMonoid){</span>
+<span class="fc" id="L13">    public LeftAlternative(IMonoid&lt;R&gt; rMonoid) {</span>
 <span class="fc" id="L14">        this.rMonoid = rMonoid;</span>
 <span class="fc" id="L15">    }</span>
 
-    public &lt;A&gt; Either&lt;A,R&gt; empty(){
+    public &lt;A&gt; Either&lt;A, R&gt; empty() {
 <span class="fc" id="L18">        return Either.right(MonoidUtil.unit(rMonoid));</span>
     }
 
-    public &lt;A&gt; Either&lt;A,R&gt; disjunction(Either&lt;A,R&gt; first, Either&lt;A,R&gt; snd) {
+    public &lt;A&gt; Either&lt;A, R&gt; disjunction(Either&lt;A, R&gt; first, Either&lt;A, R&gt; snd) {
 <span class="nc" id="L22">        return first.either(Either::left, x -&gt; snd);</span>
     }
 
     @Override
     public Class&lt;Either&lt;?, R&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L27">        return (Class&lt;Either&lt;?,R&gt;&gt;) (Class&lt;?&gt;) Either.class;</span>
+<span class="nc" id="L27">        return (Class&lt;Either&lt;?, R&gt;&gt;) (Class&lt;?&gt;) Either.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

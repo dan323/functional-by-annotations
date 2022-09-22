@@ -2,54 +2,57 @@
 
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.pair.Pair;
 
 import java.util.function.Function;
 
 @Monad
-public class StateMonad&lt;S&gt; implements IMonad&lt;State&lt;?, S&gt;&gt; {
+public class StateMonad&lt;S, E&gt; implements IMonad&lt;StateWithError&lt;?, S, E&gt;&gt; {
 
     private StateMonad() {
     }
 
-<span class="fc" id="L15">    private static final StateMonad&lt;?&gt; STATE_FUNCTOR = new StateMonad&lt;&gt;();</span>
+<span class="fc" id="L16">    private static final StateMonad&lt;?, ?&gt; STATE_FUNCTOR = new StateMonad&lt;&gt;();</span>
 
-    public static &lt;R&gt; StateMonad&lt;R&gt; getInstance() {
-<span class="fc" id="L18">        return (StateMonad&lt;R&gt;) STATE_FUNCTOR;</span>
+    public static &lt;R, E&gt; StateMonad&lt;R, E&gt; getInstance() {
+<span class="fc" id="L19">        return (StateMonad&lt;R, E&gt;) STATE_FUNCTOR;</span>
     }
 
-    public &lt;A, B&gt; State&lt;B, S&gt; map(State&lt;A, S&gt; state, Function&lt;A, B&gt; fun) {
-<span class="fc" id="L22">        return s -&gt; state</span>
-<span class="fc" id="L23">                .apply(s)</span>
-<span class="fc" id="L24">                .mapFirst(fun);</span>
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; map(StateWithError&lt;A, S, E&gt; state, Function&lt;A, B&gt; fun) {
+<span class="fc" id="L23">        return s -&gt; state</span>
+<span class="fc" id="L24">                .apply(s)</span>
+<span class="fc" id="L25">                .either(Either::left, k -&gt; Either.right(k.mapFirst(fun)));</span>
     }
 
-    public &lt;A&gt; State&lt;A, S&gt; pure(A a) {
-<span class="fc" id="L28">        return s -&gt; new Pair&lt;&gt;(a, s);</span>
+    public &lt;A&gt; StateWithError&lt;A, S, E&gt; pure(A a) {
+<span class="fc" id="L29">        return s -&gt; Either.right(new Pair&lt;&gt;(a, s));</span>
     }
 
-    public &lt;A, B&gt; State&lt;B, S&gt; fapply(State&lt;Function&lt;A, B&gt;, S&gt; functionState, State&lt;A, S&gt; state) {
-<span class="fc" id="L32">        return s -&gt; functionState</span>
-<span class="fc" id="L33">                .apply(s)</span>
-<span class="fc" id="L34">                .mapSecond(state)</span>
-<span class="fc" id="L35">                .biMap((f, p) -&gt; p.mapFirst(f).getKey(), (f, p) -&gt; p.getValue());</span>
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; fapply(StateWithError&lt;Function&lt;A, B&gt;, S, E&gt; functionState, StateWithError&lt;A, S, E&gt; state) {
+<span class="fc" id="L33">        return s -&gt; functionState</span>
+<span class="fc" id="L34">                .apply(s)</span>
+<span class="fc" id="L35">                .either(</span>
+                        Either::&lt;E, Pair&lt;B, S&gt;&gt;left,
+<span class="fc" id="L37">                        p1 -&gt; state.apply(p1.getValue()).either(Either::left, p2 -&gt; Either.right(new Pair&lt;&gt;(p1.getKey().apply(p2.getKey()), p2.getValue())))</span>
+                );
     }
 
-    public &lt;A&gt; State&lt;A, S&gt; join(State&lt;State&lt;A, S&gt;, S&gt; stateSState) {
-<span class="fc" id="L39">        return s -&gt; stateSState.apply(s)</span>
-<span class="fc" id="L40">                .map(Function::apply);</span>
+    public &lt;A&gt; StateWithError&lt;A, S, E&gt; join(StateWithError&lt;StateWithError&lt;A, S, E&gt;, S, E&gt; stateState) {
+<span class="fc" id="L42">        return s -&gt; stateState</span>
+<span class="fc" id="L43">                .apply(s)</span>
+<span class="fc" id="L44">                .either(Either::left, p -&gt; p.getKey().apply(p.getValue()));</span>
     }
 
-    public &lt;A, B&gt; State&lt;B, S&gt; flatMap(Function&lt;A, State&lt;B, S&gt;&gt; fun, State&lt;A, S&gt; state) {
-<span class="fc" id="L44">        return s -&gt; state</span>
-<span class="fc" id="L45">                .apply(s)</span>
-<span class="fc" id="L46">                .mapFirst(fun)</span>
-<span class="fc" id="L47">                .map(Function::apply);</span>
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; flatMap(Function&lt;A, StateWithError&lt;B, S, E&gt;&gt; fun, StateWithError&lt;A, S, E&gt; state) {
+<span class="fc" id="L48">        return s -&gt; state</span>
+<span class="fc" id="L49">                .apply(s)</span>
+<span class="fc" id="L50">                .either(Either::left, p -&gt; p.mapFirst(fun).map(Function::apply));</span>
     }
 
     @Override
-    public Class&lt;State&lt;?, S&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L52">        return (Class&lt;State&lt;?, S&gt;&gt;) (Class&lt;?&gt;) State.class;</span>
+    public Class&lt;StateWithError&lt;?, S, E&gt;&gt; getClassAtRuntime() {
+<span class="fc" id="L55">        return (Class&lt;StateWithError&lt;?, S, E&gt;&gt;) (Class&lt;?&gt;) StateWithError.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

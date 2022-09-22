@@ -19,6 +19,14 @@ public final class Pair<U, V> implements Map.Entry<U, V> {
         return entry.getKey();
     }
 
+    public static <A,B,C> BiFunction<A,B,C> biFunction(Function<Pair<A,B>,C> function) {
+        return ((BiFunction<A,B,Pair<A,B>>)(Pair::new)).andThen(function);
+    }
+
+    public static <A,B,C> Function<Pair<A,B>,C> pairFunction(BiFunction<A,B,C> biFunction) {
+        return p -> biFunction.apply(p.getKey(), p.getValue());
+    }
+
     @Override
     public V getValue() {
         return entry.getValue();

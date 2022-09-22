@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public final class BinaryNode<A> implements BinaryTree<A> {
     private final BinaryTree<A> left;
-
     private final A data;
     private final BinaryTree<A> right;
 

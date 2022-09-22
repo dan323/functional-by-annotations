@@ -2,53 +2,56 @@ package com.dan323.functional.data.state;
 
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.pair.Pair;
 
 import java.util.function.Function;
 
 @Monad
-public class StateMonad<S> implements IMonad<State<?, S>> {
+public class StateMonad<S, E> implements IMonad<StateWithError<?, S, E>> {
 
     private StateMonad() {
     }
 
-    private static final StateMonad<?> STATE_FUNCTOR = new StateMonad<>();
+    private static final StateMonad<?, ?> STATE_FUNCTOR = new StateMonad<>();
 
-    public static <R> StateMonad<R> getInstance() {
-        return (StateMonad<R>) STATE_FUNCTOR;
+    public static <R, E> StateMonad<R, E> getInstance() {
+        return (StateMonad<R, E>) STATE_FUNCTOR;
     }
 
-    public <A, B> State<B, S> map(State<A, S> state, Function<A, B> fun) {
+    public <A, B> StateWithError<B, S, E> map(StateWithError<A, S, E> state, Function<A, B> fun) {
         return s -> state
                 .apply(s)
-                .mapFirst(fun);
+                .either(Either::left, k -> Either.right(k.mapFirst(fun)));
     }
 
-    public <A> State<A, S> pure(A a) {
-        return s -> new Pair<>(a, s);
+    public <A> StateWithError<A, S, E> pure(A a) {
+        return s -> Either.right(new Pair<>(a, s));
     }
 
-    public <A, B> State<B, S> fapply(State<Function<A, B>, S> functionState, State<A, S> state) {
+    public <A, B> StateWithError<B, S, E> fapply(StateWithError<Function<A, B>, S, E> functionState, StateWithError<A, S, E> state) {
         return s -> functionState
                 .apply(s)
-                .mapSecond(state)
-                .biMap((f, p) -> p.mapFirst(f).getKey(), (f, p) -> p.getValue());
+                .either(
+                        Either::<E, Pair<B, S>>left,
+                        p1 -> state.apply(p1.getValue()).either(Either::left, p2 -> Either.right(new Pair<>(p1.getKey().apply(p2.getKey()), p2.getValue())))
+                );
     }
 
-    public <A> State<A, S> join(State<State<A, S>, S> stateSState) {
-        return s -> stateSState.apply(s)
-                .map(Function::apply);
+    public <A> StateWithError<A, S, E> join(StateWithError<StateWithError<A, S, E>, S, E> stateState) {
+        return s -> stateState
+                .apply(s)
+                .either(Either::left, p -> p.getKey().apply(p.getValue()));
     }
 
-    public <A, B> State<B, S> flatMap(Function<A, State<B, S>> fun, State<A, S> state) {
+    public <A, B> StateWithError<B, S, E> flatMap(Function<A, StateWithError<B, S, E>> fun, StateWithError<A, S, E> state) {
         return s -> state
                 .apply(s)
-                .mapFirst(fun)
-                .map(Function::apply);
+                .either(Either::left, p -> p.mapFirst(fun).map(Function::apply));
     }
 
     @Override
-    public Class<State<?, S>> getClassAtRuntime() {
-        return (Class<State<?, S>>) (Class<?>) State.class;
+    public Class<StateWithError<?, S, E>> getClassAtRuntime() {
+        return (Class<StateWithError<?, S, E>>) (Class<?>) StateWithError.class;
     }
 }

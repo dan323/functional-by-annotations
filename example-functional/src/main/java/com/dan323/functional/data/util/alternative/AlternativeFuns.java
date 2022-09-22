@@ -1,6 +1,5 @@
 package com.dan323.functional.data.util.alternative;
 
-import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.compiler.util.AlternativeUtil;
 import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.annotation.compiler.util.FunctorUtil;

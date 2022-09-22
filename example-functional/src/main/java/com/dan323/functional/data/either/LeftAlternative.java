@@ -10,20 +10,20 @@ public final class LeftAlternative<R> extends LeftEither<R> implements IAlternat
 
     private final IMonoid<R> rMonoid;
 
-    public LeftAlternative(IMonoid<R> rMonoid){
+    public LeftAlternative(IMonoid<R> rMonoid) {
         this.rMonoid = rMonoid;
     }
 
-    public <A> Either<A,R> empty(){
+    public <A> Either<A, R> empty() {
         return Either.right(MonoidUtil.unit(rMonoid));
     }
 
-    public <A> Either<A,R> disjunction(Either<A,R> first, Either<A,R> snd) {
+    public <A> Either<A, R> disjunction(Either<A, R> first, Either<A, R> snd) {
         return first.either(Either::left, x -> snd);
     }
 
     @Override
     public Class<Either<?, R>> getClassAtRuntime() {
-        return (Class<Either<?,R>>) (Class<?>) Either.class;
+        return (Class<Either<?, R>>) (Class<?>) Either.class;
     }
 }

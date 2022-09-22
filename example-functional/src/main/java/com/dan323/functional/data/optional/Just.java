@@ -18,10 +18,13 @@ public final class Just<A> implements Maybe<A> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Just<?> just = (Just<?>) o;
-        return Objects.equals(element, just.element);
+        if (this == o){
+            return true;
+        } else if (o instanceof Just<?> just){
+            return Objects.equals(element, just.element);
+        } else {
+            return false;
+        }
     }
 
     @Override

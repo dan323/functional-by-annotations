@@ -7,34 +7,35 @@ import com.dan323.functional.data.pair.Pair;
 
 import java.util.function.Function;
 
+@FunctionalInterface
 public interface StateWithError&lt;A, S, E&gt; extends Function&lt;S, Either&lt;E, Pair&lt;A, S&gt;&gt;&gt; {
 
     static &lt;A, S, E&gt; StateWithError&lt;A, S, E&gt; fromState(State&lt;A, S&gt; state) {
-<span class="nc" id="L13">        return s -&gt; state.apply(s).either(Void::absurd, Either::right);</span>
+<span class="nc" id="L14">        return s -&gt; state.apply(s).either(Void::absurd, Either::right);</span>
     }
 
     static &lt;A, S&gt; State&lt;A, S&gt; fromStateWithVoidError(StateWithError&lt;A, S, Void&gt; state) {
-<span class="fc" id="L17">        return State.fromFun(s -&gt; state.apply(s).either(Void::absurd, Function.identity()));</span>
+<span class="fc" id="L18">        return State.fromFun(s -&gt; state.apply(s).either(Void::absurd, Function.identity()));</span>
     }
 
     static &lt;A,S,E&gt; StateWithError&lt;A,S,E&gt; error(E error) {
-<span class="nc" id="L21">        return s -&gt; Either.left(error);</span>
+<span class="nc" id="L22">        return s -&gt; Either.left(error);</span>
     }
 
     default Either&lt;E,S&gt; execute(S s) {
-<span class="fc" id="L25">        return apply(s).either(Either::left, p -&gt; Either.right(p.getValue()));</span>
+<span class="fc" id="L26">        return apply(s).either(Either::left, p -&gt; Either.right(p.getValue()));</span>
     }
 
     default Either&lt;E,A&gt; evaluate(S s) {
-<span class="fc" id="L29">        return apply(s).either(Either::left, p -&gt; Either.right(p.getKey()));</span>
+<span class="fc" id="L30">        return apply(s).either(Either::left, p -&gt; Either.right(p.getKey()));</span>
     }
 
     static &lt;S,E&gt; StateWithError&lt;S, S, E&gt; get() {
-<span class="fc" id="L33">        return s -&gt; Either.right(new Pair&lt;&gt;(s, s));</span>
+<span class="fc" id="L34">        return s -&gt; Either.right(new Pair&lt;&gt;(s, s));</span>
     }
 
     static &lt;S,E&gt; StateWithError&lt;Unit, S, E&gt; put(S x) {
-<span class="fc" id="L37">        return s -&gt; Either.right(new Pair&lt;&gt;(Unit.getElement(), x));</span>
+<span class="fc" id="L38">        return s -&gt; Either.right(new Pair&lt;&gt;(Unit.getElement(), x));</span>
     }
 
 }

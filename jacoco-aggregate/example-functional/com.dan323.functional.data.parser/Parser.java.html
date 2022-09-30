@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Parser.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.parser</a> &gt; <span class="el_source">Parser.java</span></div><h1>Parser.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.parser;
+
+import com.dan323.functional.annotation.compiler.util.TraversalUtil;
+import com.dan323.functional.data.either.Either;
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.pair.Pair;
+import com.dan323.functional.data.state.StateWithError;
+
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd;
+import static com.dan323.functional.data.parser.ParserApplicative.many;
+
+public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList&lt;Parser.ParserError&gt;&gt; {
+
+    public static class ParserError {
+
+        private final String message;
+
+<span class="fc" id="L23">        private ParserError(String message) {</span>
+<span class="fc" id="L24">            this.message = message;</span>
+<span class="fc" id="L25">        }</span>
+
+        public static ParserError unexpectedChar(Character c) {
+<span class="fc" id="L28">            return new ParserError(&quot;Unexpected character &quot; + c);</span>
+        }
+
+        public static ParserError unexpectedEnd() {
+<span class="fc" id="L32">            return new ParserError(&quot;Unexpected empty string&quot;);</span>
+        }
+
+        public static ParserError empty() {
+<span class="nc" id="L36">            return new ParserError(&quot;This parser is empty&quot;);</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="nc" id="L41">            return &quot;[ERROR]: &quot; + message;</span>
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">            return (obj instanceof Parser.ParserError parserError) &amp;&amp; Objects.equals(parserError.message, message);</span>
+        }
+    }
+
+
+    static Parser&lt;Character&gt; predicateParser(Predicate&lt;Character&gt; predicate) {
+<span class="fc" id="L52">        return s -&gt; {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (s.isEmpty()) {</span>
+<span class="fc" id="L54">                return Either.left(FiniteList.of(unexpectedEnd()));</span>
+            } else {
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                return predicate.test(s.charAt(0)) ? Either.right(new Pair&lt;&gt;(s.charAt(0), s.substring(1))) : Either.left(FiniteList.of(ParserError.unexpectedChar(s.charAt(0))));</span>
+            }
+        };
+    }
+
+    static Parser&lt;Character&gt; charParser(Character c) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        return predicateParser(ch -&gt; ch == c);</span>
+    }
+
+    static Parser&lt;String&gt; stringParser(String st) {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (st.isEmpty()) {</span>
+<span class="nc" id="L67">            return s -&gt; Either.right(new Pair&lt;&gt;(&quot;&quot;, s));</span>
+        } else {
+<span class="nc" id="L69">            Parser&lt;FiniteList&lt;Character&gt;&gt; parserList = (Parser&lt;FiniteList&lt;Character&gt;&gt;) TraversalUtil.traverse(FiniteListFunctional.getInstance(), ParserApplicative.getInstance(), (Function&lt;Character, Parser&lt;Character&gt;&gt;) Parser::charParser, st.chars().mapToObj(c -&gt; (char) c).toList());</span>
+<span class="nc" id="L70">            return ParserApplicative.map(parserList, Parser::fromChars);</span>
+        }
+    }
+
+    static Parser&lt;Integer&gt; intParser() {
+<span class="fc" id="L75">        return ParserApplicative.map(ParserApplicative.some(predicateParser(Character::isDigit)), ((Function&lt;FiniteList&lt;Character&gt;, String&gt;) Parser::fromChars).andThen(Integer::parseInt));</span>
+    }
+
+    private static String fromChars(FiniteList&lt;Character&gt; chars) {
+<span class="fc" id="L79">        return FiniteListFunctional.foldr((c, st) -&gt; st + c.toString(), &quot;&quot;, chars);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -184,87 +184,85 @@ public final class StructureSignatures {
 <span class="nc" id="L184">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(1), params.get(0));</span>
 <span class="nc" id="L185">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
 <span class="nc" id="L186">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));</span>
-<span class="nc" id="L187">            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));</span>
-<span class="nc" id="L188">            return new Signature(List.of(iApplicative, clazz, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);</span>
+<span class="nc" id="L187">            return new Signature(List.of(iApplicative, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);</span>
         } else {
-<span class="nc" id="L190">            return Signature.invalid();</span>
+<span class="nc" id="L189">            return Signature.invalid();</span>
         }
     }
 
     private Signature createSequenceASignature(ExecutableType method, DeclaredType iFace) {
-<span class="nc" id="L195">        var params = method.getTypeVariables();</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (params.size() &gt;= 1) {</span>
-<span class="nc" id="L197">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
-<span class="nc" id="L198">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));</span>
-<span class="nc" id="L199">            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));</span>
-<span class="nc" id="L200">            return new Signature(List.of(iApplicative, clazz, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);</span>
+<span class="nc" id="L194">        var params = method.getTypeVariables();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (params.size() &gt;= 1) {</span>
+<span class="nc" id="L196">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));</span>
+<span class="nc" id="L197">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));</span>
+<span class="nc" id="L198">            return new Signature(List.of(iApplicative, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);</span>
         } else {
-<span class="nc" id="L202">            return Signature.invalid();</span>
+<span class="nc" id="L200">            return Signature.invalid();</span>
         }
     }
 
     private NecessaryMethods mapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L207">        return new FunctionSignature(x -&gt; createMapSignature(x, iface), IFunctor.MAP_NAME);</span>
+<span class="fc" id="L205">        return new FunctionSignature(x -&gt; createMapSignature(x, iface), IFunctor.MAP_NAME);</span>
     }
 
     private NecessaryMethods pureSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L211">        return new FunctionSignature(x -&gt; createPureSignature(x, iface), IApplicative.PURE_NAME);</span>
+<span class="fc" id="L209">        return new FunctionSignature(x -&gt; createPureSignature(x, iface), IApplicative.PURE_NAME);</span>
     }
 
     private NecessaryMethods sumSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L215">        return new FunctionSignature(x -&gt; createSumSignature(x, iface), IRing.SUM_NAME);</span>
+<span class="nc" id="L213">        return new FunctionSignature(x -&gt; createSumSignature(x, iface), IRing.SUM_NAME);</span>
     }
 
     private NecessaryMethods prodSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L219">        return new FunctionSignature(x -&gt; createProdSignature(x, iface), IRing.PROD_NAME);</span>
+<span class="nc" id="L217">        return new FunctionSignature(x -&gt; createProdSignature(x, iface), IRing.PROD_NAME);</span>
     }
 
     private NecessaryMethods emptySignatureChecker(DeclaredType iface) {
-<span class="fc" id="L223">        return new FunctionSignature(x -&gt; createEmptySignature(x, iface), IAlternative.EMPTY_NAME);</span>
+<span class="fc" id="L221">        return new FunctionSignature(x -&gt; createEmptySignature(x, iface), IAlternative.EMPTY_NAME);</span>
     }
 
     private NecessaryMethods disjSignatureChecker(DeclaredType ifaca) {
-<span class="fc" id="L227">        return new FunctionSignature(x -&gt; createDisjSignature(x, ifaca), IAlternative.DISJ_NAME);</span>
+<span class="fc" id="L225">        return new FunctionSignature(x -&gt; createDisjSignature(x, ifaca), IAlternative.DISJ_NAME);</span>
     }
 
     private NecessaryMethods fapplySignatureChecker(DeclaredType iface) {
-<span class="fc" id="L231">        return new FunctionSignature(x -&gt; createFapplySignature(x, iface), IApplicative.FAPPLY_NAME);</span>
+<span class="fc" id="L229">        return new FunctionSignature(x -&gt; createFapplySignature(x, iface), IApplicative.FAPPLY_NAME);</span>
     }
 
     private NecessaryMethods liftA2SignatureChecker(DeclaredType iface) {
-<span class="fc" id="L235">        return new FunctionSignature(x -&gt; createLiftA2Signature(x, iface), IApplicative.LIFT_A2_NAME);</span>
+<span class="fc" id="L233">        return new FunctionSignature(x -&gt; createLiftA2Signature(x, iface), IApplicative.LIFT_A2_NAME);</span>
     }
 
     private NecessaryMethods joinSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L239">        return new FunctionSignature(x -&gt; createJoinSignature(x, iface), IMonad.JOIN_NAME);</span>
+<span class="fc" id="L237">        return new FunctionSignature(x -&gt; createJoinSignature(x, iface), IMonad.JOIN_NAME);</span>
     }
 
     private NecessaryMethods flatMapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L243">        return new FunctionSignature(x -&gt; createFlatMapSignature(x, iface), IMonad.FLAT_MAP_NAME);</span>
+<span class="fc" id="L241">        return new FunctionSignature(x -&gt; createFlatMapSignature(x, iface), IMonad.FLAT_MAP_NAME);</span>
     }
 
     private NecessaryMethods opSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L247">        return new FunctionSignature(x -&gt; createOpSignature(iface), IMonoid.OP_NAME);</span>
+<span class="fc" id="L245">        return new FunctionSignature(x -&gt; createOpSignature(iface), IMonoid.OP_NAME);</span>
     }
 
     private NecessaryMethods unitSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L251">        return new FunctionSignature(x -&gt; createUnitSignature(iface), IMonoid.UNIT_NAME);</span>
+<span class="fc" id="L249">        return new FunctionSignature(x -&gt; createUnitSignature(iface), IMonoid.UNIT_NAME);</span>
     }
 
     private NecessaryMethods foldrSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L255">        return new FunctionSignature(x -&gt; createFoldrSignature(x, iface), IFoldable.FOLDR_NAME);</span>
+<span class="fc" id="L253">        return new FunctionSignature(x -&gt; createFoldrSignature(x, iface), IFoldable.FOLDR_NAME);</span>
     }
 
     private NecessaryMethods foldMapSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L259">        return new FunctionSignature(x -&gt; createFoldMapSignature(x, iface), IFoldable.FOLD_MAP_NAME);</span>
+<span class="fc" id="L257">        return new FunctionSignature(x -&gt; createFoldMapSignature(x, iface), IFoldable.FOLD_MAP_NAME);</span>
     }
 
     private NecessaryMethods traverseSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L263">        return new FunctionSignature(x -&gt; createTraverseSignature(x, iface), ITraversal.TRAVERSE_NAME);</span>
+<span class="nc" id="L261">        return new FunctionSignature(x -&gt; createTraverseSignature(x, iface), ITraversal.TRAVERSE_NAME);</span>
     }
 
     private NecessaryMethods sequenceASignatureChecker(DeclaredType iface) {
-<span class="nc" id="L267">        return new FunctionSignature(x -&gt; createSequenceASignature(x, iface), ITraversal.SEQUENCE_A_NAME);</span>
+<span class="nc" id="L265">        return new FunctionSignature(x -&gt; createSequenceASignature(x, iface), ITraversal.SEQUENCE_A_NAME);</span>
     }
 
     /**
@@ -274,7 +272,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IApplicative}
      */
     public NecessaryMethods applicativeSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L277">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(fapplySignatureChecker(iface), liftA2SignatureChecker(iface)));</span>
+<span class="fc" id="L275">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(fapplySignatureChecker(iface), liftA2SignatureChecker(iface)));</span>
     }
 
 
@@ -285,7 +283,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IAlternative}
      */
     public NecessaryMethods alternativeSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L288">        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface), emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));</span>
+<span class="fc" id="L286">        return new ConjNecessaryMethods(Set.of(disjSignatureChecker(iface), emptySignatureChecker(iface), new DisjNecessaryMethods(Set.of(applicativeSignatureChecker(iface), monadSignatureChecker(iface)))));</span>
     }
 
     /**
@@ -295,7 +293,17 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IRing}
      */
     public NecessaryMethods ringSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L298">        return new ConjNecessaryMethods(sumSignatureChecker(iface), prodSignatureChecker(iface));</span>
+<span class="nc" id="L296">        return new ConjNecessaryMethods(sumSignatureChecker(iface), prodSignatureChecker(iface));</span>
+    }
+
+    /**
+     * {@link NecessaryMethods} for an {@link ITraversal} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link ITraversal}
+     * @return A {@link NecessaryMethods} with requirements for an {@link ITraversal}
+     */
+    public NecessaryMethods traversalSignatureChecker(DeclaredType iface) {
+<span class="nc" id="L306">        return new DisjNecessaryMethods(traverseSignatureChecker(iface), sequenceASignatureChecker(iface));</span>
     }
 
     /**
@@ -305,7 +313,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IFunctor}
      */
     public NecessaryMethods functorSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L308">        return mapSignatureChecker(iface);</span>
+<span class="fc" id="L316">        return mapSignatureChecker(iface);</span>
     }
 
     /**
@@ -315,7 +323,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IMonad}
      */
     public NecessaryMethods monadSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L318">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(flatMapSignatureChecker(iface), new ConjNecessaryMethods(joinSignatureChecker(iface), new DisjNecessaryMethods(functorSignatureChecker(iface), applicativeSignatureChecker(iface)))));</span>
+<span class="fc" id="L326">        return new ConjNecessaryMethods(pureSignatureChecker(iface), new DisjNecessaryMethods(flatMapSignatureChecker(iface), new ConjNecessaryMethods(joinSignatureChecker(iface), new DisjNecessaryMethods(functorSignatureChecker(iface), applicativeSignatureChecker(iface)))));</span>
     }
 
     /**
@@ -325,7 +333,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link ISemigroup}
      */
     public NecessaryMethods semigroupSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L328">        return opSignatureChecker(iface);</span>
+<span class="fc" id="L336">        return opSignatureChecker(iface);</span>
     }
 
     /**
@@ -335,7 +343,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IMonoid}
      */
     public NecessaryMethods monoidSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L338">        return new ConjNecessaryMethods(opSignatureChecker(iface), unitSignatureChecker(iface));</span>
+<span class="fc" id="L346">        return new ConjNecessaryMethods(opSignatureChecker(iface), unitSignatureChecker(iface));</span>
     }
 
     /**
@@ -345,7 +353,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link IFoldable}
      */
     public NecessaryMethods foldableSignatureChecker(DeclaredType iface) {
-<span class="fc" id="L348">        return new DisjNecessaryMethods(foldrSignatureChecker(iface), foldMapSignatureChecker(iface));</span>
+<span class="fc" id="L356">        return new DisjNecessaryMethods(foldrSignatureChecker(iface), foldMapSignatureChecker(iface));</span>
     }
 
 }

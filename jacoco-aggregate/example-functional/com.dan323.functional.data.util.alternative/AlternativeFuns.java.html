@@ -4,22 +4,30 @@ import com.dan323.functional.annotation.compiler.util.AlternativeUtil;
 import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.annotation.compiler.util.FunctorUtil;
 import com.dan323.functional.annotation.funcs.IAlternative;
+import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.List;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
+/**
+ * Implementation of {@link #many(IAlternative, IAlternative, Object, Function)} and {@link #some(IAlternative, IAlternative, Object, Function)}
+ * to be executed lazily.
+ * &lt;br&gt;
+ * NOTE: It is recommended to reimplement, as once the specific classes are identified it is easier to execute lazily.
+ */
 public final class AlternativeFuns {
 
-<span class="nc" id="L13">    private AlternativeFuns() {</span>
-<span class="nc" id="L14">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L21">    private AlternativeFuns() {</span>
+<span class="nc" id="L22">        throw new UnsupportedOperationException();</span>
     }
 
-    public static &lt;F&gt; F some(IAlternative&lt;? extends F&gt; alternative, F felement) {
-<span class="nc" id="L18">        return ApplicativeUtil.fapply(alternative, many(alternative, felement), FunctorUtil.map(alternative, felement, x -&gt; (Function&lt;List, List&gt;) ((List lst) -&gt; List.cons(x, lst))));</span>
+    public static &lt;F&gt; Supplier&lt;F&gt; some(IAlternative&lt;Supplier&lt;F&gt;&gt; alternative, IAlternative&lt;F&gt; alternativef, F felement) {
+<span class="nc" id="L26">        return () -&gt; (ApplicativeUtil.fapply(alternative, many(alternative, alternativef, felement), () -&gt; FunctorUtil.map(alternativef, felement, x -&gt; (Function&lt;FiniteList, FiniteList&gt;) ((FiniteList lst) -&gt; FiniteList.cons(x, lst))))).get();</span>
     }
 
-    public static &lt;F&gt; F many(IAlternative&lt;? extends F&gt; alternative, F felement) {
-<span class="nc" id="L22">        return AlternativeUtil.disj(alternative, some(alternative, felement), ApplicativeUtil.pure(alternative, List.nil()));</span>
+    public static &lt;F&gt; Supplier&lt;F&gt; many(IAlternative&lt;Supplier&lt;F&gt;&gt; alternative, IAlternative&lt;F&gt; alternativef, F felement) {
+<span class="nc" id="L30">        return () -&gt; (AlternativeUtil.disj(alternative, some(alternative, alternativef, felement), () -&gt; ApplicativeUtil.pure(alternativef, List.nil()))).get();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

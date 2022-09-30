@@ -184,8 +184,7 @@ public final class StructureSignatures {
             var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(1), params.get(0));
             var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));
             var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));
-            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));
-            return new Signature(List.of(iApplicative, clazz, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);
+            return new Signature(List.of(iApplicative, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);
         } else {
             return Signature.invalid();
         }
@@ -196,8 +195,7 @@ public final class StructureSignatures {
         if (params.size() >= 1) {
             var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
             var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));
-            var clazz = typeUtils.getDeclaredType(elementUtils.getTypeElement(Class.class.getTypeName()), params.get(0));
-            return new Signature(List.of(iApplicative, clazz, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);
+            return new Signature(List.of(iApplicative, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);
         } else {
             return Signature.invalid();
         }
@@ -296,6 +294,16 @@ public final class StructureSignatures {
      */
     public NecessaryMethods ringSignatureChecker(DeclaredType iface) {
         return new ConjNecessaryMethods(sumSignatureChecker(iface), prodSignatureChecker(iface));
+    }
+
+    /**
+     * {@link NecessaryMethods} for an {@link ITraversal} to be correctly implemented
+     *
+     * @param iface type constructor inside {@link ITraversal}
+     * @return A {@link NecessaryMethods} with requirements for an {@link ITraversal}
+     */
+    public NecessaryMethods traversalSignatureChecker(DeclaredType iface) {
+        return new DisjNecessaryMethods(traverseSignatureChecker(iface), sequenceASignatureChecker(iface));
     }
 
     /**

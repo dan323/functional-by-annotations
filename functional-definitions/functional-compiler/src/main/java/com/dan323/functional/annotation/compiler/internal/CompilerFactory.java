@@ -37,10 +37,12 @@ public final class CompilerFactory {
             return new Compiler<>(signatures.monoidSignatureChecker(iface), Monoid.class, messager);
         } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {
             return new Compiler<>(signatures.foldableSignatureChecker(iface), Foldable.class, messager);
-        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))){
+        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))) {
             return new Compiler<>(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);
-        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))){
+        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))) {
             return new Compiler<>(signatures.ringSignatureChecker(iface), Ring.class, messager);
+        } else if (iface.asElement().equals(elements.getTypeElement(ITraversal.class.getTypeName()))) {
+            return new Compiler<>(signatures.traversalSignatureChecker(iface), Traversal.class, messager);
         }
         throw new IllegalArgumentException(String.format("The interfaces %s does not represent an implemented functional", iface));
     }

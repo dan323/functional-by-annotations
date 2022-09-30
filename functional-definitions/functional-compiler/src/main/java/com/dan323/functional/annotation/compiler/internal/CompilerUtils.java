@@ -21,6 +21,8 @@ public final class CompilerUtils {
                 .map((TypeMirror tm) -> {
                     if (tm.getKind().equals(TypeKind.WILDCARD)) {
                         return substitute;
+                    } else if (tm.getKind().equals(TypeKind.DECLARED)) {
+                        return changeWildBy(typeUtils, typeUtils.getDeclaredType((TypeElement) type.asElement(), tm), substitute);
                     } else {
                         return tm;
                     }

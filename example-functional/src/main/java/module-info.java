@@ -16,6 +16,6 @@ module functional.data {
     exports com.dan323.functional.data.util.alternative;
     exports com.dan323.functional.data.util.foldable;
     exports com.dan323.functional.data.state;
-    exports com.dan323.functional.data.stack;
+    exports com.dan323.functional.data.parser;
     exports com.dan323.functional.data;
 }

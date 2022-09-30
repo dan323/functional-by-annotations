@@ -1,4 +1,4 @@
-package com.dan323.functional.data.stack;
+package com.dan323.functional.data.state;
 
 import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.function.FunctionFrom;
@@ -7,8 +7,6 @@ import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.optional.MaybeMonad;
 import com.dan323.functional.data.pair.Pair;
-import com.dan323.functional.data.state.StateMonad;
-import com.dan323.functional.data.state.StateWithError;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -19,7 +17,7 @@ import java.util.function.UnaryOperator;
  *
  * @param <A> type of elements in the stack
  */
-public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteList<A>, StackActions.StackError> {
+public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>, StackActions.StackError> {
 
     public static class StackError {
 
@@ -48,12 +46,6 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
         }
     }
 
-    private final StateWithError<Maybe<A>, FiniteList<A>, StackError> state;
-
-    private StackActions(StateWithError<Maybe<A>, FiniteList<A>, StackError> state) {
-        this.state = state;
-    }
-
     // PURE BASIC ACTIONS
 
     /**
@@ -64,7 +56,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return ... -> ... x |
      */
     public static <A> StackActions<A> push(A x) {
-        return new StackActions<>(s -> Either.right(new Pair<>(Maybe.of(), FiniteList.cons(x, s))));
+        return s -> Either.right(new Pair<>(Maybe.of(), FiniteList.cons(x, s)));
     }
 
     /**
@@ -74,7 +66,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return ... x -> ... | x
      */
     public static <A> StackActions<A> pop() {
-        return new StackActions<>(s -> s.head().maybe(h -> Either.right(new Pair<>(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty())));
+        return s -> s.head().maybe(h -> Either.right(new Pair<>(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty()));
     }
 
     /**
@@ -88,7 +80,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return ... -> |
      */
     public static <A> StackActions<A> reset() {
-        return new StackActions<>(s -> Either.right(new Pair<>(Maybe.of(), FiniteList.nil())));
+        return s -> Either.right(new Pair<>(Maybe.of(), FiniteList.nil()));
     }
 
     /**
@@ -110,7 +102,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return ... -> ERROR
      */
     public static <A> StackActions<A> error(StackError stackError) {
-        return new StackActions<>(s -> Either.left(stackError));
+        return s -> Either.left(stackError);
     }
 
     /**
@@ -130,7 +122,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return ... -> ... |
      */
     public static <A> StackActions<A> doNothing() {
-        return new StackActions<>(s -> Either.right(new Pair<>(Maybe.of(), s)));
+        return s -> Either.right(new Pair<>(Maybe.of(), s));
     }
 
     /**
@@ -172,9 +164,9 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return concatenated stack actions first the current one and after, fun applied to the output of this one
      * @see #then(StackActions)
      */
-    public StackActions<A> thenByPopped(Function<Maybe<A>, StackActions<A>> fun) {
-        Function<Maybe<A>, StateWithError<Maybe<A>, FiniteList<A>, StackError>> ff = t -> fun.apply(t).state;
-        return new StackActions<>(StateMonad.<FiniteList<A>, StackError>getInstance().flatMap(ff, this.state));
+    default StackActions<A> thenByPopped(Function<Maybe<A>, StackActions<A>> fun) {
+        Function<Maybe<A>, StateWithError<Maybe<A>, FiniteList<A>, StackError>> ff = fun::apply;
+        return s -> StateMonad.<FiniteList<A>, StackError>getInstance().flatMap(ff, this).apply(s);
     }
 
     /**
@@ -184,7 +176,7 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @return a stack action that performs them in sequence
      * @see #thenByPopped(Function)
      */
-    public StackActions<A> then(StackActions<A> st) {
+    default StackActions<A> then(StackActions<A> st) {
         return this.thenByPopped(FunctionFrom.<Maybe<A>>getInstance().pure(st));
     }
 
@@ -196,12 +188,8 @@ public final class StackActions<A> implements StateWithError<Maybe<A>, FiniteLis
      * @see com.dan323.functional.data.either.Left#toString()
      * @see com.dan323.functional.data.either.Right#toString()
      */
-    public String toString() {
+    default String print() {
         return apply(FiniteList.nil()).toString();
     }
 
-    @Override
-    public Either<StackError, Pair<Maybe<A>, FiniteList<A>>> apply(FiniteList<A> aList) {
-        return state.apply(aList);
-    }
 }

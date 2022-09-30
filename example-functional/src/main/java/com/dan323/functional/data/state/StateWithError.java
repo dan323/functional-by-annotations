@@ -7,6 +7,7 @@ import com.dan323.functional.data.pair.Pair;
 
 import java.util.function.Function;
 
+@FunctionalInterface
 public interface StateWithError<A, S, E> extends Function<S, Either<E, Pair<A, S>>> {
 
     static <A, S, E> StateWithError<A, S, E> fromState(State<A, S> state) {

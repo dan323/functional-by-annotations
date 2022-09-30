@@ -1,14 +1,13 @@
 package com.dan323.functional;
 
 import com.dan323.functional.data.either.Either;
-import com.dan323.functional.data.integer.SumMonoid;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.optional.Maybe;
-import com.dan323.functional.data.stack.StackActions;
+import com.dan323.functional.data.state.StackActions;
 import org.junit.jupiter.api.Test;
 
-import static com.dan323.functional.data.stack.StackActions.StackError.poppingEmpty;
-import static com.dan323.functional.data.stack.StackActions.*;
+import static com.dan323.functional.data.state.StackActions.StackError.poppingEmpty;
+import static com.dan323.functional.data.state.StackActions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StackActionsTest {

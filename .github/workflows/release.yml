@@ -69,7 +69,7 @@ jobs:
       # 🔹 2️⃣ Deploy only 2 modules to Maven Central (the rest are not needed and would just create noise)
       - name: Deploy selected modules
         run: |
-          mvn -pl functional-definitions/annotation-definitions,functional-definitions/functional-compiler -am clean deploy -P release
+          mvn -pl functional-definitions/annotation-definitions,functional-definitions/functional-compiler -am clean deploy
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN }}

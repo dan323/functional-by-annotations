@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>List.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">List.java</span></div><h1>List.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IFunctor;
+import com.dan323.functional.data.optional.Maybe;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
+public sealed interface List&lt;A&gt; permits FiniteList, InfiniteList{
+
+    Maybe&lt;A&gt; head();
+
+    List&lt;A&gt; tail();
+
+    &lt;B&gt; List&lt;B&gt; map(Function&lt;A,B&gt; mapping);
+
+    static &lt;A&gt; List&lt;A&gt; generate(A first, UnaryOperator&lt;A&gt; generator){
+<span class="fc" id="L20">        return new Generating&lt;&gt;(first, generator);</span>
+    }
+
+    static &lt;A&gt; List&lt;A&gt; cons(A first, List&lt;A&gt; tail) {
+<span class="pc bpc" id="L24" title="2 of 4 branches missed.">        if (first == null || tail == null) {</span>
+<span class="nc" id="L25">            throw new IllegalArgumentException(&quot;No input can be null&quot;);</span>
+        }
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (tail instanceof FiniteList&lt;A&gt; finiteTail){</span>
+<span class="fc" id="L28">            return new FinCons&lt;&gt;(first, finiteTail);</span>
+        } else {
+<span class="fc" id="L30">            return new Cons&lt;&gt;(first, (InfiniteList&lt;A&gt;) tail);</span>
+        }
+    }
+
+    default FiniteList&lt;A&gt; limit(int k){
+<span class="fc" id="L35">        return head().maybe(h -&gt; limitWithHead(h, k), FiniteList.nil());</span>
+    }
+
+    private FiniteList&lt;A&gt; limitWithHead(A h, int k){
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (k == 0){</span>
+<span class="fc" id="L40">            return FiniteList.nil();</span>
+        } else {
+<span class="fc" id="L42">            return FiniteList.cons(h, tail().limit(k-1));</span>
+        }
+    }
+
+    static &lt;A&gt; List&lt;A&gt; nil() {
+<span class="fc" id="L47">        return (FiniteList&lt;A&gt;) Nil.NIL;</span>
+    }
+
+    static &lt;A&gt; List&lt;A&gt; repeat(A a){
+<span class="fc" id="L51">        return new Repeat&lt;&gt;(a);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

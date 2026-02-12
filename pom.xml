@@ -44,7 +44,7 @@
         <pitest.junit5.version>1.2.3</pitest.junit5.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
         <pitest.version>1.22.1</pitest.version>
-        <maven.jacoco.version>0.8.12</maven.jacoco.version>
+        <maven.jacoco.version>0.8.14</maven.jacoco.version>
         <maven.versions.version>2.16.2</maven.versions.version>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <maven.sonar.version>4.0.0.4121</maven.sonar.version>

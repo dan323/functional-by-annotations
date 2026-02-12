@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ApplicativeMonoid.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.util.applicative</a> &gt; <span class="el_source">ApplicativeMonoid.java</span></div><h1>ApplicativeMonoid.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.util.applicative;
+
+import com.dan323.functional.annotation.Monoid;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
+import com.dan323.functional.annotation.funcs.IApplicative;
+
+@Monoid
+public class ApplicativeMonoid&lt;FA extends F, F, A&gt; extends ApplicativeSemigroup&lt;FA, F, A&gt; implements IMonoid&lt;FA&gt; {
+
+    public ApplicativeMonoid(IMonoid&lt;A&gt; monoid, IApplicative&lt;F&gt; applicative) {
+<span class="fc" id="L13">        super(monoid, applicative);</span>
+<span class="fc" id="L14">    }</span>
+
+    public FA unit() {
+<span class="fc" id="L17">        return (FA) ApplicativeUtil.pure(applicative, MonoidUtil.unit((IMonoid&lt;A&gt;)monoid));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -33,12 +33,6 @@ jobs:
           mvn -B -f pom.xml test -P test
       - name: jacoco report
         run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco -Dgpg.skip=true
-      - name: sonar cloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
-        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=24 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323_functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION -Dgpg.skip=true
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |

@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>example-functional</artifactId>
+    <name>Examples functional annotations</name>
 
     <dependencies>
         <dependency>

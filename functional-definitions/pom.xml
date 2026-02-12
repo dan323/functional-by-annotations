@@ -9,6 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <name>Functional definitions</name>
+
     <artifactId>functional-definitions</artifactId>
     <packaging>pom</packaging>
     <modules>

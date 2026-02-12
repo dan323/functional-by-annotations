@@ -17,14 +17,14 @@ Add to your `pom.xml`:
 <dependencies>
     <!-- Annotation definitions -->
     <dependency>
-        <groupId>com.dan323</groupId>
+        <groupId>io.github.dan323</groupId>
         <artifactId>annotation-definitions</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
     
     <!-- Compiler for code generation -->
     <dependency>
-        <groupId>com.dan323</groupId>
+        <groupId>io.github.dan323</groupId>
         <artifactId>functional-compiler</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>compile</scope>
@@ -44,7 +44,7 @@ Add to your `pom.xml`:
             <configuration>
                 <annotationProcessorPaths>
                     <path>
-                        <groupId>com.dan323</groupId>
+                        <groupId>io.github.dan323</groupId>
                         <artifactId>functional-compiler</artifactId>
                         <version>1.0-SNAPSHOT</version>
                     </path>

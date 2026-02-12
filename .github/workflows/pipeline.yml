@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     name: mvn flow Java 24
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup java

@@ -28,8 +28,10 @@ jobs:
       - name: Import GPG key for signing
         run: |
           mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "no-tty" >> ~/.gnupg/gpg.conf
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --yes --pinentry-mode loopback --passphrase "${{ secrets.GPG_PASSPHRASE }}" --import
           KEYID=$(gpg --list-secret-keys --keyid-format=long | awk '/sec/{print $2}' | cut -d/ -f2 | head -n 1)
           echo "GPG_KEYID=$KEYID" >> $GITHUB_ENV

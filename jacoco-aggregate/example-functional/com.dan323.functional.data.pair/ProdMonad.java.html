@@ -18,4 +18,4 @@ public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implement
 <span class="fc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

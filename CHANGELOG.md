@@ -39,3 +39,7 @@
   - Added State functional as monad
   - Added Stack data based on State
   - Ring algebraic (no tests yet)
+* 12/02/26
+  - Migrate to java 24
+  - Structured docs
+  - Prepare for release 1.0.0

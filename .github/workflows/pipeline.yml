@@ -15,15 +15,16 @@ on:
 jobs:
   mvn_flow:
     runs-on: ubuntu-latest
-    name: mvn flow Java 17
+    name: mvn flow Java 24
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
       - name: Setup java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 17
+          distribution: temurin
+          java-version: 24
       - name: compile
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
@@ -31,13 +32,7 @@ jobs:
           mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package
           mvn -B -f pom.xml test -P test
       - name: jacoco report
-        run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco
-      - name: sonar cloud
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
-        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=17 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323:functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION
+        run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco -Dgpg.skip=true
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |
@@ -74,11 +69,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Mutation Testing
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
+      - name: Disable GPG signing in CI
+        run: |
+          git config --global commit.gpgsign false
+          git config --global tag.gpgsign false
+          git config --global --unset user.signingkey || true
       - name: Setup java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 24
+          distribution: temurin
       - name: mutation testing
         run: |
           mvn -B -f pom.xml clean

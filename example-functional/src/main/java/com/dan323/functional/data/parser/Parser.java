@@ -12,11 +12,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd;
-import static com.dan323.functional.data.parser.ParserApplicative.many;
 
 public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.ParserError>> {
 
-    public static class ParserError {
+    class ParserError {
 
         private final String message;
 
@@ -59,7 +58,7 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
     }
 
     static Parser<Character> charParser(Character c) {
-        return predicateParser(ch -> ch == c);
+        return predicateParser(ch -> c != null && c.equals(ch));
     }
 
     static Parser<String> stringParser(String st) {

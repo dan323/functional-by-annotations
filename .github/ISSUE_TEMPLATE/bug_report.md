@@ -21,4 +21,4 @@ A clear and concise description of what you expected to happen.
 Add any other context about the problem here.
 
 **Java version**
-The version of java you are executiong
+The version of java you are executing

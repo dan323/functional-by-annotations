@@ -20,11 +20,6 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
-      - name: Disable GPG signing in CI
-        run: |
-          git config --global commit.gpgsign false
-          git config --global tag.gpgsign false
-          git config --global --unset user.signingkey || true
       - name: Setup java
         uses: actions/setup-java@v1
         with:
@@ -36,7 +31,7 @@ jobs:
           mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package
           mvn -B -f pom.xml test -P test
       - name: jacoco report
-        run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco
+        run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco -Dgpg.skip=true
       - name: sonar cloud
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

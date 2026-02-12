@@ -3,7 +3,7 @@ Functionals by annotation in Java/example-functional,com.dan323.functional.data.
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.util.alternative,AlternativeMonoid,0,16,0,0,0,5,0,3,0,3
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,ProdMonoid,0,17,0,0,0,4,0,4,0,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.integer,SumMonoid,0,17,0,0,0,4,0,4,0,4
-Functionals by annotation in Java/example-functional,com.dan323.functional.data.parser,Parser.ParserError,10,32,2,2,2,6,4,4,2,4
+Functionals by annotation in Java/example-functional,com.dan323.functional.data.parser,Parser.ParserError,14,32,2,2,3,6,5,4,3,4
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.parser,Parser,45,66,6,4,5,6,8,7,5,5
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.parser,ParserSupplierApplicative,114,0,0,0,12,0,19,0,19,0
 Functionals by annotation in Java/example-functional,com.dan323.functional.data.parser,ParserApplicative,23,122,0,0,3,10,5,19,5,19

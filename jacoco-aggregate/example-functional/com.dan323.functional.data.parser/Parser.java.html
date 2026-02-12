@@ -44,38 +44,43 @@ public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList
         public boolean equals(Object obj) {
 <span class="pc bpc" id="L45" title="2 of 4 branches missed.">            return (obj instanceof Parser.ParserError parserError) &amp;&amp; Objects.equals(parserError.message, message);</span>
         }
+
+        @Override
+        public int hashCode() {
+<span class="nc" id="L50">            return Objects.hashCode(message);</span>
+        }
     }
 
 
     static Parser&lt;Character&gt; predicateParser(Predicate&lt;Character&gt; predicate) {
-<span class="fc" id="L51">        return s -&gt; {</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (s.isEmpty()) {</span>
-<span class="fc" id="L53">                return Either.left(FiniteList.of(unexpectedEnd()));</span>
+<span class="fc" id="L56">        return s -&gt; {</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (s.isEmpty()) {</span>
+<span class="fc" id="L58">                return Either.left(FiniteList.of(unexpectedEnd()));</span>
             } else {
-<span class="fc bfc" id="L55" title="All 2 branches covered.">                return predicate.test(s.charAt(0)) ? Either.right(new Pair&lt;&gt;(s.charAt(0), s.substring(1))) : Either.left(FiniteList.of(ParserError.unexpectedChar(s.charAt(0))));</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">                return predicate.test(s.charAt(0)) ? Either.right(new Pair&lt;&gt;(s.charAt(0), s.substring(1))) : Either.left(FiniteList.of(ParserError.unexpectedChar(s.charAt(0))));</span>
             }
         };
     }
 
     static Parser&lt;Character&gt; charParser(Character c) {
-<span class="nc bnc" id="L61" title="All 4 branches missed.">        return predicateParser(ch -&gt; c != null &amp;&amp; c.equals(ch));</span>
+<span class="nc bnc" id="L66" title="All 4 branches missed.">        return predicateParser(ch -&gt; c != null &amp;&amp; c.equals(ch));</span>
     }
 
     static Parser&lt;String&gt; stringParser(String st) {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (st.isEmpty()) {</span>
-<span class="nc" id="L66">            return s -&gt; Either.right(new Pair&lt;&gt;(&quot;&quot;, s));</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (st.isEmpty()) {</span>
+<span class="nc" id="L71">            return s -&gt; Either.right(new Pair&lt;&gt;(&quot;&quot;, s));</span>
         } else {
-<span class="nc" id="L68">            Parser&lt;FiniteList&lt;Character&gt;&gt; parserList = (Parser&lt;FiniteList&lt;Character&gt;&gt;) TraversalUtil.traverse(FiniteListFunctional.getInstance(), ParserApplicative.getInstance(), (Function&lt;Character, Parser&lt;Character&gt;&gt;) Parser::charParser, st.chars().mapToObj(c -&gt; (char) c).toList());</span>
-<span class="nc" id="L69">            return ParserApplicative.map(parserList, Parser::fromChars);</span>
+<span class="nc" id="L73">            Parser&lt;FiniteList&lt;Character&gt;&gt; parserList = (Parser&lt;FiniteList&lt;Character&gt;&gt;) TraversalUtil.traverse(FiniteListFunctional.getInstance(), ParserApplicative.getInstance(), (Function&lt;Character, Parser&lt;Character&gt;&gt;) Parser::charParser, st.chars().mapToObj(c -&gt; (char) c).toList());</span>
+<span class="nc" id="L74">            return ParserApplicative.map(parserList, Parser::fromChars);</span>
         }
     }
 
     static Parser&lt;Integer&gt; intParser() {
-<span class="fc" id="L74">        return ParserApplicative.map(ParserApplicative.some(predicateParser(Character::isDigit)), ((Function&lt;FiniteList&lt;Character&gt;, String&gt;) Parser::fromChars).andThen(Integer::parseInt));</span>
+<span class="fc" id="L79">        return ParserApplicative.map(ParserApplicative.some(predicateParser(Character::isDigit)), ((Function&lt;FiniteList&lt;Character&gt;, String&gt;) Parser::fromChars).andThen(Integer::parseInt));</span>
     }
 
     private static String fromChars(FiniteList&lt;Character&gt; chars) {
-<span class="fc" id="L78">        return FiniteListFunctional.foldr((c, st) -&gt; st + c.toString(), &quot;&quot;, chars);</span>
+<span class="fc" id="L83">        return FiniteListFunctional.foldr((c, st) -&gt; st + c.toString(), &quot;&quot;, chars);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

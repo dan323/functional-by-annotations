@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Zipped.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">Zipped.java</span></div><h1>Zipped.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+final class Zipped&lt;A, B, C&gt; extends InfiniteList&lt;C&gt; {
+
+    private final List&lt;A&gt; first;
+    private final List&lt;B&gt; second;
+    private final BiFunction&lt;A, B, C&gt; zipper;
+
+<span class="fc" id="L15">    Zipped(List&lt;A&gt; first, BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; second) {</span>
+<span class="fc" id="L16">        this.first = first;</span>
+<span class="fc" id="L17">        this.zipper = zipper;</span>
+<span class="fc" id="L18">        this.second = second;</span>
+<span class="fc" id="L19">    }</span>
+
+    @Override
+    public Maybe&lt;C&gt; head() {
+<span class="fc" id="L23">        var aux = MaybeMonad.map(first.head(), x -&gt; (Function&lt;B, C&gt;) ((B b) -&gt; zipper.apply(x, b)));</span>
+<span class="fc" id="L24">        return MaybeMonad.fapply(aux, second.head());</span>
+    }
+
+    @Override
+    public InfiniteList&lt;C&gt; tail() {
+<span class="fc" id="L29">        return new Zipped&lt;&gt;(first.tail(), zipper, second.tail());</span>
+    }
+
+    @Override
+    public &lt;D&gt; InfiniteList&lt;D&gt; map(Function&lt;C, D&gt; mapping) {
+<span class="fc" id="L34">        return new Zipped&lt;&gt;(first, zipper.andThen(mapping), second);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

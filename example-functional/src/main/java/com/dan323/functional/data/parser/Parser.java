@@ -44,6 +44,11 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
         public boolean equals(Object obj) {
             return (obj instanceof Parser.ParserError parserError) && Objects.equals(parserError.message, message);
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(message);
+        }
     }
 
 

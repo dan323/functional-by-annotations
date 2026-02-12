@@ -4,10 +4,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dan323</groupId>
+    <groupId>io.github.dan323</groupId>
     <artifactId>functional</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <name>Functional Java by Annotations</name>
+    <description>Functional programming structures for Java via annotations and compile-time code generation.</description>
+    <url>https://github.com/dan323/functional-by-annotations</url>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>dan323</id>
+            <name>Daniel de la Concepción</name>
+            <email>danconsa@hotmail.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <url>https://github.com/dan323/functional-by-annotations</url>
+        <connection>scm:git:https://github.com/dan323/functional-by-annotations.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/dan323/functional-by-annotations.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <modules>
         <module>functional-definitions</module>
         <module>example-functional</module>
@@ -15,18 +38,28 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <pitest.junit5.version>1.0.0</pitest.junit5.version>
-        <maven.surefire.version>3.0.0-M7</maven.surefire.version>
-        <pitest.version>1.9.4</pitest.version>
-        <maven.jacoco.version>0.8.8</maven.jacoco.version>
-        <maven.versions.version>2.11.0</maven.versions.version>
-        <junit.jupiter.version>5.9.0</junit.jupiter.version>
-        <maven.sonar.version>3.9.1.2184</maven.sonar.version>
-        <maven.javadoc.version>3.4.1</maven.javadoc.version>
+        <pitest.junit5.version>1.1.2</pitest.junit5.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
+        <pitest.version>1.16.1</pitest.version>
+        <maven.jacoco.version>0.8.12</maven.jacoco.version>
+        <maven.versions.version>2.16.2</maven.versions.version>
+        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <maven.sonar.version>4.0.0.4121</maven.sonar.version>
+        <maven.javadoc.version>3.6.3</maven.javadoc.version>
+        <maven.source.version>3.3.0</maven.source.version>
+        <sonatype.central.version>0.4.0</sonatype.central.version>
+        <maven.gpg.version>3.2.4</maven.gpg.version>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>https://central.sonatype.com/api/v1/publisher</url>
+        </repository>
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -45,7 +78,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.13.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -75,8 +108,18 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${sonatype.central.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.pitest</groupId>
@@ -111,6 +154,50 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven.gpg.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${sonatype.central.version}</version>
+                <extensions>true</extensions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>

@@ -15,7 +15,7 @@ on:
 jobs:
   mvn_flow:
     runs-on: ubuntu-latest
-    name: mvn flow Java 17
+    name: mvn flow Java 24
     steps:
       - uses: actions/checkout@master
         with:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 24
       - name: compile
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
@@ -37,7 +37,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
-        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=17 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323:functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION
+        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323:functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |
@@ -78,7 +78,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 24
       - name: mutation testing
         run: |
           mvn -B -f pom.xml clean

@@ -1,166 +1,251 @@
 # Functional Java by Annotations
 
-This projects tries to bring proper functional elements to Java
-through annotation processing.
+[![Java Version](https://img.shields.io/badge/Java-24-orange.svg)](https://openjdk.org/projects/jdk/24/)
+[![Release](https://img.shields.io/github/v/release/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/releases)
+[![License](https://img.shields.io/github/license/dan323/functional-by-annotations)](LICENSE)
 
-### How to
+[![Main Workflow](https://github.com/dan323/functional-by-annotations/workflows/Main%20Workflow/badge.svg)](https://github.com/dan323/functional-by-annotations/actions)
+[![GitHub issues](https://img.shields.io/github/issues/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/issues)
+[![GitHub stars](https://img.shields.io/github/stars/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/network)
+[![Last Commit](https://img.shields.io/github/last-commit/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/commits)
 
-You need to annotate the class that is implementing such a
-structure with the correct annotation. For example ``@Functor`` to implement ``IFunctor``.
-
-#### Functionals
-
-A functional structure is a set of operations defined over a type constructor or set of type constructors
-
-To create use it you just need to implement the needed interface, like ``IFuntor<List<?>>``
-substituting ``IFunctor`` and ``List`` for the functional structure 
-and the type constructor you would like to use. The type constructor needs to use
-the wildcard ``?``. Note that we may use type constructors with several inputs like
-``Either<A,?>`` or ``Either<?,?>``.
-
-It is not possible to concatenate constructors as in ``Maybe<List<?>>``
-
-#### Algebraic Structures
-
-An algebraic structure is a set of operations defined over a type or set of types. They
-are type constructors, but they still require the corresponding annotation.
-
-#### Compile time
-
-As the last step, add the annotation processor ``com.dan323.functional.annotation.FunctionalCompiler``
-to your project.
-
-Compilation will fail until you add enough methods to satisfy the functional and algebraic
-structure requirements.
-
-## Algebraic Structures
-
-An algebraic structure is a set of operations defined over a type or set of types.
-Methods of super-types also count towards the annotation being implemented.
-
-### Semigroup
-
-A semigroup requires only one operation
-````java
-@Semigroup
-public interface ASemigroup<T> extends ISemigroup<T> { 
-    T op(T a, T b);
-}
-````
-and it should satisfy the associative property:
-````
-op(x,op(y,z)) == op(op(x,y),z)
-````
-
-### Monoid
-
-A monoid is a semigroup with a neutral element:
-
-````java
-@Monoid
-public interface AMonoid<T> extends IMonoid<T> {
-    T unit();
-}
-````
-and it should satisfy the neutral property:
-````
-op(x, unit()) == x
-op(unit(), x) == x
-````
-
-## Functionals
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=alert_status)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=coverage)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=bugs)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=code_smells)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
 
 
-### Functor
+> Bring functional programming concepts to Java through annotations and compile-time code generation
 
-A functor requires only one function
+## What is this?
+
+**Functional Java by Annotations** makes functional programming in Java easy by using annotations to automatically generate boilerplate code. Define your functors, monads, and other functional structures with minimal code - the compiler does the rest.
+
 ```java
-@Functor
-public interface AFunctor extends IFunctor<F<?>> {
-    <A,B> F<B> map(F<A> base, Function<A,B> map);
-}
-```
-and it satisfies the following laws:
-```
-map(x, id) == x
-map(map(x, f), g) == map(x, g . f)
-```
-
-The miminal required is the only function it has: *map*
-
-### Applicative
-
-Any applicative is a functor, so it also has a map function added to the following:
-````java
-@Applicative
-public interface AnApplicative extends IApplicative<F<?>> { 
-    <A> F<A> pure(A a);
-    <A,B> F<B> fapply(F<Function<A,B>> map, F<A> base);
-    <A,B,C> F<C> liftA2(BiFunction<A,B,C> map, F<A> fa, F<B> fb);
-}
-````
-and it satisfies the following laws (adding the ones from functor):
-````
-fapply(pure(f), base) == map(base, f)
-map(g, pure(x)) == pure(g(x))
-fapply(u, pure(y)) == fapply(pure(f -> f(y)), u)
-liftA2(f, a, b) == fapply(map(f, a), b)
-fapply(f,base) == liftA2((a,b) -> a(b), f, base)
-````
-
-The mimimal required is *pure* and, either *fapply* or *liftA2*.
-
-### Monad
-
-Any monad is an applicative, and hence a functor, so it has all their functions plus the following:
-````java
 @Monad
-public interface AMonad extends IMonad<F<?>> {
-    <A,B> F<B> flatMap(Function<A,F<B>> map, F<A> base);
-    <A> F<A> join(F<F<A>> doubleMonad);
+public class MaybeMonad implements IMonad<Maybe<?>> {
+    public static <A> Maybe<A> pure(A value) { return Maybe.of(value); }
+    public static <A, B> Maybe<B> flatMap(Function<A, Maybe<B>> f, Maybe<A> fa) {
+        return fa.maybe(f, Maybe.of());
+    }
+    // Compiler generates: map, join, fapply, liftA2, keepLeft, keepRight
 }
-````
-and it satisfies the following laws (adding the ones from applicative):
-````
-flatMap(id, ffa) == join(ffa)
-flatMap(pure . f, base) == map(f, base)
-fapply(f, base) == flatMap(g -> map(g, base), f)
-join(pure(fa)) == fa
-````
+```
 
-The minimal required is *pure* and one of the following lists:
-1. *flatMap*
-2. *join* and the minimal Functor
-3. *join* and the minimal Applicative
+## 📚 Documentation Index
 
-### Foldable
+Welcome to the complete documentation for **Functional Java by Annotations**. This library brings functional programming concepts from category theory to Java through annotations and compile-time code generation.
 
-A foldable structure is one we can collapse. Up to now it has 3 functions defined:
+### 🚀 Getting Started
 
-````java
-@Foldable
-public interface AFoldable extends IFoldable<F<?>> {
-    <A> A fold(IMonoid<A> monoid, F<A> a);
-    <A, M> M foldMap(IMonoid<M> monoid, Function<A,M> function, F<A> base);
-    <A, B> B foldr(BiFunction<A,B,B> function, B b, F<A> fa);
+**Start here if you're new to the library**
+
+- **[Getting Started Guide](docs/GETTING_STARTED.md)**
+    - Installation and setup
+    - Your first Functor, Monad, and Monoid
+    - Common patterns and troubleshooting
+    - Quick examples to get you productive
+
+### 🧠 Core Documentation
+
+**Understanding the library**
+
+- **[Core Concepts](docs/CORE_CONCEPTS.md)**
+    - Type hierarchy and structure
+    - Functional vs Algebraic structures
+    - Minimal implementations
+    - Type constructors and variance
+
+- **[Functional Structures](docs/FUNCTIONAL_STRUCTURES.md)**
+    - Functor, Applicative, Monad
+    - Foldable, Traversal
+    - Alternative
+    - Laws and requirements
+
+- **[Algebraic Structures](docs/ALGEBRAIC_STRUCTURES.md)**
+    - Semigroup, Monoid
+    - Ring
+    - Laws and examples
+
+### 📖 Practical Guides
+
+**Real-world usage**
+
+- **[Implementation Examples](docs/EXAMPLES.md)**
+    - Maybe (Optional values)
+    - Either (Error handling)
+    - FiniteList (Functional lists)
+    - Identity, Continuation, Function monads
+    - Boolean and Integer monoids
+    - Complete implementations with usage
+
+- **[API Reference](docs/API_REFERENCE.md)**
+    - All annotations
+    - Interface methods
+    - Utility classes
+    - Data structures
+    - Quick reference tables
+
+## 📖 Quick Reference
+
+### Annotations
+
+| Annotation | Purpose | Minimal Required |
+|------------|---------|------------------|
+| `@Functor` | Transform values in context | `map` |
+| `@Applicative` | Apply wrapped functions | `pure` + (`fapply` OR `liftA2`) |
+| `@Monad` | Chain computations | `pure` + `flatMap` |
+| `@Foldable` | Reduce structures | ONE of (`fold`, `foldMap`, `foldr`) |
+| `@Traversal` | Map with effects | `traverse` OR `sequenceA` |
+| `@Alternative` | Choice operations | `empty` + `disjunction` |
+| `@Semigroup` | Associative operation | `op` |
+| `@Monoid` | Semigroup with identity | `op` + `unit` |
+| `@Ring` | Addition & multiplication | Both operations |
+
+### Quick Links
+
+- 📝 [Contributing Guidelines](CONTRIBUTING.md)
+- 🔧 [CI/CD Pipeline](docs/PIPELINE.md)
+- 📜 [Changelog](CHANGELOG.md)
+- 📄 [License](LICENSE)
+- 🤝 [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## 🎯 Learning Path
+
+### For Beginners
+
+1. Read [Getting Started](docs/GETTING_STARTED.md)
+1. Understand [Core Concepts](docs/CORE_CONCEPTS.md)
+1. Study [Examples](docs/EXAMPLES.md)
+1. Try implementing your own structures
+
+### For Experienced Developers
+
+1. Jump to [Functional Structures](docs/FUNCTIONAL_STRUCTURES.md)
+1. Review [Algebraic Structures](docs/ALGEBRAIC_STRUCTURES.md)
+1. Reference [API Documentation](docs/API_REFERENCE.md)
+1. Explore the `example-functional` module
+
+### For Contributors
+
+1. Read [Contributing Guidelines](CONTRIBUTING.md)
+1. Check [Testing Requirements](CONTRIBUTING.md#testing-requirements)
+1. Understand mutation testing (85%+ coverage)
+
+## 🔍 What's Where?
+
+### Installation & Setup
+→ [Getting Started](docs/GETTING_STARTED.md#installation)
+
+### Understanding Functors
+→ [Functional Structures - Functor](docs/FUNCTIONAL_STRUCTURES.md#functor)
+
+### Understanding Monads
+→ [Functional Structures - Monad](docs/FUNCTIONAL_STRUCTURES.md#monad)
+
+### Maybe/Optional Pattern
+→ [Examples - Maybe](docs/EXAMPLES.md#example-1-maybe-optional-values)
+
+### Error Handling with Either
+→ [Examples - Either](docs/EXAMPLES.md#example-2-either-error-handling)
+
+### Working with Lists
+→ [Examples - FiniteList](docs/EXAMPLES.md#example-3-finitelist-functional-lists)
+
+### Combining Values (Monoids)
+→ [Algebraic Structures - Monoid](docs/ALGEBRAIC_STRUCTURES.md#monoid)
+
+### Complete API
+→ [API Reference](docs/API_REFERENCE.md)
+
+## 📊 Project Statistics
+
+- **Java Version**: 24
+- **Modules**: 3 (annotations, compiler, examples)
+- **Annotations**: 9 functional + algebraic structures
+- **Test Coverage**: Target 85%+ with mutation testing
+- **Build Tool**: Maven 3.6+
+
+## 🎓 Category Theory Background
+
+This library is inspired by concepts from category theory:
+
+- **Functor**: A mapping between categories preserving structure
+- **Applicative**: Functors with the ability to apply functions within structure
+- **Monad**: Structures that allow chaining of computations
+- **Semigroup**: A set with an associative binary operation
+- **Monoid**: A semigroup with an identity element
+
+### Further Reading
+
+- "Functional Programming in Java" by Venkat Subramaniam
+- "Category Theory for Programmers" by Bartosz Milewski
+- Haskell documentation
+- Scala Cats library
+
+## 🔗 Related Projects
+
+- **[Vavr](https://www.vavr.io/)**: Functional programming library for Java
+- **[Cats](https://typelevel.org/cats/)**: Category theory library for Scala
+- **[fp-ts](https://gcanti.github.io/fp-ts/)**: Functional programming in TypeScript
+
+## 💬 Getting Help
+
+- 📚 Browse this documentation
+- 🐛 [Report Issues](CONTRIBUTING.md)
+- 💡 Ask questions in GitHub Discussions
+- 📖 Check the [examples module](example-functional)
+
+## 🏗️ Project Structure
+
+```
+functional-by-annotations/
+├── functional-definitions/
+│   ├── annotation-definitions/     # @Functor, @Monad, etc.
+│   └── functional-compiler/        # Annotation processor
+├── example-functional/             # Example implementations
+│   ├── src/main/java/.../data/    # Data structures
+│   └── src/test/java/             # Tests
+├── jacoco-functional/             # Coverage aggregation
+└── docs/                          # This documentation
+    ├── README.md                  # This file
+    ├── GETTING_STARTED.md
+    ├── CORE_CONCEPTS.md
+    ├── FUNCTIONAL_STRUCTURES.md
+    ├── ALGEBRAIC_STRUCTURES.md
+    ├── EXAMPLES.md
+    ├── API_REFERENCE.md
+    └── JAVA24_UPGRADE.md
+```
+
+## 🎉 Quick Start Example
+
+```java
+// 1. Define your data type
+public sealed interface Maybe<A> permits Nothing, Just {
+    <C> C maybe(Function<A, C> f, C constant);
 }
-````
 
-and they satisfy the following laws:
-````
-fold(m, b) == foldMap(m, Function.identity(), b)
-foldr(f, z, t) == (foldMap(EndoMonoid, f, t))(z)
-foldMap(m, f, b) == foldr((x,y) -> m.op(f(x), y) , m.unit(), b)
-````
+// 2. Add annotation and minimal implementation
+@Monad
+public class MaybeMonad implements IMonad<Maybe<?>> {
+    public static <A> Maybe<A> pure(A a) {
+        return Maybe.of(a);
+    }
+    
+    public static <A, B> Maybe<B> flatMap(Function<A, Maybe<B>> f, Maybe<A> fa) {
+        return fa.maybe(f, Maybe.of());
+    }
+}
 
-where *EndoMonoid(A)* is the monoid defined over the functions from and to *A* with *op(f,g) = f . g*
+// 3. Use it - the compiler generated map, join, fapply, etc.
+Maybe<Integer> result = MaybeMonad.flatMap(
+    x -> x > 10 ? Maybe.of(x) : Maybe.of(),
+    MaybeMonad.map(MaybeMonad.pure(5), x -> x * 2)
+);
+```
 
-The minimal required is *foldr* or *foldMap*
+---
 
-### Traversable
-
-**TODO**
-
-### Alternative
-
-**TODO**
+**Ready to dive in?** Start with the [Getting Started Guide](docs/GETTING_STARTED.md)!

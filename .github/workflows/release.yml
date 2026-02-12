@@ -72,6 +72,7 @@ jobs:
       - name: Deploy selected modules
         run: |
           mvn -pl functional-definitions/annotation-definitions,functional-definitions/functional-compiler -am clean deploy \
+            -Dmaven.test.skip=true \
             -Dgpg.pinentryMode=loopback \
             -Dgpg.passphrase="${GPG_PASSPHRASE}"
         env:

@@ -37,7 +37,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
-        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=17 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323:functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION
+        run: mvn -B -f pom.xml verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=24 -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.projectKey=dan323:functional-by-annotations -Dsonar.organization=$SONAR_ORGANIZATION
       - name: set PR number
         if: github.event_name == 'pull_request'
         run: |

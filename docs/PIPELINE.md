@@ -120,7 +120,7 @@ SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
 - Project Key: `dan323:functional-by-annotations`
 - Organization: From secret `SONAR_ORGANIZATION`
 - Java Source: 24
-- Java Target: 17
+- Java Target: 24
 
 **To activate SonarCloud badges**, you just need:
 1. Ensure secrets are configured in GitHub

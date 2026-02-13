@@ -19,3 +19,5 @@ target
 
 # Ignore log files
 *.log
+
+agent_generated

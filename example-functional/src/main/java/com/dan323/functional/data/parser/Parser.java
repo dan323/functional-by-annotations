@@ -1,9 +1,11 @@
 package com.dan323.functional.data.parser;
 
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.annotation.compiler.util.TraversalUtil;
 import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.state.StateWithError;
 
@@ -11,6 +13,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static com.dan323.functional.data.list.FiniteList.cons;
 import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd;
 
 public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.ParserError>> {
@@ -70,7 +73,11 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
         if (st.isEmpty()) {
             return s -> Either.right(new Pair<>("", s));
         } else {
-            Parser<FiniteList<Character>> parserList = (Parser<FiniteList<Character>>) TraversalUtil.traverse(FiniteListFunctional.getInstance(), ParserApplicative.getInstance(), (Function<Character, Parser<Character>>) Parser::charParser, st.chars().mapToObj(c -> (char) c).toList());
+            Parser<FiniteList<Character>> parserList = (Parser<FiniteList<Character>>) TraversalUtil.traverse(
+                    FiniteListFunctional.getInstance(),
+                    ParserApplicative.getInstance(),
+                    (Function<Character, Parser<Character>>) Parser::charParser,
+                    FiniteList.fromJavaList(st.chars().mapToObj(c -> (char) c).toList()));
             return ParserApplicative.map(parserList, Parser::fromChars);
         }
     }
@@ -82,4 +89,16 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
     private static String fromChars(FiniteList<Character> chars) {
         return FiniteListFunctional.foldr((c, st) -> st + c.toString(), "", chars);
     }
+
+    static <A> Parser<Maybe<A>> optional(Parser<A> parser) {
+        return s -> parser.apply(s).either(_ -> Either.<FiniteList<ParserError>,Pair<Maybe<A>,String>>right(new Pair<>(Maybe.of(), s)),
+                pair -> pair.map((elem, output) -> Either.<FiniteList<ParserError>,Pair<Maybe<A>,String>>right(new Pair<>(Maybe.of(elem), output))));
+    }
+
+    static <A,B> Parser<FiniteList<A>> sepBy(Parser<A> parser, Parser<B> separator) {
+        Parser<Function<FiniteList<A>,FiniteList<A>>> cons = ParserApplicative.map(optional(parser), optA -> lst -> optA.maybe(a -> cons(a,lst), lst));
+        Parser<A> parserWithSeparator = (Parser<A>) ApplicativeUtil.keepRight(ParserApplicative.getInstance(), separator, parser);
+        return ParserApplicative.fapply(cons, ParserApplicative.many(parserWithSeparator));
+    }
+
 }

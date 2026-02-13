@@ -9,7 +9,7 @@
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>functional definition annotation processor</name>
+    <name>Functional definition annotation processor</name>
 
     <artifactId>functional-compiler</artifactId>
     <dependencies>

@@ -12,6 +12,7 @@ import java.util.function.Function;
  * @param <A> output type
  * @param <S> state type
  */
+@FunctionalInterface
 public interface State<A, S> extends StateWithError<A, S, Void> {
 
     static <A,S> State<A,S> fromFun(Function<S,Pair<A,S>> fun){

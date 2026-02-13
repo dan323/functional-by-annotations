@@ -10,7 +10,6 @@ import com.dan323.functional.annotation.funcs.IMonad;
 import com.dan323.functional.annotation.funcs.ITraversal;
 import com.dan323.functional.data.util.alternative.AlternativeMonoid;
 
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -25,7 +24,7 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
     }
 
     public static <K, A> K traverse(IApplicative<K> applicative, Function<A, K> fun, FiniteList<A> lst) {
-        var empty = ApplicativeUtil.pure(applicative, List.of());
+        var empty = ApplicativeUtil.pure(applicative, FiniteList.nil());
         return foldr((x, y) -> ApplicativeUtil.liftA2(applicative, (BiFunction<A, FiniteList<A>, FiniteList<A>>) FiniteList::cons, fun.apply(x), y), empty, lst);
     }
 

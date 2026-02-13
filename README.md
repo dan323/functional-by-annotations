@@ -87,6 +87,17 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
     - Data structures
     - Quick reference tables
 
+- **[Parser Combinators](docs/PARSER.md)**
+    - Character and string parsers
+    - Parser combinators (optional, many, some, disjunction)
+    - Lookahead and error handling
+    - Best practices for parser composition
+
+### 🧭 Architecture & Build
+
+- **[Architecture](docs/ARCHITECTURE.md)**
+- **[Building](docs/BUILDING.md)**
+
 ## 📖 Quick Reference
 
 ### Annotations
@@ -105,6 +116,8 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 
 ### Quick Links
 
+- 🧭 [Architecture](docs/ARCHITECTURE.md)
+- 🏗️ [Building](docs/BUILDING.md)
 - 📝 [Contributing Guidelines](CONTRIBUTING.md)
 - 🔧 [CI/CD Pipeline](docs/PIPELINE.md)
 - 📜 [Changelog](CHANGELOG.md)

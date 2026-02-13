@@ -9,7 +9,7 @@
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>functional definition annotations</name>
+    <name>Functional definition annotations</name>
 
     <artifactId>annotation-definitions</artifactId>
     <dependencies>

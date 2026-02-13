@@ -29,7 +29,7 @@ jobs:
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
         run: |
-          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package -Dmaven.test.skip=true
           mvn -B -f pom.xml test -P test
       - name: jacoco report
         run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco -Dgpg.skip=true

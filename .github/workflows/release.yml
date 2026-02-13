@@ -88,7 +88,7 @@ jobs:
           git config user.email "github-actions@github.com"
           git commit -am "Release ${{ steps.compute.outputs.release }}"
           git tag v${{ steps.compute.outputs.release }}
-          git push origin master --tags
+          git push origin v${{ steps.compute.outputs.release }}
 
       # 4️⃣ Set next snapshot
       - name: Set next snapshot

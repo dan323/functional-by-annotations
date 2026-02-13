@@ -17,7 +17,7 @@ public class MonoidCompilerTest {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/monoid/MonoidInteger")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.1-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.2-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
@@ -29,7 +29,7 @@ public class MonoidCompilerTest {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/monoid/NotPublicTypeMonoid")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.1-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.2-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);

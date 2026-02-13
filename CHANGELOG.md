@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 - Future notes.
+
+## [1.2] - 2026-06-14
 ### Features
 - Parser: `sepBy()` - Parse separated values with optional separator
 - Parser: `optional()` - Parse optionally, returns `Optional<A>`

@@ -5,7 +5,7 @@
 ### Features
 - FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.
 
-## [1.2] - 2026-06-14
+## [1.2] - 2026-02-14
 ### Features
 - Parser: `sepBy()` - Parse separated values with optional separator
 - Parser: `optional()` - Parse optionally, returns `Optional<A>`

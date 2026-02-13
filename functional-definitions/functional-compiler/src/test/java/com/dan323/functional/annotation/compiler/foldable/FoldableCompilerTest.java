@@ -18,7 +18,7 @@ public class FoldableCompilerTest {
         var args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/foldable/NoPublicTypeFoldable")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.0-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.1-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
         var flags = args.toArray(new String[4]);
         var k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
@@ -30,7 +30,7 @@ public class FoldableCompilerTest {
         var args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/foldable/FoldableROpt")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.0-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.1-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
         var flags = args.toArray(new String[4]);
         var k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
@@ -50,7 +50,7 @@ public class FoldableCompilerTest {
                         "src/main/java/com/dan323/functional/annotation/compiler/util/SemigroupUtil")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.0-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.1-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
         var flags = args.toArray(new String[4]);
         var k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);

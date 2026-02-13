@@ -19,14 +19,14 @@ Add to your `pom.xml`:
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>annotation-definitions</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </dependency>
     
     <!-- Compiler for code generation -->
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>functional-compiler</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
@@ -46,7 +46,7 @@ Add to your `pom.xml`:
                     <path>
                         <groupId>io.github.dan323</groupId>
                         <artifactId>functional-compiler</artifactId>
-                        <version>1.0-SNAPSHOT</version>
+                        <version>1.1-SNAPSHOT</version>
                     </path>
                 </annotationProcessorPaths>
                 <annotationProcessors>

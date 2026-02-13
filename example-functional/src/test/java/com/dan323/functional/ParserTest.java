@@ -65,18 +65,6 @@ public class ParserTest {
     }
 
     @Test
-    void sepByManually() {
-        var intparser = Parser.intParser();
-        var sepParser = Parser.stringParser(",");
-        var result = ApplicativeUtil.keepRight(ParserApplicative.getInstance(), sepParser, intparser).apply(",123");
-        var sepResult = sepParser.apply(",123");
-        var intResult = intparser.apply("123");
-        System.out.println(sepResult);
-        System.out.println(intResult);
-        System.out.println(result);
-    }
-
-    @Test
     void sepByEmpty() {
         var sepByInt = Parser.sepBy(Parser.intParser(), Parser.stringParser(","));
         var result = sepByInt.apply("abc");

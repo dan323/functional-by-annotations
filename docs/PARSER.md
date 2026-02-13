@@ -34,16 +34,16 @@ Parser<Integer> number = Parser.intParser();
 ## Parser Combinators
 
 ### Optional Parsing
-Try to parse a value, returning `Optional<A>`. This also provides lookahead/peeking without consuming input:
+Try to parse a value, returning `Maybe<A>`. This also provides lookahead/peeking without consuming input:
 ```java
-Parser<Optional<Integer>> maybeInt = Parser.optional(Parser.intParser());
+Parser<Maybe<Integer>> maybeInt = Parser.optional(Parser.intParser());
 
 // For peeking without consuming input:
-Parser<Optional<Character>> nextIsDigit = Parser.optional(
+Parser<Maybe<Character>> nextIsDigit = Parser.optional(
     Parser.predicateParser(Character::isDigit)
 );
 var result = nextIsDigit.apply("123abc");
-// Returns: Either.right(Pair(Optional('1'), "123abc"))  // input not consumed
+// Returns: Either.right(Pair(Maybe.of('1'), "123abc"))  // input not consumed
 ```
 
 ### Many/Some

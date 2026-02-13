@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Generating.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">Generating.java</span></div><h1>Generating.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import com.dan323.functional.data.optional.Maybe;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
+final class Generating&lt;A&gt; extends InfiniteList&lt;A&gt; {
+
+    private final A head;
+    private final UnaryOperator&lt;A&gt; generator;
+
+<span class="nc" id="L14">    Generating(A first, UnaryOperator&lt;A&gt; generator){</span>
+<span class="nc bnc" id="L15" title="All 4 branches missed.">        if (first == null || generator == null){</span>
+<span class="nc" id="L16">            throw new IllegalArgumentException(&quot;Inputs must not be null&quot;);</span>
+        }
+<span class="nc" id="L18">        this.head = first;</span>
+<span class="nc" id="L19">        this.generator = generator;</span>
+<span class="nc" id="L20">    }</span>
+
+    @Override
+    public Maybe&lt;A&gt; head() {
+<span class="nc" id="L24">        return Maybe.of(head);</span>
+    }
+
+    @Override
+    public InfiniteList&lt;A&gt; tail() {
+<span class="nc" id="L29">        return new Generating&lt;&gt;(generator.apply(head), generator);</span>
+    }
+
+    @Override
+    public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+<span class="nc" id="L34">        return new GeneratingMapped&lt;&gt;(this, mapping);</span>
+    }
+
+    protected static final class GeneratingMapped&lt;A,B&gt; extends InfiniteList&lt;B&gt; {
+
+        private final List&lt;A&gt; originalList;
+        private final Function&lt;A,B&gt; mapping;
+
+<span class="nc" id="L42">        GeneratingMapped(List&lt;A&gt; originalList, Function&lt;A,B&gt; mapping){</span>
+<span class="nc" id="L43">            this.mapping = mapping;</span>
+<span class="nc" id="L44">            this.originalList = originalList;</span>
+<span class="nc" id="L45">        }</span>
+
+        @Override
+        public Maybe&lt;B&gt; head() {
+<span class="nc" id="L49">            return originalList.head().maybe(h -&gt; Maybe.of(mapping.apply(h)), Maybe.of());</span>
+        }
+
+        @Override
+        public InfiniteList&lt;B&gt; tail() {
+<span class="nc" id="L54">            return new GeneratingMapped&lt;&gt;(originalList.tail(), mapping);</span>
+        }
+
+        @Override
+        public &lt;B1&gt; InfiniteList&lt;B1&gt; map(Function&lt;B, B1&gt; mapping) {
+<span class="nc" id="L59">            return new GeneratingMapped&lt;&gt;(originalList, mapping.compose(this.mapping));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

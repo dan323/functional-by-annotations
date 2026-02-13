@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FoldableUtil.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.util</a> &gt; <span class="el_source">FoldableUtil.java</span></div><h1>FoldableUtil.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.util;
+
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.funcs.IFoldable;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+/**
+ * Access all applicative functions in an {@link IFoldable} using reflexion
+ *
+ * @author daniel
+ */
+public final class FoldableUtil {
+
+<span class="nc" id="L16">    private FoldableUtil() {</span>
+<span class="nc" id="L17">        throw new UnsupportedOperationException();</span>
+    }
+
+    public static &lt;F, A&gt; A fold(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends A&gt; monoid, F a) {
+<span class="fc" id="L21">        return FunctionalUtil.foldableFold(foldable, monoid, a)</span>
+<span class="fc" id="L22">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The foldable is not correctly implemented.&quot;));</span>
+    }
+
+    public static &lt;F, A, M&gt; M foldMap(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends M&gt; monoid, Function&lt;A,M&gt; function, F base){
+<span class="fc" id="L26">        return FunctionalUtil.foldableFoldMap(foldable, monoid, function, base)</span>
+<span class="pc" id="L27">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The foldable is not correctly implemented.&quot;));</span>
+    }
+
+    public static &lt;F, A, B&gt; B foldr(IFoldable&lt;? extends F&gt; foldable, BiFunction&lt;A,B,B&gt; function, B b, F fa){
+<span class="fc" id="L31">        return FunctionalUtil.foldableFoldr(foldable, function, b, fa)</span>
+<span class="pc" id="L32">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The foldable is not correctly implemented.&quot;));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

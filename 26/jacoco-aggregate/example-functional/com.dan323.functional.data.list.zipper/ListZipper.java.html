@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ListZipper.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list.zipper</a> &gt; <span class="el_source">ListZipper.java</span></div><h1>ListZipper.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list.zipper;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.list.List;
+import com.dan323.functional.data.list.ListUtils;
+import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
+
+import java.util.function.Function;
+
+/**
+ * Zipper representing the list rev(left)++right
+ * &lt;p&gt;
+ * It represents only finite lists
+ *
+ * @param &lt;A&gt;
+ * @author Daniel de la Concepcion
+ */
+public final class ListZipper&lt;A&gt; {
+
+    private final FiniteList&lt;A&gt; left;
+    private final FiniteList&lt;A&gt; right;
+
+    public int index(){
+<span class="nc" id="L27">        return left.length();</span>
+    }
+
+    ListZipper(FiniteList&lt;A&gt; left, A pointer, FiniteList&lt;A&gt; right) {
+<span class="nc" id="L31">        this(left, FiniteList.cons(pointer, right));</span>
+<span class="nc" id="L32">    }</span>
+
+<span class="nc" id="L34">    ListZipper(FiniteList&lt;A&gt; left, FiniteList&lt;A&gt; right) {</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">        if (left == null || right == null) {</span>
+<span class="nc" id="L36">            throw new IllegalArgumentException(&quot;No input can be null&quot;);</span>
+        }
+<span class="nc" id="L38">        this.left = left;</span>
+<span class="nc" id="L39">        this.right = right;</span>
+<span class="nc" id="L40">    }</span>
+
+<span class="nc" id="L42">    ListZipper(FiniteList&lt;A&gt; finiteList) {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (finiteList == null) {</span>
+<span class="nc" id="L44">            throw new IllegalArgumentException(&quot;No input can be null&quot;);</span>
+        }
+<span class="nc" id="L46">        this.left = FiniteList.nil();</span>
+<span class="nc" id="L47">        this.right = finiteList;</span>
+<span class="nc" id="L48">    }</span>
+
+    public Maybe&lt;A&gt; get() {
+<span class="nc" id="L51">        return right.head();</span>
+    }
+
+    FiniteList&lt;A&gt; getLeft() {
+<span class="nc" id="L55">        return left;</span>
+    }
+
+    FiniteList&lt;A&gt; getRight() {
+<span class="nc" id="L59">        return right.tail();</span>
+    }
+
+    public static &lt;A&gt; ListZipper&lt;A&gt; zipFrom(FiniteList&lt;A&gt; original) {
+<span class="nc" id="L63">        return new ListZipper&lt;&gt;(original);</span>
+    }
+
+    public Maybe&lt;ListZipper&lt;A&gt;&gt; moveLeft() {
+<span class="nc" id="L67">        return MaybeMonad.map(left.head(), x -&gt; new ListZipper&lt;&gt;(left.tail(), x, right));</span>
+    }
+
+    public Maybe&lt;ListZipper&lt;A&gt;&gt; moveRight() {
+<span class="nc" id="L71">        return MaybeMonad.map(right.head(), x -&gt; new ListZipper&lt;&gt;(FiniteList.cons(x, left), right.tail()));</span>
+    }
+
+    public ListZipper&lt;A&gt; modify(Function&lt;A, A&gt; map) {
+<span class="nc" id="L75">        return MaybeMonad.map(MaybeMonad.map(right.head(), map), h -&gt; FiniteList.cons(h, right.tail())).maybe(r -&gt; new ListZipper&lt;&gt;(left, r), this);</span>
+    }
+
+    public ListZipper&lt;A&gt; set(A b) {
+<span class="nc" id="L79">        return modify(x -&gt; b);</span>
+    }
+
+    public List&lt;A&gt; toList() {
+<span class="nc" id="L83">        return ListUtils.concat(ListUtils.reverse(left), right);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L88">        return toList().toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

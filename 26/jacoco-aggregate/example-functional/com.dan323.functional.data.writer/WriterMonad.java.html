@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>WriterMonad.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.writer</a> &gt; <span class="el_source">WriterMonad.java</span></div><h1>WriterMonad.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.writer;
+
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.compiler.util.MonoidUtil;
+import com.dan323.functional.annotation.compiler.util.SemigroupUtil;
+import com.dan323.functional.annotation.funcs.IMonad;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+@Monad
+public class WriterMonad&lt;W&gt; implements IMonad&lt;Writer&lt;?, W&gt;&gt; {
+
+    private final IMonoid&lt;W&gt; monoid;
+
+<span class="nc" id="L17">    public WriterMonad(IMonoid&lt;W&gt; logMonoid) {</span>
+<span class="nc" id="L18">        this.monoid = logMonoid;</span>
+<span class="nc" id="L19">    }</span>
+
+    @Override
+    public Class&lt;Writer&lt;?, W&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L23">        return (Class&lt;Writer&lt;?, W&gt;&gt;) (Class&lt;?&gt;) Writer.class;</span>
+    }
+
+    public &lt;A, B&gt; Writer&lt;B, W&gt; map(Writer&lt;A, W&gt; writer, Function&lt;A, B&gt; function) {
+<span class="nc" id="L27">        return new Writer&lt;&gt;(function.apply(writer.execute()), writer.log());</span>
+    }
+
+    public &lt;A&gt; Writer&lt;A, W&gt; pure(A a) {
+<span class="nc" id="L31">        return new Writer&lt;&gt;(a, MonoidUtil.unit(monoid));</span>
+    }
+
+    public &lt;A, B&gt; Writer&lt;B, W&gt; fapply(Writer&lt;A, W&gt; base, Writer&lt;Function&lt;A, B&gt;, W&gt; function) {
+<span class="nc" id="L35">        return new Writer&lt;&gt;(function.execute().apply(base.execute()), SemigroupUtil.op(monoid, function.log(), base.log()));</span>
+    }
+
+    public &lt;A, B&gt; Writer&lt;B, W&gt; flatMap(Function&lt;A, Writer&lt;B, W&gt;&gt; fun, Writer&lt;A, W&gt; writer) {
+<span class="nc" id="L39">        var writ = fun.apply(writer.execute());</span>
+<span class="nc" id="L40">        return new Writer&lt;&gt;(writ.execute(), SemigroupUtil.op(monoid, writer.log(), writ.log()));</span>
+    }
+
+    public &lt;A&gt; Writer&lt;A, W&gt; join(Writer&lt;Writer&lt;A, W&gt;, W&gt; writer) {
+<span class="nc" id="L44">        return new Writer&lt;&gt;(writer.execute().execute(), SemigroupUtil.op(monoid, writer.log(), writer.execute().log()));</span>
+    }
+
+    public &lt;A, B, C&gt; Writer&lt;C, W&gt; liftA2(BiFunction&lt;A, B, C&gt; function, Writer&lt;A, W&gt; aWriter, Writer&lt;B, W&gt; bWriter) {
+<span class="nc" id="L48">        var c = function.apply(aWriter.execute(), bWriter.execute());</span>
+<span class="nc" id="L49">        var w = SemigroupUtil.op(monoid, aWriter.log(), bWriter.log());</span>
+<span class="nc" id="L50">        return new Writer&lt;&gt;(c, w);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,14 +1,11 @@
 package com.dan323.functional.data.list;
 
-import com.dan323.functional.annotation.Functor;
-import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.data.optional.Maybe;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-public sealed interface List<A> permits FiniteList, InfiniteList{
+public sealed interface List<A> permits FiniteList, InfiniteList {
 
     Maybe<A> head();
 

@@ -46,7 +46,7 @@
         <pitest.version>1.22.1</pitest.version>
         <maven.jacoco.version>0.8.14</maven.jacoco.version>
         <maven.versions.version>2.16.2</maven.versions.version>
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <junit.jupiter.version>6.0.2</junit.jupiter.version>
         <maven.sonar.version>4.0.0.4121</maven.sonar.version>
         <maven.javadoc.version>3.6.3</maven.javadoc.version>
         <maven.source.version>3.3.0</maven.source.version>
@@ -204,6 +204,27 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
+                <configuration>
+                    <ruleSet>
+                        <ignoreVersions>
+                            <ignoreVersion>
+                                <type>regex</type>
+                                <version>.*-M\d+</version>
+                            </ignoreVersion>
+                        </ignoreVersions>
+                        <rules>
+                            <rule>
+                                <groupId>io.github.dan323</groupId>
+                                <ignoreVersions>
+                                    <ignoreVersion>
+                                        <type>regex</type>
+                                        <version>.*</version>
+                                    </ignoreVersion>
+                                </ignoreVersions>
+                            </rule>
+                        </rules>
+                    </ruleSet>
+                </configuration>
                 <executions>
                     <execution>
                         <id>check</id>

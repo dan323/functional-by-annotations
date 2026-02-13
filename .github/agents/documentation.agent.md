@@ -20,3 +20,8 @@ in this documentation to help users understand how to use the new functionality 
 
 Also, the CHANGELOG.md should be updated with a clear description of the changes made, 
 including any new features, bug fixes, or breaking changes. This helps users and contributors keep track of the project's evolution over time.
+
+All md files you create explaining all the changes you did should be added in a folder called
+agent_generated. All md files about documentation for human users should be added in the docs folder;
+except for the README.md file in the root folder which should be updated with a slim summary of the
+md files in docs with a link to each one.

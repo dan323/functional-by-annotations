@@ -41,11 +41,11 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
     }
 
     public static <A> Parser<A> empty() {
-        return s -> Either.left(FiniteList.of(Parser.ParserError.empty()));
+        return _ -> Either.left(FiniteList.of(Parser.ParserError.empty()));
     }
 
     public static <A> Parser<A> disjunction(Parser<A> first, Parser<A> second) {
-        return s -> first.apply(s).either(error -> second.apply(s), p -> Either.right(p));
+        return s -> first.apply(s).either(_ -> second.apply(s), p -> Either.right(p));
     }
 
     public static <A> Parser<FiniteList<A>> many(Parser<A> parser) {
@@ -53,7 +53,7 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
     }
 
     public static <A, B> Parser<B> whenFailureWhenSuccess(Parser<A> parser, Supplier<Parser<B>> errorParser, Supplier<Parser<B>> successParser) {
-        return s -> parser.apply(s).either(error -> errorParser.get().apply(s), pair -> successParser.get().apply(s));
+        return s -> parser.apply(s).either(_ -> errorParser.get().apply(s), _ -> successParser.get().apply(s));
     }
 
     public static <A> Parser<FiniteList<A>> some(Parser<A> parser) {

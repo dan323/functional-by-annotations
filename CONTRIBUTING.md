@@ -15,6 +15,28 @@ Every change should be done through a **PR** describing what the change actually
 by tests. This project executes mutation testing, and we will like to maintain **mutation coverage**
 beyond *85%* at all time; hence the importance of testing all possible options.
 
+## Contribution Workflow
+
+1. Open or select an issue to discuss the change.
+2. Create a branch from `master`.
+3. Keep changes focused and include tests.
+4. Open a PR describing the change, motivation, and testing done.
+
+## Adding a New Structure or Annotation
+
+1. Add the annotation and interface in `functional-definitions/annotation-definitions`.
+2. Define minimal method requirements in the compiler (see `StructureSignatures`).
+3. Update dependency ordering in `FunctionalDependencyTree` if applicable.
+4. Add examples in `example-functional`.
+5. Add tests for the compiler and the example structure.
+6. Update docs in `docs/` and the root `README.md`.
+
+## Modifying the Compiler
+
+- Keep changes small and tested.
+- Add or update tests under `functional-definitions/functional-compiler/src/test/java`.
+- Validate generated code by running tests in `example-functional`.
+
 ## Testing Requirements
 
 All contributions must maintain our quality standards:
@@ -37,5 +59,13 @@ mvn jacoco:report -Pjacoco
 # Mutation testing
 mvn clean test pitest:mutationCoverage
 ```
+
+## Releasing
+
+1. Ensure all tests and quality gates pass.
+2. Update `CHANGELOG.md`.
+3. Tag the release and run the release workflow.
+
+See `docs/PIPELINE.md` for CI/CD details.
 
 **See**: [Pipeline Documentation](docs/PIPELINE.md) for detailed testing information and troubleshooting.

@@ -77,7 +77,7 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
                     FiniteListFunctional.getInstance(),
                     ParserApplicative.getInstance(),
                     (Function<Character, Parser<Character>>) Parser::charParser,
-                    FiniteList.fromJavaList(st.chars().mapToObj(c -> (char) c).toList()));
+                    FiniteList.of(st.toCharArray()));
             return ParserApplicative.map(parserList, Parser::fromChars);
         }
     }

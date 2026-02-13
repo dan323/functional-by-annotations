@@ -52,16 +52,5 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
         }
     }
 
-    /**
-     * Converts a java.util.List to a FiniteList
-     *
-     * @param javaList the Java list to convert
-     * @param <A>      element type
-     * @return FiniteList containing the same elements in the same order
-     */
-    static <A> FiniteList<A> fromJavaList(java.util.List<A> javaList) {
-        return of((A[])javaList.toArray());
-    }
-
     int length();
 }

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 - Future notes.
+### Features
+- FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.
 
 ## [1.2] - 2026-06-14
 ### Features
@@ -9,7 +11,6 @@
 - Parser: `optional()` - Parse optionally, returns `Optional<A>`
 - FiniteList: Implement `collector()` for Stream integration using ArrayList as mutable intermediate
 - FiniteList: Add `fromJavaList()` static method to convert java.util.List to FiniteList
-- String: Implement `StringFunctional` with Monad, Traversal, and Alternative instances
 ### Fixes
 - FiniteListFunctional: `traverse()` implementation fixed to correctly handle empty lists and accumulate results
 ### Docs

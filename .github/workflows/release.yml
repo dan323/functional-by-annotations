@@ -69,7 +69,7 @@ jobs:
             -DprocessAllModules=true \
             -DgenerateBackupPoms=false
 
-      # 3️⃣ Deploy selected modules
+      # 2️⃣ Deploy selected modules
       - name: Deploy selected modules
         run: |
           mvn -pl functional-definitions/annotation-definitions,functional-definitions/functional-compiler -am clean deploy \
@@ -81,7 +81,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
-      # 2️⃣ Commit release + tag
+      # 3️⃣ Commit release + tag
       - name: Commit release and tag
         run: |
           git config user.name "github-actions"

@@ -7,7 +7,7 @@
     <groupId>io.github.dan323</groupId>
     <artifactId>functional</artifactId>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2</version>
     <name>Functional Java by Annotations</name>
     <description>Functional programming structures for Java via annotations and compile-time code generation.</description>
     <url>https://github.com/dan323/functional-by-annotations</url>

@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.dan323</groupId>
         <artifactId>functional</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2</version>
     </parent>
 
     <artifactId>example-functional</artifactId>

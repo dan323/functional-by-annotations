@@ -17,16 +17,16 @@ final class Nil&lt;A&gt; implements FiniteList&lt;A&gt; {
 <span class="nc" id="L17">        return 0;</span>
     }
 
-<span class="fc" id="L20">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
+<span class="nc" id="L20">    static Nil&lt;?&gt; NIL = new Nil&lt;&gt;();</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="fc" id="L24">        return Maybe.of();</span>
+<span class="nc" id="L24">        return Maybe.of();</span>
     }
 
     @Override
     public FiniteList&lt;A&gt; tail() {
-<span class="fc" id="L29">        return this;</span>
+<span class="nc" id="L29">        return this;</span>
     }
 
     @Override
@@ -36,7 +36,7 @@ final class Nil&lt;A&gt; implements FiniteList&lt;A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        return obj == NIL;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        return obj == NIL;</span>
     }
 
     @Override

@@ -23,16 +23,16 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
 
         private final String message;
 
-<span class="fc" id="L26">        private StackError(String message) {</span>
-<span class="fc" id="L27">            this.message = message;</span>
-<span class="fc" id="L28">        }</span>
+<span class="nc" id="L26">        private StackError(String message) {</span>
+<span class="nc" id="L27">            this.message = message;</span>
+<span class="nc" id="L28">        }</span>
 
         public static StackError poppingEmpty() {
-<span class="fc" id="L31">            return new StackError(&quot;Cannot perform this action on an empty stack&quot;);</span>
+<span class="nc" id="L31">            return new StackError(&quot;Cannot perform this action on an empty stack&quot;);</span>
         }
 
         public static StackError illegalState() {
-<span class="fc" id="L35">            return new StackError(&quot;This state should be unreachable&quot;);</span>
+<span class="nc" id="L35">            return new StackError(&quot;This state should be unreachable&quot;);</span>
         }
 
         @Override
@@ -42,7 +42,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
 
         @Override
         public boolean equals(Object obj) {
-<span class="pc bpc" id="L45" title="2 of 4 branches missed.">            return (obj instanceof StackError stackError) &amp;&amp; Objects.equals(stackError.message, message);</span>
+<span class="nc bnc" id="L45" title="All 4 branches missed.">            return (obj instanceof StackError stackError) &amp;&amp; Objects.equals(stackError.message, message);</span>
         }
     }
 
@@ -56,7 +56,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... -&gt; ... x |
      */
     public static &lt;A&gt; StackActions&lt;A&gt; push(A x) {
-<span class="fc" id="L59">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
+<span class="nc" id="L59">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
     }
 
     /**
@@ -66,7 +66,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... x -&gt; ... | x
      */
     public static &lt;A&gt; StackActions&lt;A&gt; pop() {
-<span class="fc" id="L69">        return s -&gt; s.head().maybe(h -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty()));</span>
+<span class="nc" id="L69">        return s -&gt; s.head().maybe(h -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty()));</span>
     }
 
     /**
@@ -102,7 +102,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... -&gt; ERROR
      */
     public static &lt;A&gt; StackActions&lt;A&gt; error(StackError stackError) {
-<span class="pc" id="L105">        return s -&gt; Either.left(stackError);</span>
+<span class="nc" id="L105">        return s -&gt; Either.left(stackError);</span>
     }
 
     /**
@@ -112,7 +112,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... x -&gt; ... |
      */
     public static &lt;A&gt; StackActions&lt;A&gt; drop() {
-<span class="fc" id="L115">        return StackActions.&lt;A&gt;pop().then(doNothing());</span>
+<span class="nc" id="L115">        return StackActions.&lt;A&gt;pop().then(doNothing());</span>
     }
 
     /**
@@ -122,7 +122,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... -&gt; ... |
      */
     public static &lt;A&gt; StackActions&lt;A&gt; doNothing() {
-<span class="fc" id="L125">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), s));</span>
+<span class="nc" id="L125">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), s));</span>
     }
 
     /**
@@ -132,7 +132,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... x -&gt; ... x x |
      */
     public static &lt;A&gt; StackActions&lt;A&gt; dup() {
-<span class="fc" id="L135">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), error(StackError.illegalState())));</span>
+<span class="nc" id="L135">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), error(StackError.illegalState())));</span>
     }
 
     /**
@@ -152,7 +152,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @return ... x y -&gt; ... x y x |
      */
     public static &lt;A&gt; StackActions&lt;A&gt; over() {
-<span class="fc" id="L155">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; StackActions.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; StackActions.&lt;A&gt;push(h).then(push(x)).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));</span>
+<span class="nc" id="L155">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; StackActions.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; StackActions.&lt;A&gt;push(h).then(push(x)).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));</span>
     }
 
     // CONCATENATIONS
@@ -165,8 +165,8 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @see #then(StackActions)
      */
     default StackActions&lt;A&gt; thenByPopped(Function&lt;Maybe&lt;A&gt;, StackActions&lt;A&gt;&gt; fun) {
-<span class="fc" id="L168">        Function&lt;Maybe&lt;A&gt;, StateWithError&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;, StackError&gt;&gt; ff = fun::apply;</span>
-<span class="fc" id="L169">        return s -&gt; StateMonad.&lt;FiniteList&lt;A&gt;, StackError&gt;getInstance().flatMap(ff, this).apply(s);</span>
+<span class="nc" id="L168">        Function&lt;Maybe&lt;A&gt;, StateWithError&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;, StackError&gt;&gt; ff = fun::apply;</span>
+<span class="nc" id="L169">        return s -&gt; StateMonad.&lt;FiniteList&lt;A&gt;, StackError&gt;getInstance().flatMap(ff, this).apply(s);</span>
     }
 
     /**
@@ -177,7 +177,7 @@ public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;,
      * @see #thenByPopped(Function)
      */
     default StackActions&lt;A&gt; then(StackActions&lt;A&gt; st) {
-<span class="fc" id="L180">        return this.thenByPopped(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
+<span class="nc" id="L180">        return this.thenByPopped(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
     }
 
     /**

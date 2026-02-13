@@ -14,27 +14,27 @@ final class Cons&lt;A&gt; extends InfiniteList&lt;A&gt; {
     private final A head;
     private final InfiniteList&lt;A&gt; tail;
 
-<span class="fc" id="L17">    Cons(A head, InfiniteList&lt;A&gt; tail) {</span>
-<span class="pc bpc" id="L18" title="2 of 4 branches missed.">        if (head == null || tail == null) {</span>
+<span class="nc" id="L17">    Cons(A head, InfiniteList&lt;A&gt; tail) {</span>
+<span class="nc bnc" id="L18" title="All 4 branches missed.">        if (head == null || tail == null) {</span>
 <span class="nc" id="L19">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L21">        this.head = head;</span>
-<span class="fc" id="L22">        this.tail = tail;</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L21">        this.head = head;</span>
+<span class="nc" id="L22">        this.tail = tail;</span>
+<span class="nc" id="L23">    }</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="fc" id="L27">        return Maybe.of(head);</span>
+<span class="nc" id="L27">        return Maybe.of(head);</span>
     }
 
     @Override
     public InfiniteList&lt;A&gt; tail() {
-<span class="fc" id="L32">        return tail;</span>
+<span class="nc" id="L32">        return tail;</span>
     }
 
     @Override
     public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L37">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
+<span class="nc" id="L37">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
     }
 
     @Override

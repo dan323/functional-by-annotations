@@ -12,14 +12,14 @@ public class JListFunctor implements IFunctor&lt;List&lt;?&gt;&gt; {
     private JListFunctor(){
     }
 
-<span class="fc" id="L15">    public static final JListFunctor FUNCTOR = new JListFunctor();</span>
+<span class="nc" id="L15">    public static final JListFunctor FUNCTOR = new JListFunctor();</span>
     public static &lt;A,B&gt; List&lt;B&gt; map(List&lt;A&gt; base, Function&lt;A,B&gt; mapping){
-<span class="fc" id="L17">        return base.stream().map(mapping).toList();</span>
+<span class="nc" id="L17">        return base.stream().map(mapping).toList();</span>
     }
 
     @Override
     public Class&lt;List&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L22">        return (Class&lt;List&lt;?&gt;&gt;) (Class&lt;?&gt;) List.class;</span>
+<span class="nc" id="L22">        return (Class&lt;List&lt;?&gt;&gt;) (Class&lt;?&gt;) List.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -28,59 +28,59 @@ public final class ListZipper&lt;A&gt; {
     }
 
     ListZipper(FiniteList&lt;A&gt; left, A pointer, FiniteList&lt;A&gt; right) {
-<span class="fc" id="L31">        this(left, FiniteList.cons(pointer, right));</span>
-<span class="fc" id="L32">    }</span>
+<span class="nc" id="L31">        this(left, FiniteList.cons(pointer, right));</span>
+<span class="nc" id="L32">    }</span>
 
-<span class="fc" id="L34">    ListZipper(FiniteList&lt;A&gt; left, FiniteList&lt;A&gt; right) {</span>
-<span class="pc bpc" id="L35" title="2 of 4 branches missed.">        if (left == null || right == null) {</span>
+<span class="nc" id="L34">    ListZipper(FiniteList&lt;A&gt; left, FiniteList&lt;A&gt; right) {</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">        if (left == null || right == null) {</span>
 <span class="nc" id="L36">            throw new IllegalArgumentException(&quot;No input can be null&quot;);</span>
         }
-<span class="fc" id="L38">        this.left = left;</span>
-<span class="fc" id="L39">        this.right = right;</span>
-<span class="fc" id="L40">    }</span>
+<span class="nc" id="L38">        this.left = left;</span>
+<span class="nc" id="L39">        this.right = right;</span>
+<span class="nc" id="L40">    }</span>
 
-<span class="fc" id="L42">    ListZipper(FiniteList&lt;A&gt; finiteList) {</span>
-<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (finiteList == null) {</span>
+<span class="nc" id="L42">    ListZipper(FiniteList&lt;A&gt; finiteList) {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (finiteList == null) {</span>
 <span class="nc" id="L44">            throw new IllegalArgumentException(&quot;No input can be null&quot;);</span>
         }
-<span class="fc" id="L46">        this.left = FiniteList.nil();</span>
-<span class="fc" id="L47">        this.right = finiteList;</span>
-<span class="fc" id="L48">    }</span>
+<span class="nc" id="L46">        this.left = FiniteList.nil();</span>
+<span class="nc" id="L47">        this.right = finiteList;</span>
+<span class="nc" id="L48">    }</span>
 
     public Maybe&lt;A&gt; get() {
-<span class="fc" id="L51">        return right.head();</span>
+<span class="nc" id="L51">        return right.head();</span>
     }
 
     FiniteList&lt;A&gt; getLeft() {
-<span class="fc" id="L55">        return left;</span>
+<span class="nc" id="L55">        return left;</span>
     }
 
     FiniteList&lt;A&gt; getRight() {
-<span class="fc" id="L59">        return right.tail();</span>
+<span class="nc" id="L59">        return right.tail();</span>
     }
 
     public static &lt;A&gt; ListZipper&lt;A&gt; zipFrom(FiniteList&lt;A&gt; original) {
-<span class="fc" id="L63">        return new ListZipper&lt;&gt;(original);</span>
+<span class="nc" id="L63">        return new ListZipper&lt;&gt;(original);</span>
     }
 
     public Maybe&lt;ListZipper&lt;A&gt;&gt; moveLeft() {
-<span class="fc" id="L67">        return MaybeMonad.map(left.head(), x -&gt; new ListZipper&lt;&gt;(left.tail(), x, right));</span>
+<span class="nc" id="L67">        return MaybeMonad.map(left.head(), x -&gt; new ListZipper&lt;&gt;(left.tail(), x, right));</span>
     }
 
     public Maybe&lt;ListZipper&lt;A&gt;&gt; moveRight() {
-<span class="fc" id="L71">        return MaybeMonad.map(right.head(), x -&gt; new ListZipper&lt;&gt;(FiniteList.cons(x, left), right.tail()));</span>
+<span class="nc" id="L71">        return MaybeMonad.map(right.head(), x -&gt; new ListZipper&lt;&gt;(FiniteList.cons(x, left), right.tail()));</span>
     }
 
     public ListZipper&lt;A&gt; modify(Function&lt;A, A&gt; map) {
-<span class="fc" id="L75">        return MaybeMonad.map(MaybeMonad.map(right.head(), map), h -&gt; FiniteList.cons(h, right.tail())).maybe(r -&gt; new ListZipper&lt;&gt;(left, r), this);</span>
+<span class="nc" id="L75">        return MaybeMonad.map(MaybeMonad.map(right.head(), map), h -&gt; FiniteList.cons(h, right.tail())).maybe(r -&gt; new ListZipper&lt;&gt;(left, r), this);</span>
     }
 
     public ListZipper&lt;A&gt; set(A b) {
-<span class="fc" id="L79">        return modify(x -&gt; b);</span>
+<span class="nc" id="L79">        return modify(x -&gt; b);</span>
     }
 
     public List&lt;A&gt; toList() {
-<span class="fc" id="L83">        return ListUtils.concat(ListUtils.reverse(left), right);</span>
+<span class="nc" id="L83">        return ListUtils.concat(ListUtils.reverse(left), right);</span>
     }
 
     @Override

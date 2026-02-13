@@ -11,11 +11,11 @@ public sealed interface Maybe&lt;A&gt; permits Nothing, Just {
     &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant);
 
     static &lt;A&gt; Maybe&lt;A&gt; of(A element) {
-<span class="fc" id="L14">        return new Just&lt;&gt;(element);</span>
+<span class="nc" id="L14">        return new Just&lt;&gt;(element);</span>
     }
 
     static &lt;A&gt; Maybe&lt;A&gt; of() {
-<span class="fc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
+<span class="nc" id="L18">        return (Maybe&lt;A&gt;) Nothing.NOTHING;</span>
     }
 
 }

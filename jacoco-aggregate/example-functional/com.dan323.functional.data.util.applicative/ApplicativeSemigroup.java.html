@@ -14,13 +14,13 @@ public class ApplicativeSemigroup&lt;FA extends F, F, A&gt; implements ISemigrou
     protected final ISemigroup&lt;A&gt; monoid;
     protected final IApplicative&lt;? extends F&gt; applicative;
 
-<span class="fc" id="L17">    public ApplicativeSemigroup(ISemigroup&lt;A&gt; monoid, IApplicative&lt;? extends F&gt; applicative) {</span>
-<span class="fc" id="L18">        this.applicative = applicative;</span>
-<span class="fc" id="L19">        this.monoid = monoid;</span>
-<span class="fc" id="L20">    }</span>
+<span class="nc" id="L17">    public ApplicativeSemigroup(ISemigroup&lt;A&gt; monoid, IApplicative&lt;? extends F&gt; applicative) {</span>
+<span class="nc" id="L18">        this.applicative = applicative;</span>
+<span class="nc" id="L19">        this.monoid = monoid;</span>
+<span class="nc" id="L20">    }</span>
 
     public FA op(FA elem1, FA elem2) {
-<span class="fc" id="L23">        return (FA) ApplicativeUtil.liftA2(applicative, (A x, A y) -&gt; SemigroupUtil.op(monoid, x, y), elem1, elem2);</span>
+<span class="nc" id="L23">        return (FA) ApplicativeUtil.liftA2(applicative, (A x, A y) -&gt; SemigroupUtil.op(monoid, x, y), elem1, elem2);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -10,11 +10,11 @@ import java.util.function.Function;
 public class ProdFunctor&lt;M, N&gt; extends ProdFunctional&lt;M,N&gt; implements IFunctor&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; {
 
     public ProdFunctor(IFunctor&lt;? extends M&gt; mFunctor, IFunctor&lt;? extends N&gt; nFunctor){
-<span class="fc" id="L13">        super(mFunctor, nFunctor);</span>
-<span class="fc" id="L14">    }</span>
+<span class="nc" id="L13">        super(mFunctor, nFunctor);</span>
+<span class="nc" id="L14">    }</span>
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; map(PairTypeContructor&lt;M, N, A&gt; base, Function&lt;A, B&gt; function) {
-<span class="fc" id="L17">        return new PairTypeContructor&lt;&gt;(FunctorUtil.map((IFunctor&lt;M&gt;) mFunctor, base.getFirst(), function), FunctorUtil.map((IFunctor&lt;N&gt;) nFunctor, base.getSecond(), function));</span>
+<span class="nc" id="L17">        return new PairTypeContructor&lt;&gt;(FunctorUtil.map((IFunctor&lt;M&gt;) mFunctor, base.getFirst(), function), FunctorUtil.map((IFunctor&lt;N&gt;) nFunctor, base.getSecond(), function));</span>
     }
 
 }

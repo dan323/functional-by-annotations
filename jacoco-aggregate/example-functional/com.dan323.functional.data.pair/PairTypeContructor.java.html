@@ -7,17 +7,17 @@ public final class PairTypeContructor&lt;M, N, A&gt; {
     private final M a;
     private final N b;
 
-<span class="fc" id="L10">    public PairTypeContructor(M a, N b) {</span>
-<span class="fc" id="L11">        this.a = a;</span>
-<span class="fc" id="L12">        this.b = b;</span>
-<span class="fc" id="L13">    }</span>
+<span class="nc" id="L10">    public PairTypeContructor(M a, N b) {</span>
+<span class="nc" id="L11">        this.a = a;</span>
+<span class="nc" id="L12">        this.b = b;</span>
+<span class="nc" id="L13">    }</span>
 
     public M getFirst() {
-<span class="fc" id="L16">        return a;</span>
+<span class="nc" id="L16">        return a;</span>
     }
 
     public N getSecond() {
-<span class="fc" id="L20">        return b;</span>
+<span class="nc" id="L20">        return b;</span>
     }
 
     @Override
@@ -27,9 +27,9 @@ public final class PairTypeContructor&lt;M, N, A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (obj == this) return true;</span>
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (obj instanceof PairTypeContructor&lt;?,?,?&gt; ptc){</span>
-<span class="pc bpc" id="L32" title="2 of 4 branches missed.">            return Objects.equals(ptc.a, a) &amp;&amp; Objects.equals(ptc.b, b);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (obj instanceof PairTypeContructor&lt;?,?,?&gt; ptc){</span>
+<span class="nc bnc" id="L32" title="All 4 branches missed.">            return Objects.equals(ptc.a, a) &amp;&amp; Objects.equals(ptc.b, b);</span>
         } else {
 <span class="nc" id="L34">            return false;</span>
         }

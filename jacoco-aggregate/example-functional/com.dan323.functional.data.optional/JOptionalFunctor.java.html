@@ -12,15 +12,15 @@ public class JOptionalFunctor implements IFunctor&lt;Optional&lt;?&gt;&gt; {
     private JOptionalFunctor() {
     }
 
-<span class="fc" id="L15">    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();</span>
+<span class="nc" id="L15">    public static final JOptionalFunctor FUNCTOR = new JOptionalFunctor();</span>
 
     public static &lt;A, B&gt; Optional&lt;B&gt; map(Optional&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L18">        return base.map(mapping);</span>
+<span class="nc" id="L18">        return base.map(mapping);</span>
     }
 
     @Override
     public Class&lt;Optional&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L23">        return (Class&lt;Optional&lt;?&gt;&gt;) (Class&lt;?&gt;) Optional.class;</span>
+<span class="nc" id="L23">        return (Class&lt;Optional&lt;?&gt;&gt;) (Class&lt;?&gt;) Optional.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

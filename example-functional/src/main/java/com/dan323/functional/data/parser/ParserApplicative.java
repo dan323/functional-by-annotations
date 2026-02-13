@@ -56,10 +56,6 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
         return s -> parser.apply(s).either(_ -> errorParser.get().apply(s), _ -> successParser.get().apply(s));
     }
 
-  /*  public static <A,B> Parser<B> keepRight(Parser<A> first, Parser<B> second) {
-        return whenFailureWhenSuccess(first, ParserApplicative::empty, () -> second);
-    }*/
-
     public static <A> Parser<FiniteList<A>> some(Parser<A> parser) {
         return whenFailureWhenSuccess(parser, () -> map(parser, FiniteList::of), () -> fapply(map(parser, a -> (lst -> FiniteList.cons(a, lst))), many(parser)));
     }

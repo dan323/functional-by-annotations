@@ -56,12 +56,8 @@ import java.util.function.Supplier;
 <span class="nc" id="L56">        return s -&gt; parser.apply(s).either(_ -&gt; errorParser.get().apply(s), _ -&gt; successParser.get().apply(s));</span>
     }
 
-  /*  public static &lt;A,B&gt; Parser&lt;B&gt; keepRight(Parser&lt;A&gt; first, Parser&lt;B&gt; second) {
-        return whenFailureWhenSuccess(first, ParserApplicative::empty, () -&gt; second);
-    }*/
-
     public static &lt;A&gt; Parser&lt;FiniteList&lt;A&gt;&gt; some(Parser&lt;A&gt; parser) {
-<span class="nc" id="L64">        return whenFailureWhenSuccess(parser, () -&gt; map(parser, FiniteList::of), () -&gt; fapply(map(parser, a -&gt; (lst -&gt; FiniteList.cons(a, lst))), many(parser)));</span>
+<span class="nc" id="L60">        return whenFailureWhenSuccess(parser, () -&gt; map(parser, FiniteList::of), () -&gt; fapply(map(parser, a -&gt; (lst -&gt; FiniteList.cons(a, lst))), many(parser)));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>StateMonad.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.state</a> &gt; <span class="el_source">StateMonad.java</span></div><h1>StateMonad.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.state;
+
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.funcs.IMonad;
+import com.dan323.functional.data.either.Either;
+import com.dan323.functional.data.pair.Pair;
+
+import java.util.function.Function;
+
+@Monad
+public class StateMonad&lt;S, E&gt; implements IMonad&lt;StateWithError&lt;?, S, E&gt;&gt; {
+
+    private StateMonad() {
+    }
+
+<span class="nc" id="L16">    private static final StateMonad&lt;?, ?&gt; STATE_FUNCTOR = new StateMonad&lt;&gt;();</span>
+
+    public static &lt;R, E&gt; StateMonad&lt;R, E&gt; getInstance() {
+<span class="nc" id="L19">        return (StateMonad&lt;R, E&gt;) STATE_FUNCTOR;</span>
+    }
+
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; map(StateWithError&lt;A, S, E&gt; state, Function&lt;A, B&gt; fun) {
+<span class="nc" id="L23">        return s -&gt; state</span>
+<span class="nc" id="L24">                .apply(s)</span>
+<span class="nc" id="L25">                .either(Either::left, k -&gt; Either.right(k.mapFirst(fun)));</span>
+    }
+
+    public &lt;A&gt; StateWithError&lt;A, S, E&gt; pure(A a) {
+<span class="nc" id="L29">        return s -&gt; Either.right(new Pair&lt;&gt;(a, s));</span>
+    }
+
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; fapply(StateWithError&lt;Function&lt;A, B&gt;, S, E&gt; functionState, StateWithError&lt;A, S, E&gt; state) {
+<span class="nc" id="L33">        return s -&gt; functionState</span>
+<span class="nc" id="L34">                .apply(s)</span>
+<span class="nc" id="L35">                .either(</span>
+                        Either::&lt;E, Pair&lt;B, S&gt;&gt;left,
+<span class="nc" id="L37">                        p1 -&gt; state.apply(p1.getValue()).either(Either::left, p2 -&gt; Either.right(new Pair&lt;&gt;(p1.getKey().apply(p2.getKey()), p2.getValue())))</span>
+                );
+    }
+
+    public &lt;A&gt; StateWithError&lt;A, S, E&gt; join(StateWithError&lt;StateWithError&lt;A, S, E&gt;, S, E&gt; stateState) {
+<span class="nc" id="L42">        return s -&gt; stateState</span>
+<span class="nc" id="L43">                .apply(s)</span>
+<span class="nc" id="L44">                .either(Either::left, p -&gt; p.getKey().apply(p.getValue()));</span>
+    }
+
+    public &lt;A, B&gt; StateWithError&lt;B, S, E&gt; flatMap(Function&lt;A, StateWithError&lt;B, S, E&gt;&gt; fun, StateWithError&lt;A, S, E&gt; state) {
+<span class="nc" id="L48">        return s -&gt; state</span>
+<span class="nc" id="L49">                .apply(s)</span>
+<span class="nc" id="L50">                .either(Either::left, p -&gt; p.mapFirst(fun).map(Function::apply));</span>
+    }
+
+    @Override
+    public Class&lt;StateWithError&lt;?, S, E&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L55">        return (Class&lt;StateWithError&lt;?, S, E&gt;&gt;) (Class&lt;?&gt;) StateWithError.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

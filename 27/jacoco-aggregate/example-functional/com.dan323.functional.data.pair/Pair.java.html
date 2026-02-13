@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Pair.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.pair</a> &gt; <span class="el_source">Pair.java</span></div><h1>Pair.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.pair;
+
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
+
+    private final Map.Entry&lt;U, V&gt; entry;
+
+<span class="nc" id="L13">    public Pair(U u, V v) {</span>
+<span class="nc" id="L14">        entry = new AbstractMap.SimpleImmutableEntry&lt;&gt;(u, v);</span>
+<span class="nc" id="L15">    }</span>
+
+    @Override
+    public U getKey() {
+<span class="nc" id="L19">        return entry.getKey();</span>
+    }
+
+    public static &lt;A,B,C&gt; BiFunction&lt;A,B,C&gt; biFunction(Function&lt;Pair&lt;A,B&gt;,C&gt; function) {
+<span class="nc" id="L23">        return ((BiFunction&lt;A,B,Pair&lt;A,B&gt;&gt;)(Pair::new)).andThen(function);</span>
+    }
+
+    public static &lt;A,B,C&gt; Function&lt;Pair&lt;A,B&gt;,C&gt; pairFunction(BiFunction&lt;A,B,C&gt; biFunction) {
+<span class="nc" id="L27">        return p -&gt; biFunction.apply(p.getKey(), p.getValue());</span>
+    }
+
+    @Override
+    public V getValue() {
+<span class="nc" id="L32">        return entry.getValue();</span>
+    }
+
+    @Override
+    public V setValue(V v) {
+<span class="nc" id="L37">        return entry.setValue(v);</span>
+    }
+
+    public &lt;U1&gt; Pair&lt;U1, V&gt; mapFirst(Function&lt;U, U1&gt; function) {
+<span class="nc" id="L41">        return new Pair&lt;&gt;(function.apply(entry.getKey()), entry.getValue());</span>
+    }
+
+    public &lt;V1&gt; Pair&lt;U, V1&gt; mapSecond(Function&lt;V, V1&gt; function) {
+<span class="nc" id="L45">        return new Pair&lt;&gt;(entry.getKey(), function.apply(entry.getValue()));</span>
+    }
+
+    public &lt;S, T&gt; Pair&lt;S, T&gt; biMap(BiFunction&lt;U, V, S&gt; first, BiFunction&lt;U, V, T&gt; second) {
+<span class="nc" id="L49">        return new Pair&lt;&gt;(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));</span>
+    }
+
+    public &lt;S&gt; S map(BiFunction&lt;U, V, S&gt; first) {
+<span class="nc" id="L53">        return first.apply(entry.getKey(), entry.getValue());</span>
+    }
+
+    public String toString() {
+<span class="nc" id="L57">        return &quot;{(&quot; + getKey() + &quot; , &quot; + getValue() + &quot;)}&quot;;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L62">        return getValue().hashCode() * 13 - 5 * getKey().hashCode();</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (obj instanceof Pair&lt;?, ?&gt; pair) {</span>
+<span class="nc bnc" id="L69" title="All 4 branches missed.">            return Objects.equals(pair.getKey(), getKey()) &amp;&amp; Objects.equals(pair.getValue(), getValue());</span>
+        } else {
+<span class="nc" id="L71">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

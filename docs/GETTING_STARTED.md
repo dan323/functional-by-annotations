@@ -19,14 +19,14 @@ Add to your `pom.xml`:
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>annotation-definitions</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </dependency>
     
     <!-- Compiler for code generation -->
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>functional-compiler</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
@@ -46,7 +46,7 @@ Add to your `pom.xml`:
                     <path>
                         <groupId>io.github.dan323</groupId>
                         <artifactId>functional-compiler</artifactId>
-                        <version>1.1-SNAPSHOT</version>
+                        <version>1.2-SNAPSHOT</version>
                     </path>
                 </annotationProcessorPaths>
                 <annotationProcessors>
@@ -276,7 +276,7 @@ mvn clean test pitest:mutationCoverage
 ## Next Steps
 
 - **Learn the concepts**: Read [Core Concepts](CORE_CONCEPTS.md)
-- **Explore annotations**: See [Annotations Reference](ANNOTATIONS.md)
+- **Explore annotations**: See [Annotations Reference](API_REFERENCE.md)
 - **Study examples**: Check [Implementation Examples](EXAMPLES.md)
 - **Understand structures**: Read [Functional Structures](FUNCTIONAL_STRUCTURES.md) and [Algebraic Structures](ALGEBRAIC_STRUCTURES.md)
 - **Deep dive**: See the [complete API reference](API_REFERENCE.md)
@@ -317,7 +317,7 @@ Integer sum = FiniteListFunctional.foldr(Integer::sum, 0, numbers);
 
 **Problem**: "The functor is not correctly implemented"
 
-**Solution**: Make sure you've implemented at least the minimal required methods. Check the [Annotations Reference](ANNOTATIONS.md) for requirements.
+**Solution**: Make sure you've implemented at least the minimal required methods. Check the [Annotations Reference](API_REFERENCE.md) for requirements.
 
 ### Annotation Processor Not Running
 
@@ -336,7 +336,6 @@ Integer sum = FiniteListFunctional.foldr(Integer::sum, 0, numbers);
 - 📚 **Documentation**: Check the [docs](.) folder
 - 🐛 **Issues**: See [CONTRIBUTING.md](../CONTRIBUTING.md)
 - 📖 **Examples**: Browse the `example-functional` module
-- 🔧 **Upgrade**: See [Java 24 Upgrade Guide](JAVA24_UPGRADE.md)
 
 ---
 

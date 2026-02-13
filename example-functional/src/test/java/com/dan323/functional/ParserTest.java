@@ -68,7 +68,7 @@ public class ParserTest {
     void sepByManually() {
         var intparser = Parser.intParser();
         var sepParser = Parser.stringParser(",");
-        var result = ApplicativeUtil.keepRight(ParserApplicative.getInstance(), sepParser,intparser).apply(",123");
+        var result = ApplicativeUtil.keepRight(ParserApplicative.getInstance(), sepParser, intparser).apply(",123");
         var sepResult = sepParser.apply(",123");
         var intResult = intparser.apply("123");
         System.out.println(sepResult);

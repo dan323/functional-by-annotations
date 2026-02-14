@@ -18,7 +18,7 @@ import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd
 
 public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList&lt;Parser.ParserError&gt;&gt; {
 
-    class ParserError {
+    final class ParserError {
 
         private final String message;
 

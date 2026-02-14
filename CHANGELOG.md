@@ -4,6 +4,10 @@
 - Future notes.
 ### Features
 - FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.
+### Tests
+- Example module: Add LoggerMonad tests covering log composition and core monad operations.
+- Example module: Add Accumulator tests for log ordering and core monad operations.
+- Example module: Add ParserSupplierApplicative tests for applicative and alternative behavior.
 ### Infrastructure
 - JaCoCo: Prepare JaCoCo configuration for SonarQube integration, including execution data and report generation
 - SonarQube: Add `sonar-project.properties` with complete configuration

@@ -6,7 +6,6 @@ import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.ITraversal;
 import com.dan323.functional.util.foldable.ListFoldFoldr;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -21,10 +20,6 @@ public class TraversalSequenceA implements ITraversal<List<?>> {
 
     public <A,B> List<B> map(List<A> base, Function<A,B> function){
         return base.stream().map(function).toList();
-    }
-
-    private boolean isApplicative(Type type) {
-        return type.getTypeName().contains("IApplicative") || type.getTypeName().contains("IMonad");
     }
 
     private List<Object> cons(Object a, List<Object> lst) {

@@ -2,7 +2,7 @@ package com.dan323.functional.data;
 
 import com.dan323.functional.data.optional.Maybe;
 
-public class Unit {
+public final class Unit {
 
     private Unit() {
     }

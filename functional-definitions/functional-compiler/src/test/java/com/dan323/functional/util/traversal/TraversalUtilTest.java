@@ -28,7 +28,7 @@ public class TraversalUtilTest {
         var sol = TraversalUtil.sequenceA(tList, ApplicativeMock.APPLICATIVE, Stream.of(1, 2, 3).map(Identity::new).toList());
         assertEquals(List.of(1, 2, 3), sol.get());
         var sol2 = (new TraversalSequenceA()).sequenceA(ApplicativeMock.APPLICATIVE, (List) Stream.of(1, 2, 3).map(Identity::new).toList());
-        assertEquals(List.of(1, 2, 3), sol.get());
+        assertEquals(List.of(1, 2, 3), sol2.get());
     }
 
     @Test

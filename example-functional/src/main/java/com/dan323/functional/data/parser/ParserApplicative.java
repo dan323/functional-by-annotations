@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 @Applicative
 @Alternative
-public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<Parser<?>> {
+public final class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<Parser<?>> {
 
     private static final StateMonad<String, FiniteList<Parser.ParserError>> STATE_MONAD = StateMonad.getInstance();
 
@@ -21,6 +21,9 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
 
     public static ParserApplicative getInstance() {
         return PARSER_MONAD;
+    }
+
+    private ParserApplicative() {
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
     }
 
     public static <A> Parser<A> disjunction(Parser<A> first, Parser<A> second) {
-        return s -> first.apply(s).either(_ -> second.apply(s), p -> Either.right(p));
+        return s -> first.apply(s).either(_ -> second.apply(s), Either::right);
     }
 
     public static <A> Parser<FiniteList<A>> many(Parser<A> parser) {

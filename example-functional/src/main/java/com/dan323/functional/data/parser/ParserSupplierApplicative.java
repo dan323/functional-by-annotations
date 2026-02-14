@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 @Applicative
 @Alternative
-public class ParserSupplierApplicative implements IApplicative<Supplier<Parser<?>>>, IAlternative<Supplier<Parser<?>>> {
+public final class ParserSupplierApplicative implements IApplicative<Supplier<Parser<?>>>, IAlternative<Supplier<Parser<?>>> {
 
     private ParserSupplierApplicative() {
     }
@@ -53,7 +53,7 @@ public class ParserSupplierApplicative implements IApplicative<Supplier<Parser<?
     }
 
     public static <A> Supplier<Parser<A>> disjunction(Supplier<Parser<A>> first, Supplier<Parser<A>> second) {
-        return () -> s -> first.get().apply(s).either(errors -> second.get().apply(s), Either::right);
+        return () -> s -> first.get().apply(s).either(_ -> second.get().apply(s), Either::right);
     }
 
 }

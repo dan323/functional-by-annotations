@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Functor
-public class JListFunctor implements IFunctor<List<?>> {
+public final class JListFunctor implements IFunctor<List<?>> {
 
     private JListFunctor(){
     }

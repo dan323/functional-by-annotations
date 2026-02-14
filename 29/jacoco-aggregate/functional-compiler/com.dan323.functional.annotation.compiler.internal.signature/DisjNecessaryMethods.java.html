@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>DisjNecessaryMethods.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.internal.signature</a> &gt; <span class="el_source">DisjNecessaryMethods.java</span></div><h1>DisjNecessaryMethods.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.internal.signature;
+
+import javax.lang.model.element.ExecutableElement;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Implementation for a disjunction of requirements
+ *
+ * @author daniel
+ */
+public class DisjNecessaryMethods implements NecessaryMethods {
+    private final Set&lt;NecessaryMethods&gt; methods;
+
+    public DisjNecessaryMethods(NecessaryMethods methods1, NecessaryMethods methods2) {
+<span class="nc" id="L17">        this(Set.of(methods1, methods2));</span>
+<span class="nc" id="L18">    }</span>
+
+<span class="nc" id="L20">    public DisjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
+<span class="nc" id="L21">        this.methods = methodsSet;</span>
+<span class="nc" id="L22">    }</span>
+
+    @Override
+    public NecessaryMethods process(ExecutableElement method) {
+<span class="nc" id="L26">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
+<span class="nc" id="L27">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (anyMatch) {</span>
+<span class="nc" id="L29">            return new EmptyNecessaryMethods();</span>
+        } else {
+<span class="nc" id="L31">            return new DisjNecessaryMethods(newMethods);</span>
+        }
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L37">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; OR &quot;)) + &quot;]&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -90,7 +90,16 @@ jobs:
         run: |
           mvn -B -f pom.xml clean
           mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package
-          mvn -B -f pom.xml test-compile org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report-aggregate-module
+          mvn -B -f pom.xml test-compile org.pitest:pitest-maven:mutationCoverage
+      - name: SonarQube Scan
+        run: |
+          mvn -B -f pom.xml package -Dmaven.test.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=24 -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=$SONAR_ORGANIZATION -Dorganization=$SONAR_ORGANIZATION -Dsonar.projectKey=dan323_functional-by-annotations -Dsonar.pitest.reportsDirectory=target/pit-reports
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+      - name: aggregate pitest report
+        run: |
+          mvn -B -f pom.xml org.pitest:pitest-maven:report-aggregate-module
           mkdir -p target/site
           mv target/pit-reports target/site
       - name: set PR number
@@ -124,9 +133,3 @@ jobs:
           user_email: 'pitest-report[bot]@users.noreply.github.com'
           commit_message: 'pitest-report'
           keep_files: true
-      - name: SonarQube Scan
-        run: |
-          mvn -B -f pom.xml package -Dmaven.test.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=24 -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=$SONAR_ORGANIZATION -Dorganization=$SONAR_ORGANIZATION -Dsonar.projectKey=dan323_functional-by-annotations
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}

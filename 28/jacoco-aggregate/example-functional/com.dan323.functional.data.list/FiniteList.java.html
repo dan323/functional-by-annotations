@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FiniteList.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">FiniteList.java</span></div><h1>FiniteList.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import java.util.function.Function;
+
+/**
+ * Finite lists are represented by the empty or a finite amount con appends
+ *
+ * @param &lt;A&gt;
+ */
+public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCons, Nil {
+
+    static &lt;A&gt; FiniteList&lt;A&gt; cons(A a, FiniteList&lt;A&gt; tail) {
+<span class="nc" id="L13">        return new FinCons&lt;&gt;(a, tail);</span>
+    }
+
+    static &lt;A&gt; FiniteList&lt;A&gt; nil() {
+<span class="nc" id="L17">        return (FiniteList&lt;A&gt;) Nil.NIL;</span>
+    }
+
+    /**
+     * This default implementation only works finite lists, since otherwise the program does not finish
+     *
+     * @param mapping function to transform the elements
+     * @param &lt;B&gt;     final type
+     * @return transformed list
+     * @see Repeat
+     * @see Generating
+     * @see Generating.GeneratingMapped
+     */
+    @Override
+    default &lt;B&gt; FiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+<span class="nc" id="L32">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());</span>
+    }
+
+    FiniteList&lt;A&gt; tail();
+
+    @SafeVarargs
+    static &lt;A&gt; FiniteList&lt;A&gt; of(A... a) {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (a.length == 0) {</span>
+<span class="nc" id="L40">            return nil();</span>
+        } else {
+<span class="nc" id="L42">            return FiniteList.of(0, a);</span>
+        }
+    }
+
+    @SafeVarargs
+    private static &lt;A&gt; FiniteList&lt;A&gt; of(int n, A... a) {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (n &gt;= a.length) {</span>
+<span class="nc" id="L49">            return nil();</span>
+        } else {
+<span class="nc" id="L51">            return cons(a[n], of(n + 1, a));</span>
+        }
+    }
+
+    int length();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

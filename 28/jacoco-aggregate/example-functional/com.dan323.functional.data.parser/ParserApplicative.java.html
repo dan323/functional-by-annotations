@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>ParserApplicative.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.parser</a> &gt; <span class="el_source">ParserApplicative.java</span></div><h1>ParserApplicative.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.parser;
+
+import com.dan323.functional.annotation.Alternative;
+import com.dan323.functional.annotation.Applicative;
+import com.dan323.functional.annotation.funcs.IAlternative;
+import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.data.either.Either;
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.state.StateMonad;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+@Applicative
+@Alternative
+<span class="nc" id="L16">public class ParserApplicative implements IApplicative&lt;Parser&lt;?&gt;&gt;, IAlternative&lt;Parser&lt;?&gt;&gt; {</span>
+
+<span class="nc" id="L18">    private static final StateMonad&lt;String, FiniteList&lt;Parser.ParserError&gt;&gt; STATE_MONAD = StateMonad.getInstance();</span>
+
+<span class="nc" id="L20">    private static final ParserApplicative PARSER_MONAD = new ParserApplicative();</span>
+
+    public static ParserApplicative getInstance() {
+<span class="nc" id="L23">        return PARSER_MONAD;</span>
+    }
+
+    @Override
+    public Class&lt;Parser&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L28">        return (Class&lt;Parser&lt;?&gt;&gt;) (Class&lt;?&gt;) Parser.class;</span>
+    }
+
+    public static &lt;A, B&gt; Parser&lt;B&gt; map(Parser&lt;A&gt; p, Function&lt;A, B&gt; function) {
+<span class="nc" id="L32">        return STATE_MONAD.map(p, function)::apply;</span>
+    }
+
+    public static &lt;A&gt; Parser&lt;A&gt; pure(A a) {
+<span class="nc" id="L36">        return STATE_MONAD.pure(a)::apply;</span>
+    }
+
+    public static &lt;A, B&gt; Parser&lt;B&gt; fapply(Parser&lt;Function&lt;A, B&gt;&gt; fun, Parser&lt;A&gt; st) {
+<span class="nc" id="L40">        return STATE_MONAD.fapply(fun, st)::apply;</span>
+    }
+
+    public static &lt;A&gt; Parser&lt;A&gt; empty() {
+<span class="nc" id="L44">        return _ -&gt; Either.left(FiniteList.of(Parser.ParserError.empty()));</span>
+    }
+
+    public static &lt;A&gt; Parser&lt;A&gt; disjunction(Parser&lt;A&gt; first, Parser&lt;A&gt; second) {
+<span class="nc" id="L48">        return s -&gt; first.apply(s).either(_ -&gt; second.apply(s), p -&gt; Either.right(p));</span>
+    }
+
+    public static &lt;A&gt; Parser&lt;FiniteList&lt;A&gt;&gt; many(Parser&lt;A&gt; parser) {
+<span class="nc" id="L52">        return disjunction(some(parser), pure(FiniteList.nil()));</span>
+    }
+
+    public static &lt;A, B&gt; Parser&lt;B&gt; whenFailureWhenSuccess(Parser&lt;A&gt; parser, Supplier&lt;Parser&lt;B&gt;&gt; errorParser, Supplier&lt;Parser&lt;B&gt;&gt; successParser) {
+<span class="nc" id="L56">        return s -&gt; parser.apply(s).either(_ -&gt; errorParser.get().apply(s), _ -&gt; successParser.get().apply(s));</span>
+    }
+
+    public static &lt;A&gt; Parser&lt;FiniteList&lt;A&gt;&gt; some(Parser&lt;A&gt; parser) {
+<span class="nc" id="L60">        return whenFailureWhenSuccess(parser, () -&gt; map(parser, FiniteList::of), () -&gt; fapply(map(parser, a -&gt; (lst -&gt; FiniteList.cons(a, lst))), many(parser)));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FunctionFrom.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.function</a> &gt; <span class="el_source">FunctionFrom.java</span></div><h1>FunctionFrom.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.function;
+
+import com.dan323.functional.annotation.Monad;
+import com.dan323.functional.annotation.funcs.IMonad;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+@Monad
+public final class FunctionFrom&lt;A&gt; implements IMonad&lt;Function&lt;A, ?&gt;&gt; {
+
+    private FunctionFrom() {
+    }
+
+    public static &lt;A&gt; FunctionFrom&lt;A&gt; getInstance() {
+<span class="nc" id="L16">        return (FunctionFrom&lt;A&gt;) FUNCTION_FROM;</span>
+    }
+
+<span class="nc" id="L19">    private static final FunctionFrom&lt;?&gt; FUNCTION_FROM = new FunctionFrom&lt;&gt;();</span>
+
+    public &lt;B, C&gt; Function&lt;A, C&gt; map(Function&lt;A, B&gt; base, Function&lt;B, C&gt; mapping) {
+<span class="nc" id="L22">        return mapping.compose(base);</span>
+    }
+
+    public &lt;B&gt; Function&lt;A, B&gt; pure(B data) {
+<span class="nc" id="L26">        return x -&gt; data;</span>
+    }
+
+    public &lt;B, C&gt; Function&lt;A, C&gt; fapply(Function&lt;A, Function&lt;B, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
+<span class="nc" id="L30">        return x -&gt; ffun.apply(x).apply(g.apply(x));</span>
+    }
+
+    public &lt;B, C, D&gt; Function&lt;A, D&gt; liftA2(BiFunction&lt;B, C, D&gt; biFun, Function&lt;A, B&gt; fb, Function&lt;A, C&gt; fc) {
+<span class="nc" id="L34">        return x -&gt; biFun.apply(fb.apply(x), fc.apply(x));</span>
+    }
+
+    public &lt;B, C&gt; Function&lt;A, C&gt; flatMap(Function&lt;B, Function&lt;A, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {
+<span class="nc" id="L38">        return join(ffun.compose(g));</span>
+    }
+
+    public &lt;B&gt; Function&lt;A, B&gt; join(Function&lt;A, Function&lt;A, B&gt;&gt; ffun) {
+<span class="nc" id="L42">        return x -&gt; ffun.apply(x).apply(x);</span>
+    }
+
+    @Override
+    public Class&lt;Function&lt;A,?&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L47">        return (Class&lt;Function&lt;A,?&gt;&gt;)(Class&lt;?&gt;) Function.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

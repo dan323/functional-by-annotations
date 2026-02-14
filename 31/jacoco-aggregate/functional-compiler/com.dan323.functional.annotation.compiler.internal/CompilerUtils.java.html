@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CompilerUtils.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.internal</a> &gt; <span class="el_source">CompilerUtils.java</span></div><h1>CompilerUtils.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.internal;
+
+import com.dan323.functional.annotation.Structure;
+
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L14">public final class CompilerUtils {</span>
+
+    public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
+<span class="fc" id="L17">        var lst = type.getTypeArguments();</span>
+<span class="fc" id="L18">        var wilderized = (DeclaredType) lst.get(0);</span>
+
+<span class="fc" id="L20">        var funcList = wilderized.getTypeArguments().stream()</span>
+<span class="fc" id="L21">                .map((TypeMirror tm) -&gt; {</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">                    if (tm.getKind().equals(TypeKind.WILDCARD)) {</span>
+<span class="fc" id="L23">                        return substitute;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">                    } else if (tm.getKind().equals(TypeKind.DECLARED)) {</span>
+<span class="fc" id="L25">                        return changeWildBy(typeUtils, typeUtils.getDeclaredType((TypeElement) type.asElement(), tm), substitute);</span>
+                    } else {
+<span class="fc" id="L27">                        return tm;</span>
+                    }
+<span class="fc" id="L29">                }).toList().toArray(new TypeMirror[]{});</span>
+<span class="fc" id="L30">        return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);</span>
+    }
+
+    public static List&lt;DeclaredType&gt; getAllMaximalFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
+<span class="fc" id="L34">        var lst = element.getInterfaces().stream()</span>
+<span class="fc" id="L35">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
+<span class="fc" id="L36">                .filter(type -&gt; CompilerUtils.isStrucutre(elementUtils, types, type))</span>
+<span class="fc" id="L37">                .toList();</span>
+<span class="fc" id="L38">        return lst.stream().filter(type -&gt; isMaximal(elementUtils, type, lst)).toList();</span>
+    }
+
+    private static boolean isMaximal(Elements elements, DeclaredType type, List&lt;DeclaredType&gt; types) {
+<span class="fc" id="L42">        var forest = FunctionalDependencyTree.getActualTree();</span>
+<span class="fc" id="L43">        return isMaximalRec(elements, forest, type, types);</span>
+    }
+
+    private static boolean isMaximalRec(Elements elements, List&lt;FunctionalDependencyTree&gt; forest, DeclaredType type, List&lt;DeclaredType&gt; types) {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (forest.isEmpty()) {</span>
+<span class="nc" id="L48">            return false;</span>
+        } else {
+<span class="fc" id="L50">            var lst = new ArrayList&lt;&gt;(forest);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (var tree : forest) {</span>
+<span class="fc" id="L52">                var treeElement = elements.getTypeElement(tree.getNode().getTypeName());</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (type.asElement().equals(treeElement)) {</span>
+<span class="fc" id="L54">                    return true;</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">                } else if (types.stream().map(DeclaredType::asElement).anyMatch(element -&gt; element.equals(treeElement))) {</span>
+<span class="nc" id="L56">                    lst.remove(tree);</span>
+                }
+<span class="fc" id="L58">            }</span>
+<span class="fc" id="L59">            return isMaximalRec(elements, lst.stream().flatMap(tr -&gt; FunctionalDependencyTree.getNextLine(tr).stream()).toList(), type, types);</span>
+        }
+    }
+
+    private static boolean isStrucutre(Elements elementUtils, Types types, DeclaredType type) {
+<span class="fc" id="L64">        return types.isAssignable(type, elementUtils.getTypeElement(Structure.class.getTypeName()).asType());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

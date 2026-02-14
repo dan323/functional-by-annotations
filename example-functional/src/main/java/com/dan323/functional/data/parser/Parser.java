@@ -18,7 +18,7 @@ import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd
 
 public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.ParserError>> {
 
-    class ParserError {
+    final class ParserError {
 
         private final String message;
 
@@ -77,7 +77,7 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
                     FiniteListFunctional.getInstance(),
                     ParserApplicative.getInstance(),
                     (Function<Character, Parser<Character>>) Parser::charParser,
-                    FiniteList.fromJavaList(st.chars().mapToObj(c -> (char) c).toList()));
+                    FiniteList.of(st.chars().mapToObj(c -> (char) c).toArray(Character[]::new)));
             return ParserApplicative.map(parserList, Parser::fromChars);
         }
     }

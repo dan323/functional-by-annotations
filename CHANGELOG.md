@@ -2,14 +2,19 @@
 
 ## [Unreleased]
 - Future notes.
+### Features
+- FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.
+### Infrastructure
+- JaCoCo: Prepare JaCoCo configuration for SonarQube integration, including execution data and report generation
+- SonarQube: Add `sonar-project.properties` with complete configuration
+- SonarMaven: Add `org.sonarsource.scanner.maven:sonar-maven-plugin` to active build plugins
 
-## [1.2] - 2026-06-14
+## [1.2] - 2026-02-14
 ### Features
 - Parser: `sepBy()` - Parse separated values with optional separator
 - Parser: `optional()` - Parse optionally, returns `Optional<A>`
 - FiniteList: Implement `collector()` for Stream integration using ArrayList as mutable intermediate
 - FiniteList: Add `fromJavaList()` static method to convert java.util.List to FiniteList
-- String: Implement `StringFunctional` with Monad, Traversal, and Alternative instances
 ### Fixes
 - FiniteListFunctional: `traverse()` implementation fixed to correctly handle empty lists and accumulate results
 ### Docs

@@ -12,7 +12,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-<span class="nc" id="L15">public final class CompilerFactory {</span>
+<span class="fc" id="L15">public final class CompilerFactory {</span>
 
     /**
      * Create a compiler depending on what element we are compiling
@@ -24,21 +24,21 @@ import javax.lang.model.util.Types;
      * @return A compiler compatible with {@code iface}
      */
     public Compiler&lt;?&gt; from(DeclaredType iface, Elements elements, Types types, Messager messager) {
-<span class="nc" id="L27">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
-<span class="nc" id="L29">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
-<span class="nc" id="L31">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
-<span class="nc" id="L33">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
-<span class="nc" id="L35">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
-<span class="nc" id="L37">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
-<span class="nc" id="L39">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))) {</span>
-<span class="nc" id="L41">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
+<span class="fc" id="L27">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
+<span class="fc" id="L29">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
+<span class="fc" id="L31">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
+<span class="fc" id="L33">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
+<span class="fc" id="L35">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
+<span class="fc" id="L37">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
+<span class="fc" id="L39">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))) {</span>
+<span class="fc" id="L41">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
 <span class="nc bnc" id="L42" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))) {</span>
 <span class="nc" id="L43">            return new Compiler&lt;&gt;(signatures.ringSignatureChecker(iface), Ring.class, messager);</span>
 <span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ITraversal.class.getTypeName()))) {</span>

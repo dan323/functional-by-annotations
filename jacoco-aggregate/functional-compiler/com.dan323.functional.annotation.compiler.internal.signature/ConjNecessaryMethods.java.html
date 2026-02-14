@@ -15,31 +15,31 @@ public class ConjNecessaryMethods implements NecessaryMethods {
     private final Set&lt;NecessaryMethods&gt; methods;
 
     public ConjNecessaryMethods(NecessaryMethods methods1, NecessaryMethods methods2) {
-<span class="nc" id="L18">        this(Set.of(methods1, methods2));</span>
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L18">        this(Set.of(methods1, methods2));</span>
+<span class="fc" id="L19">    }</span>
 
-<span class="nc" id="L21">    public ConjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
-<span class="nc" id="L22">        this.methods = methodsSet;</span>
-<span class="nc" id="L23">    }</span>
+<span class="fc" id="L21">    public ConjNecessaryMethods(Set&lt;NecessaryMethods&gt; methodsSet) {</span>
+<span class="fc" id="L22">        this.methods = methodsSet;</span>
+<span class="fc" id="L23">    }</span>
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="nc" id="L27">        Set&lt;NecessaryMethods&gt; newSet = this.methods.stream()</span>
-<span class="nc" id="L28">                .map(nec -&gt; nec.process(method))</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">                .filter(nec -&gt; !(nec instanceof EmptyNecessaryMethods))</span>
-<span class="nc" id="L30">                .collect(Collectors.toSet());</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (newSet.size() == 1) {</span>
-<span class="nc" id="L32">            return newSet.stream().toList().get(0);</span>
-<span class="nc bnc" id="L33" title="All 2 branches missed.">        } else if (newSet.isEmpty()) {</span>
+<span class="fc" id="L27">        Set&lt;NecessaryMethods&gt; newSet = this.methods.stream()</span>
+<span class="fc" id="L28">                .map(nec -&gt; nec.process(method))</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                .filter(nec -&gt; !(nec instanceof EmptyNecessaryMethods))</span>
+<span class="fc" id="L30">                .collect(Collectors.toSet());</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (newSet.size() == 1) {</span>
+<span class="fc" id="L32">            return newSet.stream().toList().get(0);</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        } else if (newSet.isEmpty()) {</span>
 <span class="nc" id="L34">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="nc" id="L36">            return new ConjNecessaryMethods(newSet);</span>
+<span class="fc" id="L36">            return new ConjNecessaryMethods(newSet);</span>
         }
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L42">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; AND &quot;)) + &quot;]&quot;;</span>
+<span class="fc" id="L42">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; AND &quot;)) + &quot;]&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

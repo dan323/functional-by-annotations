@@ -17,24 +17,24 @@ public final class ApplicativeUtil {
 
     public static &lt;F, A&gt; F pure(IApplicative&lt;? extends F&gt; applicative, A a) {
 <span class="fc" id="L19">        return FunctionalUtil.&lt;F, A&gt;applicativePure(applicative, a)</span>
-<span class="pc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F&gt; F fapply(IApplicative&lt;? extends F&gt; applicative, F base, F ff) {
 <span class="fc" id="L24">        return FunctionalUtil.applicativeFapply(applicative, base, ff)</span>
 <span class="fc" id="L25">                .or(() -&gt; FunctionalUtil.monadFapply(applicative, base, ff))</span>
-<span class="pc" id="L26">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L26">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F, A, B, C&gt; F liftA2(IApplicative&lt;? extends F&gt; applicative, BiFunction&lt;A, B, C&gt; map, F fa, F fb) {
 <span class="fc" id="L30">        return FunctionalUtil.applicativeLiftA2(applicative, map, fa, fb)</span>
-<span class="pc" id="L31">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, map, fa, fb))</span>
-<span class="pc" id="L32">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L31">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, map, fa, fb))</span>
+<span class="fc" id="L32">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F&gt; F keepLeft(IApplicative&lt;? extends F&gt; applicative, F left, F right) {
-<span class="nc" id="L36">        return FunctionalUtil.applicativeKeepLeft(applicative, left, right)</span>
-<span class="nc" id="L37">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
+<span class="fc" id="L36">        return FunctionalUtil.applicativeKeepLeft(applicative, left, right)</span>
+<span class="pc" id="L37">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The applicative is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F&gt; F keepRight(IApplicative&lt;? extends F&gt; applicative, F left, F right) {

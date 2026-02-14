@@ -6,7 +6,7 @@ import java.util.function.Function;
 public interface Continuation&lt;A, R&gt; extends Function&lt;Function&lt;A, R&gt;, R&gt; {
 
     static &lt;R&gt; R eval(Continuation&lt;R, R&gt; continuation) {
-<span class="nc" id="L9">        return continuation.apply(Function.identity());</span>
+<span class="fc" id="L9">        return continuation.apply(Function.identity());</span>
     }
 
 }

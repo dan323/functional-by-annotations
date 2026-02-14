@@ -18,20 +18,20 @@ import static com.dan323.functional.data.parser.Parser.ParserError.unexpectedEnd
 
 public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList&lt;Parser.ParserError&gt;&gt; {
 
-    class ParserError {
+    final class ParserError {
 
         private final String message;
 
-<span class="nc" id="L25">        private ParserError(String message) {</span>
-<span class="nc" id="L26">            this.message = message;</span>
-<span class="nc" id="L27">        }</span>
+<span class="fc" id="L25">        private ParserError(String message) {</span>
+<span class="fc" id="L26">            this.message = message;</span>
+<span class="fc" id="L27">        }</span>
 
         public static ParserError unexpectedChar(Character c) {
-<span class="nc" id="L30">            return new ParserError(&quot;Unexpected character &quot; + c);</span>
+<span class="fc" id="L30">            return new ParserError(&quot;Unexpected character &quot; + c);</span>
         }
 
         public static ParserError unexpectedEnd() {
-<span class="nc" id="L34">            return new ParserError(&quot;Unexpected empty string&quot;);</span>
+<span class="fc" id="L34">            return new ParserError(&quot;Unexpected empty string&quot;);</span>
         }
 
         public static ParserError empty() {
@@ -45,7 +45,7 @@ public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList
 
         @Override
         public boolean equals(Object obj) {
-<span class="nc bnc" id="L48" title="All 4 branches missed.">            return (obj instanceof Parser.ParserError parserError) &amp;&amp; Objects.equals(parserError.message, message);</span>
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">            return (obj instanceof Parser.ParserError parserError) &amp;&amp; Objects.equals(parserError.message, message);</span>
         }
 
         @Override
@@ -56,49 +56,49 @@ public interface Parser&lt;A&gt; extends StateWithError&lt;A, String, FiniteList
 
 
     static Parser&lt;Character&gt; predicateParser(Predicate&lt;Character&gt; predicate) {
-<span class="nc" id="L59">        return s -&gt; {</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (s.isEmpty()) {</span>
-<span class="nc" id="L61">                return Either.left(FiniteList.of(unexpectedEnd()));</span>
+<span class="fc" id="L59">        return s -&gt; {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (s.isEmpty()) {</span>
+<span class="fc" id="L61">                return Either.left(FiniteList.of(unexpectedEnd()));</span>
             } else {
-<span class="nc bnc" id="L63" title="All 2 branches missed.">                return predicate.test(s.charAt(0)) ? Either.right(new Pair&lt;&gt;(s.charAt(0), s.substring(1))) : Either.left(FiniteList.of(ParserError.unexpectedChar(s.charAt(0))));</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                return predicate.test(s.charAt(0)) ? Either.right(new Pair&lt;&gt;(s.charAt(0), s.substring(1))) : Either.left(FiniteList.of(ParserError.unexpectedChar(s.charAt(0))));</span>
             }
         };
     }
 
     static Parser&lt;Character&gt; charParser(Character c) {
-<span class="nc bnc" id="L69" title="All 4 branches missed.">        return predicateParser(ch -&gt; c != null &amp;&amp; c.equals(ch));</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        return predicateParser(ch -&gt; c != null &amp;&amp; c.equals(ch));</span>
     }
 
     static Parser&lt;String&gt; stringParser(String st) {
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (st.isEmpty()) {</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (st.isEmpty()) {</span>
 <span class="nc" id="L74">            return s -&gt; Either.right(new Pair&lt;&gt;(&quot;&quot;, s));</span>
         } else {
-<span class="nc" id="L76">            Parser&lt;FiniteList&lt;Character&gt;&gt; parserList = (Parser&lt;FiniteList&lt;Character&gt;&gt;) TraversalUtil.traverse(</span>
-<span class="nc" id="L77">                    FiniteListFunctional.getInstance(),</span>
-<span class="nc" id="L78">                    ParserApplicative.getInstance(),</span>
+<span class="fc" id="L76">            Parser&lt;FiniteList&lt;Character&gt;&gt; parserList = (Parser&lt;FiniteList&lt;Character&gt;&gt;) TraversalUtil.traverse(</span>
+<span class="fc" id="L77">                    FiniteListFunctional.getInstance(),</span>
+<span class="fc" id="L78">                    ParserApplicative.getInstance(),</span>
                     (Function&lt;Character, Parser&lt;Character&gt;&gt;) Parser::charParser,
-<span class="nc" id="L80">                    FiniteList.fromJavaList(st.chars().mapToObj(c -&gt; (char) c).toList()));</span>
-<span class="nc" id="L81">            return ParserApplicative.map(parserList, Parser::fromChars);</span>
+<span class="fc" id="L80">                    FiniteList.of(st.chars().mapToObj(c -&gt; (char) c).toArray(Character[]::new)));</span>
+<span class="fc" id="L81">            return ParserApplicative.map(parserList, Parser::fromChars);</span>
         }
     }
 
     static Parser&lt;Integer&gt; intParser() {
-<span class="nc" id="L86">        return ParserApplicative.map(ParserApplicative.some(predicateParser(Character::isDigit)), ((Function&lt;FiniteList&lt;Character&gt;, String&gt;) Parser::fromChars).andThen(Integer::parseInt));</span>
+<span class="fc" id="L86">        return ParserApplicative.map(ParserApplicative.some(predicateParser(Character::isDigit)), ((Function&lt;FiniteList&lt;Character&gt;, String&gt;) Parser::fromChars).andThen(Integer::parseInt));</span>
     }
 
     private static String fromChars(FiniteList&lt;Character&gt; chars) {
-<span class="nc" id="L90">        return FiniteListFunctional.foldr((c, st) -&gt; st + c.toString(), &quot;&quot;, chars);</span>
+<span class="fc" id="L90">        return FiniteListFunctional.foldr((c, st) -&gt; st + c.toString(), &quot;&quot;, chars);</span>
     }
 
     static &lt;A&gt; Parser&lt;Maybe&lt;A&gt;&gt; optional(Parser&lt;A&gt; parser) {
-<span class="nc" id="L94">        return s -&gt; parser.apply(s).either(_ -&gt; Either.&lt;FiniteList&lt;ParserError&gt;,Pair&lt;Maybe&lt;A&gt;,String&gt;&gt;right(new Pair&lt;&gt;(Maybe.of(), s)),</span>
-<span class="nc" id="L95">                pair -&gt; pair.map((elem, output) -&gt; Either.&lt;FiniteList&lt;ParserError&gt;,Pair&lt;Maybe&lt;A&gt;,String&gt;&gt;right(new Pair&lt;&gt;(Maybe.of(elem), output))));</span>
+<span class="fc" id="L94">        return s -&gt; parser.apply(s).either(_ -&gt; Either.&lt;FiniteList&lt;ParserError&gt;,Pair&lt;Maybe&lt;A&gt;,String&gt;&gt;right(new Pair&lt;&gt;(Maybe.of(), s)),</span>
+<span class="fc" id="L95">                pair -&gt; pair.map((elem, output) -&gt; Either.&lt;FiniteList&lt;ParserError&gt;,Pair&lt;Maybe&lt;A&gt;,String&gt;&gt;right(new Pair&lt;&gt;(Maybe.of(elem), output))));</span>
     }
 
     static &lt;A,B&gt; Parser&lt;FiniteList&lt;A&gt;&gt; sepBy(Parser&lt;A&gt; parser, Parser&lt;B&gt; separator) {
-<span class="nc" id="L99">        Parser&lt;Function&lt;FiniteList&lt;A&gt;,FiniteList&lt;A&gt;&gt;&gt; cons = ParserApplicative.map(optional(parser), optA -&gt; lst -&gt; optA.maybe(a -&gt; cons(a,lst), lst));</span>
-<span class="nc" id="L100">        Parser&lt;A&gt; parserWithSeparator = (Parser&lt;A&gt;) ApplicativeUtil.keepRight(ParserApplicative.getInstance(), separator, parser);</span>
-<span class="nc" id="L101">        return ParserApplicative.fapply(cons, ParserApplicative.many(parserWithSeparator));</span>
+<span class="fc" id="L99">        Parser&lt;Function&lt;FiniteList&lt;A&gt;,FiniteList&lt;A&gt;&gt;&gt; cons = ParserApplicative.map(optional(parser), optA -&gt; lst -&gt; optA.maybe(a -&gt; cons(a,lst), lst));</span>
+<span class="fc" id="L100">        Parser&lt;A&gt; parserWithSeparator = (Parser&lt;A&gt;) ApplicativeUtil.keepRight(ParserApplicative.getInstance(), separator, parser);</span>
+<span class="fc" id="L101">        return ParserApplicative.fapply(cons, ParserApplicative.many(parserWithSeparator));</span>
     }
 
 }

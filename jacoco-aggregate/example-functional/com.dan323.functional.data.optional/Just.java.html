@@ -7,21 +7,21 @@ public final class Just&lt;A&gt; implements Maybe&lt;A&gt; {
 
     private final A element;
 
-<span class="nc" id="L10">    Just(A element) {</span>
-<span class="nc" id="L11">        this.element = element;</span>
-<span class="nc" id="L12">    }</span>
+<span class="fc" id="L10">    Just(A element) {</span>
+<span class="fc" id="L11">        this.element = element;</span>
+<span class="fc" id="L12">    }</span>
 
     @Override
     public &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant) {
-<span class="nc" id="L16">        return f.apply(element);</span>
+<span class="fc" id="L16">        return f.apply(element);</span>
     }
 
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        if (this == o){</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (this == o){</span>
 <span class="nc" id="L22">            return true;</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        } else if (o instanceof Just&lt;?&gt; just){</span>
-<span class="nc" id="L24">            return Objects.equals(element, just.element);</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        } else if (o instanceof Just&lt;?&gt; just){</span>
+<span class="fc" id="L24">            return Objects.equals(element, just.element);</span>
         } else {
 <span class="nc" id="L26">            return false;</span>
         }

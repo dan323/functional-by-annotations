@@ -48,6 +48,10 @@
                                 </goals>
                                 <configuration>
                                     <title>Functionals by annotation in Java</title>
+                                    <formats>
+                                        <format>XML</format>
+                                        <format>HTML</format>
+                                    </formats>
                                 </configuration>
                             </execution>
                         </executions>

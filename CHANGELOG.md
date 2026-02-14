@@ -4,6 +4,9 @@
 - Future notes.
 ### Features
 - FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.
+### Infrastructure
+- JaCoCo: Prepare JaCoCo configuration for SonarQube integration, including execution data and report generation
+- SonarQube: Add `sonar-project.properties` with complete configuration
 
 ## [1.2] - 2026-02-14
 ### Features

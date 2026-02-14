@@ -19,8 +19,8 @@ public final class FunctorUtil {
 <span class="fc" id="L19">        return FunctionalUtil.functorMap(functor, base, function)</span>
 <span class="fc" id="L20">                .or(() -&gt; FunctionalUtil.applicativeMap(functor, base, function))</span>
 <span class="fc" id="L21">                .or(() -&gt; FunctionalUtil.monadMap(functor, base, function))</span>
-<span class="fc" id="L22">                .or(()-&gt; FunctionalUtil.traversalMap(functor, base, function))</span>
-<span class="fc" id="L23">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The functor is not correctly implemented.&quot;));</span>
+<span class="pc" id="L22">                .or(()-&gt; FunctionalUtil.traversalMap(functor, base, function))</span>
+<span class="pc" id="L23">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The functor is not correctly implemented.&quot;));</span>
     }
 
     public static &lt;F, B&gt; F mapConst(IFunctor&lt;? extends F&gt; functor, F base, B constant) {

@@ -24,47 +24,47 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;K, A&gt; K traverse(IApplicative&lt;K&gt; applicative, Function&lt;A, K&gt; fun, FiniteList&lt;A&gt; lst) {
-<span class="nc" id="L27">        var empty = ApplicativeUtil.pure(applicative, FiniteList.nil());</span>
-<span class="nc" id="L28">        return foldr((x, y) -&gt; ApplicativeUtil.liftA2(applicative, (BiFunction&lt;A, FiniteList&lt;A&gt;, FiniteList&lt;A&gt;&gt;) FiniteList::cons, fun.apply(x), y), empty, lst);</span>
+<span class="fc" id="L27">        var empty = ApplicativeUtil.pure(applicative, FiniteList.nil());</span>
+<span class="fc" id="L28">        return foldr((x, y) -&gt; ApplicativeUtil.liftA2(applicative, (BiFunction&lt;A, FiniteList&lt;A&gt;, FiniteList&lt;A&gt;&gt;) FiniteList::cons, fun.apply(x), y), empty, lst);</span>
     }
 
     public static &lt;A, B&gt; B foldr(BiFunction&lt;A, B, B&gt; function, B b, FiniteList&lt;A&gt; lst) {
-<span class="nc" id="L32">        return lst.head().maybe(h -&gt; foldr(function, function.apply(h, b), lst.tail()), b);</span>
+<span class="fc" id="L32">        return lst.head().maybe(h -&gt; foldr(function, function.apply(h, b), lst.tail()), b);</span>
     }
 
-<span class="nc" id="L35">    private static final FiniteListFunctional FINITE_LIST_FUNCTIONAL = new FiniteListFunctional();</span>
+<span class="fc" id="L35">    private static final FiniteListFunctional FINITE_LIST_FUNCTIONAL = new FiniteListFunctional();</span>
 
     public static FiniteListFunctional getInstance() {
-<span class="nc" id="L38">        return FINITE_LIST_FUNCTIONAL;</span>
+<span class="fc" id="L38">        return FINITE_LIST_FUNCTIONAL;</span>
     }
 
     public static &lt;A&gt; AlternativeMonoid&lt;FiniteList&lt;A&gt;, FiniteList&lt;?&gt;&gt; getAlternativeMonoid() {
-<span class="nc" id="L42">        return new AlternativeMonoid&lt;&gt;(getInstance());</span>
+<span class="fc" id="L42">        return new AlternativeMonoid&lt;&gt;(getInstance());</span>
     }
 
     public static &lt;A, B&gt; FiniteList&lt;B&gt; map(FiniteList&lt;A&gt; finiteList, Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L46">        return finiteList.head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());</span>
+<span class="fc" id="L46">        return finiteList.head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; disjunction(FiniteList&lt;A&gt; op1, FiniteList&lt;A&gt; op2) {
-<span class="nc" id="L50">        return ListUtils.concat(op1, op2);</span>
+<span class="fc" id="L50">        return ListUtils.concat(op1, op2);</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; empty() {
-<span class="nc" id="L54">        return FiniteList.nil();</span>
+<span class="fc" id="L54">        return FiniteList.nil();</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; pure(A a) {
-<span class="nc" id="L58">        return FiniteList.of(a);</span>
+<span class="fc" id="L58">        return FiniteList.of(a);</span>
     }
 
     public static &lt;A, B&gt; FiniteList&lt;B&gt; flatMap(Function&lt;A, FiniteList&lt;B&gt;&gt; f, FiniteList&lt;A&gt; base) {
-<span class="nc" id="L62">        return base.head().maybe(h -&gt; concat(f.apply(h), flatMap(f, base.tail())), FiniteList.nil());</span>
+<span class="fc" id="L62">        return base.head().maybe(h -&gt; concat(f.apply(h), flatMap(f, base.tail())), FiniteList.nil());</span>
     }
 
     @Override
     public Class&lt;FiniteList&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L67">        return (Class&lt;FiniteList&lt;?&gt;&gt;) (Class) FiniteList.class;</span>
+<span class="fc" id="L67">        return (Class&lt;FiniteList&lt;?&gt;&gt;) (Class) FiniteList.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

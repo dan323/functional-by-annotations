@@ -11,11 +11,11 @@ import java.util.function.Function;
 public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implements IMonad&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; {
 
     public ProdMonad(IMonad&lt;M&gt; fm, IMonad&lt;N&gt; fn) {
-<span class="nc" id="L14">        super(fm, fn);</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L14">        super(fm, fn);</span>
+<span class="fc" id="L15">    }</span>
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; flatMap(Function&lt;A, PairTypeContructor&lt;M, N, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; base) {
-<span class="nc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
+<span class="fc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

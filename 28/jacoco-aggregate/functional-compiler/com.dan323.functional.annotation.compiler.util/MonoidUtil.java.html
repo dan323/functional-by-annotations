@@ -11,7 +11,7 @@ import com.dan323.functional.annotation.algs.IMonoid;
 
     public static &lt;A&gt; A unit(IMonoid&lt;? extends A&gt; monoid) {
 <span class="fc" id="L13">        return FunctionalUtil.&lt;A&gt;monoidUnit(monoid)</span>
-<span class="fc" id="L14">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monoid is not correctly implemented.&quot;));</span>
+<span class="pc" id="L14">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;The monoid is not correctly implemented.&quot;));</span>
     }
 
 }

@@ -9,17 +9,17 @@ public final class ProdMonoid implements IMonoid&lt;Integer&gt; {
     private ProdMonoid(){}
 
     public static ProdMonoid getInstance(){
-<span class="nc" id="L12">        return PROD_MONOID;</span>
+<span class="fc" id="L12">        return PROD_MONOID;</span>
     }
 
     public static Integer op(Integer num1, Integer num2) {
-<span class="nc" id="L16">        return num1 * num2;</span>
+<span class="fc" id="L16">        return num1 * num2;</span>
     }
 
     public static Integer unit() {
-<span class="nc" id="L20">        return 1;</span>
+<span class="fc" id="L20">        return 1;</span>
     }
 
-<span class="nc" id="L23">    private static final ProdMonoid PROD_MONOID = new ProdMonoid();</span>
+<span class="fc" id="L23">    private static final ProdMonoid PROD_MONOID = new ProdMonoid();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

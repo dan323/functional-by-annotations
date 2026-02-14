@@ -14,11 +14,11 @@ public class Signature {
     private final TypeMirror returnType;
     private final String name;
 
-<span class="fc" id="L17">    Signature(List&lt;TypeMirror&gt; inputs, TypeMirror returnType, String name) {</span>
-<span class="fc" id="L18">        this.inputs = inputs;</span>
-<span class="fc" id="L19">        this.returnType = returnType;</span>
-<span class="fc" id="L20">        this.name = name;</span>
-<span class="fc" id="L21">    }</span>
+<span class="nc" id="L17">    Signature(List&lt;TypeMirror&gt; inputs, TypeMirror returnType, String name) {</span>
+<span class="nc" id="L18">        this.inputs = inputs;</span>
+<span class="nc" id="L19">        this.returnType = returnType;</span>
+<span class="nc" id="L20">        this.name = name;</span>
+<span class="nc" id="L21">    }</span>
 
     /**
      * Verification if a method satifies the {@link Signature}
@@ -27,18 +27,18 @@ public class Signature {
      * @return true iff the input method satisfies the signature
      */
     public boolean verifyMethod(ExecutableElement method) {
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        return method.getReturnType().toString().equals(returnType.toString()) &amp;&amp;</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">                method.getParameters().size() == inputs.size() &amp;&amp;</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">                method.getSimpleName().toString().equals(name) &amp;&amp;</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">                verifyInputs(method);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        return method.getReturnType().toString().equals(returnType.toString()) &amp;&amp;</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">                method.getParameters().size() == inputs.size() &amp;&amp;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                method.getSimpleName().toString().equals(name) &amp;&amp;</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">                verifyInputs(method);</span>
     }
 
     private boolean verifyInputs(ExecutableElement method) {
-<span class="fc" id="L37">        boolean b = true;</span>
-<span class="fc bfc" id="L38" title="All 4 branches covered.">        for (int i = 0; b &amp;&amp; i &lt; inputs.size(); i++) {</span>
-<span class="fc" id="L39">            b = method.getParameters().get(i).asType().toString().equals(inputs.get(i).toString());</span>
+<span class="nc" id="L37">        boolean b = true;</span>
+<span class="nc bnc" id="L38" title="All 4 branches missed.">        for (int i = 0; b &amp;&amp; i &lt; inputs.size(); i++) {</span>
+<span class="nc" id="L39">            b = method.getParameters().get(i).asType().toString().equals(inputs.get(i).toString());</span>
         }
-<span class="fc" id="L41">        return b;</span>
+<span class="nc" id="L41">        return b;</span>
     }
 
     /**
@@ -47,20 +47,20 @@ public class Signature {
      * @return {@link InvalidSignature}
      */
     static Signature invalid() {
-<span class="fc" id="L50">        return InvalidSignature.INVALID;</span>
+<span class="nc" id="L50">        return InvalidSignature.INVALID;</span>
     }
 
     private static final class InvalidSignature extends Signature {
 
         private InvalidSignature() {
-<span class="fc" id="L56">            super(List.of(), null, &quot;&quot;);</span>
-<span class="fc" id="L57">        }</span>
+<span class="nc" id="L56">            super(List.of(), null, &quot;&quot;);</span>
+<span class="nc" id="L57">        }</span>
 
-<span class="fc" id="L59">        private static final Signature INVALID = new InvalidSignature();</span>
+<span class="nc" id="L59">        private static final Signature INVALID = new InvalidSignature();</span>
 
         @Override
         public boolean verifyMethod(ExecutableElement method) {
-<span class="fc" id="L63">            return false;</span>
+<span class="nc" id="L63">            return false;</span>
         }
     }
 

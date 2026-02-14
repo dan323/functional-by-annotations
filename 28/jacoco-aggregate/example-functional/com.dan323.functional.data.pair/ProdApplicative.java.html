@@ -10,15 +10,15 @@ import java.util.function.Function;
 public class ProdApplicative&lt;M, N&gt; extends ProdFunctor&lt;M, N&gt; implements IApplicative&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; {
 
     public ProdApplicative(IApplicative&lt;? extends M&gt; fm, IApplicative&lt;? extends N&gt; fn) {
-<span class="nc" id="L13">        super(fm, fn);</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L13">        super(fm, fn);</span>
+<span class="fc" id="L14">    }</span>
 
     public &lt;A&gt; PairTypeContructor&lt;M, N, A&gt; pure(A a) {
-<span class="nc" id="L17">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure((IApplicative&lt;M&gt;) mFunctor, a), ApplicativeUtil.pure((IApplicative&lt;N&gt;) nFunctor, a));</span>
+<span class="fc" id="L17">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.pure((IApplicative&lt;M&gt;) mFunctor, a), ApplicativeUtil.pure((IApplicative&lt;N&gt;) nFunctor, a));</span>
     }
 
     public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; fapply(PairTypeContructor&lt;M, N, Function&lt;A, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; c1) {
-<span class="nc" id="L21">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.fapply((IApplicative&lt;M&gt;) mFunctor, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply((IApplicative&lt;N&gt;) nFunctor, c1.getSecond(), f.getSecond()));</span>
+<span class="fc" id="L21">        return new PairTypeContructor&lt;&gt;(ApplicativeUtil.fapply((IApplicative&lt;M&gt;) mFunctor, c1.getFirst(), f.getFirst()), ApplicativeUtil.fapply((IApplicative&lt;N&gt;) nFunctor, c1.getSecond(), f.getSecond()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

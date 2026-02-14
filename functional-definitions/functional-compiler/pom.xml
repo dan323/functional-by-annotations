@@ -22,6 +22,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -89,9 +90,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <argLine>
-                                ${surefire.argLine}
-                            </argLine>
+                            <argLine>${jacoco.argLine}</argLine>
                         </configuration>
                     </plugin>
                 </plugins>

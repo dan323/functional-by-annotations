@@ -12,6 +12,8 @@
 - JaCoCo: Prepare JaCoCo configuration for SonarQube integration, including execution data and report generation
 - SonarQube: Add `sonar-project.properties` with complete configuration
 - SonarMaven: Add `org.sonarsource.scanner.maven:sonar-maven-plugin` to active build plugins
+### Fixes
+- JaCoCo: Fix functional-compiler module Jacoco coverage - now properly instruments tests
 
 ## [1.2] - 2026-02-14
 ### Features

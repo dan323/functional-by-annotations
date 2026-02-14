@@ -6,7 +6,6 @@ import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.ITraversal;
 import com.dan323.functional.util.foldable.ListFoldFoldr;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;

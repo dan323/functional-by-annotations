@@ -124,3 +124,9 @@ jobs:
           user_email: 'pitest-report[bot]@users.noreply.github.com'
           commit_message: 'pitest-report'
           keep_files: true
+      - name: SonarQube Scan
+        run: |
+          mvn -B -f pom.xml package -Dmaven.test.skip=true org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.java.source=24 -Dsonar.java.target=24 -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=$SONAR_ORGANIZATION -Dorganization=$SONAR_ORGANIZATION -Dsonar.projectKey=dan323_functional-by-annotations
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}

@@ -19,16 +19,17 @@ import java.util.function.Function;
      * Infinite lists are incomparable in a finite amount of time
      *
      * @param obj element to be compared to
-     * @throws {@link UnsupportedOperationException}
+     *
+     * @throws UnsupportedOperationException when called, since infinite lists cannot be compared in a finite amount of time
      */
     @Override
     public final boolean equals(Object obj) {
-<span class="nc" id="L26">        throw new UnsupportedOperationException();</span>
+<span class="nc" id="L27">        throw new UnsupportedOperationException();</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L31">        return 7*super.hashCode();</span>
+<span class="nc" id="L32">        return 7 * super.hashCode();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

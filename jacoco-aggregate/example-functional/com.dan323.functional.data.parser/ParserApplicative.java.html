@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 @Applicative
 @Alternative
-<span class="fc" id="L16">public class ParserApplicative implements IApplicative&lt;Parser&lt;?&gt;&gt;, IAlternative&lt;Parser&lt;?&gt;&gt; {</span>
+public final class ParserApplicative implements IApplicative&lt;Parser&lt;?&gt;&gt;, IAlternative&lt;Parser&lt;?&gt;&gt; {
 
 <span class="fc" id="L18">    private static final StateMonad&lt;String, FiniteList&lt;Parser.ParserError&gt;&gt; STATE_MONAD = StateMonad.getInstance();</span>
 
@@ -23,41 +23,44 @@ import java.util.function.Supplier;
 <span class="fc" id="L23">        return PARSER_MONAD;</span>
     }
 
+    private ParserApplicative() {
+    }
+
     @Override
     public Class&lt;Parser&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L28">        return (Class&lt;Parser&lt;?&gt;&gt;) (Class&lt;?&gt;) Parser.class;</span>
+<span class="fc" id="L31">        return (Class&lt;Parser&lt;?&gt;&gt;) (Class&lt;?&gt;) Parser.class;</span>
     }
 
     public static &lt;A, B&gt; Parser&lt;B&gt; map(Parser&lt;A&gt; p, Function&lt;A, B&gt; function) {
-<span class="fc" id="L32">        return STATE_MONAD.map(p, function)::apply;</span>
+<span class="fc" id="L35">        return STATE_MONAD.map(p, function)::apply;</span>
     }
 
     public static &lt;A&gt; Parser&lt;A&gt; pure(A a) {
-<span class="fc" id="L36">        return STATE_MONAD.pure(a)::apply;</span>
+<span class="fc" id="L39">        return STATE_MONAD.pure(a)::apply;</span>
     }
 
     public static &lt;A, B&gt; Parser&lt;B&gt; fapply(Parser&lt;Function&lt;A, B&gt;&gt; fun, Parser&lt;A&gt; st) {
-<span class="fc" id="L40">        return STATE_MONAD.fapply(fun, st)::apply;</span>
+<span class="fc" id="L43">        return STATE_MONAD.fapply(fun, st)::apply;</span>
     }
 
     public static &lt;A&gt; Parser&lt;A&gt; empty() {
-<span class="nc" id="L44">        return _ -&gt; Either.left(FiniteList.of(Parser.ParserError.empty()));</span>
+<span class="nc" id="L47">        return _ -&gt; Either.left(FiniteList.of(Parser.ParserError.empty()));</span>
     }
 
     public static &lt;A&gt; Parser&lt;A&gt; disjunction(Parser&lt;A&gt; first, Parser&lt;A&gt; second) {
-<span class="fc" id="L48">        return s -&gt; first.apply(s).either(_ -&gt; second.apply(s), p -&gt; Either.right(p));</span>
+<span class="fc" id="L51">        return s -&gt; first.apply(s).either(_ -&gt; second.apply(s), Either::right);</span>
     }
 
     public static &lt;A&gt; Parser&lt;FiniteList&lt;A&gt;&gt; many(Parser&lt;A&gt; parser) {
-<span class="fc" id="L52">        return disjunction(some(parser), pure(FiniteList.nil()));</span>
+<span class="fc" id="L55">        return disjunction(some(parser), pure(FiniteList.nil()));</span>
     }
 
     public static &lt;A, B&gt; Parser&lt;B&gt; whenFailureWhenSuccess(Parser&lt;A&gt; parser, Supplier&lt;Parser&lt;B&gt;&gt; errorParser, Supplier&lt;Parser&lt;B&gt;&gt; successParser) {
-<span class="fc" id="L56">        return s -&gt; parser.apply(s).either(_ -&gt; errorParser.get().apply(s), _ -&gt; successParser.get().apply(s));</span>
+<span class="fc" id="L59">        return s -&gt; parser.apply(s).either(_ -&gt; errorParser.get().apply(s), _ -&gt; successParser.get().apply(s));</span>
     }
 
     public static &lt;A&gt; Parser&lt;FiniteList&lt;A&gt;&gt; some(Parser&lt;A&gt; parser) {
-<span class="pc" id="L60">        return whenFailureWhenSuccess(parser, () -&gt; map(parser, FiniteList::of), () -&gt; fapply(map(parser, a -&gt; (lst -&gt; FiniteList.cons(a, lst))), many(parser)));</span>
+<span class="pc" id="L63">        return whenFailureWhenSuccess(parser, () -&gt; map(parser, FiniteList::of), () -&gt; fapply(map(parser, a -&gt; (lst -&gt; FiniteList.cons(a, lst))), many(parser)));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

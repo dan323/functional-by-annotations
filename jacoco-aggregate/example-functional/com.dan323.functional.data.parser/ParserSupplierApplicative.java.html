@@ -13,12 +13,12 @@ import java.util.function.Supplier;
 
 @Applicative
 @Alternative
-public class ParserSupplierApplicative implements IApplicative&lt;Supplier&lt;Parser&lt;?&gt;&gt;&gt;, IAlternative&lt;Supplier&lt;Parser&lt;?&gt;&gt;&gt; {
+public final class ParserSupplierApplicative implements IApplicative&lt;Supplier&lt;Parser&lt;?&gt;&gt;&gt;, IAlternative&lt;Supplier&lt;Parser&lt;?&gt;&gt;&gt; {
 
     private ParserSupplierApplicative() {
     }
 
-<span class="nc" id="L21">    private static final ParserSupplierApplicative PARSER_SUPPLIER_APPLICATIVE = new ParserSupplierApplicative();</span>
+<span class="fc" id="L21">    private static final ParserSupplierApplicative PARSER_SUPPLIER_APPLICATIVE = new ParserSupplierApplicative();</span>
 
     public static ParserSupplierApplicative getInstance() {
 <span class="nc" id="L24">        return PARSER_SUPPLIER_APPLICATIVE;</span>
@@ -30,30 +30,30 @@ public class ParserSupplierApplicative implements IApplicative&lt;Supplier&lt;Pa
     }
 
     public static &lt;A, B&gt; Supplier&lt;Parser&lt;B&gt;&gt; map(Supplier&lt;Parser&lt;A&gt;&gt; p, Function&lt;A, B&gt; function) {
-<span class="nc" id="L33">        return () -&gt; ParserApplicative.map(p.get(), function);</span>
+<span class="fc" id="L33">        return () -&gt; ParserApplicative.map(p.get(), function);</span>
     }
 
 
     public static &lt;A&gt; Supplier&lt;Parser&lt;A&gt;&gt; pure(A a) {
-<span class="nc" id="L38">        return () -&gt; ParserApplicative.pure(a);</span>
+<span class="fc" id="L38">        return () -&gt; ParserApplicative.pure(a);</span>
     }
 
     public static &lt;A, B&gt; Supplier&lt;Parser&lt;B&gt;&gt; fapply(Supplier&lt;Parser&lt;Function&lt;A, B&gt;&gt;&gt; fun, Supplier&lt;Parser&lt;A&gt;&gt; st) {
-<span class="nc" id="L42">        return () -&gt; s -&gt; fun</span>
-<span class="nc" id="L43">                .get()</span>
-<span class="nc" id="L44">                .apply(s)</span>
-<span class="nc" id="L45">                .either(</span>
+<span class="fc" id="L42">        return () -&gt; s -&gt; fun</span>
+<span class="fc" id="L43">                .get()</span>
+<span class="fc" id="L44">                .apply(s)</span>
+<span class="fc" id="L45">                .either(</span>
                         Either::left,
-<span class="nc" id="L47">                        p1 -&gt; st.get().apply(p1.getValue()).either(Either::left, p2 -&gt; Either.right(new Pair&lt;&gt;(p1.getKey().apply(p2.getKey()), p2.getValue())))</span>
+<span class="fc" id="L47">                        p1 -&gt; st.get().apply(p1.getValue()).either(Either::left, p2 -&gt; Either.right(new Pair&lt;&gt;(p1.getKey().apply(p2.getKey()), p2.getValue())))</span>
                 );
     }
 
     public static &lt;A&gt; Supplier&lt;Parser&lt;A&gt;&gt; empty() {
-<span class="nc" id="L52">        return () -&gt; s -&gt; Either.left(FiniteList.of(Parser.ParserError.empty()));</span>
+<span class="fc" id="L52">        return () -&gt; s -&gt; Either.left(FiniteList.of(Parser.ParserError.empty()));</span>
     }
 
     public static &lt;A&gt; Supplier&lt;Parser&lt;A&gt;&gt; disjunction(Supplier&lt;Parser&lt;A&gt;&gt; first, Supplier&lt;Parser&lt;A&gt;&gt; second) {
-<span class="nc" id="L56">        return () -&gt; s -&gt; first.get().apply(s).either(errors -&gt; second.get().apply(s), Either::right);</span>
+<span class="fc" id="L56">        return () -&gt; s -&gt; first.get().apply(s).either(_ -&gt; second.get().apply(s), Either::right);</span>
     }
 
 }

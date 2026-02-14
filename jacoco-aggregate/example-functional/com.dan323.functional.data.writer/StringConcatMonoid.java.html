@@ -4,20 +4,20 @@ import com.dan323.functional.annotation.Monoid;
 import com.dan323.functional.annotation.algs.IMonoid;
 
 @Monoid
-<span class="nc" id="L7">public final class StringConcatMonoid implements IMonoid&lt;String&gt; {</span>
+<span class="fc" id="L7">public final class StringConcatMonoid implements IMonoid&lt;String&gt; {</span>
 
     public static String op(String s1, String s2) {
-<span class="nc" id="L10">        return s1 + s2;</span>
+<span class="fc" id="L10">        return s1 + s2;</span>
     }
 
     public static String unit() {
-<span class="nc" id="L14">        return &quot;&quot;;</span>
+<span class="fc" id="L14">        return &quot;&quot;;</span>
     }
 
-<span class="nc" id="L17">    private static final StringConcatMonoid STRING_CONCAT_MONOID = new StringConcatMonoid();</span>
+<span class="fc" id="L17">    private static final StringConcatMonoid STRING_CONCAT_MONOID = new StringConcatMonoid();</span>
 
     public static StringConcatMonoid getInstance() {
-<span class="nc" id="L20">        return STRING_CONCAT_MONOID;</span>
+<span class="fc" id="L20">        return STRING_CONCAT_MONOID;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

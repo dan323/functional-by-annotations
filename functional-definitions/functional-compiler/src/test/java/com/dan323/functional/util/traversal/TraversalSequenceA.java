@@ -23,10 +23,6 @@ public class TraversalSequenceA implements ITraversal<List<?>> {
         return base.stream().map(function).toList();
     }
 
-    private boolean isApplicative(Type type) {
-        return type.getTypeName().contains("IApplicative") || type.getTypeName().contains("IMonad");
-    }
-
     private List<Object> cons(Object a, List<Object> lst) {
         var sol = new ArrayList<>(lst);
         sol.add(0, a);

@@ -45,7 +45,7 @@ public class ParserApplicative implements IApplicative<Parser<?>>, IAlternative<
     }
 
     public static <A> Parser<A> disjunction(Parser<A> first, Parser<A> second) {
-        return s -> first.apply(s).either(_ -> second.apply(s), p -> Either.right(p));
+        return s -> first.apply(s).either(_ -> second.apply(s), Either::right);
     }
 
     public static <A> Parser<FiniteList<A>> many(Parser<A> parser) {

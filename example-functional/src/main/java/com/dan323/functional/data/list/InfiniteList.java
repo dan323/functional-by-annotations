@@ -19,7 +19,8 @@ public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Ge
      * Infinite lists are incomparable in a finite amount of time
      *
      * @param obj element to be compared to
-     * @throws {@link UnsupportedOperationException}
+     *
+     * @throws UnsupportedOperationException when called, since infinite lists cannot be compared in a finite amount of time
      */
     @Override
     public final boolean equals(Object obj) {
@@ -28,6 +29,6 @@ public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Ge
 
     @Override
     public int hashCode() {
-        return 7*super.hashCode();
+        return 7 * super.hashCode();
     }
 }

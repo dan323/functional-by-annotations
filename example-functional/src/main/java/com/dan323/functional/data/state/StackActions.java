@@ -19,7 +19,7 @@ import java.util.function.UnaryOperator;
  */
 public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>, StackActions.StackError> {
 
-    public static class StackError {
+    class StackError {
 
         private final String message;
 
@@ -44,6 +44,11 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
         public boolean equals(Object obj) {
             return (obj instanceof StackError stackError) && Objects.equals(stackError.message, message);
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(message);
+        }
     }
 
     // PURE BASIC ACTIONS
@@ -55,7 +60,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... -> ... x |
      */
-    public static <A> StackActions<A> push(A x) {
+    static <A> StackActions<A> push(A x) {
         return s -> Either.right(new Pair<>(Maybe.of(), FiniteList.cons(x, s)));
     }
 
@@ -65,7 +70,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... x -> ... | x
      */
-    public static <A> StackActions<A> pop() {
+    static <A> StackActions<A> pop() {
         return s -> s.head().maybe(h -> Either.right(new Pair<>(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty()));
     }
 
@@ -79,7 +84,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... -> |
      */
-    public static <A> StackActions<A> reset() {
+    static <A> StackActions<A> reset() {
         return s -> Either.right(new Pair<>(Maybe.of(), FiniteList.nil()));
     }
 
@@ -90,7 +95,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A>   type of elements in the stack
      * @return ... x -> ... modif(x)
      */
-    public static <A> StackActions<A> modify(UnaryOperator<A> modif) {
+    static <A> StackActions<A> modify(UnaryOperator<A> modif) {
         return StackActions.<A>pop().thenByPopped(m -> MaybeMonad.map(m, modif).maybe(StackActions::push, error(StackError.illegalState())));
     }
 
@@ -101,7 +106,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A>        type of elements in the stack
      * @return ... -> ERROR
      */
-    public static <A> StackActions<A> error(StackError stackError) {
+    static <A> StackActions<A> error(StackError stackError) {
         return s -> Either.left(stackError);
     }
 
@@ -111,7 +116,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... x -> ... |
      */
-    public static <A> StackActions<A> drop() {
+    static <A> StackActions<A> drop() {
         return StackActions.<A>pop().then(doNothing());
     }
 
@@ -121,7 +126,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... -> ... |
      */
-    public static <A> StackActions<A> doNothing() {
+    static <A> StackActions<A> doNothing() {
         return s -> Either.right(new Pair<>(Maybe.of(), s));
     }
 
@@ -131,7 +136,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of the elements in the stack
      * @return ... x -> ... x x |
      */
-    public static <A> StackActions<A> dup() {
+    static <A> StackActions<A> dup() {
         return StackActions.<A>pop().thenByPopped(m -> m.maybe(x -> push(x).then(push(x)), error(StackError.illegalState())));
     }
 
@@ -141,7 +146,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... x y -> ... y x |
      */
-    public static <A> StackActions<A> swap() {
+    static <A> StackActions<A> swap() {
         return StackActions.<A>pop().thenByPopped(m -> m.maybe(x -> StackActions.<A>pop().thenByPopped(n -> n.maybe(h -> StackActions.<A>push(x).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));
     }
 
@@ -151,7 +156,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @param <A> type of elements in the stack
      * @return ... x y -> ... x y x |
      */
-    public static <A> StackActions<A> over() {
+    static <A> StackActions<A> over() {
         return StackActions.<A>pop().thenByPopped(m -> m.maybe(x -> StackActions.<A>pop().thenByPopped(n -> n.maybe(h -> StackActions.<A>push(h).then(push(x)).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));
     }
 

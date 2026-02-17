@@ -11,7 +11,7 @@ import java.util.function.BiFunction;
  */
 public final class ApplicativeUtil {
 
-    public static final String NOT_CORRECTLY_IMPLEMENTED = "The applicative is not correctly implemented.";
+    private static final String NOT_CORRECTLY_IMPLEMENTED = "The applicative is not correctly implemented.";
 
     private ApplicativeUtil() {
         throw new UnsupportedOperationException();

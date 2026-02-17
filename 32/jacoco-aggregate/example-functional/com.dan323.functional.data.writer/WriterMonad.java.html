@@ -41,7 +41,7 @@ public class WriterMonad&lt;W&gt; implements IMonad&lt;Writer&lt;?, W&gt;&gt; {
     }
 
     public &lt;A&gt; Writer&lt;A, W&gt; join(Writer&lt;Writer&lt;A, W&gt;, W&gt; writer) {
-<span class="fc" id="L44">        return new Writer&lt;&gt;(writer.execute().execute(), SemigroupUtil.op(monoid, writer.execute().log(), writer.log()));</span>
+<span class="fc" id="L44">        return new Writer&lt;&gt;(writer.execute().execute(), SemigroupUtil.op(monoid, writer.log(), writer.execute().log()));</span>
     }
 
     public &lt;A, B, C&gt; Writer&lt;C, W&gt; liftA2(BiFunction&lt;A, B, C&gt; function, Writer&lt;A, W&gt; aWriter, Writer&lt;B, W&gt; bWriter) {

@@ -53,7 +53,7 @@ public class AccumulatorTest {
     public void joinConcatsOuterThenInnerLogs() {
         Writer<Writer<Integer, FiniteList<String>>, FiniteList<String>> outer =
                 accumulator.map(Writer.tell(FiniteList.of("o")),
-                        _ -> accumulator.map(Writer.tell(FiniteList.of("i1", "i2")), in -> 5));
+                        _ -> accumulator.map(Writer.tell(FiniteList.of("i1", "i2")), _ -> 5));
         Writer<Integer, FiniteList<String>> result = accumulator.join(outer);
         assertEquals(5, result.execute());
         assertEquals(FiniteList.of("o", "i1", "i2"), result.log());

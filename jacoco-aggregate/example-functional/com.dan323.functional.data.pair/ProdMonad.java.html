@@ -4,18 +4,17 @@ import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.compiler.util.MonadUtil;
 import com.dan323.functional.annotation.funcs.IMonad;
 
-import java.lang.reflect.Type;
 import java.util.function.Function;
 
 @Monad
-public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implements IMonad&lt;PairTypeContructor&lt;M, N, ?&gt;&gt; {
+public class ProdMonad&lt;M, N&gt; extends ProdApplicative&lt;M, N&gt; implements IMonad&lt;PairTypeConstructor&lt;M, N, ?&gt;&gt; {
 
     public ProdMonad(IMonad&lt;M&gt; fm, IMonad&lt;N&gt; fn) {
-<span class="fc" id="L14">        super(fm, fn);</span>
-<span class="fc" id="L15">    }</span>
+<span class="fc" id="L13">        super(fm, fn);</span>
+<span class="fc" id="L14">    }</span>
 
-    public &lt;A, B&gt; PairTypeContructor&lt;M, N, B&gt; flatMap(Function&lt;A, PairTypeContructor&lt;M, N, B&gt;&gt; f, PairTypeContructor&lt;M, N, A&gt; base) {
-<span class="fc" id="L18">        return new PairTypeContructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
+    public &lt;A, B&gt; PairTypeConstructor&lt;M, N, B&gt; flatMap(Function&lt;A, PairTypeConstructor&lt;M, N, B&gt;&gt; f, PairTypeConstructor&lt;M, N, A&gt; base) {
+<span class="fc" id="L17">        return new PairTypeConstructor&lt;&gt;(MonadUtil.flatMap((IMonad&lt;M&gt;) mFunctor, (A x) -&gt; f.apply(x).getFirst(), base.getFirst()), MonadUtil.flatMap((IMonad&lt;N&gt;) nFunctor, (A x) -&gt; f.apply(x).getSecond(), base.getSecond()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

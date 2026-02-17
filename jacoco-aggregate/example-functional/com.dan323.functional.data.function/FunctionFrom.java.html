@@ -23,7 +23,7 @@ public final class FunctionFrom&lt;A&gt; implements IMonad&lt;Function&lt;A, ?&g
     }
 
     public &lt;B&gt; Function&lt;A, B&gt; pure(B data) {
-<span class="fc" id="L26">        return x -&gt; data;</span>
+<span class="fc" id="L26">        return _ -&gt; data;</span>
     }
 
     public &lt;B, C&gt; Function&lt;A, C&gt; fapply(Function&lt;A, Function&lt;B, C&gt;&gt; ffun, Function&lt;A, B&gt; g) {

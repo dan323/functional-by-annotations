@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CompilerFactory.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler.internal</a> &gt; <span class="el_source">CompilerFactory.java</span></div><h1>CompilerFactory.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler.internal;
+
+import com.dan323.functional.annotation.*;
+import com.dan323.functional.annotation.algs.IMonoid;
+import com.dan323.functional.annotation.algs.IRing;
+import com.dan323.functional.annotation.algs.ISemigroup;
+import com.dan323.functional.annotation.compiler.internal.signature.StructureSignatures;
+import com.dan323.functional.annotation.funcs.*;
+
+import javax.annotation.processing.Messager;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+
+<span class="fc" id="L15">public final class CompilerFactory {</span>
+
+    /**
+     * Create a compiler depending on what element we are compiling
+     *
+     * @param iface    interface to check at compile time
+     * @param elements utility class
+     * @param types    utility class
+     * @param messager instance to manage errors
+     * @return A compiler compatible with {@code iface}
+     */
+    public Compiler&lt;?&gt; from(DeclaredType iface, Elements elements, Types types, Messager messager) {
+<span class="fc" id="L27">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
+<span class="fc" id="L29">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
+<span class="fc" id="L31">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
+<span class="fc" id="L33">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
+<span class="fc" id="L35">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
+<span class="fc" id="L37">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
+<span class="fc" id="L39">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))) {</span>
+<span class="fc" id="L41">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))) {</span>
+<span class="nc" id="L43">            return new Compiler&lt;&gt;(signatures.ringSignatureChecker(iface), Ring.class, messager);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ITraversal.class.getTypeName()))) {</span>
+<span class="nc" id="L45">            return new Compiler&lt;&gt;(signatures.traversalSignatureChecker(iface), Traversal.class, messager);</span>
+        }
+<span class="nc" id="L47">        throw new IllegalArgumentException(String.format(&quot;The interfaces %s does not represent an implemented functional&quot;, iface));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

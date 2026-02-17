@@ -51,7 +51,7 @@ public class LoggerMonadTest {
                 loggerMonad.map(Writer.tell("o"), _ -> loggerMonad.map(Writer.tell("i"), _ -> 5));
         Writer<Integer, String> result = loggerMonad.join(outer);
         assertEquals(5, result.execute());
-        assertEquals("io", result.log());
+        assertEquals("oi", result.log());
     }
 
     @Test

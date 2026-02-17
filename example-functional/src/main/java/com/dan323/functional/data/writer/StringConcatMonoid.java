@@ -6,6 +6,9 @@ import com.dan323.functional.annotation.algs.IMonoid;
 @Monoid
 public final class StringConcatMonoid implements IMonoid<String> {
 
+    private StringConcatMonoid() {
+    }
+
     public static String op(String s1, String s2) {
         return s1 + s2;
     }

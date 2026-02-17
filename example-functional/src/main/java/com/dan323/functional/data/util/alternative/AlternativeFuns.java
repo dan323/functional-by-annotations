@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Implementation of {@link #many(IAlternative, IAlternative, Object, Function)} and {@link #some(IAlternative, IAlternative, Object, Function)}
+ * Implementation of {@link #many(IAlternative, IAlternative, Object)} and {@link #some(IAlternative, IAlternative, Object)}
  * to be executed lazily.
  * <br>
  * NOTE: It is recommended to reimplement, as once the specific classes are identified it is easier to execute lazily.
@@ -27,6 +27,6 @@ public final class AlternativeFuns {
     }
 
     public static <F> Supplier<F> many(IAlternative<Supplier<F>> alternative, IAlternative<F> alternativef, F felement) {
-        return () -> (AlternativeUtil.disj(alternative, some(alternative, alternativef, felement), () -> ApplicativeUtil.pure(alternativef, List.nil()))).get();
+        return () -> (AlternativeUtil.disjunction(alternative, some(alternative, alternativef, felement), () -> ApplicativeUtil.pure(alternativef, List.nil()))).get();
     }
 }

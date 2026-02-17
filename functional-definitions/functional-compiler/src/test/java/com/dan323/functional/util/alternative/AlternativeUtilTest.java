@@ -17,7 +17,7 @@ public class AlternativeUtilTest {
 
     @Test
     public void disjunctionTest() {
-        var concat = AlternativeUtil.disj(new AlternativeMock(), List.of(1, 2), List.of(3, 4));
+        var concat = AlternativeUtil.disjunction(new AlternativeMock(), List.of(1, 2), List.of(3, 4));
         assertEquals(List.of(1, 2, 3, 4), concat);
     }
 }

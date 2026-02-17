@@ -9,9 +9,11 @@ import java.util.function.Function;
 public class LeftEither<R> implements IMonad<Either<?, R>> {
 
     LeftEither(){}
+
     public static <R> LeftEither<R> getInstance(){
         return new LeftEither<>();
     }
+
     public <A, B> Either<B, R> map(Either<A, R> base, Function<A, B> mapping) {
         return base.either(((Function<B, Either<B, R>>) Either::left).compose(mapping), Either::right);
     }

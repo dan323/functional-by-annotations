@@ -13,23 +13,25 @@ import java.util.function.Function;
  */
 public final class FoldableUtil {
 
+    public static final String NOT_CORRECTLY_IMPLEMENTED = "The foldable is not correctly implemented.";
+
     private FoldableUtil() {
         throw new UnsupportedOperationException();
     }
 
     public static <F, A> A fold(IFoldable<? extends F> foldable, IMonoid<? extends A> monoid, F a) {
         return FunctionalUtil.foldableFold(foldable, monoid, a)
-                .orElseThrow(() -> new IllegalArgumentException("The foldable is not correctly implemented."));
+                .orElseThrow(() -> new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));
     }
 
     public static <F, A, M> M foldMap(IFoldable<? extends F> foldable, IMonoid<? extends M> monoid, Function<A,M> function, F base){
         return FunctionalUtil.foldableFoldMap(foldable, monoid, function, base)
-                .orElseThrow(() -> new IllegalArgumentException("The foldable is not correctly implemented."));
+                .orElseThrow(() -> new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));
     }
 
     public static <F, A, B> B foldr(IFoldable<? extends F> foldable, BiFunction<A,B,B> function, B b, F fa){
         return FunctionalUtil.foldableFoldr(foldable, function, b, fa)
-                .orElseThrow(() -> new IllegalArgumentException("The foldable is not correctly implemented."));
+                .orElseThrow(() -> new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));
     }
 
 }

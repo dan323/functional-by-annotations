@@ -1,8 +1,6 @@
 package com.dan323.functional.data.list.zipper;
 
-import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.data.list.FiniteList;
-import com.dan323.functional.data.list.FiniteListFunctional;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.list.ListUtils;
 import com.dan323.functional.data.optional.Maybe;
@@ -76,7 +74,7 @@ public final class ListZipper<A> {
     }
 
     public ListZipper<A> set(A b) {
-        return modify(x -> b);
+        return modify(_ -> b);
     }
 
     public List<A> toList() {

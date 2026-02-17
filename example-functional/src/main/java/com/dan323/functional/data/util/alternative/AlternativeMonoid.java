@@ -15,7 +15,7 @@ public final class AlternativeMonoid<FA extends F, F> implements IMonoid<FA> {
     }
 
     public FA op(FA first, FA second) {
-        return (FA) AlternativeUtil.disj(alternative, first, second);
+        return (FA) AlternativeUtil.disjunction(alternative, first, second);
     }
 
     public FA unit() {

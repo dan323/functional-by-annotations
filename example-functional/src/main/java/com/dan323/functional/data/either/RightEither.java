@@ -14,6 +14,7 @@ public class RightEither<R> implements IMonad<Either<R, ?>> {
     public static <R> RightEither<R> getInstance(){
         return new RightEither<>();
     }
+
     public <B, C> Either<R, C> map(Either<R, B> base, Function<B, C> mapping) {
         return base.either(Either::left, b -> Either.right(mapping.apply(b)));
     }

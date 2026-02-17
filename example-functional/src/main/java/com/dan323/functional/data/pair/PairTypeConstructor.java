@@ -2,12 +2,18 @@ package com.dan323.functional.data.pair;
 
 import java.util.Objects;
 
-public final class PairTypeContructor<M, N, A> {
+/**
+ * A pair constructor
+ * @param <M> Some type F_1<A>
+ * @param <N> Some type F_2<A>
+ * @param <A>
+ */
+public final class PairTypeConstructor<M, N, A> {
 
     private final M a;
     private final N b;
 
-    public PairTypeContructor(M a, N b) {
+    public PairTypeConstructor(M a, N b) {
         this.a = a;
         this.b = b;
     }
@@ -28,7 +34,7 @@ public final class PairTypeContructor<M, N, A> {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
-        if (obj instanceof PairTypeContructor<?,?,?> ptc){
+        if (obj instanceof PairTypeConstructor<?,?,?> ptc){
             return Objects.equals(ptc.a, a) && Objects.equals(ptc.b, b);
         } else {
             return false;

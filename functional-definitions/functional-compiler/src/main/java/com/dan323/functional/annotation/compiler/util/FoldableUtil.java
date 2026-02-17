@@ -13,7 +13,7 @@ import java.util.function.Function;
  */
 public final class FoldableUtil {
 
-    public static final String NOT_CORRECTLY_IMPLEMENTED = "The foldable is not correctly implemented.";
+    private static final String NOT_CORRECTLY_IMPLEMENTED = "The foldable is not correctly implemented.";
 
     private FoldableUtil() {
         throw new UnsupportedOperationException();

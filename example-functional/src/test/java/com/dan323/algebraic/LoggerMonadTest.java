@@ -48,10 +48,10 @@ public class LoggerMonadTest {
     @Test
     public void joinConcatsOuterThenInnerLogs() {
         Writer<Writer<Integer, String>, String> outer =
-                loggerMonad.map(Writer.tell("o"), _ -> loggerMonad.map(Writer.tell("i"), in -> 5));
+                loggerMonad.map(Writer.tell("o"), _ -> loggerMonad.map(Writer.tell("i"), _ -> 5));
         Writer<Integer, String> result = loggerMonad.join(outer);
         assertEquals(5, result.execute());
-        assertEquals("oi", result.log());
+        assertEquals("io", result.log());
     }
 
     @Test

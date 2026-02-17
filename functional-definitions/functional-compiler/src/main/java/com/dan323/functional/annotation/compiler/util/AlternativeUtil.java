@@ -4,7 +4,7 @@ import com.dan323.functional.annotation.funcs.IAlternative;
 
 public final class AlternativeUtil {
 
-    public static final String NOT_CORRECTLY_IMPLEMENTED = "The alternative is not correctly implemented.";
+    private static final String NOT_CORRECTLY_IMPLEMENTED = "The alternative is not correctly implemented.";
 
     private AlternativeUtil() {
         throw new UnsupportedOperationException();

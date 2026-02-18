@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>BTreeFunctor.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.tree</a> &gt; <span class="el_source">BTreeFunctor.java</span></div><h1>BTreeFunctor.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.tree;
+
+import com.dan323.functional.annotation.Functor;
+import com.dan323.functional.annotation.funcs.IFunctor;
+
+import java.util.function.Function;
+
+@Functor
+public class BTreeFunctor implements IFunctor&lt;BinaryTree&lt;?&gt;&gt; {
+
+    private BTreeFunctor() {
+    }
+
+<span class="fc" id="L14">    public static final BTreeFunctor FUNCTOR = new BTreeFunctor();</span>
+
+    public static &lt;A, B&gt; BinaryTree&lt;B&gt; map(BinaryTree&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (base instanceof Leaf&lt;A&gt;) {</span>
+<span class="fc" id="L18">            return BinaryTree.leaf();</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        } else if (base instanceof BinaryNode&lt;A&gt; node) {</span>
+<span class="fc" id="L20">            return BinaryTree.node(map(node.left(), mapping), mapping.apply(node.data()), map(node.right(), mapping));</span>
+        } else {
+<span class="nc" id="L22">            throw new IllegalStateException(&quot;There are more instances that implemented&quot;);</span>
+        }
+    }
+
+    public static &lt;A&gt; BinaryTree&lt;A&gt; pure(A a) {
+<span class="nc" id="L27">        return BinaryTree.node(BinaryTree.leaf(), a, BinaryTree.leaf());</span>
+    }
+
+    @Override
+    public Class&lt;BinaryTree&lt;?&gt;&gt; getClassAtRuntime() {
+<span class="fc" id="L32">        return (Class&lt;BinaryTree&lt;?&gt;&gt;) (Class&lt;?&gt;) BinaryTree.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

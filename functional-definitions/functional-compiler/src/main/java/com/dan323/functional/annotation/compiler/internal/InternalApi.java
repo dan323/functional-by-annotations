@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a public type or method as internal API, not intended for public use.
- *<p/>
  * Internal APIs are subject to change without notice between versions and should
  * not be relied upon by library users. They are exposed as public only because
  * they are needed for annotation processing or internal compiler operations.

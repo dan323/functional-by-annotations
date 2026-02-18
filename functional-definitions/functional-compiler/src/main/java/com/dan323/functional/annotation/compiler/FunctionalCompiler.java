@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 /**
  * Annotation processor for functional structures.
- *<p/>
  * This is an internal processor discovered via SPI and should not be used directly.
  */
 @InternalApi("Annotation processor - use via Java's annotation processing framework")

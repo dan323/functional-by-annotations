@@ -44,7 +44,7 @@ public final class StructureSignatures {
     private Signature createPureSignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (!params.isEmpty()) {
-            return new Signature(List.of(params.getFirst()), CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst()), IApplicative.PURE_NAME);
+            return new Signature(List.of(params.get(0)), CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)), IApplicative.PURE_NAME);
         } else {
             return Signature.invalid();
         }
@@ -53,7 +53,7 @@ public final class StructureSignatures {
     private Signature createSumSignature(DeclaredType iFace) {
         var params = iFace.getTypeArguments();
         if (!params.isEmpty()) {
-            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.getFirst()), IRing.SUM_NAME);
+            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(IMonoid.class.getTypeName()), params.get(0)), IRing.SUM_NAME);
         } else {
             return Signature.invalid();
         }
@@ -62,7 +62,7 @@ public final class StructureSignatures {
     private Signature createProdSignature(DeclaredType iFace) {
         var params = iFace.getTypeArguments();
         if (!params.isEmpty()) {
-            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(ISemigroup.class.getTypeName()), params.getFirst()), IRing.PROD_NAME);
+            return new Signature(List.of(), typeUtils.getDeclaredType(elementUtils.getTypeElement(ISemigroup.class.getTypeName()), params.get(0)), IRing.PROD_NAME);
         } else {
             return Signature.invalid();
         }
@@ -96,7 +96,7 @@ public final class StructureSignatures {
     private Signature createDisjSignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (!params.isEmpty()) {
-            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());
+            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
             return new Signature(List.of(input1, input1), input1, IAlternative.DISJ_NAME);
         } else {
             return Signature.invalid();
@@ -107,7 +107,7 @@ public final class StructureSignatures {
     private Signature createEmptySignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (!params.isEmpty()) {
-            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());
+            var input1 = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
             return new Signature(List.of(), input1, IAlternative.EMPTY_NAME);
         } else {
             return Signature.invalid();
@@ -117,8 +117,8 @@ public final class StructureSignatures {
     private Signature createJoinSignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (!params.isEmpty()) {
-            var input = CompilerUtils.changeWildBy(typeUtils, iFace, CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst()));
-            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());
+            var input = CompilerUtils.changeWildBy(typeUtils, iFace, CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0)));
+            var returnTyp = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
             return new Signature(List.of(input), returnTyp, IMonad.JOIN_NAME);
         } else {
             return Signature.invalid();
@@ -140,7 +140,7 @@ public final class StructureSignatures {
     private Signature createOpSignature(DeclaredType iFace) {
         var params = iFace.getTypeArguments();
         if (!params.isEmpty()) {
-            return new Signature(List.of(params.getFirst(), params.getFirst()), params.getFirst(), ISemigroup.OP_NAME);
+            return new Signature(List.of(params.get(0), params.get(0)), params.get(0), ISemigroup.OP_NAME);
         } else {
             return Signature.invalid();
         }
@@ -149,7 +149,7 @@ public final class StructureSignatures {
     private Signature createUnitSignature(DeclaredType iFace) {
         var params = iFace.getTypeArguments();
         if (!params.isEmpty()) {
-            return new Signature(List.of(), params.getFirst(), IMonoid.UNIT_NAME);
+            return new Signature(List.of(), params.get(0), IMonoid.UNIT_NAME);
         } else {
             return Signature.invalid();
         }
@@ -193,9 +193,9 @@ public final class StructureSignatures {
     private Signature createSequenceASignature(ExecutableType method, DeclaredType iFace) {
         var params = method.getTypeVariables();
         if (!params.isEmpty()) {
-            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());
-            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.getFirst());
-            return new Signature(List.of(iApplicative, traversal), params.getFirst(), ITraversal.SEQUENCE_A_NAME);
+            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(0));
+            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));
+            return new Signature(List.of(iApplicative, traversal), params.get(0), ITraversal.SEQUENCE_A_NAME);
         } else {
             return Signature.invalid();
         }
@@ -210,11 +210,11 @@ public final class StructureSignatures {
     }
 
     private NecessaryMethods sumSignatureChecker(DeclaredType iface) {
-        return new FunctionSignature(_ -> createSumSignature(iface), IRing.SUM_NAME);
+        return new FunctionSignature(b -> createSumSignature(iface), IRing.SUM_NAME);
     }
 
     private NecessaryMethods prodSignatureChecker(DeclaredType iface) {
-        return new FunctionSignature(_ -> createProdSignature(iface), IRing.PROD_NAME);
+        return new FunctionSignature(b -> createProdSignature(iface), IRing.PROD_NAME);
     }
 
     private NecessaryMethods emptySignatureChecker(DeclaredType iface) {
@@ -242,11 +242,11 @@ public final class StructureSignatures {
     }
 
     private NecessaryMethods opSignatureChecker(DeclaredType iface) {
-        return new FunctionSignature(_ -> createOpSignature(iface), IMonoid.OP_NAME);
+        return new FunctionSignature(t -> createOpSignature(iface), IMonoid.OP_NAME);
     }
 
     private NecessaryMethods unitSignatureChecker(DeclaredType iface) {
-        return new FunctionSignature(_ -> createUnitSignature(iface), IMonoid.UNIT_NAME);
+        return new FunctionSignature(t -> createUnitSignature(iface), IMonoid.UNIT_NAME);
     }
 
     private NecessaryMethods foldrSignatureChecker(DeclaredType iface) {

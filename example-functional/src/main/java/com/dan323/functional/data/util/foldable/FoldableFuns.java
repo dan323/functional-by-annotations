@@ -29,7 +29,7 @@ public final class FoldableFuns {
      * @return true iff {@code felement} has no elements to be folded
      */
     public static <F> boolean isEmpty(IFoldable<? extends F> foldable, F felement) {
-        return foldMap(foldable, AndMonoid.AND_MONOID, _ -> Boolean.FALSE, felement);
+        return foldMap(foldable, AndMonoid.AND_MONOID, y -> Boolean.FALSE, felement);
     }
 
     /**
@@ -41,7 +41,7 @@ public final class FoldableFuns {
      * @return number of elements in {@code felement}
      */
     public static <F> int length(IFoldable<? extends F> foldable, F felement) {
-        return foldMap(foldable, SumMonoid.getInstance(), _ -> 1, felement);
+        return foldMap(foldable, SumMonoid.getInstance(), m -> 1, felement);
     }
 
     /**

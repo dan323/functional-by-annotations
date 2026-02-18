@@ -15,7 +15,7 @@ public final class CompilerUtils {
 
     public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
         var lst = type.getTypeArguments();
-        var wilderized = (DeclaredType) lst.getFirst();
+        var wilderized = (DeclaredType) lst.get(0);
 
         var funcList = wilderized.getTypeArguments().stream()
                 .map((TypeMirror tm) -> {

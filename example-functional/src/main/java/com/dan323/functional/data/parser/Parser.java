@@ -91,7 +91,7 @@ public interface Parser<A> extends StateWithError<A, String, FiniteList<Parser.P
     }
 
     static <A> Parser<Maybe<A>> optional(Parser<A> parser) {
-        return s -> parser.apply(s).either(_ -> Either.<FiniteList<ParserError>,Pair<Maybe<A>,String>>right(new Pair<>(Maybe.of(), s)),
+        return s -> parser.apply(s).either(x -> Either.<FiniteList<ParserError>,Pair<Maybe<A>,String>>right(new Pair<>(Maybe.of(), s)),
                 pair -> pair.map((elem, output) -> Either.<FiniteList<ParserError>,Pair<Maybe<A>,String>>right(new Pair<>(Maybe.of(elem), output))));
     }
 

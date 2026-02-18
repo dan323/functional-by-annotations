@@ -74,7 +74,7 @@ public final class ListZipper<A> {
     }
 
     public ListZipper<A> set(A b) {
-        return modify(_ -> b);
+        return modify(x -> b);
     }
 
     public List<A> toList() {

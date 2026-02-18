@@ -14,6 +14,7 @@
 - SonarMaven: Add `org.sonarsource.scanner.maven:sonar-maven-plugin` to active build plugins
 ### Fixes
 - JaCoCo: Fix functional-compiler module Jacoco coverage - now properly instruments tests
+- CompilerUtils: Annotated classes with functionals may implement the functional interface down the hierarchy and not directly to compile
 
 ## [1.2] - 2026-02-14
 ### Features

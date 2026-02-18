@@ -11,10 +11,12 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,8 @@ public final class FunctionalCompiler extends AbstractProcessor {
     private Types typeUtils;
     private CompilerFactory compilerFactory;
 
-    private static final Set<Class<? extends Annotation>> annotations = Set.of(
-            Functor.class, Applicative.class, Monad.class,
-            Semigroup.class, Monoid.class, Ring.class,
-            Foldable.class, Traversal.class,
-            Alternative.class
-    );
+    private static final Set<Class<? extends Annotation>> annotations = CompilerFactory.getSupportedAnnotations();
+    private static final java.util.Map<Class<? extends Annotation>, String> ANNOTATION_TO_INTERFACE = CompilerFactory.getAnnotationToInterfaceMap();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -47,8 +45,13 @@ public final class FunctionalCompiler extends AbstractProcessor {
             var elems = roundEnvironment.getElementsAnnotatedWithAny(annotations);
             for (var elem : elems) {
                 if (elem instanceof TypeElement telem && !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind
-                    var ifaces = CompilerUtils.getAllMaximalFunctionalInterfaces(elementUtils, typeUtils, telem);
-                    ifaces.stream().map(iface -> compilerFactory.from(iface, elementUtils, typeUtils, messager))
+                    var directIfaces = CompilerUtils.getDirectFunctionalInterfaces(elementUtils, typeUtils, telem);
+                    var allHierarchyIfaces = CompilerUtils.getAllFunctionalInterfacesFromHierarchy(elementUtils, typeUtils, telem);
+
+                    // Check that for each direct annotation, the corresponding interface is implemented (directly or inherited)
+                    checkDirectAnnotationsHaveInterfaces(telem, allHierarchyIfaces);
+
+                    directIfaces.stream().map(iface -> compilerFactory.from(iface, elementUtils, typeUtils, messager))
                             .forEach(comp -> comp.process(telem));
                 }
             }
@@ -57,6 +60,38 @@ public final class FunctionalCompiler extends AbstractProcessor {
         }
         return true;
     }
+
+    private void checkDirectAnnotationsHaveInterfaces(TypeElement element, List<DeclaredType> implementedInterfaces) {
+        var directAnnotations = getDirectAnnotations(element);
+        var interfaceNames = implementedInterfaces.stream()
+                .map(iface -> iface.asElement().getSimpleName().toString())
+                .collect(Collectors.toSet());
+
+        for (var annotation : directAnnotations) {
+            String expectedInterfaceName = ANNOTATION_TO_INTERFACE.get(annotation);
+            if (expectedInterfaceName != null && !interfaceNames.contains(expectedInterfaceName)) {
+                error("The class %s is annotated with @%s but does not implement %s",
+                    element.getQualifiedName(),
+                    annotation.getSimpleName(),
+                    expectedInterfaceName);
+            }
+        }
+    }
+
+    private Set<Class<? extends Annotation>> getDirectAnnotations(TypeElement element) {
+        var result = new java.util.HashSet<Class<? extends Annotation>>();
+
+        // Check only direct annotations on this element
+        element.getAnnotationMirrors().stream()
+                .map(annotation -> annotation.getAnnotationType().toString())
+                .forEach(annotationType -> annotations.stream()
+                        .filter(ann -> ann.getCanonicalName().equals(annotationType))
+                        .forEach(result::add));
+
+
+        return result;
+    }
+
 
     private void error(String message, Object... args) {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));

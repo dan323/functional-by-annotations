@@ -15,7 +15,7 @@ public final class CompilerUtils {
 
     public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
         var lst = type.getTypeArguments();
-        var wilderized = (DeclaredType) lst.get(0);
+        var wilderized = (DeclaredType) lst.getFirst();
 
         var funcList = wilderized.getTypeArguments().stream()
                 .map((TypeMirror tm) -> {
@@ -30,12 +30,33 @@ public final class CompilerUtils {
         return typeUtils.getDeclaredType((TypeElement) wilderized.asElement(), funcList);
     }
 
-    public static List<DeclaredType> getAllMaximalFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
+    public static List<DeclaredType> getDirectFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
         var lst = element.getInterfaces().stream()
                 .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
-                .filter(type -> CompilerUtils.isStrucutre(elementUtils, types, type))
+                .filter(type -> CompilerUtils.isStructure(elementUtils, types, type))
                 .toList();
         return lst.stream().filter(type -> isMaximal(elementUtils, type, lst)).toList();
+    }
+
+    public static List<DeclaredType> getAllFunctionalInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
+        var lst = getAllInterfacesFromHierarchy(elementUtils, types, element).stream()
+                .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
+                .filter(type -> CompilerUtils.isStructure(elementUtils, types, type))
+                .toList();
+        return lst.stream().filter(type -> isMaximal(elementUtils, type, lst)).toList();
+    }
+
+    private static List<TypeMirror> getAllInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
+        var interfaces = new ArrayList<TypeMirror>(element.getInterfaces());
+
+        // Recursively collect interfaces from superclass
+        var superclass = element.getSuperclass();
+        if (superclass.getKind().equals(TypeKind.DECLARED)) {
+            var superElement = (TypeElement) types.asElement(superclass);
+            interfaces.addAll(getAllInterfacesFromHierarchy(elementUtils, types, superElement));
+        }
+
+        return interfaces;
     }
 
     private static boolean isMaximal(Elements elements, DeclaredType type, List<DeclaredType> types) {
@@ -60,7 +81,8 @@ public final class CompilerUtils {
         }
     }
 
-    private static boolean isStrucutre(Elements elementUtils, Types types, DeclaredType type) {
+
+    private static boolean isStructure(Elements elementUtils, Types types, DeclaredType type) {
         return types.isAssignable(type, elementUtils.getTypeElement(Structure.class.getTypeName()).asType());
     }
 }

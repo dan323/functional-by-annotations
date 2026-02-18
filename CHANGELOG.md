@@ -1,6 +1,8 @@
 ## CHANGELOG
 
 ## [Unreleased]
+
+## [1.3] - 2026-02-18
 - Future notes.
 ### Features
 - FiniteList: Remove `fromJavaList()` method to simplify API and encourage use of `of()` factory method.

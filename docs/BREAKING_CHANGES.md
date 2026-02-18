@@ -27,7 +27,7 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 ## 1. Java Version Requirement (BREAKING)
 
 ### Change
-- **v1.3:** Supports Java 11+
+- **v1.3:** Supports Java 24
 - **v2.0:** Requires Java 17 minimum
 
 ### Why

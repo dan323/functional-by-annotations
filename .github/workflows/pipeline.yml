@@ -27,6 +27,10 @@ jobs:
           java-version: 17
       - name: compile
         run: mvn -B -f pom.xml clean compile
+      - name: run test suits
+        run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package -Dmaven.test.skip=true
+          mvn -B -f pom.xml test -P test
 
   compile_21:
     runs-on: ubuntu-latest
@@ -42,6 +46,10 @@ jobs:
           java-version: 21
       - name: compile
         run: mvn -B -f pom.xml clean compile
+      - name: run test suits
+        run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package -Dmaven.test.skip=true
+          mvn -B -f pom.xml test -P test
 
   mvn_flow_24:
     runs-on: ubuntu-latest

@@ -18,7 +18,11 @@ public class TraversalCompilerTest {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/traversal/TraversalMock")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of(
+                "-processor", FunctionalCompiler.class.getName(),
+                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "--add-modules", "functional.annotations,functional.compiler"
+        ));
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
@@ -30,7 +34,11 @@ public class TraversalCompilerTest {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/traversal/TraversalNoTraverse")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of(
+                "-processor", FunctionalCompiler.class.getName(),
+                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "--add-modules", "functional.annotations,functional.compiler"
+        ));
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
@@ -42,11 +50,14 @@ public class TraversalCompilerTest {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/traversal/TraversalNotPublic")
                 .map(s -> Paths.get(s + ".java").toAbsolutePath().toString())
                 .collect(Collectors.toList());
-        args.addAll(0, List.of("-processor", FunctionalCompiler.class.getName(), "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar", "--add-modules", "functional.annotations"));
+        args.addAll(0, List.of(
+                "-processor", FunctionalCompiler.class.getName(),
+                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "--add-modules", "functional.annotations,functional.compiler"
+        ));
         String[] flags = args.toArray(new String[4]);
         int k = ToolProvider.getSystemJavaCompiler()
                 .run(System.in, System.out, System.err, flags);
         assertEquals(1, k);
     }
 }
-

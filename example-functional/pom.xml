@@ -68,6 +68,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Add exports to allow the compiler to access the mock classes for testing -->
+                    <argLine>--add-exports=functional.data/com.dan323.mock=functional.compiler</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

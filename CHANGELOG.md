@@ -1,7 +1,33 @@
 ## CHANGELOG
 
 ## [Unreleased]
+- Documentation: Complete 16-week v2.0 production readiness plan (docs/PLAN.md) with detailed weekly breakdowns, parallel work streams, risk mitigation, and success metrics
+- Documentation: Update README.md to properly link and describe the v2.0 production readiness plan
+- Pipeline compiles in java 17, 21 and 24
 - Future notes.
+
+## [2.0] - Week 1 (Feb 18, 2026) - Foundation & API Hardening [IN PROGRESS]
+### Week 1 Deliverables
+- Documentation: Add `docs/BREAKING_CHANGES.md` - Complete guide to v1.3 → v2.0 breaking changes with detailed migration paths for:
+  - Java 17+ requirement (with POM/Gradle examples)
+  - Registry immutability changes (registration patterns)
+  - Reflection elimination (MethodHandle caching)
+  - Configuration system (Discovery modes: AUTO/EXPLICIT)
+  - Deprecated APIs (MethodReflector replacement)
+  - Performance guarantees (5-15% improvement)
+- Documentation: Add `docs/API_AUDIT_v2.0.md` - Complete audit of public APIs with stability matrix:
+  - All 9 annotation APIs classified as Frozen
+  - All 6 type class interfaces classified as Frozen
+  - **v1.3 Architecture Documented:** Reflection-based discovery, Java 24, no Registry API
+  - Utility classes use runtime `java.lang.reflect.Method` for method discovery and invocation
+  - Registry, MethodHandle caching, Configuration API are NEW features in v2.0 (not in v1.3)
+  - New features in v2.0 (Configuration, Versioning, Explicit mode, Registry, Monad Transformers)
+  - Stability guarantees for v2.0 LTS cycle
+  - Version compatibility matrix (Java 24 for v1.3, Java 17+ for v2.0)
+- Documentation: Add cross-references between BREAKING_CHANGES.md and API_AUDIT_v2.0.md for improved navigation
+- Documentation: Update README.md with v2.0 release planning section and migration guides
+- Verification: All cross-links between documentation validated and working
+- Verification: Minimum Java version requirement documented consistently (Java 17+ for v2.0, Java 24 for v1.3) across all guides
 
 ## [1.3] - 2026-02-18
 ### Features

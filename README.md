@@ -15,8 +15,13 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=bugs)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=code_smells)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
 
-
 > Bring functional programming concepts to Java through annotations and compile-time code generation
+
+## Java Version Support
+
+- **v1.3 (current):** Java 24
+- **v2.0 (production-ready, targeting May 2026):** Java 17+ minimum (tested on 17, 21, 24)
+  - See [Breaking Changes: v1.3 → v2.0](docs/BREAKING_CHANGES.md) for migration details
 
 ## What is this?
 
@@ -98,6 +103,13 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 - **[Architecture](docs/ARCHITECTURE.md)**
 - **[Building](docs/BUILDING.md)**
 
+### 📋 v2.0 Release Planning (Feb-May 2026)
+
+**Upgrading from v1.3?** Read the migration guides:
+- **[Breaking Changes Guide](docs/BREAKING_CHANGES.md)** - All v1.3 → v2.0 breaking changes with detailed migration paths
+- **[API Audit & Stability Matrix](docs/API_AUDIT_v2.0.md)** - Complete inventory of public APIs and stability classification
+- **[v2.0 Production Readiness Plan](docs/PLAN.md)** - 16-week comprehensive roadmap to production-ready status
+
 ## 📖 Quick Reference
 
 ### Annotations
@@ -118,6 +130,7 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 
 - 🧭 [Architecture](docs/ARCHITECTURE.md)
 - 🏗️ [Building](docs/BUILDING.md)
+- 🎯 **[v2.0 Roadmap](docs/PLAN.md)** - Production-ready status roadmap
 - 📝 [Contributing Guidelines](CONTRIBUTING.md)
 - 🔧 [CI/CD Pipeline](docs/PIPELINE.md)
 - 📜 [Changelog](CHANGELOG.md)
@@ -174,7 +187,9 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 
 ## 📊 Project Statistics
 
-- **Java Version**: 24
+- **Minimum Java Version**: 17 (LTS)
+- **Current Build Version**: 24 (latest)
+- **Tested Versions**: Java 17 LTS, 21 LTS, 24
 - **Modules**: 3 (annotations, compiler, examples)
 - **Annotations**: 9 functional + algebraic structures
 - **Test Coverage**: Target 85%+ with mutation testing

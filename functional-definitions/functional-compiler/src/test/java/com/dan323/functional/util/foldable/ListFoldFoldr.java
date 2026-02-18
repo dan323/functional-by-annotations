@@ -5,7 +5,6 @@ import com.dan323.functional.annotation.funcs.IFoldable;
 
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 @Foldable

@@ -1,6 +1,6 @@
 package com.dan323.functional.annotation.compiler;
 
-import com.dan323.functional.annotation.*;
+import com.dan323.functional.annotation.compiler.internal.InternalApi;
 import com.dan323.functional.annotation.compiler.internal.CompilerFactory;
 import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
 
@@ -20,6 +20,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Annotation processor for functional structures.
+ *<p/>
+ * This is an internal processor discovered via SPI and should not be used directly.
+ */
+@InternalApi("Annotation processor - use via Java's annotation processing framework")
 public final class FunctionalCompiler extends AbstractProcessor {
 
     private Elements elementUtils;

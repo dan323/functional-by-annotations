@@ -1,7 +1,7 @@
 # Breaking Changes: v1.3 → v2.0
 
 **Release Date:** May 31, 2026  
-**Minimum Java Version:** Java 17 (upgraded from Java 11)
+**Minimum Java Version:** Java 17 (downgraded from Java 24)
 
 This document enumerates all breaking changes in v2.0 and provides migration paths for each.
 
@@ -27,12 +27,12 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 ## 1. Java Version Requirement (BREAKING)
 
 ### Change
-- **v1.3:** Supports Java 11+
+- **v1.3:** Supports Java 24
 - **v2.0:** Requires Java 17 minimum
 
 ### Why
-- Oracle JDK 11 reached end of public updates in September 2023; ongoing Java 11 support now depends on your vendor's extended-support policy
-- Java 17 (LTS) provides critical features:
+- v1.3 requires Java 24, which may be too cutting-edge for production environments
+- Java 17 (LTS) provides critical features while maintaining long-term support:
   - Sealed classes (secure type hierarchies)
   - Records (immutable value objects)
   - Text blocks (better documentation strings)
@@ -51,8 +51,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 2. **Update Maven POM**
    ```xml
    <!-- Old (v1.3) -->
-   <maven.compiler.source>11</maven.compiler.source>
-   <maven.compiler.target>11</maven.compiler.target>
+   <maven.compiler.source>24</maven.compiler.source>
+   <maven.compiler.target>24</maven.compiler.target>
    
    <!-- New (v2.0) -->
    <maven.compiler.source>17</maven.compiler.source>
@@ -63,8 +63,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    ```gradle
    // Old (v1.3)
    compileJava {
-       sourceCompatibility = '11'
-       targetCompatibility = '11'
+       sourceCompatibility = '24'
+       targetCompatibility = '24'
    }
    
    // New (v2.0)
@@ -75,7 +75,7 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    ```
 
 4. **Expected Compilation Errors (if any)**
-   - If your code uses Java 11 APIs only, no changes needed
+   - If your code uses Java 24 APIs, you may need to adjust to Java 17-compatible alternatives
    - If you have workarounds for older Java versions, you can safely remove them
 
 ### Tested Compatibility

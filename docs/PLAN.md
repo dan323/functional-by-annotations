@@ -27,7 +27,7 @@ The jump from v1.3 to v2.0 justifies a major version change due to:
 # 1. v2.0 Scope & Stability Target
 
 ## 1.1 Target Environment
-- **Java 17+ minimum** (LTS baseline, bump from Java 11 in v1.3)
+- **Java 17+ minimum** (LTS baseline, downgrade from Java 24 in v1.3)
 - Maven 3.8+ & Gradle 7.0+
 - Zero mandatory runtime dependencies beyond JDK
 - Multi-platform: Linux, macOS, Windows

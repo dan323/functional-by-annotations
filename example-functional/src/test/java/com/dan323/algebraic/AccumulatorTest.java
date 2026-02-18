@@ -29,7 +29,7 @@ public class AccumulatorTest {
     @Test
     public void mapPreservesLog() {
         Writer<Integer, FiniteList<String>> writer =
-                accumulator.map(Writer.tell(FiniteList.of("a")), _ -> 3);
+                accumulator.map(Writer.tell(FiniteList.of("a")), x -> 3);
         assertEquals(3, writer.execute());
         assertEquals(FiniteList.of("a"), writer.log());
     }
@@ -37,9 +37,9 @@ public class AccumulatorTest {
     @Test
     public void flatMapConcatsLogsInOrder() {
         Writer<Integer, FiniteList<String>> base =
-                accumulator.map(Writer.tell(FiniteList.of("start")), _ -> 5);
+                accumulator.map(Writer.tell(FiniteList.of("start")), x -> 5);
         Writer<Integer, FiniteList<String>> result = accumulator.flatMap(
-                value -> accumulator.map(Writer.tell(FiniteList.of("next", "end")), _ -> value + 1),
+                value -> accumulator.map(Writer.tell(FiniteList.of("next", "end")), x -> value + 1),
                 base
         );
         assertEquals(6, result.execute());
@@ -49,9 +49,9 @@ public class AccumulatorTest {
     @Test
     public void fapplyCombinesFunctionLogFirst() {
         Writer<Integer, FiniteList<String>> base =
-                accumulator.map(Writer.tell(FiniteList.of("b")), _ -> 2);
+                accumulator.map(Writer.tell(FiniteList.of("b")), x -> 2);
         Writer<java.util.function.Function<Integer, Integer>, FiniteList<String>> fn =
-                accumulator.map(Writer.tell(FiniteList.of("f", "g")), _ -> x -> x + 1);
+                accumulator.map(Writer.tell(FiniteList.of("f", "g")), x -> x -> x + 1);
         Writer<Integer, FiniteList<String>> result = accumulator.fapply(base, fn);
         assertEquals(3, result.execute());
         assertEquals(FiniteList.of("f", "g", "b"), result.log());
@@ -61,7 +61,7 @@ public class AccumulatorTest {
     public void joinConcatsOuterThenInnerLogs() {
         Writer<Writer<Integer, FiniteList<String>>, FiniteList<String>> outer =
                 accumulator.map(Writer.tell(FiniteList.of("o")),
-                        _ -> accumulator.map(Writer.tell(FiniteList.of("i1", "i2")), _ -> 5));
+                        x -> accumulator.map(Writer.tell(FiniteList.of("i1", "i2")), x -> 5));
         Writer<Integer, FiniteList<String>> result = accumulator.join(outer);
         assertEquals(5, result.execute());
         assertEquals(FiniteList.of("o", "i1", "i2"), result.log());
@@ -70,9 +70,9 @@ public class AccumulatorTest {
     @Test
     public void liftA2CombinesLogsLeftToRight() {
         Writer<Integer, FiniteList<String>> left =
-                accumulator.map(Writer.tell(FiniteList.of("a")), _ -> 2);
+                accumulator.map(Writer.tell(FiniteList.of("a")), x -> 2);
         Writer<Integer, FiniteList<String>> right =
-                accumulator.map(Writer.tell(FiniteList.of("b", "c")), _ -> 3);
+                accumulator.map(Writer.tell(FiniteList.of("b", "c")), x -> 3);
         Writer<Integer, FiniteList<String>> result = accumulator.liftA2(Integer::sum, left, right);
         assertEquals(5, result.execute());
         assertEquals(FiniteList.of("a", "b", "c"), result.log());

@@ -31,7 +31,7 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 - **v2.0:** Requires Java 17 minimum
 
 ### Why
-- Java 11 reaches EOL December 2026
+- Oracle JDK 11 reached end of public updates in September 2023; ongoing Java 11 support now depends on your vendor's extended-support policy
 - Java 17 (LTS) provides critical features:
   - Sealed classes (secure type hierarchies)
   - Records (immutable value objects)

@@ -267,7 +267,7 @@
         <profile>
             <id>java21</id>
             <activation>
-                <jdk>[21,22)</jdk>
+                <jdk>[21,24)</jdk>
             </activation>
             <properties>
                 <maven.compiler.source>21</maven.compiler.source>
@@ -277,7 +277,7 @@
         <profile>
             <id>java24</id>
             <activation>
-                <jdk>[22,25)</jdk>
+                <jdk>[24,25)</jdk>
             </activation>
             <properties>
                 <maven.compiler.source>24</maven.compiler.source>

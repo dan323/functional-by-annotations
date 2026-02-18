@@ -1,7 +1,7 @@
 # Breaking Changes: v1.3 → v2.0
 
 **Release Date:** May 31, 2026  
-**Minimum Java Version:** Java 17 (upgraded from Java 11)
+**Minimum Java Version:** Java 17 (downgraded from Java 24)
 
 This document enumerates all breaking changes in v2.0 and provides migration paths for each.
 
@@ -31,8 +31,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 - **v2.0:** Requires Java 17 minimum (tested on 17, 21, 24)
 
 ### Why
-- Oracle JDK 11 reached end of public updates in September 2023; ongoing Java 11 support now depends on your vendor's extended-support policy
-- Java 17 (LTS) provides critical features:
+- v1.3 requires Java 24, which may be too cutting-edge for production environments
+- Java 17 (LTS) provides critical features while maintaining long-term support:
   - Sealed classes (secure type hierarchies)
   - Records (immutable value objects)
   - Text blocks (better documentation strings)

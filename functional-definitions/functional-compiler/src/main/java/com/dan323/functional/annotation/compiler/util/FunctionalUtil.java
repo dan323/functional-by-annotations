@@ -142,7 +142,7 @@ final class FunctionalUtil {
         if (isApplicative(applicative.getClass())) {
             return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, left, right))
-                    .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, (x, _) -> x, left, right)));
+                    .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -> x, left, right)));
         } else {
             return Optional.empty();
         }

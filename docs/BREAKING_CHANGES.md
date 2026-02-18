@@ -446,7 +446,7 @@ System.out.println("FlatMap call overhead: " + metrics.flatMapOverheadPercent())
 ## FAQ
 
 ### Q: Do I have to upgrade to v2.0?
-**A:** v1.3 will remain supported for bug fixes through December 2024. v2.0 is strongly recommended for new projects.
+**A:** v1.3 will remain supported for bug fixes through December 2026. v2.0 is strongly recommended for new projects.
 
 ### Q: Will my v1.3 code compile with v2.0?
 **A:** Not without changes (Java 17+ requirement and registry mutations). See [Migration Checklist](#migration-checklist).

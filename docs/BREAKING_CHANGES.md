@@ -31,9 +31,13 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 - **v2.0:** Requires Java 17 minimum (tested on 17, 21, 24)
 
 ### Why
-- v2.0 broadens compatibility from v1.3's Java 24 requirement to support Java 17+
-- Java 17 (LTS) is the minimum for production environments (EOL September 2029)
-- v2.0 is tested on Java 17 LTS, 21 LTS, and 24 for maximum compatibility
+- Oracle JDK 11 reached end of public updates in September 2023; ongoing Java 11 support now depends on your vendor's extended-support policy
+- Java 17 (LTS) provides critical features:
+  - Sealed classes (secure type hierarchies)
+  - Records (immutable value objects)
+  - Text blocks (better documentation strings)
+  - MethodHandles improvements (reflection elimination)
+  - Pattern matching foundation (future releases)
 
 ### Migration Path
 

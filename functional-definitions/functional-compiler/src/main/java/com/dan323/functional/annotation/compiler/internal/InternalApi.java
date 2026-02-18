@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * not be relied upon by library users. They are exposed as public only because
  * they are needed for annotation processing or internal compiler operations.
  *
- * @since 1.3
+ * @since 2.0
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.PACKAGE})

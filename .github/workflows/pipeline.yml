@@ -15,7 +15,7 @@ on:
 jobs:
   compile_17:
     runs-on: ubuntu-latest
-    name: mvn flow Java 24
+    name: mvn flow Java 17
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,7 +30,7 @@ jobs:
 
   compile_21:
     runs-on: ubuntu-latest
-    name: mvn flow Java 24
+    name: mvn flow Java 21
     steps:
       - uses: actions/checkout@v4
         with:

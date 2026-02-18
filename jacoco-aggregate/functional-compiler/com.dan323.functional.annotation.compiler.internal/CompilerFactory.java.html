@@ -11,8 +11,96 @@ import javax.annotation.processing.Messager;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.function.BiFunction;
 
-<span class="fc" id="L15">public final class CompilerFactory {</span>
+<span class="fc" id="L21">public final class CompilerFactory {</span>
+
+<span class="fc" id="L23">    private static final Map&lt;Class&lt;?&gt;, CompilerFactoryEntry&lt;?&gt;&gt; INTERFACE_TO_COMPILER = buildCompilerMap();</span>
+
+<span class="fc" id="L25">    private record CompilerFactoryEntry&lt;A extends Annotation&gt;(</span>
+            String interfaceTypeName,
+            Class&lt;A&gt; annotationClass,
+            BiFunction&lt;StructureSignatures, DeclaredType, com.dan323.functional.annotation.compiler.internal.signature.NecessaryMethods&gt; signatureChecker
+    ) {}
+
+    private static Map&lt;Class&lt;?&gt;, CompilerFactoryEntry&lt;?&gt;&gt; buildCompilerMap() {
+<span class="fc" id="L32">        var map = new HashMap&lt;Class&lt;?&gt;, CompilerFactoryEntry&lt;?&gt;&gt;();</span>
+
+<span class="fc" id="L34">        map.put(IFunctor.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L35">                IFunctor.class.getTypeName(),</span>
+                Functor.class,
+                StructureSignatures::functorSignatureChecker
+        ));
+<span class="fc" id="L39">        map.put(IApplicative.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L40">                IApplicative.class.getTypeName(),</span>
+                Applicative.class,
+                StructureSignatures::applicativeSignatureChecker
+        ));
+<span class="fc" id="L44">        map.put(IMonad.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L45">                IMonad.class.getTypeName(),</span>
+                Monad.class,
+                StructureSignatures::monadSignatureChecker
+        ));
+<span class="fc" id="L49">        map.put(ISemigroup.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L50">                ISemigroup.class.getTypeName(),</span>
+                Semigroup.class,
+                StructureSignatures::semigroupSignatureChecker
+        ));
+<span class="fc" id="L54">        map.put(IMonoid.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L55">                IMonoid.class.getTypeName(),</span>
+                Monoid.class,
+                StructureSignatures::monoidSignatureChecker
+        ));
+<span class="fc" id="L59">        map.put(IFoldable.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L60">                IFoldable.class.getTypeName(),</span>
+                Foldable.class,
+                StructureSignatures::foldableSignatureChecker
+        ));
+<span class="fc" id="L64">        map.put(IAlternative.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L65">                IAlternative.class.getTypeName(),</span>
+                Alternative.class,
+                StructureSignatures::alternativeSignatureChecker
+        ));
+<span class="fc" id="L69">        map.put(IRing.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L70">                IRing.class.getTypeName(),</span>
+                Ring.class,
+                StructureSignatures::ringSignatureChecker
+        ));
+<span class="fc" id="L74">        map.put(ITraversal.class, new CompilerFactoryEntry&lt;&gt;(</span>
+<span class="fc" id="L75">                ITraversal.class.getTypeName(),</span>
+                Traversal.class,
+                StructureSignatures::traversalSignatureChecker
+        ));
+
+<span class="fc" id="L80">        return map;</span>
+    }
+
+    /**
+     * Get all supported functional annotations
+     * @return Set of all supported functional annotation classes
+     */
+    public static Set&lt;Class&lt;? extends Annotation&gt;&gt; getSupportedAnnotations() {
+<span class="fc" id="L88">        return INTERFACE_TO_COMPILER.values().stream()</span>
+<span class="fc" id="L89">                .map(entry -&gt; entry.annotationClass)</span>
+<span class="fc" id="L90">                .collect(Collectors.toCollection(java.util.LinkedHashSet::new));</span>
+    }
+
+    /**
+     * Get mapping from annotation to interface name
+     * @return Map of annotation class to interface name
+     */
+    public static Map&lt;Class&lt;? extends Annotation&gt;, String&gt; getAnnotationToInterfaceMap() {
+<span class="fc" id="L98">        return INTERFACE_TO_COMPILER.values().stream()</span>
+<span class="fc" id="L99">                .collect(java.util.stream.Collectors.toMap(</span>
+<span class="fc" id="L100">                        entry -&gt; entry.annotationClass,</span>
+<span class="fc" id="L101">                        entry -&gt; entry.interfaceTypeName.substring(entry.interfaceTypeName.lastIndexOf('.') + 1)</span>
+                ));
+    }
 
     /**
      * Create a compiler depending on what element we are compiling
@@ -24,27 +112,20 @@ import javax.lang.model.util.Types;
      * @return A compiler compatible with {@code iface}
      */
     public Compiler&lt;?&gt; from(DeclaredType iface, Elements elements, Types types, Messager messager) {
-<span class="fc" id="L27">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (iface.asElement().equals(elements.getTypeElement(IFunctor.class.getTypeName()))) {</span>
-<span class="fc" id="L29">            return new Compiler&lt;&gt;(signatures.functorSignatureChecker(iface), Functor.class, messager);</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IApplicative.class.getTypeName()))) {</span>
-<span class="fc" id="L31">            return new Compiler&lt;&gt;(signatures.applicativeSignatureChecker(iface), Applicative.class, messager);</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonad.class.getTypeName()))) {</span>
-<span class="fc" id="L33">            return new Compiler&lt;&gt;(signatures.monadSignatureChecker(iface), Monad.class, messager);</span>
-<span class="fc bfc" id="L34" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(ISemigroup.class.getTypeName()))) {</span>
-<span class="fc" id="L35">            return new Compiler&lt;&gt;(signatures.semigroupSignatureChecker(iface), Semigroup.class, messager);</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        } else if (iface.asElement().equals(elements.getTypeElement(IMonoid.class.getTypeName()))) {</span>
-<span class="fc" id="L37">            return new Compiler&lt;&gt;(signatures.monoidSignatureChecker(iface), Monoid.class, messager);</span>
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        } else if ((iface.asElement().equals(elements.getTypeElement(IFoldable.class.getTypeName())))) {</span>
-<span class="fc" id="L39">            return new Compiler&lt;&gt;(signatures.foldableSignatureChecker(iface), Foldable.class, messager);</span>
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IAlternative.class.getTypeName()))) {</span>
-<span class="fc" id="L41">            return new Compiler&lt;&gt;(signatures.alternativeSignatureChecker(iface), Alternative.class, messager);</span>
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(IRing.class.getTypeName()))) {</span>
-<span class="nc" id="L43">            return new Compiler&lt;&gt;(signatures.ringSignatureChecker(iface), Ring.class, messager);</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (iface.asElement().equals(elements.getTypeElement(ITraversal.class.getTypeName()))) {</span>
-<span class="nc" id="L45">            return new Compiler&lt;&gt;(signatures.traversalSignatureChecker(iface), Traversal.class, messager);</span>
-        }
-<span class="nc" id="L47">        throw new IllegalArgumentException(String.format(&quot;The interfaces %s does not represent an implemented functional&quot;, iface));</span>
+<span class="fc" id="L115">        StructureSignatures signatures = new StructureSignatures(elements, types);</span>
+
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        for (var entry : INTERFACE_TO_COMPILER.entrySet()) {</span>
+<span class="fc" id="L118">            var compilerEntry = entry.getValue();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (iface.asElement().equals(elements.getTypeElement(compilerEntry.interfaceTypeName))) {</span>
+<span class="fc" id="L120">                return new Compiler&lt;&gt;(</span>
+<span class="fc" id="L121">                        compilerEntry.signatureChecker.apply(signatures, iface),</span>
+                        compilerEntry.annotationClass,
+                        messager
+                );
+            }
+<span class="fc" id="L126">        }</span>
+
+<span class="nc" id="L128">        throw new IllegalArgumentException(String.format(&quot;The interfaces %s does not represent an implemented functional&quot;, iface));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

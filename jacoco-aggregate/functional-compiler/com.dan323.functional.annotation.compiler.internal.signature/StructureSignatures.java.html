@@ -179,25 +179,25 @@ public final class StructureSignatures {
     }
 
     private Signature createTraverseSignature(ExecutableType method, DeclaredType iFace) {
-<span class="nc" id="L182">        var params = method.getTypeVariables();</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">        if (params.size() &gt;= 2) {</span>
-<span class="nc" id="L184">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(1), params.get(0));</span>
-<span class="nc" id="L185">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
-<span class="nc" id="L186">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));</span>
-<span class="nc" id="L187">            return new Signature(List.of(iApplicative, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);</span>
+<span class="fc" id="L182">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (params.size() &gt;= 2) {</span>
+<span class="fc" id="L184">            var fun = typeUtils.getDeclaredType(elementUtils.getTypeElement(Function.class.getTypeName()), params.get(1), params.get(0));</span>
+<span class="fc" id="L185">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.get(1));</span>
+<span class="fc" id="L186">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.get(0));</span>
+<span class="fc" id="L187">            return new Signature(List.of(iApplicative, fun, traversal), params.get(0), ITraversal.TRAVERSE_NAME);</span>
         } else {
-<span class="nc" id="L189">            return Signature.invalid();</span>
+<span class="fc" id="L189">            return Signature.invalid();</span>
         }
     }
 
     private Signature createSequenceASignature(ExecutableType method, DeclaredType iFace) {
-<span class="nc" id="L194">        var params = method.getTypeVariables();</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (!params.isEmpty()) {</span>
-<span class="nc" id="L196">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());</span>
-<span class="nc" id="L197">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.getFirst());</span>
-<span class="nc" id="L198">            return new Signature(List.of(iApplicative, traversal), params.getFirst(), ITraversal.SEQUENCE_A_NAME);</span>
+<span class="fc" id="L194">        var params = method.getTypeVariables();</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (!params.isEmpty()) {</span>
+<span class="fc" id="L196">            var traversal = CompilerUtils.changeWildBy(typeUtils, iFace, params.getFirst());</span>
+<span class="fc" id="L197">            var iApplicative = typeUtils.getDeclaredType(elementUtils.getTypeElement(IApplicative.class.getTypeName()), params.getFirst());</span>
+<span class="fc" id="L198">            return new Signature(List.of(iApplicative, traversal), params.getFirst(), ITraversal.SEQUENCE_A_NAME);</span>
         } else {
-<span class="nc" id="L200">            return Signature.invalid();</span>
+<span class="fc" id="L200">            return Signature.invalid();</span>
         }
     }
 
@@ -258,11 +258,11 @@ public final class StructureSignatures {
     }
 
     private NecessaryMethods traverseSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L261">        return new FunctionSignature(x -&gt; createTraverseSignature(x, iface), ITraversal.TRAVERSE_NAME);</span>
+<span class="fc" id="L261">        return new FunctionSignature(x -&gt; createTraverseSignature(x, iface), ITraversal.TRAVERSE_NAME);</span>
     }
 
     private NecessaryMethods sequenceASignatureChecker(DeclaredType iface) {
-<span class="nc" id="L265">        return new FunctionSignature(x -&gt; createSequenceASignature(x, iface), ITraversal.SEQUENCE_A_NAME);</span>
+<span class="fc" id="L265">        return new FunctionSignature(x -&gt; createSequenceASignature(x, iface), ITraversal.SEQUENCE_A_NAME);</span>
     }
 
     /**
@@ -303,7 +303,7 @@ public final class StructureSignatures {
      * @return A {@link NecessaryMethods} with requirements for an {@link ITraversal}
      */
     public NecessaryMethods traversalSignatureChecker(DeclaredType iface) {
-<span class="nc" id="L306">        return new DisjNecessaryMethods(traverseSignatureChecker(iface), sequenceASignatureChecker(iface));</span>
+<span class="fc" id="L306">        return new DisjNecessaryMethods(traverseSignatureChecker(iface), sequenceASignatureChecker(iface));</span>
     }
 
     /**

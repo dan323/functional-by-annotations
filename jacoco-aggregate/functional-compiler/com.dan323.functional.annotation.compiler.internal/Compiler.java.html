@@ -39,7 +39,7 @@ public class Compiler&lt;F extends Annotation&gt; {
 <span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!element.getModifiers().contains(Modifier.PUBLIC)) {</span>
 <span class="fc" id="L40">            error(&quot;The annotated type %s is not public&quot;, originalElement.getQualifiedName());</span>
         }
-<span class="fc" id="L42">        boolean success = false;</span>
+        boolean success;
         // Look for the public method called map and verify its signature
 <span class="fc" id="L44">        var necessaryMethodsLoop = necessaryMethods;</span>
         do {
@@ -67,5 +67,9 @@ public class Compiler&lt;F extends Annotation&gt; {
     private void error(String message, Object... args) {
 <span class="fc" id="L68">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
 <span class="fc" id="L69">    }</span>
+
+    public Class&lt;F&gt; getAnnotation() {
+<span class="nc" id="L72">        return annotation;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -27,17 +27,13 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 ## 1. Java Version Requirement (BREAKING)
 
 ### Change
-- **v1.3:** Supports Java 11+
-- **v2.0:** Requires Java 17 minimum
+- **v1.3:** Requires Java 24
+- **v2.0:** Requires Java 17 minimum (tested on 17, 21, 24)
 
 ### Why
-- Java 11 reaches EOL December 2026
-- Java 17 (LTS) provides critical features:
-  - Sealed classes (secure type hierarchies)
-  - Records (immutable value objects)
-  - Text blocks (better documentation strings)
-  - MethodHandles improvements (reflection elimination)
-  - Pattern matching foundation (future releases)
+- v2.0 broadens compatibility from v1.3's Java 24 requirement to support Java 17+
+- Java 17 (LTS) is the minimum for production environments (EOL September 2029)
+- v2.0 is tested on Java 17 LTS, 21 LTS, and 24 for maximum compatibility
 
 ### Migration Path
 
@@ -51,10 +47,10 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 2. **Update Maven POM**
    ```xml
    <!-- Old (v1.3) -->
-   <maven.compiler.source>11</maven.compiler.source>
-   <maven.compiler.target>11</maven.compiler.target>
+   <maven.compiler.source>24</maven.compiler.source>
+   <maven.compiler.target>24</maven.compiler.target>
    
-   <!-- New (v2.0) -->
+   <!-- New (v2.0) - Choose 17, 21, or 24 -->
    <maven.compiler.source>17</maven.compiler.source>
    <maven.compiler.target>17</maven.compiler.target>
    ```
@@ -63,11 +59,11 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    ```gradle
    // Old (v1.3)
    compileJava {
-       sourceCompatibility = '11'
-       targetCompatibility = '11'
+       sourceCompatibility = '24'
+       targetCompatibility = '24'
    }
    
-   // New (v2.0)
+   // New (v2.0) - Choose 17, 21, or 24
    compileJava {
        sourceCompatibility = '17'
        targetCompatibility = '17'
@@ -75,8 +71,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    ```
 
 4. **Expected Compilation Errors (if any)**
-   - If your code uses Java 11 APIs only, no changes needed
-   - If you have workarounds for older Java versions, you can safely remove them
+   - v2.0 supports Java 17+, so you can downgrade from Java 24 to 17 if needed
+   - All Java 17+ features are supported
 
 ### Tested Compatibility
 - ✅ Java 17 LTS

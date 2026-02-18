@@ -142,7 +142,7 @@ final class FunctionalUtil {
 <span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (isApplicative(applicative.getClass())) {</span>
 <span class="fc" id="L143">            return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
 <span class="pc" id="L144">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, left, right))</span>
-<span class="fc" id="L145">                    .or(() -&gt; Optional.of(ApplicativeUtil.liftA2(applicative, (x, _) -&gt; x, left, right)));</span>
+<span class="fc" id="L145">                    .or(() -&gt; Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -&gt; x, left, right)));</span>
         } else {
 <span class="nc" id="L147">            return Optional.empty();</span>
         }

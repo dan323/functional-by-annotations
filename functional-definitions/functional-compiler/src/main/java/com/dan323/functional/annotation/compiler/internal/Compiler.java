@@ -39,7 +39,7 @@ public class Compiler<F extends Annotation> {
         if (!element.getModifiers().contains(Modifier.PUBLIC)) {
             error("The annotated type %s is not public", originalElement.getQualifiedName());
         }
-        boolean success = false;
+        boolean success;
         // Look for the public method called map and verify its signature
         var necessaryMethodsLoop = necessaryMethods;
         do {
@@ -66,5 +66,9 @@ public class Compiler<F extends Annotation> {
 
     private void error(String message, Object... args) {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));
+    }
+
+    public Class<F> getAnnotation() {
+        return annotation;
     }
 }

@@ -1,5 +1,6 @@
 package com.dan323.algebraic;
 
+import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.writer.Accumulator;
 import com.dan323.functional.data.writer.Writer;
@@ -14,6 +15,13 @@ public class AccumulatorTest {
     @Test
     public void pureUsesEmptyLog() {
         Writer<Integer, FiniteList<String>> writer = accumulator.pure(10);
+        assertEquals(10, writer.execute());
+        assertEquals(FiniteList.of(), writer.log());
+    }
+
+    @Test
+    public void pureUtil() {
+        var writer = ApplicativeUtil.<Writer<?,FiniteList<String>>,Integer>pure(new Accumulator<>(), 10);
         assertEquals(10, writer.execute());
         assertEquals(FiniteList.of(), writer.log());
     }

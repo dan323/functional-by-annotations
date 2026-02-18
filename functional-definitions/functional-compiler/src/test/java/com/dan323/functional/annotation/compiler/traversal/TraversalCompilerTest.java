@@ -4,6 +4,8 @@ import com.dan323.functional.annotation.compiler.FunctionalCompiler;
 import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +15,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TraversalCompilerTest {
 
+    private String buildModulePath() {
+        // Build the module path from the current working directory
+        Path currentDir = Paths.get("").toAbsolutePath();
+        Path annotationDefJar = currentDir.resolve("../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar");
+        Path compilerClasses = currentDir.resolve("target/classes");
+
+        // Fallback: if not found, try alternative paths
+        if (!Files.exists(annotationDefJar)) {
+            annotationDefJar = currentDir.resolve("annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar");
+        }
+
+        return annotationDefJar.toAbsolutePath() +
+                ";" +
+                compilerClasses.toAbsolutePath();
+    }
+
     @Test
     public void traversalValidRun() {
         List<String> args = Stream.of("src/test/java/com/dan323/functional/annotation/compiler/traversal/TraversalMock")
@@ -20,7 +38,7 @@ public class TraversalCompilerTest {
                 .collect(Collectors.toList());
         args.addAll(0, List.of(
                 "-processor", FunctionalCompiler.class.getName(),
-                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "-p", buildModulePath(),
                 "--add-modules", "functional.annotations,functional.compiler"
         ));
         String[] flags = args.toArray(new String[4]);
@@ -36,7 +54,7 @@ public class TraversalCompilerTest {
                 .collect(Collectors.toList());
         args.addAll(0, List.of(
                 "-processor", FunctionalCompiler.class.getName(),
-                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "-p", buildModulePath(),
                 "--add-modules", "functional.annotations,functional.compiler"
         ));
         String[] flags = args.toArray(new String[4]);
@@ -52,7 +70,7 @@ public class TraversalCompilerTest {
                 .collect(Collectors.toList());
         args.addAll(0, List.of(
                 "-processor", FunctionalCompiler.class.getName(),
-                "-p", "../annotation-definitions/target/annotation-definitions-1.3-SNAPSHOT.jar;target/classes",
+                "-p", buildModulePath(),
                 "--add-modules", "functional.annotations,functional.compiler"
         ));
         String[] flags = args.toArray(new String[4]);

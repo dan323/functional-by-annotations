@@ -27,8 +27,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
 ## 1. Java Version Requirement (BREAKING)
 
 ### Change
-- **v1.3:** Supports Java 24
-- **v2.0:** Requires Java 17 minimum
+- **v1.3:** Requires Java 24
+- **v2.0:** Requires Java 17 minimum (tested on 17, 21, 24)
 
 ### Why
 - v1.3 requires Java 24, which may be too cutting-edge for production environments
@@ -54,7 +54,7 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    <maven.compiler.source>24</maven.compiler.source>
    <maven.compiler.target>24</maven.compiler.target>
    
-   <!-- New (v2.0) -->
+   <!-- New (v2.0) - Choose 17, 21, or 24 -->
    <maven.compiler.source>17</maven.compiler.source>
    <maven.compiler.target>17</maven.compiler.target>
    ```
@@ -67,7 +67,7 @@ v2.0 introduces a **stable, production-ready API** with the following categories
        targetCompatibility = '24'
    }
    
-   // New (v2.0)
+   // New (v2.0) - Choose 17, 21, or 24
    compileJava {
        sourceCompatibility = '17'
        targetCompatibility = '17'
@@ -75,8 +75,8 @@ v2.0 introduces a **stable, production-ready API** with the following categories
    ```
 
 4. **Expected Compilation Errors (if any)**
-   - If your code uses Java 24 APIs, you may need to adjust to Java 17-compatible alternatives
-   - If you have workarounds for older Java versions, you can safely remove them
+   - v2.0 supports Java 17+, so you can downgrade from Java 24 to 17 if needed
+   - All Java 17+ features are supported
 
 ### Tested Compatibility
 - ✅ Java 17 LTS

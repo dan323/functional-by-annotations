@@ -564,8 +564,8 @@ All APIs listed under sections **1-4** (Annotations, Interfaces, Utilities, Buil
 |--------------|------|------|---------------|-------|
 | Java 11 (EOL Dec 2026) | ❌ | ❌ | ❌ | Not supported - v1.3 requires Java 24 |
 | Java 17 LTS | ❌ | ✅ | ✅ | Minimum version for v2.0 |
-| Java 21 LTS | ✅ | ✅ | ✅ | Fully tested |
-| Java 24 (Latest) | ✅ | ✅ | ✅ | Required for v1.3, supported in v2.0 |
+| Java 21 LTS | ❌ | ✅ | ✅ | Fully tested |
+| Java 24 (Latest) | ✅ | ✅ | ✅ | v1.3 requires Java 24; v2.0 tested on 17, 21, 24 |
 
 ---
 

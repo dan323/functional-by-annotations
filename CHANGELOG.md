@@ -27,7 +27,6 @@
 ### Infrastructure
 - Pipeline compiles in java 17, 21 and 24
 - Future notes.
-- Tests: Add `ConcurrentTypeClassSanityTest` to exercise concurrent FunctorUtil usage.
 ### Code smells
 - Some sonar code smells removed by refactoring and code cleanup, but many remain due to the nature of the generated code and reflection utilities. Focus is on critical issues and maintainable code rather than eliminating all smells.
 

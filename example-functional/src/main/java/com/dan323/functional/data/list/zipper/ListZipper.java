@@ -83,6 +83,6 @@ public final class ListZipper<A> {
 
     @Override
     public String toString() {
-        return toList().toString();
+        return ListUtils.reverse(left).toString() + " > " + right.toString();
     }
 }

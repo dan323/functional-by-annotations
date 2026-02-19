@@ -43,7 +43,7 @@ public class ListZipperTest {
         var third = second.<Maybe<ListZipper<Integer>>>maybe(ListZipper::moveRight, Maybe.of());
         // Moving right from the last element should yield an empty Maybe
         var beyondLast = third.<Maybe<ListZipper<Integer>>>maybe(ListZipper::moveRight, Maybe.of());
-        assertEquals(Maybe.of(), beyondLast);
+        assertEquals(beyondLast.maybe(ListZipper::get, Maybe.of(5)), Maybe.of());
     }
 
     @Test

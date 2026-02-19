@@ -9,8 +9,11 @@ public final class Leaf<A> implements BinaryTree<A> {
 
     static final Leaf<?> LEAF = new Leaf<>();
 
+    @Override
     public <B> BinaryTree<B> map(Function<A,B> f) {
-        return new Leaf<>();
+        @SuppressWarnings("unchecked")
+        BinaryTree<B> leaf = (BinaryTree<B>) LEAF;
+        return leaf;
     }
 
     @Override

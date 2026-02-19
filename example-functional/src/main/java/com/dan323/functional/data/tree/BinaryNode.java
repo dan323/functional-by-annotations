@@ -1,6 +1,7 @@
 package com.dan323.functional.data.tree;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 public final class BinaryNode<A> implements BinaryTree<A> {
     private final BinaryTree<A> left;
@@ -28,6 +29,11 @@ public final class BinaryNode<A> implements BinaryTree<A> {
     @Override
     public int hashCode() {
         return 23 * left.hashCode() + 51 * right.hashCode();
+    }
+
+    @Override
+    public <B> BinaryTree<B> map(Function<A, B> f) {
+        return new BinaryNode<>(left.map(f), f.apply(data), right.map(f));
     }
 
     @Override

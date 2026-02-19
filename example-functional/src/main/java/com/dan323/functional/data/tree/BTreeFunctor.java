@@ -6,7 +6,7 @@ import com.dan323.functional.annotation.funcs.IFunctor;
 import java.util.function.Function;
 
 @Functor
-public class BTreeFunctor implements IFunctor<BinaryTree<?>> {
+public final class BTreeFunctor implements IFunctor<BinaryTree<?>> {
 
     private BTreeFunctor() {
     }
@@ -14,13 +14,7 @@ public class BTreeFunctor implements IFunctor<BinaryTree<?>> {
     public static final BTreeFunctor FUNCTOR = new BTreeFunctor();
 
     public static <A, B> BinaryTree<B> map(BinaryTree<A> base, Function<A, B> mapping) {
-        if (base instanceof Leaf<A>) {
-            return BinaryTree.leaf();
-        } else if (base instanceof BinaryNode<A> node) {
-            return BinaryTree.node(map(node.left(), mapping), mapping.apply(node.data()), map(node.right(), mapping));
-        } else {
-            throw new IllegalStateException("There are more instances that implemented");
-        }
+        return base.map(mapping);
     }
 
     public static <A> BinaryTree<A> pure(A a) {

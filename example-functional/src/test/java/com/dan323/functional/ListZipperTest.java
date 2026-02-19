@@ -68,4 +68,12 @@ public class ListZipperTest {
         assertEquals(0, zipper.index());
         assertTrue(zipper.moveRight().maybe(z -> z.index() == 1, false));
     }
+
+    @Test
+    public void testEmptyListZipper() {
+        var zipper = ListZipper.zipFrom(FiniteList.nil());
+        assertEquals(Maybe.of(), zipper.get());
+        assertEquals(Maybe.of(), zipper.moveRight());
+        assertEquals(Maybe.of(), zipper.moveLeft());
+    }
 }

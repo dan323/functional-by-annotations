@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>FunctionalCompiler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">functional-compiler</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.annotation.compiler</a> &gt; <span class="el_source">FunctionalCompiler.java</span></div><h1>FunctionalCompiler.java</h1><pre class="source lang-java linenums">package com.dan323.functional.annotation.compiler;
+
+import com.dan323.functional.annotation.compiler.internal.InternalApi;
+import com.dan323.functional.annotation.compiler.internal.CompilerFactory;
+import com.dan323.functional.annotation.compiler.internal.CompilerUtils;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Messager;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Annotation processor for functional structures.
+ * This is an internal processor discovered via SPI and should not be used directly.
+ */
+@InternalApi(&quot;Annotation processor - use via Java's annotation processing framework&quot;)
+<span class="fc" id="L28">public final class FunctionalCompiler extends AbstractProcessor {</span>
+
+    private Elements elementUtils;
+    private Messager messager;
+    private Types typeUtils;
+    private CompilerFactory compilerFactory;
+
+<span class="fc" id="L35">    private static final Set&lt;Class&lt;? extends Annotation&gt;&gt; annotations = CompilerFactory.getSupportedAnnotations();</span>
+<span class="fc" id="L36">    private static final java.util.Map&lt;Class&lt;? extends Annotation&gt;, String&gt; ANNOTATION_TO_INTERFACE = CompilerFactory.getAnnotationToInterfaceMap();</span>
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnv) {
+<span class="fc" id="L40">        super.init(processingEnv);</span>
+<span class="fc" id="L41">        compilerFactory = new CompilerFactory();</span>
+<span class="fc" id="L42">        elementUtils = processingEnv.getElementUtils();</span>
+<span class="fc" id="L43">        messager = processingEnv.getMessager();</span>
+<span class="fc" id="L44">        typeUtils = processingEnv.getTypeUtils();</span>
+<span class="fc" id="L45">    }</span>
+
+    @Override
+    public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment) {
+        try {
+<span class="fc" id="L50">            var elems = roundEnvironment.getElementsAnnotatedWithAny(annotations);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (var elem : elems) {</span>
+<span class="pc bpc" id="L52" title="2 of 4 branches missed.">                if (elem instanceof TypeElement telem &amp;&amp; !elem.getKind().equals(ElementKind.ANNOTATION_TYPE)) { // Valid kind</span>
+<span class="fc" id="L53">                    var directIfaces = CompilerUtils.getDirectFunctionalInterfaces(elementUtils, typeUtils, telem);</span>
+<span class="fc" id="L54">                    var allHierarchyIfaces = CompilerUtils.getAllFunctionalInterfacesFromHierarchy(elementUtils, typeUtils, telem);</span>
+
+                    // Check that for each direct annotation, the corresponding interface is implemented (directly or inherited)
+<span class="fc" id="L57">                    checkDirectAnnotationsHaveInterfaces(telem, allHierarchyIfaces);</span>
+
+<span class="fc" id="L59">                    directIfaces.stream().map(iface -&gt; compilerFactory.from(iface, elementUtils, typeUtils, messager))</span>
+<span class="fc" id="L60">                            .forEach(comp -&gt; comp.process(telem));</span>
+                }
+<span class="fc" id="L62">            }</span>
+<span class="nc" id="L63">        } catch (Throwable e) {</span>
+<span class="nc" id="L64">            error(&quot;There was an exception or error launched: %s&quot;, e.getMessage());</span>
+<span class="fc" id="L65">        }</span>
+<span class="fc" id="L66">        return true;</span>
+    }
+
+    private void checkDirectAnnotationsHaveInterfaces(TypeElement element, List&lt;DeclaredType&gt; implementedInterfaces) {
+<span class="fc" id="L70">        var directAnnotations = getDirectAnnotations(element);</span>
+<span class="fc" id="L71">        var interfaceNames = implementedInterfaces.stream()</span>
+<span class="fc" id="L72">                .map(iface -&gt; iface.asElement().getSimpleName().toString())</span>
+<span class="fc" id="L73">                .collect(Collectors.toSet());</span>
+
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (var annotation : directAnnotations) {</span>
+<span class="fc" id="L76">            String expectedInterfaceName = ANNOTATION_TO_INTERFACE.get(annotation);</span>
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">            if (expectedInterfaceName != null &amp;&amp; !interfaceNames.contains(expectedInterfaceName)) {</span>
+<span class="fc" id="L78">                error(&quot;The class %s is annotated with @%s but does not implement %s&quot;,</span>
+<span class="fc" id="L79">                    element.getQualifiedName(),</span>
+<span class="fc" id="L80">                    annotation.getSimpleName(),</span>
+                    expectedInterfaceName);
+            }
+<span class="fc" id="L83">        }</span>
+<span class="fc" id="L84">    }</span>
+
+    private Set&lt;Class&lt;? extends Annotation&gt;&gt; getDirectAnnotations(TypeElement element) {
+<span class="fc" id="L87">        var result = new java.util.HashSet&lt;Class&lt;? extends Annotation&gt;&gt;();</span>
+
+        // Check only direct annotations on this element
+<span class="fc" id="L90">        element.getAnnotationMirrors().stream()</span>
+<span class="fc" id="L91">                .map(annotation -&gt; annotation.getAnnotationType().toString())</span>
+<span class="fc" id="L92">                .forEach(annotationType -&gt; annotations.stream()</span>
+<span class="fc" id="L93">                        .filter(ann -&gt; ann.getCanonicalName().equals(annotationType))</span>
+<span class="fc" id="L94">                        .forEach(result::add));</span>
+
+
+<span class="fc" id="L97">        return result;</span>
+    }
+
+
+    private void error(String message, Object... args) {
+<span class="fc" id="L102">        messager.printMessage(Diagnostic.Kind.ERROR, String.format(message, args));</span>
+<span class="fc" id="L103">    }</span>
+
+    @Override
+    public Set&lt;String&gt; getSupportedAnnotationTypes() {
+<span class="fc" id="L107">        return annotations.stream().map(Class::getCanonicalName).collect(Collectors.toSet());</span>
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+<span class="fc" id="L112">        return SourceVersion.latestSupported();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

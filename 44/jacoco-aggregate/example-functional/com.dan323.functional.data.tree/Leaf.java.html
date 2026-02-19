@@ -9,23 +9,26 @@ public final class Leaf&lt;A&gt; implements BinaryTree&lt;A&gt; {
 
 <span class="fc" id="L10">    static final Leaf&lt;?&gt; LEAF = new Leaf&lt;&gt;();</span>
 
+    @Override
     public &lt;B&gt; BinaryTree&lt;B&gt; map(Function&lt;A,B&gt; f) {
-<span class="fc" id="L13">        return new Leaf&lt;&gt;();</span>
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L15">        BinaryTree&lt;B&gt; leaf = (BinaryTree&lt;B&gt;) LEAF;</span>
+<span class="fc" id="L16">        return leaf;</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L18">        return 85;</span>
+<span class="nc" id="L21">        return 85;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="fc" id="L23">        return obj instanceof Leaf;</span>
+<span class="nc" id="L26">        return obj instanceof Leaf;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L28">        return &quot;l[]&quot;;</span>
+<span class="nc" id="L31">        return &quot;l[]&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

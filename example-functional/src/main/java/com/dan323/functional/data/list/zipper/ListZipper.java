@@ -6,7 +6,7 @@ import com.dan323.functional.data.list.ListUtils;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.optional.MaybeMonad;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Zipper representing the list rev(left)++right
@@ -69,7 +69,7 @@ public final class ListZipper<A> {
         return MaybeMonad.map(right.head(), x -> new ListZipper<>(FiniteList.cons(x, left), right.tail()));
     }
 
-    public ListZipper<A> modify(Function<A, A> map) {
+    public ListZipper<A> modify(UnaryOperator<A> map) {
         return MaybeMonad.map(MaybeMonad.map(right.head(), map), h -> FiniteList.cons(h, right.tail())).maybe(r -> new ListZipper<>(left, r), this);
     }
 

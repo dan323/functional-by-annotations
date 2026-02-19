@@ -23,8 +23,10 @@ public class DisjNecessaryMethods implements NecessaryMethods {
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-        Set<NecessaryMethods> newMethods = this.methods.stream().map(nec -> nec.process(method)).collect(Collectors.toSet());
-        var anyMatch = newMethods.stream().anyMatch(nec -> nec instanceof EmptyNecessaryMethods);
+        Set<NecessaryMethods> newMethods = this.methods.stream()
+                .map(nec -> nec.process(method))
+                .collect(Collectors.toSet());
+        var anyMatch = newMethods.stream().anyMatch(EmptyNecessaryMethods.class::isInstance);
         if (anyMatch) {
             return new EmptyNecessaryMethods();
         } else {

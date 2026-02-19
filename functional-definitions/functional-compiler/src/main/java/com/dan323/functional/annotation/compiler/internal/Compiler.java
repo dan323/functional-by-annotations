@@ -45,7 +45,7 @@ public class Compiler<F extends Annotation> {
         do {
             necessaryMethodsLoop = element.getEnclosedElements().stream()
                     .filter(element1 -> element1.getKind().equals(ElementKind.METHOD) && element1.getModifiers().contains(Modifier.PUBLIC))
-                    .map(element1 -> (ExecutableElement) element1)
+                    .map(ExecutableElement.class::cast)
                     .map(element1 -> (UnaryOperator<NecessaryMethods>) ((NecessaryMethods nec) -> nec.process(element1)))
                     .reduce(necessaryMethodsLoop,
                             (nec, unary) -> unary.apply(nec),

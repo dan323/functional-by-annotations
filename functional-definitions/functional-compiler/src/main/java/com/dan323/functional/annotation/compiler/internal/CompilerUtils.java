@@ -32,28 +32,28 @@ public final class CompilerUtils {
 
     public static List<DeclaredType> getDirectFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
         var lst = element.getInterfaces().stream()
-                .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
+                .map(DeclaredType.class::cast)
                 .filter(type -> CompilerUtils.isStructure(elementUtils, types, type))
                 .toList();
         return lst.stream().filter(type -> isMaximal(elementUtils, type, lst)).toList();
     }
 
     public static List<DeclaredType> getAllFunctionalInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
-        var lst = getAllInterfacesFromHierarchy(elementUtils, types, element).stream()
-                .map((TypeMirror typeMirror) -> (DeclaredType) typeMirror)
+        var lst = getAllInterfacesFromHierarchy(types, element).stream()
+                .map(DeclaredType.class::cast)
                 .filter(type -> CompilerUtils.isStructure(elementUtils, types, type))
                 .toList();
         return lst.stream().filter(type -> isMaximal(elementUtils, type, lst)).toList();
     }
 
-    private static List<TypeMirror> getAllInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
+    private static List<TypeMirror> getAllInterfacesFromHierarchy(Types types, TypeElement element) {
         var interfaces = new ArrayList<TypeMirror>(element.getInterfaces());
 
         // Recursively collect interfaces from superclass
         var superclass = element.getSuperclass();
         if (superclass.getKind().equals(TypeKind.DECLARED)) {
             var superElement = (TypeElement) types.asElement(superclass);
-            interfaces.addAll(getAllInterfacesFromHierarchy(elementUtils, types, superElement));
+            interfaces.addAll(getAllInterfacesFromHierarchy(types, superElement));
         }
 
         return interfaces;

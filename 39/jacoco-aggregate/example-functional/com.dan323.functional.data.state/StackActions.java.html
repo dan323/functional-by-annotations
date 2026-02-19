@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>StackActions.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.state</a> &gt; <span class="el_source">StackActions.java</span></div><h1>StackActions.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.state;
+
+import com.dan323.functional.data.either.Either;
+import com.dan323.functional.data.function.FunctionFrom;
+import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.List;
+import com.dan323.functional.data.optional.Maybe;
+import com.dan323.functional.data.optional.MaybeMonad;
+import com.dan323.functional.data.pair.Pair;
+
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
+/**
+ * Actions to take in a stack, represented as a finite list {@link FiniteList&lt;A&gt;}
+ *
+ * @param &lt;A&gt; type of elements in the stack
+ */
+public interface StackActions&lt;A&gt; extends StateWithError&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;, StackActions.StackError&gt; {
+
+    class StackError {
+
+        private final String message;
+
+<span class="fc" id="L26">        private StackError(String message) {</span>
+<span class="fc" id="L27">            this.message = message;</span>
+<span class="fc" id="L28">        }</span>
+
+        public static StackError poppingEmpty() {
+<span class="fc" id="L31">            return new StackError(&quot;Cannot perform this action on an empty stack&quot;);</span>
+        }
+
+        public static StackError illegalState() {
+<span class="fc" id="L35">            return new StackError(&quot;This state should be unreachable&quot;);</span>
+        }
+
+        @Override
+        public String toString() {
+<span class="nc" id="L40">            return &quot;[ERROR]: &quot; + message;</span>
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">            return (obj instanceof StackError stackError) &amp;&amp; Objects.equals(stackError.message, message);</span>
+        }
+
+        @Override
+        public int hashCode() {
+<span class="nc" id="L50">            return Objects.hashCode(message);</span>
+        }
+    }
+
+    // PURE BASIC ACTIONS
+
+    /**
+     * Add an element to the stack
+     *
+     * @param x   element to add
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... -&gt; ... x |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; push(A x) {
+<span class="fc" id="L64">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), FiniteList.cons(x, s)));</span>
+    }
+
+    /**
+     * Extract the top most element
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... x -&gt; ... | x
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; pop() {
+<span class="fc" id="L74">        return s -&gt; s.head().maybe(h -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(h), s.tail())), Either.left(StackError.poppingEmpty()));</span>
+    }
+
+    /**
+     * &lt;p&gt;
+     * Reset the state to be empty.
+     * &lt;/p&gt;&lt;p&gt;
+     * TO BE USED ONLY FOR TESTING PURPOSES
+     * &lt;/p&gt;
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... -&gt; |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; reset() {
+<span class="nc" id="L88">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), FiniteList.nil()));</span>
+    }
+
+    /**
+     * Modify the topmost element
+     *
+     * @param modif function to apply
+     * @param &lt;A&gt;   type of elements in the stack
+     * @return ... x -&gt; ... modif(x)
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; modify(UnaryOperator&lt;A&gt; modif) {
+<span class="nc" id="L99">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; MaybeMonad.map(m, modif).maybe(StackActions::push, error(StackError.illegalState())));</span>
+    }
+
+    /**
+     * stack that fails
+     *
+     * @param stackError error to fail with
+     * @param &lt;A&gt;        type of elements in the stack
+     * @return ... -&gt; ERROR
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; error(StackError stackError) {
+<span class="pc" id="L110">        return s -&gt; Either.left(stackError);</span>
+    }
+
+    /**
+     * Remove the top most element
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... x -&gt; ... |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; drop() {
+<span class="fc" id="L120">        return StackActions.&lt;A&gt;pop().then(doNothing());</span>
+    }
+
+    /**
+     * Leave the state as is, no output
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... -&gt; ... |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; doNothing() {
+<span class="fc" id="L130">        return s -&gt; Either.right(new Pair&lt;&gt;(Maybe.of(), s));</span>
+    }
+
+    /**
+     * Duplicate the top most element
+     *
+     * @param &lt;A&gt; type of the elements in the stack
+     * @return ... x -&gt; ... x x |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; dup() {
+<span class="fc" id="L140">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; push(x).then(push(x)), error(StackError.illegalState())));</span>
+    }
+
+    /**
+     * Interchange the 2 topmost elements in the stack
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... x y -&gt; ... y x |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; swap() {
+<span class="nc" id="L150">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; StackActions.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; StackActions.&lt;A&gt;push(x).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));</span>
+    }
+
+    /**
+     * Copy the over the topmost element in the stack
+     *
+     * @param &lt;A&gt; type of elements in the stack
+     * @return ... x y -&gt; ... x y x |
+     */
+    static &lt;A&gt; StackActions&lt;A&gt; over() {
+<span class="fc" id="L160">        return StackActions.&lt;A&gt;pop().thenByPopped(m -&gt; m.maybe(x -&gt; StackActions.&lt;A&gt;pop().thenByPopped(n -&gt; n.maybe(h -&gt; StackActions.&lt;A&gt;push(h).then(push(x)).then(push(h)), error(StackError.illegalState()))), error(StackError.illegalState())));</span>
+    }
+
+    // CONCATENATIONS
+
+    /**
+     * Concatenate a different stack action depending on the previous output
+     *
+     * @param fun dependency
+     * @return concatenated stack actions first the current one and after, fun applied to the output of this one
+     * @see #then(StackActions)
+     */
+    default StackActions&lt;A&gt; thenByPopped(Function&lt;Maybe&lt;A&gt;, StackActions&lt;A&gt;&gt; fun) {
+<span class="fc" id="L173">        Function&lt;Maybe&lt;A&gt;, StateWithError&lt;Maybe&lt;A&gt;, FiniteList&lt;A&gt;, StackError&gt;&gt; ff = fun::apply;</span>
+<span class="fc" id="L174">        return s -&gt; StateMonad.&lt;FiniteList&lt;A&gt;, StackError&gt;getInstance().flatMap(ff, this).apply(s);</span>
+    }
+
+    /**
+     * Concatenate stack actions
+     *
+     * @param st next action
+     * @return a stack action that performs them in sequence
+     * @see #thenByPopped(Function)
+     */
+    default StackActions&lt;A&gt; then(StackActions&lt;A&gt; st) {
+<span class="fc" id="L185">        return this.thenByPopped(FunctionFrom.&lt;Maybe&lt;A&gt;&gt;getInstance().pure(st));</span>
+    }
+
+    /**
+     * Print the final pair {@link Maybe&lt;A&gt;} and {@link List&lt;A&gt;} of the stack starting with an empty list
+     *
+     * @return the left error or the right pair result to apply this state to an empty list
+     * @see Pair#toString()
+     * @see com.dan323.functional.data.either.Left#toString()
+     * @see com.dan323.functional.data.either.Right#toString()
+     */
+    default String print() {
+<span class="nc" id="L197">        return apply(FiniteList.nil()).toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

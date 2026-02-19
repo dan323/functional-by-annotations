@@ -33,6 +33,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.argLine/>
     </properties>
 
     <build>
@@ -73,7 +74,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!-- Add exports to allow the compiler to access the mock classes for testing -->
-                    <argLine>--add-exports=functional.data/com.dan323.mock=functional.compiler</argLine>
+                    <argLine>--add-exports=functional.data/com.dan323.mock=functional.compiler @{jacoco.argLine}</argLine>
                 </configuration>
             </plugin>
         </plugins>

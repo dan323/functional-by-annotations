@@ -1,7 +1,6 @@
 package com.dan323.functional.annotation.compiler.semigroup;
 
 import com.dan323.functional.annotation.Semigroup;
-import com.dan323.functional.annotation.algs.IMonoid;
 import com.dan323.functional.annotation.algs.ISemigroup;
 
 import java.util.ArrayList;

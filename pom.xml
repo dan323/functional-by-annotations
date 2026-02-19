@@ -142,9 +142,9 @@
                         <outputFormats>
                             <format>XML</format>
                         </outputFormats>
-                        <excludedClasses>
-                            <excludedClass>ConcurrentTypeClassSanityTest</excludedClass>
-                        </excludedClasses>
+                        <excludedTestClasses>
+                            <param>ConcurrentTypeClassSanityTest</param>
+                        </excludedTestClasses>
                         <excludedMethods>
                             <excludedMethod>hashCode</excludedMethod>
                             <excludedMethod>equals</excludedMethod>

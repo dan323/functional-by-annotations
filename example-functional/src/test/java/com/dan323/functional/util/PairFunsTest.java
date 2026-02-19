@@ -23,7 +23,7 @@ public class PairFunsTest {
 
     @Test
     public  void pairCurry(){
-        var biFunction = Pair.<String,String,String>biFunction((p) -> p.getKey() + " " + p.getValue());
+        var biFunction = Pair.<String,String,String>biFunction(p -> p.getKey() + " " + p.getValue());
         var result = biFunction.apply("howdy", "partner");
         assertEquals("howdy partner", result);
 

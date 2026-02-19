@@ -4,29 +4,35 @@
 
 ### Prerequisites
 
-- **Java 24+**: The project requires Java 24 or later
+- **Java 17+**: Minimum supported version (tested on 17, 21, 24)
 - **Maven 3.6+**: For building the project
 
 ### Installation
 
 #### 1. Add Dependencies
 
+Artifacts are published to Maven Central under `io.github.dan323`, so no additional repositories are required.
+
 Add to your `pom.xml`:
 
 ```xml
+<properties>
+    <functional.version><!-- Replace with the latest release from Maven Central --></functional.version>
+</properties>
+
 <dependencies>
     <!-- Annotation definitions -->
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>annotation-definitions</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>${functional.version}</version>
     </dependency>
     
     <!-- Compiler for code generation -->
     <dependency>
         <groupId>io.github.dan323</groupId>
         <artifactId>functional-compiler</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>${functional.version}</version>
         <scope>compile</scope>
     </dependency>
 </dependencies>
@@ -46,7 +52,7 @@ Add to your `pom.xml`:
                     <path>
                         <groupId>io.github.dan323</groupId>
                         <artifactId>functional-compiler</artifactId>
-                        <version>1.2-SNAPSHOT</version>
+                        <version>${functional.version}</version>
                     </path>
                 </annotationProcessorPaths>
                 <annotationProcessors>
@@ -340,4 +346,3 @@ Integer sum = FiniteListFunctional.foldr(Integer::sum, 0, numbers);
 ---
 
 **Ready to dive deeper?** Continue to [Core Concepts](CORE_CONCEPTS.md)
-

@@ -21,6 +21,8 @@ mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package -Dmave
 mvn test -P test
 ```
 
+- Includes a lightweight thread-safety sanity test (`ConcurrentTypeClassSanityTest`) for generated code paths and reflection utilities.
+
 ## Coverage (JaCoCo)
 
 ```bash
@@ -49,4 +51,3 @@ mvn test pitest:mutationCoverage
 - If annotation processing is not running in your IDE, ensure annotation processing is enabled.
 - If module errors appear, verify that `module-info.java` is recognized by the IDE.
 - For pipeline behavior, see `docs/PIPELINE.md`.
-

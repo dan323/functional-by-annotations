@@ -1,13 +1,10 @@
 ## CHANGELOG
 
 ## [Unreleased]
+### Docs
 - Documentation: Complete 16-week v2.0 production readiness plan (docs/PLAN.md) with detailed weekly breakdowns, parallel work streams, risk mitigation, and success metrics
 - Documentation: Update README.md to properly link and describe the v2.0 production readiness plan
-- Pipeline compiles in java 17, 21 and 24
-- Future notes.
-
-## [2.0] - Week 1 (Feb 18, 2026) - Foundation & API Hardening [IN PROGRESS]
-### Week 1 Deliverables
+- Documentation: Note the thread-safety sanity test in docs/BUILDING.md.
 - Documentation: Add `docs/BREAKING_CHANGES.md` - Complete guide to v1.3 → v2.0 breaking changes with detailed migration paths for:
   - Java 17+ requirement (with POM/Gradle examples)
   - Registry immutability changes (registration patterns)
@@ -26,8 +23,13 @@
   - Version compatibility matrix (Java 24 for v1.3, Java 17+ for v2.0)
 - Documentation: Add cross-references between BREAKING_CHANGES.md and API_AUDIT_v2.0.md for improved navigation
 - Documentation: Update README.md with v2.0 release planning section and migration guides
-- Verification: All cross-links between documentation validated and working
-- Verification: Minimum Java version requirement documented consistently (Java 17+ for v2.0, Java 24 for v1.3) across all guides
+- Documentation: Remove registry-related items from the v2.0 plan to align with annotation-processor-driven code generation.
+### Infrastructure
+- Pipeline compiles in java 17, 21 and 24
+- Future notes.
+- Tests: Add `ConcurrentTypeClassSanityTest` to exercise concurrent FunctorUtil usage.
+### Code smells
+- Some sonar code smells removed by refactoring and code cleanup, but many remain due to the nature of the generated code and reflection utilities. Focus is on critical issues and maintainable code rather than eliminating all smells.
 
 ## [1.3] - 2026-02-18
 ### Features

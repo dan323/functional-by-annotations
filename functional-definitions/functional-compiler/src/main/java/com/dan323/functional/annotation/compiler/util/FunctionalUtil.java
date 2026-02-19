@@ -263,7 +263,7 @@ final class FunctionalUtil {
         if (isSemigroup(semigroup.getClass())) {
             return Stream.of(semigroup.getClass().getGenericInterfaces())
                     .filter(iface -> iface.getTypeName().contains("IMonoid") || iface.getTypeName().contains("ISemigroup"))
-                    .filter(iface -> iface instanceof ParameterizedType)
+                    .filter(ParameterizedType.class::isInstance)
                     .findFirst()
                     .map(iface -> ((ParameterizedType) iface).getActualTypeArguments()[0])
                     .map(type -> {
@@ -344,7 +344,7 @@ final class FunctionalUtil {
             return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, ff, base))
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
-                            .map(t -> ApplicativeUtil.liftA2(applicative, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
+                            .map(t -> ApplicativeUtil.liftA2(applicative, Function<Object,Object>::apply, ff, base)));
         } else {
             return Optional.empty();
         }

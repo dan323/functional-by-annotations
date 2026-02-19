@@ -1,6 +1,6 @@
 # Functional Java by Annotations
 
-[![Java Version](https://img.shields.io/badge/Java-24-orange.svg)](https://openjdk.org/projects/jdk/24/)
+[![Java Version](https://img.shields.io/badge/Java-17%2B-blue.svg)](https://openjdk.org/projects/jdk/17/)
 [![Release](https://img.shields.io/github/v/release/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/releases)
 [![License](https://img.shields.io/github/license/dan323/functional-by-annotations)](LICENSE)
 
@@ -22,6 +22,10 @@
 - **v1.3 (current):** Java 24
 - **v2.0 (production-ready, targeting May 2026):** Java 17+ minimum (tested on 17, 21, 24)
   - See [Breaking Changes: v1.3 → v2.0](docs/BREAKING_CHANGES.md) for migration details
+
+## Distribution
+
+- **Maven Central:** Release artifacts are published under `io.github.dan323` (no extra repositories required).
 
 ## What is this?
 
@@ -188,7 +192,6 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 ## 📊 Project Statistics
 
 - **Minimum Java Version**: 17 (LTS)
-- **Current Build Version**: 24 (latest)
 - **Tested Versions**: Java 17 LTS, 21 LTS, 24
 - **Modules**: 3 (annotations, compiler, examples)
 - **Annotations**: 9 functional + algebraic structures

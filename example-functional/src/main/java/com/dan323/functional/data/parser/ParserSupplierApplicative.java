@@ -53,7 +53,7 @@ public final class ParserSupplierApplicative implements IApplicative<Supplier<Pa
     }
 
     public static <A> Supplier<Parser<A>> disjunction(Supplier<Parser<A>> first, Supplier<Parser<A>> second) {
-        return () -> s -> first.get().apply(s).either(_ -> second.get().apply(s), Either::right);
+        return () -> s -> first.get().apply(s).either(t -> second.get().apply(s), Either::right);
     }
 
 }

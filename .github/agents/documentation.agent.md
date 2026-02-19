@@ -32,3 +32,6 @@ A line in the CHANGELOG.md file should be added for that.
 
 The agent_generated folder should never contain md files about general documentation for users, but only specific documentation about code changes.
 agent_generated is deleted regularly, so it should not contain any documentation that is meant to be permanent.
+
+Write everything in English, and use markdown format for all the md files you create. Normally you write too many MD files that are
+not documentation for users, but documentation about code changes. Those are not very useful, so write less.

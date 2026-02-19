@@ -13,7 +13,45 @@ on:
       - master
 
 jobs:
-  mvn_flow:
+  compile_17:
+    runs-on: ubuntu-latest
+    name: mvn flow Java 17
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: compile
+        run: mvn -B -f pom.xml clean compile
+      - name: run test suits
+        run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package -Dmaven.test.skip=true
+          mvn -B -f pom.xml test -P test
+
+  compile_21:
+    runs-on: ubuntu-latest
+    name: mvn flow Java 21
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: compile
+        run: mvn -B -f pom.xml clean compile
+      - name: run test suits
+        run: |
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package -Dmaven.test.skip=true
+          mvn -B -f pom.xml test -P test
+
+  mvn_flow_24:
     runs-on: ubuntu-latest
     name: mvn flow Java 24
     steps:
@@ -29,7 +67,7 @@ jobs:
         run: mvn -B -f pom.xml clean compile
       - name: run test suits
         run: |
-          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml clean package -Dmaven.test.skip=true
+          mvn -B -f ./functional-definitions/annotation-definitions/pom.xml package -Dmaven.test.skip=true
           mvn -B -f pom.xml test -P test
       - name: jacoco report
         run: mvn -B -f pom.xml -Dmaven.test.skip=true verify -P jacoco -Dgpg.skip=true

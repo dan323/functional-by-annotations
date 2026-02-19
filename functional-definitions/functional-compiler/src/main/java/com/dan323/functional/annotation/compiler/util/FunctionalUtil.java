@@ -97,7 +97,7 @@ final class FunctionalUtil {
                     .<A>map(m -> invokeStaticMethod(foldable, m, monoid, base))
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())
                             .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime()))
-                            .map(_ -> FoldableUtil.foldMap(foldable, monoid, Function.identity(), base)));
+                            .map(m -> FoldableUtil.foldMap(foldable, monoid, Function.identity(), base)));
         } else {
             return Optional.empty();
         }
@@ -109,7 +109,7 @@ final class FunctionalUtil {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())
                     .<M>map(m -> invokeStaticMethod(foldable, m, monoid, function, base))
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime())
-                            .map(_ -> FoldableUtil.foldr(foldable, (A x, M y) -> SemigroupUtil.op(monoid, function.apply(x), y), MonoidUtil.unit(monoid), base)));
+                            .map(m -> FoldableUtil.foldr(foldable, (A x, M y) -> SemigroupUtil.op(monoid, function.apply(x), y), MonoidUtil.unit(monoid), base)));
         } else {
             return Optional.empty();
         }
@@ -121,7 +121,7 @@ final class FunctionalUtil {
             return getMethodIfExists(foldable.getClass(), IFoldable.FOLDR_NAME, BiFunction.class, Object.class, foldable.getClassAtRuntime())
                     .<B>map(m -> invokeStaticMethod(foldable, m, function, b, fm))
                     .or(() -> getMethodIfExists(foldable.getClass(), IFoldable.FOLD_MAP_NAME, IMonoid.class, Function.class, foldable.getClassAtRuntime())
-                            .map(_ -> FoldableUtil.foldMap(foldable, new EndoMonoid<>(), (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
+                            .map(m -> FoldableUtil.foldMap(foldable, new EndoMonoid<>(), (Function<M, Function<B, B>>) (M x) -> ((B y) -> function.apply(x, y)), fm).apply(b)));
         } else {
             return Optional.empty();
         }
@@ -132,7 +132,7 @@ final class FunctionalUtil {
             return getMethodIfExists(functor.getClass(), IFunctor.MAP_CONST_NAME, functor.getClassAtRuntime(), Object.class)
                     .<F>map(m -> invokeStaticMethod(functor, m, base, constant))
                     .or(() -> getMethodIfExists(functor.getClass(), IFunctor.MAP_NAME, functor.getClassAtRuntime(), Function.class)
-                            .map(_ -> FunctorUtil.map(functor, base, _ -> constant)));
+                            .map(m -> FunctorUtil.map(functor, base, t -> constant)));
         } else {
             return Optional.empty();
         }
@@ -142,7 +142,7 @@ final class FunctionalUtil {
         if (isApplicative(applicative.getClass())) {
             return getMethodIfExists(applicative.getClass(), IApplicative.KEEP_LEFT_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, left, right))
-                    .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, (x, _) -> x, left, right)));
+                    .or(() -> Optional.of(ApplicativeUtil.liftA2(applicative, (x, y) -> x, left, right)));
         } else {
             return Optional.empty();
         }
@@ -163,8 +163,8 @@ final class FunctionalUtil {
             return getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())
                     .<K>map(m -> invokeStaticMethod(traversal, m, applicative, mapping, fa))
                     .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())
-                            .flatMap(_ -> getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, traversal.getClassAtRuntime(), Function.class))
-                            .map(_ -> TraversalUtil.sequenceA(traversal, applicative, FunctorUtil.map(traversal, fa, mapping)))
+                            .flatMap(m -> getMethodIfExists(traversal.getClass(), IFunctor.MAP_NAME, traversal.getClassAtRuntime(), Function.class))
+                            .map(m -> TraversalUtil.sequenceA(traversal, applicative, FunctorUtil.map(traversal, fa, mapping)))
                     );
         } else {
             return Optional.empty();
@@ -178,7 +178,7 @@ final class FunctionalUtil {
                     .<F>map(m -> invokeStaticMethod(traversal, m, base, map))
                     .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, functor.getClassAtRuntime())
                             .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, functor.getClassAtRuntime()))
-                            .map(_ -> ((Identity<F>) (Identity<?>) TraversalUtil.<Identity, F, A>traverse(traversal, new IdentityApplicative(), ((Function<B, Identity<B>>) IdentityApplicative::pure).compose(map), base)).get()));
+                            .map(m -> ((Identity<F>) (Identity<?>) TraversalUtil.<Identity, F, A>traverse(traversal, new IdentityApplicative(), ((Function<B, Identity<B>>) IdentityApplicative::pure).compose(map), base)).get()));
         } else {
             return Optional.empty();
         }
@@ -189,7 +189,7 @@ final class FunctionalUtil {
             return getMethodIfExists(traversal.getClass(), ITraversal.SEQUENCE_A_NAME, IApplicative.class, traversal.getClassAtRuntime())
                     .<K>map(m -> invokeStaticMethod(traversal, m, applicative, fa))
                     .or(() -> getMethodIfExists(traversal.getClass(), ITraversal.TRAVERSE_NAME, IApplicative.class, Function.class, traversal.getClassAtRuntime())
-                            .map(_ -> TraversalUtil.traverse(traversal, applicative, Function.identity(), fa)));
+                            .map(t -> TraversalUtil.traverse(traversal, applicative, Function.identity(), fa)));
         } else {
             return Optional.empty();
         }
@@ -300,7 +300,7 @@ final class FunctionalUtil {
             IApplicative<? extends F> applicative = (IApplicative<? extends F>) functor;
             return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, functor.getClassAtRuntime(), functor.getClassAtRuntime())
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, functor.getClassAtRuntime(), functor.getClassAtRuntime()))
-                    .map(_ -> ApplicativeUtil.fapply(applicative, base, ApplicativeUtil.pure(applicative, map)));
+                    .map(t -> ApplicativeUtil.fapply(applicative, base, ApplicativeUtil.pure(applicative, map)));
         } else {
             return Optional.empty();
         }
@@ -310,8 +310,8 @@ final class FunctionalUtil {
         if (isMonad(functor.getClass())) {
             IMonad<? extends F> monad = (IMonad<? extends F>) functor;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, functor.getClassAtRuntime())
-                    .flatMap(_ -> getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))
-                    .map(_ -> MonadUtil.flatMap(monad, (A a) -> ApplicativeUtil.pure(monad, map.apply(a)), base));
+                    .flatMap(t -> getMethodIfExists(monad.getClass(), IMonad.PURE_NAME, Object.class))
+                    .map(t -> MonadUtil.flatMap(monad, (A a) -> ApplicativeUtil.pure(monad, map.apply(a)), base));
         } else {
             return Optional.empty();
         }
@@ -344,7 +344,7 @@ final class FunctionalUtil {
             return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, ff, base))
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
-                            .map(_ -> ApplicativeUtil.liftA2(applicative, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
+                            .map(t -> ApplicativeUtil.liftA2(applicative, (Function<Object, Object> a, Object b) -> a.apply(b), ff, base)));
         } else {
             return Optional.empty();
         }
@@ -355,8 +355,8 @@ final class FunctionalUtil {
             IMonad<? extends F> monad = (IMonad<? extends F>) applicative;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())
-                            .flatMap(_ -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
-                    .map(_ -> MonadUtil.flatMap(monad, f -> FunctorUtil.map(monad, base, (Function<?, ?>) f), ff));
+                            .flatMap(t -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
+                    .map(t -> MonadUtil.flatMap(monad, f -> FunctorUtil.map(monad, base, (Function<?, ?>) f), ff));
         } else {
             return Optional.empty();
         }
@@ -369,7 +369,7 @@ final class FunctionalUtil {
             return getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(applicative, m, mapping, fa, fb))
                     .or(() -> getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())
-                            .map(_ -> ApplicativeUtil.fapply(applicative, fb, FunctorUtil.map(applicative, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b))))));
+                            .map(t -> ApplicativeUtil.fapply(applicative, fb, FunctorUtil.map(applicative, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b))))));
         } else {
             return Optional.empty();
         }
@@ -380,8 +380,8 @@ final class FunctionalUtil {
             IMonad<? extends F> monad = (IMonad<? extends F>) applicative;
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, applicative.getClassAtRuntime())
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, applicative.getClassAtRuntime())
-                            .flatMap(_ -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
-                    .map(_ -> ApplicativeUtil.fapply(monad, fb, FunctorUtil.map(monad, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
+                            .flatMap(t -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, applicative.getClassAtRuntime(), Function.class)))
+                    .map(t -> ApplicativeUtil.fapply(monad, fb, FunctorUtil.map(monad, fa, (A a) -> (Function<B, C>) (b -> mapping.apply(a, b)))));
         } else {
             return Optional.empty();
         }
@@ -395,8 +395,8 @@ final class FunctionalUtil {
             return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(monad, m, mapping, fa))
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, monad.getClassAtRuntime())
-                            .flatMap(_ -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))
-                            .map(_ -> MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));
+                            .flatMap(t -> getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))
+                            .map(t -> MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));
         } else {
             return Optional.empty();
         }
@@ -409,7 +409,7 @@ final class FunctionalUtil {
             return getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, monad.getClassAtRuntime())
                     .<F>map(m -> invokeStaticMethod(monad, m, ffa))
                     .or(() -> getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())
-                            .map(_ -> MonadUtil.flatMap(monad, Function.identity(), ffa)));
+                            .map(t -> MonadUtil.flatMap(monad, Function.identity(), ffa)));
         } else {
             return Optional.empty();
         }

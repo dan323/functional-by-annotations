@@ -1,7 +1,6 @@
 package com.dan323.functional.annotation.compiler.traversal;
 
 import com.dan323.functional.annotation.Traversal;
-import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.annotation.funcs.ITraversal;
 
@@ -12,7 +11,7 @@ import java.util.function.Function;
 public class TraversalMock implements ITraversal<Optional<?>> {
 
     public <K, A> K traverse(IApplicative<K> applicative, Function<A, K> fun, Optional<A> elem) {
-        return elem.map(fun).orElse(ApplicativeUtil.pure(applicative, Optional.empty()));
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     @Override

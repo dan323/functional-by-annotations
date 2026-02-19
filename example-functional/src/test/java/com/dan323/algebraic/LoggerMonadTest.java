@@ -37,9 +37,9 @@ public class LoggerMonadTest {
 
     @Test
     public void fapplyCombinesFunctionLogFirst() {
-        Writer<Integer, String> base = loggerMonad.map(Writer.tell("b"), _ -> 2);
+        Writer<Integer, String> base = loggerMonad.map(Writer.tell("b"), x -> 2);
         Writer<java.util.function.Function<Integer, Integer>, String> fn =
-                loggerMonad.map(Writer.tell("f"), _ -> x -> x + 1);
+                loggerMonad.map(Writer.tell("f"), y -> x -> x + 1);
         Writer<Integer, String> result = loggerMonad.fapply(base, fn);
         assertEquals(3, result.execute());
         assertEquals("fb", result.log());
@@ -48,7 +48,7 @@ public class LoggerMonadTest {
     @Test
     public void joinConcatsOuterThenInnerLogs() {
         Writer<Writer<Integer, String>, String> outer =
-                loggerMonad.map(Writer.tell("o"), _ -> loggerMonad.map(Writer.tell("i"), _ -> 5));
+                loggerMonad.map(Writer.tell("o"), x -> loggerMonad.map(Writer.tell("i"), y -> 5));
         Writer<Integer, String> result = loggerMonad.join(outer);
         assertEquals(5, result.execute());
         assertEquals("oi", result.log());
@@ -56,8 +56,8 @@ public class LoggerMonadTest {
 
     @Test
     public void liftA2CombinesLogsLeftToRight() {
-        Writer<Integer, String> left = loggerMonad.map(Writer.tell("a"), _ -> 2);
-        Writer<Integer, String> right = loggerMonad.map(Writer.tell("b"), _ -> 3);
+        Writer<Integer, String> left = loggerMonad.map(Writer.tell("a"), x -> 2);
+        Writer<Integer, String> right = loggerMonad.map(Writer.tell("b"), x -> 3);
         Writer<Integer, String> result = loggerMonad.liftA2(Integer::sum, left, right);
         assertEquals(5, result.execute());
         assertEquals("ab", result.log());

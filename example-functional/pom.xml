@@ -32,8 +32,6 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.source>24</maven.compiler.source>
-        <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -69,6 +67,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Add exports to allow the compiler to access the mock classes for testing -->
+                    <argLine>--add-exports=functional.data/com.dan323.mock=functional.compiler</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>

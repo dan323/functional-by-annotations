@@ -38,8 +38,6 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>24</maven.compiler.source>
-        <maven.compiler.target>24</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pitest.junit5.version>1.2.3</pitest.junit5.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
@@ -256,6 +254,36 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>java17</id>
+            <activation>
+                <jdk>[17,21)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>17</maven.compiler.source>
+                <maven.compiler.target>17</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>java21</id>
+            <activation>
+                <jdk>[21,24)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>21</maven.compiler.source>
+                <maven.compiler.target>21</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>java24</id>
+            <activation>
+                <jdk>[24,25)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>24</maven.compiler.source>
+                <maven.compiler.target>24</maven.compiler.target>
+            </properties>
+        </profile>
         <profile>
             <id>test</id>
             <build>

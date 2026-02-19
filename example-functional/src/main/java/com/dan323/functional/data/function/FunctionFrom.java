@@ -23,7 +23,7 @@ public final class FunctionFrom<A> implements IMonad<Function<A, ?>> {
     }
 
     public <B> Function<A, B> pure(B data) {
-        return _ -> data;
+        return x -> data;
     }
 
     public <B, C> Function<A, C> fapply(Function<A, Function<B, C>> ffun, Function<A, B> g) {

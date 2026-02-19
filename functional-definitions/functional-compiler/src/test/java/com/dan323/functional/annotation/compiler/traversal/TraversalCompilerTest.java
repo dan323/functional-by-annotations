@@ -49,4 +49,3 @@ public class TraversalCompilerTest {
         assertEquals(1, k);
     }
 }
-

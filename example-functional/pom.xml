@@ -73,7 +73,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <!-- Add exports to allow the compiler to access the mock classes for testing -->
-                    <argLine>--add-exports=functional.data/com.dan323.mock=functional.compiler</argLine>
+                    <argLine>${jacoco.argLine} --add-exports=functional.data/com.dan323.mock=functional.compiler</argLine>
                 </configuration>
             </plugin>
         </plugins>

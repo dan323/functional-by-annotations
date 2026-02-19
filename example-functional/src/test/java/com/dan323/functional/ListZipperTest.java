@@ -35,6 +35,26 @@ public class ListZipperTest {
     }
 
     @Test
+    public void testMoveRightBeyondLastReturnsEmptyMaybe() {
+        var zipper = ListZipper.zipFrom(FiniteList.of(1, 2, 3));
+        // Move to the second element
+        var second = zipper.moveRight();
+        // Move to the third (last) element
+        var third = second.<Maybe<ListZipper<Integer>>>maybe(ListZipper::moveRight, Maybe.of());
+        // Moving right from the last element should yield an empty Maybe
+        var beyondLast = third.<Maybe<ListZipper<Integer>>>maybe(ListZipper::moveRight, Maybe.of());
+        assertEquals(Maybe.of(), beyondLast);
+    }
+
+    @Test
+    public void testMoveLeftBeyondFirstReturnsEmptyMaybe() {
+        var zipper = ListZipper.zipFrom(FiniteList.of(1, 2, 3));
+        // Moving left from the first element should yield an empty Maybe
+        var beforeFirst = zipper.moveLeft();
+        assertEquals(Maybe.of(), beforeFirst);
+    }
+
+    @Test
     public void testModify() {
         var zipper = ListZipper.zipFrom(FiniteList.of(5, 6, 7));
         var modified = zipper.modify(x -> x * 2);

@@ -45,7 +45,7 @@ public class Compiler&lt;F extends Annotation&gt; {
         do {
 <span class="fc" id="L46">            necessaryMethodsLoop = element.getEnclosedElements().stream()</span>
 <span class="fc bfc" id="L47" title="All 4 branches covered.">                    .filter(element1 -&gt; element1.getKind().equals(ElementKind.METHOD) &amp;&amp; element1.getModifiers().contains(Modifier.PUBLIC))</span>
-<span class="fc" id="L48">                    .map(element1 -&gt; (ExecutableElement) element1)</span>
+<span class="fc" id="L48">                    .map(ExecutableElement.class::cast)</span>
 <span class="fc" id="L49">                    .map(element1 -&gt; (UnaryOperator&lt;NecessaryMethods&gt;) ((NecessaryMethods nec) -&gt; nec.process(element1)))</span>
 <span class="fc" id="L50">                    .reduce(necessaryMethodsLoop,</span>
 <span class="fc" id="L51">                            (nec, unary) -&gt; unary.apply(nec),</span>

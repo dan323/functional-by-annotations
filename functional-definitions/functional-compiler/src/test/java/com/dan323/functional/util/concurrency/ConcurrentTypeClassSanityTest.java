@@ -28,7 +28,6 @@ public class ConcurrentTypeClassSanityTest {
         int runs = 10;
 
         for (int run = 0; run < runs; run++) {
-            System.out.println("Running " + run + " of " + tasks + " tasks of " + threads + " threads.");
             ExecutorService executor = Executors.newFixedThreadPool(threads);
             try {
                 CountDownLatch ready = new CountDownLatch(tasks);

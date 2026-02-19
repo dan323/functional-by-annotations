@@ -9,35 +9,35 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Applicative
-<span class="fc" id="L12">public final class ZipApplicative implements IApplicative&lt;List&lt;?&gt;&gt; {</span>
+<span class="nc" id="L12">public final class ZipApplicative implements IApplicative&lt;List&lt;?&gt;&gt; {</span>
 
     public static &lt;A&gt; List&lt;A&gt; pure(A a) {
-<span class="fc" id="L15">        return List.repeat(a);</span>
+<span class="nc" id="L15">        return List.repeat(a);</span>
     }
 
     public static &lt;A, B, C&gt; List&lt;C&gt; liftA2(BiFunction&lt;A, B, C&gt; fun, List&lt;A&gt; lstA, List&lt;B&gt; lstB) {
-<span class="fc bfc" id="L19" title="All 2 branches covered.">        if (lstA instanceof FiniteList&lt;A&gt; finiteList) {</span>
-<span class="fc" id="L20">            return finiteList.head().maybe(a -&gt; lstB.head().maybe(b -&gt; FiniteList.cons(fun.apply(a, b), (FiniteList&lt;C&gt;) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">        } else if (lstB instanceof FiniteList&lt;B&gt; finiteList) {</span>
-<span class="fc" id="L22">            return finiteList.head().maybe(a -&gt; lstA.head().maybe(b -&gt; FiniteList.cons(fun.apply(b, a), (FiniteList&lt;C&gt;) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());</span>
-<span class="fc bfc" id="L23" title="All 2 branches covered.">        } else if (lstA instanceof Repeat&lt;A&gt; repeat) {</span>
-<span class="fc" id="L24">            Maybe&lt;Function&lt;B, C&gt;&gt; aux = MaybeMonad.map(repeat.head(), a -&gt; ((B b) -&gt; fun.apply(a, b)));</span>
-<span class="fc" id="L25">            return aux.maybe(lstB::map, List.nil());</span>
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        } else if (lstB instanceof Repeat&lt;B&gt; repeat) {</span>
-<span class="fc" id="L27">            Maybe&lt;Function&lt;A, C&gt;&gt; aux = MaybeMonad.map(repeat.head(), a -&gt; ((A b) -&gt; fun.apply(b, a)));</span>
-<span class="fc" id="L28">            return aux.maybe(lstA::map, List.nil());</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (lstA instanceof FiniteList&lt;A&gt; finiteList) {</span>
+<span class="nc" id="L20">            return finiteList.head().maybe(a -&gt; lstB.head().maybe(b -&gt; FiniteList.cons(fun.apply(a, b), (FiniteList&lt;C&gt;) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        } else if (lstB instanceof FiniteList&lt;B&gt; finiteList) {</span>
+<span class="nc" id="L22">            return finiteList.head().maybe(a -&gt; lstA.head().maybe(b -&gt; FiniteList.cons(fun.apply(b, a), (FiniteList&lt;C&gt;) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        } else if (lstA instanceof Repeat&lt;A&gt; repeat) {</span>
+<span class="nc" id="L24">            Maybe&lt;Function&lt;B, C&gt;&gt; aux = MaybeMonad.map(repeat.head(), a -&gt; ((B b) -&gt; fun.apply(a, b)));</span>
+<span class="nc" id="L25">            return aux.maybe(lstB::map, List.nil());</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        } else if (lstB instanceof Repeat&lt;B&gt; repeat) {</span>
+<span class="nc" id="L27">            Maybe&lt;Function&lt;A, C&gt;&gt; aux = MaybeMonad.map(repeat.head(), a -&gt; ((A b) -&gt; fun.apply(b, a)));</span>
+<span class="nc" id="L28">            return aux.maybe(lstA::map, List.nil());</span>
         } else {
-<span class="fc" id="L30">            return new Zipped&lt;&gt;(lstA, fun, lstB);</span>
+<span class="nc" id="L30">            return new Zipped&lt;&gt;(lstA, fun, lstB);</span>
         }
     }
 
     public static &lt;A, B&gt; List&lt;B&gt; map(List&lt;A&gt; base, Function&lt;A, B&gt; map) {
-<span class="fc" id="L35">        return base.map(map);</span>
+<span class="nc" id="L35">        return base.map(map);</span>
     }
 
     @Override
     public Class&lt;List&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="fc" id="L40">        return (Class&lt;List&lt;?&gt;&gt;) (Class&lt;?&gt;) List.class;</span>
+<span class="nc" id="L40">        return (Class&lt;List&lt;?&gt;&gt;) (Class&lt;?&gt;) List.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

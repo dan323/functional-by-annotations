@@ -8,16 +8,16 @@ public final class Nothing&lt;A&gt; implements Maybe&lt;A&gt; {
     private Nothing(){
     }
 
-<span class="fc" id="L11">    static final Nothing&lt;?&gt; NOTHING = new Nothing&lt;&gt;();</span>
+<span class="nc" id="L11">    static final Nothing&lt;?&gt; NOTHING = new Nothing&lt;&gt;();</span>
 
     @Override
     public &lt;C&gt; C maybe(Function&lt;A, C&gt; f, C constant) {
-<span class="fc" id="L15">        return constant;</span>
+<span class="nc" id="L15">        return constant;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        return obj == NOTHING;</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        return obj == NOTHING;</span>
     }
 
     @Override

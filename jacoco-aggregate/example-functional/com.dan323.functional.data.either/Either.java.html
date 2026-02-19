@@ -9,15 +9,15 @@ public sealed interface Either&lt;A, B&gt; permits Left, Right {
     &lt;C&gt; C either(Function&lt;A, C&gt; aToC, Function&lt;B, C&gt; bToC);
 
     static &lt;A, B&gt; Either&lt;A, B&gt; left(A a) {
-<span class="fc" id="L12">        return new Left&lt;&gt;(a);</span>
+<span class="nc" id="L12">        return new Left&lt;&gt;(a);</span>
     }
 
     static &lt;A, B&gt; Either&lt;A, B&gt; right(B b) {
-<span class="fc" id="L16">        return new Right&lt;&gt;(b);</span>
+<span class="nc" id="L16">        return new Right&lt;&gt;(b);</span>
     }
 
     static &lt;A&gt; A leftVoid(Either&lt;Void, A&gt; either) {
-<span class="fc" id="L20">        return either.either(Void::absurd, Function.identity());</span>
+<span class="nc" id="L20">        return either.either(Void::absurd, Function.identity());</span>
     }
 
     static &lt;A&gt; A rightVoid(Either&lt;A, Void&gt; either) {

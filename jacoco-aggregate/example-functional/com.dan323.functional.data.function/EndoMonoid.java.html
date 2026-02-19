@@ -12,17 +12,17 @@ public final class EndoMonoid&lt;A&gt; implements IMonoid&lt;UnaryOperator&lt;A&
     }
 
     public UnaryOperator&lt;A&gt; op(UnaryOperator&lt;A&gt; f1, UnaryOperator&lt;A&gt; f2) {
-<span class="fc" id="L15">        return (f1.compose(f2))::apply;</span>
+<span class="nc" id="L15">        return (f1.compose(f2))::apply;</span>
     }
 
     public UnaryOperator&lt;A&gt; unit() {
-<span class="fc" id="L19">        return UnaryOperator.identity();</span>
+<span class="nc" id="L19">        return UnaryOperator.identity();</span>
     }
 
     public static &lt;A&gt; EndoMonoid&lt;A&gt; getInstance() {
-<span class="fc" id="L23">        return (EndoMonoid&lt;A&gt;) ENDO_MONOID;</span>
+<span class="nc" id="L23">        return (EndoMonoid&lt;A&gt;) ENDO_MONOID;</span>
     }
 
-<span class="fc" id="L26">    private static final EndoMonoid&lt;?&gt; ENDO_MONOID = new EndoMonoid&lt;&gt;();</span>
+<span class="nc" id="L26">    private static final EndoMonoid&lt;?&gt; ENDO_MONOID = new EndoMonoid&lt;&gt;();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

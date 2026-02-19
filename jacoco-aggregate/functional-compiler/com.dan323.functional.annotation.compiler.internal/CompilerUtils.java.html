@@ -15,7 +15,7 @@ import java.util.List;
 
     public static DeclaredType changeWildBy(Types typeUtils, DeclaredType type, TypeMirror substitute) {
 <span class="fc" id="L17">        var lst = type.getTypeArguments();</span>
-<span class="fc" id="L18">        var wilderized = (DeclaredType) lst.getFirst();</span>
+<span class="fc" id="L18">        var wilderized = (DeclaredType) lst.get(0);</span>
 
 <span class="fc" id="L20">        var funcList = wilderized.getTypeArguments().stream()</span>
 <span class="fc" id="L21">                .map((TypeMirror tm) -&gt; {</span>

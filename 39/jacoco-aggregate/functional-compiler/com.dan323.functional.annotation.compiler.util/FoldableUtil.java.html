@@ -20,18 +20,18 @@ public final class FoldableUtil {
     }
 
     public static &lt;F, A&gt; A fold(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends A&gt; monoid, F a) {
-<span class="fc" id="L23">        return FunctionalUtil.foldableFold(foldable, monoid, a)</span>
-<span class="fc" id="L24">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="nc" id="L23">        return FunctionalUtil.foldableFold(foldable, monoid, a)</span>
+<span class="nc" id="L24">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F, A, M&gt; M foldMap(IFoldable&lt;? extends F&gt; foldable, IMonoid&lt;? extends M&gt; monoid, Function&lt;A,M&gt; function, F base){
-<span class="fc" id="L28">        return FunctionalUtil.foldableFoldMap(foldable, monoid, function, base)</span>
-<span class="pc" id="L29">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="nc" id="L28">        return FunctionalUtil.foldableFoldMap(foldable, monoid, function, base)</span>
+<span class="nc" id="L29">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F, A, B&gt; B foldr(IFoldable&lt;? extends F&gt; foldable, BiFunction&lt;A,B,B&gt; function, B b, F fa){
-<span class="fc" id="L33">        return FunctionalUtil.foldableFoldr(foldable, function, b, fa)</span>
-<span class="pc" id="L34">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="nc" id="L33">        return FunctionalUtil.foldableFoldr(foldable, function, b, fa)</span>
+<span class="nc" id="L34">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
 }

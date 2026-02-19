@@ -17,8 +17,8 @@ public class ListZipperFunctorTest {
     public void moveZipper() {
         ListZipper<Boolean> zipped = ListZipper.zipFrom(FiniteList.of(true, true, false));
         assertEquals(Maybe.of(), zipped.moveLeft());
-        var maybeZip = MonadUtil.flatMap(MaybeMonad.getInstance(), (ListZipper<Boolean> x) -> x.moveLeft(), zipped.moveRight());
-        assertEquals(Maybe.of(true), MonadUtil.flatMap(MaybeMonad.getInstance(), (ListZipper<Boolean> lz) -> lz.get(), maybeZip));
+        var maybeZip = MonadUtil.flatMap(MaybeMonad.getInstance(), ListZipper<Boolean>::moveLeft, zipped.moveRight());
+        assertEquals(Maybe.of(true), MonadUtil.flatMap(MaybeMonad.getInstance(), ListZipper<Boolean>::get, maybeZip));
         var right = zipped.moveRight();
         assertEquals(FiniteList.of(true, false, false), right.maybe(zip -> zip.set(false), null).toList());
         assertEquals(FiniteList.of(true, false, false), right.maybe(zip -> zip.modify(b -> !b), null).toList());

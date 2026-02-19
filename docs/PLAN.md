@@ -19,7 +19,7 @@ The jump from v1.3 to v2.0 justifies a major version change due to:
 2. **Reflection Elimination:** Zero-reflection hot paths via MethodHandle caching
 3. **Enterprise Features:** Monad transformers, higher-kinded types, advanced parser toolkit
 4. **Performance:** <1% overhead vs. native Java (down from <5%)
-5. **Security-First:** Dedicated security registry, vulnerability scanning, compliance policies
+5. **Security-First:** Vulnerability scanning and compliance policies
 6. **Production Readiness:** Full API freeze, comprehensive law verification, enterprise documentation
 
 ---
@@ -38,7 +38,6 @@ The jump from v1.3 to v2.0 justifies a major version change due to:
 - Performance benchmarks published (<1% overhead)
 - Law verification 100% on all built-in instances
 - CI passing across Java 17, 21, 24
-- Thread-safe, lock-free registry
 - **Zero reflective calls in hot execution paths** (map/flatMap)
 - Security audit completed, CVE scanning enabled
 - Modularized architecture (4+ independent modules)
@@ -61,7 +60,7 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 
 | Phase | Weeks | Focus | Key Deliverables |
 |-------|-------|-------|------------------|
-| **1: Foundation & API Hardening** | 1-3 | API audit, Java 17+ migration, registry refactor | API freeze document, breaking changes guide |
+| **1: Foundation & API Hardening** | 1-3 | API audit, Java 17+ migration, processor/codegen hardening | API freeze document, breaking changes guide |
 | **2: Architecture Modernization** | 4-6 | MethodHandle caching, law verification, benchmarks | Zero-reflection hot paths, LawChecker, perf reports |
 | **3: Enterprise Features** | 7-10 | Monad transformers, advanced tooling, optimizations | New algebraic structures, declarative config, <1% overhead |
 | **4: Security & Advanced QA** | 11-13 | Security audit, fuzz testing, integration tests | Security report, CVE scanning enabled, comprehensive test matrix |
@@ -81,7 +80,7 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 - Audit `functional-definitions/functional-compiler` for all public classes/interfaces
 - Categorize each symbol:
   - **Frozen:** Core APIs (Functor, Applicative, Monad, Monoid, Semigroup, etc.)
-  - **Refactored:** APIs with planned changes (registry, configuration, processor options)
+  - **Refactored:** APIs with planned changes (configuration, processor options)
   - **Deprecated:** Features to remove in v2.0
   - **New:** Features added in v2.0 only
 - Create stability matrix: `|Symbol|v1.3 Status|v2.0 Status|Breaking Change?|Migration Path|`
@@ -96,7 +95,6 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 **Acceptance Criteria:**
 - 100% of public APIs categorized
 - Breaking changes documented with migration examples
-- Internal APIs marked with @InternalApi + @Deprecated annotations (as needed)
 
 #### 1.2 Java 17+ Migration & Cleanup
 
@@ -104,7 +102,7 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 
 **Tasks:**
 - Update all POMs: `<maven.compiler.source>17</maven.compiler.source>`
-- Update CI matrix: Java 17, 21, 24 (drop Java 11/14 if previously supported)
+- Update CI matrix: Java 17, 21, 24
 - Review codebase for Java 11-era workarounds (can remove)
 - Leverage Java 17+ features:
   - Records for immutable data (consider for value types)
@@ -125,69 +123,27 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 
 ---
 
-### Week 2: Registry Architecture & Thread Safety Hardening
+### Week 2: Concurrency & Thread Safety Hardening
 
-#### 2.1 Registry Refactoring for Immutability
+#### 2.1 Thread Safety Sanity Check
 
-**Objective:** Transition from mutable registry to copy-on-write immutable design.
-
-**Tasks:**
-- Analyze current `RegistryHolder` implementation:
-  - Identify all mutable state
-  - Document registration paths (compile-time vs. runtime)
-  - Map existing usage patterns
-- Design immutable registry:
-  - Use `ConcurrentHashMap` or `ImmutableMap` depending on strategy
-  - Separate read path (lock-free) from write path (synchronized)
-  - Implement versioning: each registration produces new immutable snapshot
-- Implement copy-on-write pattern:
-  ```java
-  Registry registerTypeClass(Class<?> target, Instance<?> instance) {
-    ImmutableRegistry newRegistry = this.immutableMap
-      .with(target, instance);
-    return new VersionedRegistry(newRegistry, this.version + 1);
-  }
-  ```
-- Add registry versioning + change notifications for tooling
-- Ensure compile-time registration (via annotation processor) doesn't block on locks
-
-**Deliverables:**
-- Refactored `RegistryHolder` or `Registry` implementation
-- Unit tests for immutability (no mutations after registration)
-- Versioning API for introspection
-
-**Acceptance Criteria:**
-- Registry is immutable after creation
-- All registrations produce new immutable snapshots
-- Zero mutable state in critical path
-- Tests verify immutability (attempt to modify → exception)
-
-#### 2.2 Thread Safety Stress Testing
-
-**Objective:** Guarantee thread-safe concurrent registration and lookup.
+**Objective:** Validate that concurrent use of generated code paths and reflection utilities does not introduce races or blocking behavior in typical usage.
 
 **Tasks:**
-- Create concurrent stress test suite:
-  - 100+ threads simultaneously registering different type classes
-  - 100+ threads simultaneously looking up existing instances
-  - Mixed read/write load
-  - Verify no lost registrations or race conditions
-- Use JCStress or manual concurrency testing
-- Run test 1000x to catch intermittent failures
-- Document thread safety guarantees:
-  - "All registration operations are atomic and visible to subsequent lookups"
-  - "Lookups are lock-free (no blocking)"
-  - "No deadlock paths exist"
+- Add a lightweight concurrency test that:
+  - Spawns a moderate number of threads (e.g., 16-32) calling generated static methods in parallel.
+  - Calls reflection-based utilities in parallel (e.g., `FunctorUtil.map`) using the same inputs.
+  - Asserts consistent results and no exceptions.
+- If any shared caches exist, include them in the test scope.
+- Document the thread-safety assumptions (e.g., "no shared mutable state") and the tested scenario.
 
 **Deliverables:**
-- `ConcurrentRegistryStressTest` class with 1000-iteration runs
-- Thread safety documentation + guarantees
-- JFR (Java Flight Recorder) profile showing no contention
+- `ConcurrentTypeClassSanityTest` in `functional-definitions/functional-compiler` tests with a small number of repeat runs.
+- Short note in docs describing what was tested and what is assumed.
 
 **Acceptance Criteria:**
-- Zero race conditions under 10,000 mixed concurrent operations
-- Benchmark: 1,000+ registrations/second even under contention
-- All stress tests pass 100 consecutive runs without flakiness
+- No race conditions or flaky failures in 100 consecutive runs.
+- No observable contention in basic profiling (if available).
 
 ---
 
@@ -201,7 +157,7 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 - Create JMH benchmark suite in `benchmarks/` module:
   - `MapBenchmark`: Single `map` operation
   - `FlatMapBenchmark`: Chained `flatMap`
-  - `RegistryLookupBenchmark`: Type class resolution cost
+  - `TypeClassResolutionBenchmark`: Type class resolution cost
   - `ChainedOperationsBenchmark`: 5+ chained operations
 - Baselines to compare against:
   - Direct Java (raw Optional/List)
@@ -254,7 +210,7 @@ This section breaks down the v2.0 production-readiness plan into a concrete, wee
 **Objective:** Replace reflective method invocations with MethodHandle-based caching.
 
 **Tasks:**
-- Create `MethodHandleCache` immutable registry:
+- Create `MethodHandleCache`:
   - Caches `MethodHandle` for each type class method
   - Lookup by `(Class<?>, String methodName, MethodType)` → `MethodHandle`
 - Convert hot paths to use MethodHandle:
@@ -389,10 +345,9 @@ assert result.passed() : result.diagnostics();
 
 **Tasks:**
 - Analyze JMH results from Week 3:
-  - Identify hotspots: registry lookup, type class dispatch, method invocation
+  - Identify hotspots: type class dispatch, method invocation
   - Profile with JFR to find allocation pressure, GC impact
 - Optimization targets:
-  - Registry lookup: O(1) via HashMap (not tree-based)
   - Type class dispatch: MethodHandle vs. reflection (Week 4 work)
   - Avoid unnecessary boxing/unboxing
   - Minimize allocations in hot paths (reuse contexts, lazy evaluation)
@@ -411,7 +366,7 @@ assert result.passed() : result.diagnostics();
 **Acceptance Criteria:**
 - MapBenchmark: < 2% overhead vs. raw Optional.map()
 - FlatMapBenchmark: < 2% overhead vs. raw flatMap
-- RegistryLookup: < 500ns per lookup (even with synchronization)
+- TypeClassResolutionBenchmark: < 500ns per lookup (even with synchronization)
 - Chained operations: < 1% cumulative overhead
 
 #### 6.2 Comprehensive Benchmarking Report
@@ -509,7 +464,7 @@ assert result.passed() : result.diagnostics();
 
 ### Week 8: Declarative Configuration & Code Generation Introspection
 
-#### 8.1 Declarative Registry Configuration
+#### 8.1 Declarative Type Class Configuration
 
 **Objective:** Allow users to configure type classes via configuration files (YAML/JSON) instead of code.
 
@@ -533,7 +488,7 @@ assert result.passed() : result.diagnostics();
         map: java.util.stream.Collectors::toList
   ```
 - Implement configuration loader:
-  - Parse YAML → internal registry
+  - Parse YAML → internal resolution configuration
   - Validate configuration (all methods exist, correct signatures)
   - Merge with automatic discovery results
   - Support environment variables for dynamic configuration
@@ -733,16 +688,14 @@ assert result.passed() : result.diagnostics();
   - Reflection injection: can attackers manipulate type class resolution?
   - Deserialization attacks: can type classes be deserialized unsafely?
   - Classpath poisoning: can malicious JAR override type classes?
-  - Registry hijacking: can attacker register malicious type classes?
 - Implement security controls:
-  - Registry sealing: once initialized, prevent registration of new types
   - Type class validation: verify method signatures match expectations
   - Signed registrations: optional crypto signing of type class registrations
-  - Audit logging: log all type class registration + lookup operations
+  - Audit logging: log type class resolution + invocation operations
 - Document security guarantees:
   - What threats are mitigated
   - What threats are not addressed (out of scope)
-  - Recommended deployment practices (sealed registry, no dynamic registration, etc.)
+  - Recommended deployment practices (no dynamic classpath changes, locked-down environments, etc.)
 
 **Deliverables:**
 - Security audit report (`docs/SECURITY_AUDIT.md`)
@@ -1220,7 +1173,7 @@ Due to open-source nature, recommend 3-4 concurrent streams with sync points:
 
 ### Stream A: Architecture & Core (Weeks 1-6, 11-13)
 - **Owners:** Core maintainers
-- **Focus:** API audit, registry refactoring, MethodHandle caching, security
+- **Focus:** API audit, processor/codegen hardening, MethodHandle caching, security
 - **Deliverables:** Stable core, zero-reflection hot paths
 - **Sync Points:** Week 3 (API freeze), Week 6 (performance baseline)
 
@@ -1255,7 +1208,7 @@ Week 1-3 ───────────────────────�
         └─ Stream D: Outline documentation
 
 Week 4-6 ────────────────────────────────────────────── Performance Baseline ──────
-        ├─ Stream A: Registry refactor, MethodHandle caching
+        ├─ Stream A: MethodHandle caching
         ├─ Stream B: Law verification, benchmarking
         ├─ Stream C: Design monad transformers
         └─ Stream D: Planning migration guide
@@ -1291,9 +1244,9 @@ By end of Week 16, the project achieves production-readiness via:
 | **Test Coverage** | >90% overall, >95% on public APIs | Critical |
 | **Law Verification** | 100% pass on all built-in + enterprise instances | Critical |
 | **Thread Safety** | Zero race conditions under 1000+ concurrent ops | Critical |
-| **Reflection Elimination** | 0 reflective calls in hot paths (map/flatMap) | Target |
-| **Documentation** | 100% of public APIs documented + examples | Critical |
+| **Reflection Elimination** | 0 reflective calls in hot execution paths | Target |
 | **Security** | Security audit complete, zero critical CVEs | Critical |
+| **Documentation** | 100% of public APIs documented + examples | Critical |
 | **Modularization** | 4+ modules, clean dependency graph | Target |
 | **Release** | v2.0 on Maven Central, production-ready | Critical |
 
@@ -1331,4 +1284,3 @@ By end of Week 16, the project achieves production-readiness via:
 ✓ **Released to Maven Central** — Users can depend on v2.0 confidently  
 
 When all 10 items are ✓, v2.0 is production-ready.
-

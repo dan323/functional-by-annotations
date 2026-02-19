@@ -23,10 +23,10 @@ public final class AlternativeFuns {
     }
 
     public static <F> Supplier<F> some(IAlternative<Supplier<F>> alternative, IAlternative<F> alternativef, F felement) {
-        return () -> (ApplicativeUtil.fapply(alternative, many(alternative, alternativef, felement), () -> FunctorUtil.map(alternativef, felement, x -> (Function<FiniteList, FiniteList>) ((FiniteList lst) -> FiniteList.cons(x, lst))))).get();
+        return ApplicativeUtil.fapply(alternative, many(alternative, alternativef, felement), () -> FunctorUtil.map(alternativef, felement, x -> (Function<FiniteList, FiniteList>) ((FiniteList lst) -> FiniteList.cons(x, lst))));
     }
 
     public static <F> Supplier<F> many(IAlternative<Supplier<F>> alternative, IAlternative<F> alternativef, F felement) {
-        return () -> (AlternativeUtil.disjunction(alternative, some(alternative, alternativef, felement), () -> ApplicativeUtil.pure(alternativef, List.nil()))).get();
+        return AlternativeUtil.disjunction(alternative, some(alternative, alternativef, felement), () -> ApplicativeUtil.pure(alternativef, List.nil()));
     }
 }

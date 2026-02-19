@@ -3,7 +3,6 @@ package com.dan323.functional.annotation.compiler.traversal;
 import com.dan323.functional.annotation.Traversal;
 import com.dan323.functional.annotation.compiler.util.ApplicativeUtil;
 import com.dan323.functional.annotation.funcs.IApplicative;
-import com.dan323.functional.annotation.funcs.ITraversal;
 
 import java.util.List;
 import java.util.function.Function;

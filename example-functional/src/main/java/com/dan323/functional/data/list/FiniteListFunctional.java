@@ -64,6 +64,6 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
 
     @Override
     public Class<FiniteList<?>> getClassAtRuntime() {
-        return (Class<FiniteList<?>>) (Class) FiniteList.class;
+        return (Class) FiniteList.class;
     }
 }

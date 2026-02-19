@@ -9,7 +9,7 @@ import java.util.function.Function;
 import static com.dan323.functional.data.Identity.runIdentity;
 
 @Monad
-public class IdentityMonad implements IMonad<Identity<?>> {
+public final class IdentityMonad implements IMonad<Identity<?>> {
     public static <B> Identity<B> pure(B b) {
         return new Identity<>(b);
     }

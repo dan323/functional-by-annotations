@@ -14,9 +14,9 @@ public class WriterMonad&lt;W&gt; implements IMonad&lt;Writer&lt;?, W&gt;&gt; {
 
     private final IMonoid&lt;W&gt; monoid;
 
-<span class="nc" id="L17">    public WriterMonad(IMonoid&lt;W&gt; logMonoid) {</span>
-<span class="nc" id="L18">        this.monoid = logMonoid;</span>
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L17">    public WriterMonad(IMonoid&lt;W&gt; logMonoid) {</span>
+<span class="fc" id="L18">        this.monoid = logMonoid;</span>
+<span class="fc" id="L19">    }</span>
 
     @Override
     public Class&lt;Writer&lt;?, W&gt;&gt; getClassAtRuntime() {
@@ -24,30 +24,30 @@ public class WriterMonad&lt;W&gt; implements IMonad&lt;Writer&lt;?, W&gt;&gt; {
     }
 
     public &lt;A, B&gt; Writer&lt;B, W&gt; map(Writer&lt;A, W&gt; writer, Function&lt;A, B&gt; function) {
-<span class="nc" id="L27">        return new Writer&lt;&gt;(function.apply(writer.execute()), writer.log());</span>
+<span class="fc" id="L27">        return new Writer&lt;&gt;(function.apply(writer.execute()), writer.log());</span>
     }
 
     public &lt;A&gt; Writer&lt;A, W&gt; pure(A a) {
-<span class="nc" id="L31">        return new Writer&lt;&gt;(a, MonoidUtil.unit(monoid));</span>
+<span class="fc" id="L31">        return new Writer&lt;&gt;(a, MonoidUtil.unit(monoid));</span>
     }
 
     public &lt;A, B&gt; Writer&lt;B, W&gt; fapply(Writer&lt;A, W&gt; base, Writer&lt;Function&lt;A, B&gt;, W&gt; function) {
-<span class="nc" id="L35">        return new Writer&lt;&gt;(function.execute().apply(base.execute()), SemigroupUtil.op(monoid, function.log(), base.log()));</span>
+<span class="fc" id="L35">        return new Writer&lt;&gt;(function.execute().apply(base.execute()), SemigroupUtil.op(monoid, function.log(), base.log()));</span>
     }
 
     public &lt;A, B&gt; Writer&lt;B, W&gt; flatMap(Function&lt;A, Writer&lt;B, W&gt;&gt; fun, Writer&lt;A, W&gt; writer) {
-<span class="nc" id="L39">        var writ = fun.apply(writer.execute());</span>
-<span class="nc" id="L40">        return new Writer&lt;&gt;(writ.execute(), SemigroupUtil.op(monoid, writer.log(), writ.log()));</span>
+<span class="fc" id="L39">        var writ = fun.apply(writer.execute());</span>
+<span class="fc" id="L40">        return new Writer&lt;&gt;(writ.execute(), SemigroupUtil.op(monoid, writer.log(), writ.log()));</span>
     }
 
     public &lt;A&gt; Writer&lt;A, W&gt; join(Writer&lt;Writer&lt;A, W&gt;, W&gt; writer) {
-<span class="nc" id="L44">        return new Writer&lt;&gt;(writer.execute().execute(), SemigroupUtil.op(monoid, writer.log(), writer.execute().log()));</span>
+<span class="fc" id="L44">        return new Writer&lt;&gt;(writer.execute().execute(), SemigroupUtil.op(monoid, writer.log(), writer.execute().log()));</span>
     }
 
     public &lt;A, B, C&gt; Writer&lt;C, W&gt; liftA2(BiFunction&lt;A, B, C&gt; function, Writer&lt;A, W&gt; aWriter, Writer&lt;B, W&gt; bWriter) {
-<span class="nc" id="L48">        var c = function.apply(aWriter.execute(), bWriter.execute());</span>
-<span class="nc" id="L49">        var w = SemigroupUtil.op(monoid, aWriter.log(), bWriter.log());</span>
-<span class="nc" id="L50">        return new Writer&lt;&gt;(c, w);</span>
+<span class="fc" id="L48">        var c = function.apply(aWriter.execute(), bWriter.execute());</span>
+<span class="fc" id="L49">        var w = SemigroupUtil.op(monoid, aWriter.log(), bWriter.log());</span>
+<span class="fc" id="L50">        return new Writer&lt;&gt;(c, w);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -11,13 +11,13 @@ public final class AlternativeUtil {
     }
 
     public static &lt;F&gt; F empty(IAlternative&lt;? extends F&gt; alternative) {
-<span class="nc" id="L14">        return FunctionalUtil.&lt;F&gt;alternativeEmpty(alternative)</span>
-<span class="nc" id="L15">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L14">        return FunctionalUtil.&lt;F&gt;alternativeEmpty(alternative)</span>
+<span class="pc" id="L15">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F&gt; F disjunction(IAlternative&lt;? extends F&gt; alternative, F fa, F fb) {
-<span class="nc" id="L19">        return FunctionalUtil.alternativeDisj(alternative, fa, fb)</span>
-<span class="nc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L19">        return FunctionalUtil.alternativeDisj(alternative, fa, fb)</span>
+<span class="pc" id="L20">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

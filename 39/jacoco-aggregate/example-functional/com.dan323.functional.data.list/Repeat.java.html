@@ -15,24 +15,24 @@ final class Repeat&lt;A&gt; extends InfiniteList&lt;A&gt; {
 
     private final A element;
 
-<span class="nc" id="L18">    Repeat(A a) {</span>
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (a == null) throw new IllegalArgumentException(&quot;The repeated element must not be null.&quot;);</span>
-<span class="nc" id="L20">        this.element = a;</span>
-<span class="nc" id="L21">    }</span>
+<span class="fc" id="L18">    Repeat(A a) {</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (a == null) throw new IllegalArgumentException(&quot;The repeated element must not be null.&quot;);</span>
+<span class="fc" id="L20">        this.element = a;</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     public Maybe&lt;A&gt; head() {
-<span class="nc" id="L25">        return Maybe.of(element);</span>
+<span class="fc" id="L25">        return Maybe.of(element);</span>
     }
 
     @Override
     public InfiniteList&lt;A&gt; tail() {
-<span class="nc" id="L30">        return this;</span>
+<span class="fc" id="L30">        return this;</span>
     }
 
     @Override
     public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L35">        return new Repeat&lt;&gt;(mapping.apply(element));</span>
+<span class="fc" id="L35">        return new Repeat&lt;&gt;(mapping.apply(element));</span>
     }
 
     @Override

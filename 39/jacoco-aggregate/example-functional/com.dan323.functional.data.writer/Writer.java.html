@@ -6,21 +6,21 @@ public class Writer&lt;A, W&gt; {
     private final W writer;
     private final A element;
 
-<span class="nc" id="L9">    Writer(A element, W writer) {</span>
-<span class="nc" id="L10">        this.element = element;</span>
-<span class="nc" id="L11">        this.writer = writer;</span>
-<span class="nc" id="L12">    }</span>
+<span class="fc" id="L9">    Writer(A element, W writer) {</span>
+<span class="fc" id="L10">        this.element = element;</span>
+<span class="fc" id="L11">        this.writer = writer;</span>
+<span class="fc" id="L12">    }</span>
 
     public static &lt;W&gt; Writer&lt;Unit, W&gt; tell(W write) {
-<span class="nc" id="L15">        return new Writer&lt;&gt;(Unit.getElement(), write);</span>
+<span class="fc" id="L15">        return new Writer&lt;&gt;(Unit.getElement(), write);</span>
     }
 
     public W log(){
-<span class="nc" id="L19">        return writer;</span>
+<span class="fc" id="L19">        return writer;</span>
     }
 
     public A execute(){
-<span class="nc" id="L23">        return element;</span>
+<span class="fc" id="L23">        return element;</span>
     }
 
 }

@@ -10,12 +10,12 @@ public final class LeftAlternative&lt;R&gt; extends LeftEither&lt;R&gt; implemen
 
     private final IMonoid&lt;R&gt; rMonoid;
 
-<span class="nc" id="L13">    public LeftAlternative(IMonoid&lt;R&gt; rMonoid) {</span>
-<span class="nc" id="L14">        this.rMonoid = rMonoid;</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L13">    public LeftAlternative(IMonoid&lt;R&gt; rMonoid) {</span>
+<span class="fc" id="L14">        this.rMonoid = rMonoid;</span>
+<span class="fc" id="L15">    }</span>
 
     public &lt;A&gt; Either&lt;A, R&gt; empty() {
-<span class="nc" id="L18">        return Either.right(MonoidUtil.unit(rMonoid));</span>
+<span class="fc" id="L18">        return Either.right(MonoidUtil.unit(rMonoid));</span>
     }
 
     public &lt;A&gt; Either&lt;A, R&gt; disjunction(Either&lt;A, R&gt; first, Either&lt;A, R&gt; snd) {

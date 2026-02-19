@@ -12,26 +12,26 @@ final class Zipped&lt;A, B, C&gt; extends InfiniteList&lt;C&gt; {
     private final List&lt;B&gt; second;
     private final BiFunction&lt;A, B, C&gt; zipper;
 
-<span class="nc" id="L15">    Zipped(List&lt;A&gt; first, BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; second) {</span>
-<span class="nc" id="L16">        this.first = first;</span>
-<span class="nc" id="L17">        this.zipper = zipper;</span>
-<span class="nc" id="L18">        this.second = second;</span>
-<span class="nc" id="L19">    }</span>
+<span class="fc" id="L15">    Zipped(List&lt;A&gt; first, BiFunction&lt;A, B, C&gt; zipper, List&lt;B&gt; second) {</span>
+<span class="fc" id="L16">        this.first = first;</span>
+<span class="fc" id="L17">        this.zipper = zipper;</span>
+<span class="fc" id="L18">        this.second = second;</span>
+<span class="fc" id="L19">    }</span>
 
     @Override
     public Maybe&lt;C&gt; head() {
-<span class="nc" id="L23">        var aux = MaybeMonad.map(first.head(), x -&gt; (Function&lt;B, C&gt;) ((B b) -&gt; zipper.apply(x, b)));</span>
-<span class="nc" id="L24">        return MaybeMonad.fapply(aux, second.head());</span>
+<span class="fc" id="L23">        var aux = MaybeMonad.map(first.head(), x -&gt; (Function&lt;B, C&gt;) ((B b) -&gt; zipper.apply(x, b)));</span>
+<span class="fc" id="L24">        return MaybeMonad.fapply(aux, second.head());</span>
     }
 
     @Override
     public InfiniteList&lt;C&gt; tail() {
-<span class="nc" id="L29">        return new Zipped&lt;&gt;(first.tail(), zipper, second.tail());</span>
+<span class="fc" id="L29">        return new Zipped&lt;&gt;(first.tail(), zipper, second.tail());</span>
     }
 
     @Override
     public &lt;D&gt; InfiniteList&lt;D&gt; map(Function&lt;C, D&gt; mapping) {
-<span class="nc" id="L34">        return new Zipped&lt;&gt;(first, zipper.andThen(mapping), second);</span>
+<span class="fc" id="L34">        return new Zipped&lt;&gt;(first, zipper.andThen(mapping), second);</span>
     }
 
 }

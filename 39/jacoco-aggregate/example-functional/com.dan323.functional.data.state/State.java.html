@@ -16,7 +16,7 @@ import java.util.function.Function;
 public interface State&lt;A, S&gt; extends StateWithError&lt;A, S, Void&gt; {
 
     static &lt;A,S&gt; State&lt;A,S&gt; fromFun(Function&lt;S,Pair&lt;A,S&gt;&gt; fun){
-<span class="nc" id="L19">        return s -&gt; Either.right(fun.apply(s));</span>
+<span class="fc" id="L19">        return s -&gt; Either.right(fun.apply(s));</span>
     }
 
 

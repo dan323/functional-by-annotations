@@ -18,30 +18,30 @@ public final class ApplicativeUtil {
     }
 
     public static &lt;F, A&gt; F pure(IApplicative&lt;? extends F&gt; applicative, A a) {
-<span class="nc" id="L21">        return FunctionalUtil.&lt;F, A&gt;applicativePure(applicative, a)</span>
-<span class="nc" id="L22">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L21">        return FunctionalUtil.&lt;F, A&gt;applicativePure(applicative, a)</span>
+<span class="fc" id="L22">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F&gt; F fapply(IApplicative&lt;? extends F&gt; applicative, F base, F ff) {
-<span class="nc" id="L26">        return FunctionalUtil.applicativeFapply(applicative, base, ff)</span>
-<span class="nc" id="L27">                .or(() -&gt; FunctionalUtil.monadFapply(applicative, base, ff))</span>
-<span class="nc" id="L28">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L26">        return FunctionalUtil.applicativeFapply(applicative, base, ff)</span>
+<span class="fc" id="L27">                .or(() -&gt; FunctionalUtil.monadFapply(applicative, base, ff))</span>
+<span class="fc" id="L28">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F, A, B, C&gt; F liftA2(IApplicative&lt;? extends F&gt; applicative, BiFunction&lt;A, B, C&gt; map, F fa, F fb) {
-<span class="nc" id="L32">        return FunctionalUtil.applicativeLiftA2(applicative, map, fa, fb)</span>
-<span class="nc" id="L33">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, map, fa, fb))</span>
-<span class="nc" id="L34">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L32">        return FunctionalUtil.applicativeLiftA2(applicative, map, fa, fb)</span>
+<span class="fc" id="L33">                .or(() -&gt; FunctionalUtil.monadLiftA2(applicative, map, fa, fb))</span>
+<span class="fc" id="L34">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F&gt; F keepLeft(IApplicative&lt;? extends F&gt; applicative, F left, F right) {
-<span class="nc" id="L38">        return FunctionalUtil.applicativeKeepLeft(applicative, left, right)</span>
-<span class="nc" id="L39">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L38">        return FunctionalUtil.applicativeKeepLeft(applicative, left, right)</span>
+<span class="pc" id="L39">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
     public static &lt;F&gt; F keepRight(IApplicative&lt;? extends F&gt; applicative, F left, F right) {
-<span class="nc" id="L43">        return FunctionalUtil.applicativeKeepRight(applicative, left, right)</span>
-<span class="nc" id="L44">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
+<span class="fc" id="L43">        return FunctionalUtil.applicativeKeepRight(applicative, left, right)</span>
+<span class="pc" id="L44">                .orElseThrow(() -&gt; new IllegalArgumentException(NOT_CORRECTLY_IMPLEMENTED));</span>
     }
 
 }

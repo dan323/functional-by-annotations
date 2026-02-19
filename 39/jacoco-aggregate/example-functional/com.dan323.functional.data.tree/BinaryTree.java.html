@@ -8,11 +8,11 @@ import java.util.function.Function;
 public sealed interface BinaryTree&lt;A&gt; permits BinaryNode, Leaf {
 
     static &lt;A&gt; BinaryTree&lt;A&gt; leaf() {
-<span class="nc" id="L11">        return (BinaryTree&lt;A&gt;) Leaf.LEAF;</span>
+<span class="fc" id="L11">        return (BinaryTree&lt;A&gt;) Leaf.LEAF;</span>
     }
 
     static &lt;A&gt; BinaryTree&lt;A&gt; node(BinaryTree&lt;A&gt; left, A point, BinaryTree&lt;A&gt; right) {
-<span class="nc" id="L15">        return new BinaryNode&lt;&gt;(left, point, right);</span>
+<span class="fc" id="L15">        return new BinaryNode&lt;&gt;(left, point, right);</span>
     }
 
 }

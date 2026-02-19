@@ -11,19 +11,19 @@ import static com.dan323.functional.data.Identity.runIdentity;
 @Monad
 <span class="nc" id="L12">public class IdentityMonad implements IMonad&lt;Identity&lt;?&gt;&gt; {</span>
     public static &lt;B&gt; Identity&lt;B&gt; pure(B b) {
-<span class="fc" id="L14">        return new Identity&lt;&gt;(b);</span>
+<span class="nc" id="L14">        return new Identity&lt;&gt;(b);</span>
     }
 
     public static &lt;B, C&gt; Identity&lt;C&gt; map(Identity&lt;B&gt; b, Function&lt;B, C&gt; function) {
-<span class="fc" id="L18">        return pure(function.apply(runIdentity(b)));</span>
+<span class="nc" id="L18">        return pure(function.apply(runIdentity(b)));</span>
     }
 
     public static &lt;B, C&gt; Identity&lt;C&gt; fapply(Identity&lt;B&gt; b, Identity&lt;Function&lt;B, C&gt;&gt; functionIdentity) {
-<span class="fc" id="L22">        return map(b, runIdentity(functionIdentity));</span>
+<span class="nc" id="L22">        return map(b, runIdentity(functionIdentity));</span>
     }
 
     public static &lt;B&gt; Identity&lt;B&gt; join(Identity&lt;Identity&lt;B&gt;&gt; b) {
-<span class="fc" id="L26">        return runIdentity(b);</span>
+<span class="nc" id="L26">        return runIdentity(b);</span>
     }
 
     public static &lt;B, C&gt; Identity&lt;C&gt; flatMap(Function&lt;B, Identity&lt;C&gt;&gt; function, Identity&lt;B&gt; bIdentity) {
@@ -31,7 +31,7 @@ import static com.dan323.functional.data.Identity.runIdentity;
     }
 
     public static &lt;B, C, D&gt; Identity&lt;D&gt; liftA2(BiFunction&lt;B, C, D&gt; function, Identity&lt;B&gt; bIdentity, Identity&lt;C&gt; cIdentity) {
-<span class="fc" id="L34">        return pure(function.apply(runIdentity(bIdentity), runIdentity(cIdentity)));</span>
+<span class="nc" id="L34">        return pure(function.apply(runIdentity(bIdentity), runIdentity(cIdentity)));</span>
     }
 
     @Override

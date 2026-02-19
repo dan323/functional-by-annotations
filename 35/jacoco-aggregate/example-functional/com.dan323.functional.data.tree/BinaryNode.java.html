@@ -7,22 +7,22 @@ public final class BinaryNode&lt;A&gt; implements BinaryTree&lt;A&gt; {
     private final A data;
     private final BinaryTree&lt;A&gt; right;
 
-<span class="fc" id="L10">    BinaryNode(BinaryTree&lt;A&gt; left, A data, BinaryTree&lt;A&gt; right) {</span>
-<span class="fc" id="L11">        this.left = left;</span>
-<span class="fc" id="L12">        this.data = data;</span>
-<span class="fc" id="L13">        this.right = right;</span>
-<span class="fc" id="L14">    }</span>
+<span class="nc" id="L10">    BinaryNode(BinaryTree&lt;A&gt; left, A data, BinaryTree&lt;A&gt; right) {</span>
+<span class="nc" id="L11">        this.left = left;</span>
+<span class="nc" id="L12">        this.data = data;</span>
+<span class="nc" id="L13">        this.right = right;</span>
+<span class="nc" id="L14">    }</span>
 
     public BinaryTree&lt;A&gt; left() {
-<span class="fc" id="L17">        return left;</span>
+<span class="nc" id="L17">        return left;</span>
     }
 
     public BinaryTree&lt;A&gt; right() {
-<span class="fc" id="L21">        return right;</span>
+<span class="nc" id="L21">        return right;</span>
     }
 
     public A data() {
-<span class="fc" id="L25">        return data;</span>
+<span class="nc" id="L25">        return data;</span>
     }
 
     @Override
@@ -32,9 +32,9 @@ public final class BinaryNode&lt;A&gt; implements BinaryTree&lt;A&gt; {
 
     @Override
     public boolean equals(Object obj) {
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (obj == this) return true;</span>
-<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (obj instanceof BinaryNode&lt;?&gt; binaryNode) {</span>
-<span class="pc bpc" id="L37" title="2 of 4 branches missed.">            return Objects.equals(binaryNode.left, left) &amp;&amp; Objects.equals(binaryNode.right, right);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (obj == this) return true;</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (obj instanceof BinaryNode&lt;?&gt; binaryNode) {</span>
+<span class="nc bnc" id="L37" title="All 4 branches missed.">            return Objects.equals(binaryNode.left, left) &amp;&amp; Objects.equals(binaryNode.right, right);</span>
         } else {
 <span class="nc" id="L39">            return false;</span>
         }

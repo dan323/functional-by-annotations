@@ -32,28 +32,28 @@ import java.util.List;
 
     public static List&lt;DeclaredType&gt; getDirectFunctionalInterfaces(Elements elementUtils, Types types, TypeElement element) {
 <span class="fc" id="L34">        var lst = element.getInterfaces().stream()</span>
-<span class="fc" id="L35">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
+<span class="fc" id="L35">                .map(DeclaredType.class::cast)</span>
 <span class="fc" id="L36">                .filter(type -&gt; CompilerUtils.isStructure(elementUtils, types, type))</span>
 <span class="fc" id="L37">                .toList();</span>
 <span class="fc" id="L38">        return lst.stream().filter(type -&gt; isMaximal(elementUtils, type, lst)).toList();</span>
     }
 
     public static List&lt;DeclaredType&gt; getAllFunctionalInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
-<span class="fc" id="L42">        var lst = getAllInterfacesFromHierarchy(elementUtils, types, element).stream()</span>
-<span class="fc" id="L43">                .map((TypeMirror typeMirror) -&gt; (DeclaredType) typeMirror)</span>
+<span class="fc" id="L42">        var lst = getAllInterfacesFromHierarchy(types, element).stream()</span>
+<span class="fc" id="L43">                .map(DeclaredType.class::cast)</span>
 <span class="fc" id="L44">                .filter(type -&gt; CompilerUtils.isStructure(elementUtils, types, type))</span>
 <span class="fc" id="L45">                .toList();</span>
 <span class="fc" id="L46">        return lst.stream().filter(type -&gt; isMaximal(elementUtils, type, lst)).toList();</span>
     }
 
-    private static List&lt;TypeMirror&gt; getAllInterfacesFromHierarchy(Elements elementUtils, Types types, TypeElement element) {
+    private static List&lt;TypeMirror&gt; getAllInterfacesFromHierarchy(Types types, TypeElement element) {
 <span class="fc" id="L50">        var interfaces = new ArrayList&lt;TypeMirror&gt;(element.getInterfaces());</span>
 
         // Recursively collect interfaces from superclass
 <span class="fc" id="L53">        var superclass = element.getSuperclass();</span>
 <span class="fc bfc" id="L54" title="All 2 branches covered.">        if (superclass.getKind().equals(TypeKind.DECLARED)) {</span>
 <span class="fc" id="L55">            var superElement = (TypeElement) types.asElement(superclass);</span>
-<span class="fc" id="L56">            interfaces.addAll(getAllInterfacesFromHierarchy(elementUtils, types, superElement));</span>
+<span class="fc" id="L56">            interfaces.addAll(getAllInterfacesFromHierarchy(types, superElement));</span>
         }
 
 <span class="fc" id="L59">        return interfaces;</span>

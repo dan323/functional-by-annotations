@@ -23,18 +23,20 @@ public class DisjNecessaryMethods implements NecessaryMethods {
 
     @Override
     public NecessaryMethods process(ExecutableElement method) {
-<span class="fc" id="L26">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream().map(nec -&gt; nec.process(method)).collect(Collectors.toSet());</span>
-<span class="fc" id="L27">        var anyMatch = newMethods.stream().anyMatch(nec -&gt; nec instanceof EmptyNecessaryMethods);</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (anyMatch) {</span>
-<span class="fc" id="L29">            return new EmptyNecessaryMethods();</span>
+<span class="fc" id="L26">        Set&lt;NecessaryMethods&gt; newMethods = this.methods.stream()</span>
+<span class="fc" id="L27">                .map(nec -&gt; nec.process(method))</span>
+<span class="fc" id="L28">                .collect(Collectors.toSet());</span>
+<span class="fc" id="L29">        var anyMatch = newMethods.stream().anyMatch(EmptyNecessaryMethods.class::isInstance);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (anyMatch) {</span>
+<span class="fc" id="L31">            return new EmptyNecessaryMethods();</span>
         } else {
-<span class="fc" id="L31">            return new DisjNecessaryMethods(newMethods);</span>
+<span class="fc" id="L33">            return new DisjNecessaryMethods(newMethods);</span>
         }
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L37">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; OR &quot;)) + &quot;]&quot;;</span>
+<span class="fc" id="L39">        return &quot;[&quot; + methods.stream().map(Objects::toString).collect(Collectors.joining(&quot; OR &quot;)) + &quot;]&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

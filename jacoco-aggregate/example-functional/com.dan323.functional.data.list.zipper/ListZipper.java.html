@@ -6,7 +6,7 @@ import com.dan323.functional.data.list.ListUtils;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.optional.MaybeMonad;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Zipper representing the list rev(left)++right
@@ -22,7 +22,7 @@ public final class ListZipper&lt;A&gt; {
     private final FiniteList&lt;A&gt; right;
 
     public int index(){
-<span class="nc" id="L25">        return left.length();</span>
+<span class="fc" id="L25">        return left.length();</span>
     }
 
     ListZipper(FiniteList&lt;A&gt; left, A pointer, FiniteList&lt;A&gt; right) {
@@ -69,7 +69,7 @@ public final class ListZipper&lt;A&gt; {
 <span class="fc" id="L69">        return MaybeMonad.map(right.head(), x -&gt; new ListZipper&lt;&gt;(FiniteList.cons(x, left), right.tail()));</span>
     }
 
-    public ListZipper&lt;A&gt; modify(Function&lt;A, A&gt; map) {
+    public ListZipper&lt;A&gt; modify(UnaryOperator&lt;A&gt; map) {
 <span class="fc" id="L73">        return MaybeMonad.map(MaybeMonad.map(right.head(), map), h -&gt; FiniteList.cons(h, right.tail())).maybe(r -&gt; new ListZipper&lt;&gt;(left, r), this);</span>
     }
 
@@ -83,7 +83,7 @@ public final class ListZipper&lt;A&gt; {
 
     @Override
     public String toString() {
-<span class="nc" id="L86">        return toList().toString();</span>
+<span class="nc" id="L86">        return ListUtils.reverse(left).toString() + &quot; &gt; &quot; + right.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

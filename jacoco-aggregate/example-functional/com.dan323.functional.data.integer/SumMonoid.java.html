@@ -10,17 +10,17 @@ public final class SumMonoid implements IMonoid&lt;Integer&gt; {
     }
 
     public static SumMonoid getInstance() {
-<span class="nc" id="L13">        return SUM_MONOID;</span>
+<span class="fc" id="L13">        return SUM_MONOID;</span>
     }
 
     public static Integer op(Integer num1, Integer num2) {
-<span class="nc" id="L17">        return num1 + num2;</span>
+<span class="fc" id="L17">        return num1 + num2;</span>
     }
 
     public static Integer unit() {
-<span class="nc" id="L21">        return 0;</span>
+<span class="fc" id="L21">        return 0;</span>
     }
 
-<span class="nc" id="L24">    private static final SumMonoid SUM_MONOID = new SumMonoid();</span>
+<span class="fc" id="L24">    private static final SumMonoid SUM_MONOID = new SumMonoid();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

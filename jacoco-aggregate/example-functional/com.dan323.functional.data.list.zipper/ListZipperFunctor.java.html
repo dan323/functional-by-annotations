@@ -10,24 +10,24 @@ import com.dan323.functional.data.optional.MaybeMonad;
 import java.util.function.Function;
 
 @Functor
-<span class="nc" id="L13">public final class ListZipperFunctor implements IFunctor&lt;ListZipper&lt;?&gt;&gt; {</span>
+<span class="fc" id="L13">public final class ListZipperFunctor implements IFunctor&lt;ListZipper&lt;?&gt;&gt; {</span>
 
-<span class="nc" id="L15">    private static final ListZipperFunctor LIST_ZIPPER = new ListZipperFunctor();</span>
+<span class="fc" id="L15">    private static final ListZipperFunctor LIST_ZIPPER = new ListZipperFunctor();</span>
 
     public static &lt;A, B&gt; ListZipper&lt;B&gt; map(ListZipper&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L18">        Maybe&lt;B&gt; ma = MaybeMonad.map(base.get(), mapping);</span>
-<span class="nc" id="L19">        FiniteList&lt;B&gt; bList = ma.maybe(p -&gt; FiniteList.cons(p, FiniteListFunctional.map(base.getRight(), mapping)), FiniteList.nil());</span>
-<span class="nc" id="L20">        return new ListZipper&lt;&gt;(FiniteListFunctional.map(base.getLeft(), mapping), bList);</span>
+<span class="fc" id="L18">        Maybe&lt;B&gt; ma = MaybeMonad.map(base.get(), mapping);</span>
+<span class="fc" id="L19">        FiniteList&lt;B&gt; bList = ma.maybe(p -&gt; FiniteList.cons(p, FiniteListFunctional.map(base.getRight(), mapping)), FiniteList.nil());</span>
+<span class="fc" id="L20">        return new ListZipper&lt;&gt;(FiniteListFunctional.map(base.getLeft(), mapping), bList);</span>
 
     }
 
     public static ListZipperFunctor getInstance() {
-<span class="nc" id="L25">        return LIST_ZIPPER;</span>
+<span class="fc" id="L25">        return LIST_ZIPPER;</span>
     }
 
     @Override
     public Class&lt;ListZipper&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L30">        return (Class&lt;ListZipper&lt;?&gt;&gt;) (Class&lt;?&gt;) ListZipper.class;</span>
+<span class="fc" id="L30">        return (Class&lt;ListZipper&lt;?&gt;&gt;) (Class&lt;?&gt;) ListZipper.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

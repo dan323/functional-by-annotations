@@ -15,7 +15,7 @@ public interface StateWithError&lt;A, S, E&gt; extends Function&lt;S, Either&lt;
     }
 
     static &lt;A, S&gt; State&lt;A, S&gt; fromStateWithVoidError(StateWithError&lt;A, S, Void&gt; state) {
-<span class="nc" id="L18">        return State.fromFun(s -&gt; state.apply(s).either(Void::absurd, Function.identity()));</span>
+<span class="fc" id="L18">        return State.fromFun(s -&gt; state.apply(s).either(Void::absurd, Function.identity()));</span>
     }
 
     static &lt;A,S,E&gt; StateWithError&lt;A,S,E&gt; error(E error) {
@@ -23,19 +23,19 @@ public interface StateWithError&lt;A, S, E&gt; extends Function&lt;S, Either&lt;
     }
 
     default Either&lt;E,S&gt; execute(S s) {
-<span class="nc" id="L26">        return apply(s).either(Either::left, p -&gt; Either.right(p.getValue()));</span>
+<span class="fc" id="L26">        return apply(s).either(Either::left, p -&gt; Either.right(p.getValue()));</span>
     }
 
     default Either&lt;E,A&gt; evaluate(S s) {
-<span class="nc" id="L30">        return apply(s).either(Either::left, p -&gt; Either.right(p.getKey()));</span>
+<span class="fc" id="L30">        return apply(s).either(Either::left, p -&gt; Either.right(p.getKey()));</span>
     }
 
     static &lt;S,E&gt; StateWithError&lt;S, S, E&gt; get() {
-<span class="nc" id="L34">        return s -&gt; Either.right(new Pair&lt;&gt;(s, s));</span>
+<span class="fc" id="L34">        return s -&gt; Either.right(new Pair&lt;&gt;(s, s));</span>
     }
 
     static &lt;S,E&gt; StateWithError&lt;Unit, S, E&gt; put(S x) {
-<span class="nc" id="L38">        return s -&gt; Either.right(new Pair&lt;&gt;(Unit.getElement(), x));</span>
+<span class="fc" id="L38">        return s -&gt; Either.right(new Pair&lt;&gt;(Unit.getElement(), x));</span>
     }
 
 }

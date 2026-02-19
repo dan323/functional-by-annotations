@@ -395,8 +395,8 @@ final class FunctionalUtil {
 <span class="fc" id="L395">            return getMethodIfExists(monad.getClass(), IMonad.FLAT_MAP_NAME, Function.class, monad.getClassAtRuntime())</span>
 <span class="fc" id="L396">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(monad, m, mapping, fa))</span>
 <span class="fc" id="L397">                    .or(() -&gt; getMethodIfExists(monad.getClass(), IMonad.JOIN_NAME, monad.getClassAtRuntime())</span>
-<span class="pc" id="L398">                            .flatMap(t -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))</span>
-<span class="pc" id="L399">                            .map(t -&gt; MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));</span>
+<span class="fc" id="L398">                            .flatMap(t -&gt; getMethodIfExists(monad.getClass(), IMonad.MAP_NAME, monad.getClassAtRuntime(), Function.class))</span>
+<span class="fc" id="L399">                            .map(t -&gt; MonadUtil.join(monad, FunctorUtil.map(monad, fa, mapping))));</span>
         } else {
 <span class="nc" id="L401">            return Optional.empty();</span>
         }

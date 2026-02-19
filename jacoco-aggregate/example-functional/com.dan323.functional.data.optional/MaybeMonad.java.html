@@ -17,7 +17,7 @@ public final class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt;, IAlternat
     }
 
     public static &lt;A&gt; Maybe&lt;A&gt; join(Maybe&lt;Maybe&lt;A&gt;&gt; maybeMaybe) {
-<span class="nc" id="L20">        return maybeMaybe.maybe(Function.identity(), Maybe.of());</span>
+<span class="fc" id="L20">        return maybeMaybe.maybe(Function.identity(), Maybe.of());</span>
     }
 
     public static &lt;A&gt; Maybe&lt;A&gt; disjunction(Maybe&lt;A&gt; fst, Maybe&lt;A&gt; snd){
@@ -33,26 +33,26 @@ public final class MaybeMonad implements IMonad&lt;Maybe&lt;?&gt;&gt;, IAlternat
     }
 
     public static &lt;A, B&gt; Maybe&lt;B&gt; fapply(Maybe&lt;Function&lt;A, B&gt;&gt; maybeFun, Maybe&lt;A&gt; base) {
-<span class="nc" id="L36">        return maybeFun.maybe(f -&gt; map(base, f), Maybe.of());</span>
+<span class="fc" id="L36">        return maybeFun.maybe(f -&gt; map(base, f), Maybe.of());</span>
     }
 
     public static MaybeMonad getInstance() {
-<span class="nc" id="L40">        return MAYBE;</span>
+<span class="fc" id="L40">        return MAYBE;</span>
     }
 
-<span class="nc" id="L43">    private static final MaybeMonad MAYBE = new MaybeMonad();</span>
+<span class="fc" id="L43">    private static final MaybeMonad MAYBE = new MaybeMonad();</span>
 
     public static &lt;A, R&gt; Maybe&lt;R&gt; map(Maybe&lt;A&gt; base, Function&lt;A, R&gt; f) {
-<span class="nc" id="L46">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
+<span class="fc" id="L46">        return base.maybe(x -&gt; Maybe.of(f.apply(x)), Maybe.of());</span>
     }
 
     public static &lt;A&gt; Maybe&lt;A&gt; pure(A a) {
-<span class="nc" id="L50">        return Maybe.of(a);</span>
+<span class="fc" id="L50">        return Maybe.of(a);</span>
     }
 
     @Override
     public Class&lt;Maybe&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L55">        return (Class&lt;Maybe&lt;?&gt;&gt;) (Class&lt;?&gt;) Maybe.class;</span>
+<span class="fc" id="L55">        return (Class&lt;Maybe&lt;?&gt;&gt;) (Class&lt;?&gt;) Maybe.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

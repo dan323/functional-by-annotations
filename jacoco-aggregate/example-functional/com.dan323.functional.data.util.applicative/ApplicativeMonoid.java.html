@@ -10,11 +10,11 @@ import com.dan323.functional.annotation.funcs.IApplicative;
 public class ApplicativeMonoid&lt;FA extends F, F, A&gt; extends ApplicativeSemigroup&lt;FA, F, A&gt; implements IMonoid&lt;FA&gt; {
 
     public ApplicativeMonoid(IMonoid&lt;A&gt; monoid, IApplicative&lt;F&gt; applicative) {
-<span class="nc" id="L13">        super(monoid, applicative);</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L13">        super(monoid, applicative);</span>
+<span class="fc" id="L14">    }</span>
 
     public FA unit() {
-<span class="nc" id="L17">        return (FA) ApplicativeUtil.pure(applicative, MonoidUtil.unit((IMonoid&lt;A&gt;)monoid));</span>
+<span class="fc" id="L17">        return (FA) ApplicativeUtil.pure(applicative, MonoidUtil.unit((IMonoid&lt;A&gt;)monoid));</span>
     }
 
 }

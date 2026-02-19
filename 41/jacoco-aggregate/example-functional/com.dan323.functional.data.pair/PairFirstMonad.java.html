@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PairFirstMonad.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.pair</a> &gt; <span class="el_source">PairFirstMonad.java</span></div><h1>PairFirstMonad.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.pair;
+
+import com.dan323.functional.annotation.Traversal;
+import com.dan323.functional.annotation.compiler.util.FunctorUtil;
+import com.dan323.functional.annotation.funcs.IApplicative;
+import com.dan323.functional.annotation.funcs.ITraversal;
+
+import java.util.function.Function;
+
+@Traversal
+public final class PairFirstMonad&lt;A&gt; implements ITraversal&lt;Pair&lt;?,A&gt;&gt; {
+
+    private PairFirstMonad() {
+    }
+
+<span class="fc" id="L16">    private static final PairFirstMonad&lt;?&gt; PAIR_FIRST_MONAD = new PairFirstMonad&lt;&gt;();</span>
+
+    public static &lt;A&gt; PairFirstMonad&lt;A&gt; getInstance() {
+<span class="fc" id="L19">        return (PairFirstMonad&lt;A&gt;) PAIR_FIRST_MONAD;</span>
+    }
+
+    public &lt;C, B&gt; Pair&lt;C,A&gt; map(Pair&lt;B,A&gt; pair, Function&lt;B, C&gt; function) {
+<span class="fc" id="L23">        return pair.mapFirst(function);</span>
+    }
+
+    public &lt;K,B&gt; K traverse(IApplicative&lt;K&gt; applicative, Function&lt;B, K&gt; fun, Pair&lt;B,A&gt; lst) {
+<span class="fc" id="L27">        var k = fun.apply(lst.getKey());</span>
+<span class="fc" id="L28">        return FunctorUtil.map(applicative, k, x -&gt; new Pair&lt;&gt;(x, lst.getValue()));</span>
+    }
+
+    @Override
+    public Class&lt;Pair&lt;?, A&gt;&gt; getClassAtRuntime() {
+<span class="nc" id="L33">        return (Class)Pair.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

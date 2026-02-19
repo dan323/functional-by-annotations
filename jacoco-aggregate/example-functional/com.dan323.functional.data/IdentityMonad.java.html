@@ -9,7 +9,7 @@ import java.util.function.Function;
 import static com.dan323.functional.data.Identity.runIdentity;
 
 @Monad
-<span class="nc" id="L12">public class IdentityMonad implements IMonad&lt;Identity&lt;?&gt;&gt; {</span>
+<span class="fc" id="L12">public final class IdentityMonad implements IMonad&lt;Identity&lt;?&gt;&gt; {</span>
     public static &lt;B&gt; Identity&lt;B&gt; pure(B b) {
 <span class="fc" id="L14">        return new Identity&lt;&gt;(b);</span>
     }
@@ -36,7 +36,7 @@ import static com.dan323.functional.data.Identity.runIdentity;
 
     @Override
     public Class&lt;Identity&lt;?&gt;&gt; getClassAtRuntime() {
-<span class="nc" id="L39">        return (Class&lt;Identity&lt;?&gt;&gt;) (Class&lt;?&gt;) Identity.class;</span>
+<span class="fc" id="L39">        return (Class&lt;Identity&lt;?&gt;&gt;) (Class&lt;?&gt;) Identity.class;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

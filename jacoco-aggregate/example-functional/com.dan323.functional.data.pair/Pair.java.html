@@ -20,11 +20,11 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
     }
 
     public static &lt;A,B,C&gt; BiFunction&lt;A,B,C&gt; biFunction(Function&lt;Pair&lt;A,B&gt;,C&gt; function) {
-<span class="nc" id="L23">        return ((BiFunction&lt;A,B,Pair&lt;A,B&gt;&gt;)(Pair::new)).andThen(function);</span>
+<span class="fc" id="L23">        return ((BiFunction&lt;A,B,Pair&lt;A,B&gt;&gt;)(Pair::new)).andThen(function);</span>
     }
 
     public static &lt;A,B,C&gt; Function&lt;Pair&lt;A,B&gt;,C&gt; pairFunction(BiFunction&lt;A,B,C&gt; biFunction) {
-<span class="nc" id="L27">        return p -&gt; biFunction.apply(p.getKey(), p.getValue());</span>
+<span class="fc" id="L27">        return p -&gt; biFunction.apply(p.getKey(), p.getValue());</span>
     }
 
     @Override
@@ -42,11 +42,11 @@ public final class Pair&lt;U, V&gt; implements Map.Entry&lt;U, V&gt; {
     }
 
     public &lt;V1&gt; Pair&lt;U, V1&gt; mapSecond(Function&lt;V, V1&gt; function) {
-<span class="nc" id="L45">        return new Pair&lt;&gt;(entry.getKey(), function.apply(entry.getValue()));</span>
+<span class="fc" id="L45">        return new Pair&lt;&gt;(entry.getKey(), function.apply(entry.getValue()));</span>
     }
 
     public &lt;S, T&gt; Pair&lt;S, T&gt; biMap(BiFunction&lt;U, V, S&gt; first, BiFunction&lt;U, V, T&gt; second) {
-<span class="nc" id="L49">        return new Pair&lt;&gt;(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));</span>
+<span class="fc" id="L49">        return new Pair&lt;&gt;(first.apply(entry.getKey(), entry.getValue()), second.apply(entry.getKey(), entry.getValue()));</span>
     }
 
     public &lt;S&gt; S map(BiFunction&lt;U, V, S&gt; first) {

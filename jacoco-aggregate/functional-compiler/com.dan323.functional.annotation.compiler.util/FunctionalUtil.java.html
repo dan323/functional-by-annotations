@@ -263,7 +263,7 @@ final class FunctionalUtil {
 <span class="fc bfc" id="L263" title="All 2 branches covered.">        if (isSemigroup(semigroup.getClass())) {</span>
 <span class="fc" id="L264">            return Stream.of(semigroup.getClass().getGenericInterfaces())</span>
 <span class="pc bpc" id="L265" title="1 of 4 branches missed.">                    .filter(iface -&gt; iface.getTypeName().contains(&quot;IMonoid&quot;) || iface.getTypeName().contains(&quot;ISemigroup&quot;))</span>
-<span class="fc" id="L266">                    .filter(iface -&gt; iface instanceof ParameterizedType)</span>
+<span class="fc" id="L266">                    .filter(ParameterizedType.class::isInstance)</span>
 <span class="fc" id="L267">                    .findFirst()</span>
 <span class="fc" id="L268">                    .map(iface -&gt; ((ParameterizedType) iface).getActualTypeArguments()[0])</span>
 <span class="fc" id="L269">                    .map(type -&gt; {</span>
@@ -344,7 +344,7 @@ final class FunctionalUtil {
 <span class="fc" id="L344">            return getMethodIfExists(applicative.getClass(), IApplicative.FAPPLY_NAME, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
 <span class="fc" id="L345">                    .&lt;F&gt;map(m -&gt; invokeStaticMethod(applicative, m, ff, base))</span>
 <span class="fc" id="L346">                    .or(() -&gt; getMethodIfExists(applicative.getClass(), IApplicative.LIFT_A2_NAME, BiFunction.class, applicative.getClassAtRuntime(), applicative.getClassAtRuntime())</span>
-<span class="fc" id="L347">                            .map(t -&gt; ApplicativeUtil.liftA2(applicative, (Function&lt;Object, Object&gt; a, Object b) -&gt; a.apply(b), ff, base)));</span>
+<span class="fc" id="L347">                            .map(t -&gt; ApplicativeUtil.liftA2(applicative, Function&lt;Object,Object&gt;::apply, ff, base)));</span>
         } else {
 <span class="nc" id="L349">            return Optional.empty();</span>
         }

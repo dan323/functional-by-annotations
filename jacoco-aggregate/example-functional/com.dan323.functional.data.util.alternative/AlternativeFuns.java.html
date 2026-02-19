@@ -23,11 +23,11 @@ public final class AlternativeFuns {
     }
 
     public static &lt;F&gt; Supplier&lt;F&gt; some(IAlternative&lt;Supplier&lt;F&gt;&gt; alternative, IAlternative&lt;F&gt; alternativef, F felement) {
-<span class="nc" id="L26">        return () -&gt; (ApplicativeUtil.fapply(alternative, many(alternative, alternativef, felement), () -&gt; FunctorUtil.map(alternativef, felement, x -&gt; (Function&lt;FiniteList, FiniteList&gt;) ((FiniteList lst) -&gt; FiniteList.cons(x, lst))))).get();</span>
+<span class="nc" id="L26">        return ApplicativeUtil.fapply(alternative, many(alternative, alternativef, felement), () -&gt; FunctorUtil.map(alternativef, felement, x -&gt; (Function&lt;FiniteList, FiniteList&gt;) ((FiniteList lst) -&gt; FiniteList.cons(x, lst))));</span>
     }
 
     public static &lt;F&gt; Supplier&lt;F&gt; many(IAlternative&lt;Supplier&lt;F&gt;&gt; alternative, IAlternative&lt;F&gt; alternativef, F felement) {
-<span class="nc" id="L30">        return () -&gt; (AlternativeUtil.disjunction(alternative, some(alternative, alternativef, felement), () -&gt; ApplicativeUtil.pure(alternativef, List.nil()))).get();</span>
+<span class="nc" id="L30">        return AlternativeUtil.disjunction(alternative, some(alternative, alternativef, felement), () -&gt; ApplicativeUtil.pure(alternativef, List.nil()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -59,7 +59,8 @@ public class ConcurrentTypeClassSanityTest {
     private static Callable<List<Integer>> mapTask(CountDownLatch ready, CountDownLatch start, CountDownLatch done) {
         return () -> {
             ready.countDown();
-            start.await(10, TimeUnit.SECONDS);
+            boolean started = start.await(10, TimeUnit.SECONDS);
+            assertTrue(started, "Workers did not start in time.");
             try {
                 return (List<Integer>) FunctorUtil.map(FunctorMock.FUNCTOR, BASE, (Integer x) -> x + 1);
             } finally {

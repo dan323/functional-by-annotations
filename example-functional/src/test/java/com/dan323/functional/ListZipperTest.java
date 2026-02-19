@@ -66,8 +66,6 @@ public class ListZipperTest {
     public void testIndex() {
         var zipper = ListZipper.zipFrom(FiniteList.of(8, 9));
         assertEquals(0, zipper.index());
-        var moved = zipper.moveRight().maybe(z -> z, null);
-        assertNotNull(moved);
-        assertEquals(1, moved.index());
+        assertTrue(zipper.moveRight().maybe(z -> z.index() == 1, false));
     }
 }

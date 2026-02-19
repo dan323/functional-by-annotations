@@ -83,7 +83,7 @@ public final class ListZipper&lt;A&gt; {
 
     @Override
     public String toString() {
-<span class="nc" id="L86">        return toList().toString();</span>
+<span class="nc" id="L86">        return ListUtils.reverse(left).toString() + &quot; &gt; &quot; + right.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

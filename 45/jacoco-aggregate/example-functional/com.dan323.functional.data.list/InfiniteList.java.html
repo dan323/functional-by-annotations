@@ -9,7 +9,7 @@ import java.util.function.Function;
  *
  * @param &lt;A&gt; type of elements in the list
  */
-<span class="fc" id="L12">public sealed abstract class InfiniteList&lt;A&gt; implements List&lt;A&gt; permits Cons, Generating, Generating.GeneratingMapped, Repeat, Zipped {</span>
+<span class="fc" id="L12">public sealed abstract class InfiniteList&lt;A&gt; implements List&lt;A&gt; permits Cons, Cycle, Generating, Generating.GeneratingMapped, Repeat, Zipped {</span>
 
     @Override
     public abstract InfiniteList&lt;A&gt; tail();

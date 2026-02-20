@@ -43,7 +43,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;A, B&gt; FiniteList&lt;B&gt; map(FiniteList&lt;A&gt; finiteList, Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L46">        return finiteList.head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());</span>
+<span class="fc" id="L46">        return finiteList.map(mapping);</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; disjunction(FiniteList&lt;A&gt; op1, FiniteList&lt;A&gt; op2) {

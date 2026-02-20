@@ -1,5 +1,7 @@
 package com.dan323.functional.data.list;
 
+import com.dan323.functional.data.optional.Maybe;
+
 import java.util.function.Function;
 
 /**
@@ -7,13 +9,25 @@ import java.util.function.Function;
  *
  * @param <A> type of elements in the list
  */
-public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Generating, Generating.GeneratingMapped, Repeat, Zipped {
+public abstract sealed class InfiniteList<A> implements List<A> permits Cons, Cycle, Generating, Generating.GeneratingMapped, Repeat, Zipped {
 
     @Override
-    abstract public InfiniteList<A> tail();
+    public abstract InfiniteList<A> tail();
 
     @Override
-    abstract public <B> InfiniteList<B> map(Function<A, B> mapping);
+    public abstract <B> InfiniteList<B> map(Function<A, B> mapping);
+
+    public abstract A getHead();
+
+    @Override
+    public Maybe<A> head() {
+        return Maybe.of(getHead());
+    }
+
+    @Override
+    public InfiniteList<A> cons(A head) {
+        return new Cons<>(head, this);
+    }
 
     /**
      * Infinite lists are incomparable in a finite amount of time

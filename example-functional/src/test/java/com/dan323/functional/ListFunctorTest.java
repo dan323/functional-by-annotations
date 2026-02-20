@@ -11,7 +11,7 @@ public class ListFunctorTest {
 
     @Test
     public void constInfiniteMap() {
-        var sol = ZipApplicative.map(List.cons(5, List.repeat(6)), x -> x * 2);
+        var sol = ZipApplicative.map(List.repeat(6).cons(5), x -> x * 2);
         assertEquals(FiniteList.of(10, 12, 12), sol.limit(3));
     }
 
@@ -31,6 +31,12 @@ public class ListFunctorTest {
     public void repeatListFunctor() {
         var sol = ZipApplicative.map(List.repeat(5), x -> x * 3);
         assertEquals(List.repeat(15).limit(10), sol.limit(10));
+    }
+
+    @Test
+    public void cycleListFunctor() {
+        var sol = ZipApplicative.map(List.cycle(FiniteList.of(1,2,3)), x -> x * 3);
+        assertEquals(List.cycle(FiniteList.of(3,6,9)).limit(10), sol.limit(10));
     }
 
     @Test

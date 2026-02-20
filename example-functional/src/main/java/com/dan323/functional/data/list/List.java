@@ -11,21 +11,12 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
 
     List<A> tail();
 
+    List<A> cons(A head);
+
     <B> List<B> map(Function<A,B> mapping);
 
-    static <A> List<A> generate(A first, UnaryOperator<A> generator){
+    static <A> InfiniteList<A> generate(A first, UnaryOperator<A> generator){
         return new Generating<>(first, generator);
-    }
-
-    static <A> List<A> cons(A first, List<A> tail) {
-        if (first == null || tail == null) {
-            throw new IllegalArgumentException("No input can be null");
-        }
-        if (tail instanceof FiniteList<A> finiteTail){
-            return new FinCons<>(first, finiteTail);
-        } else {
-            return new Cons<>(first, (InfiniteList<A>) tail);
-        }
     }
 
     default FiniteList<A> limit(int k){
@@ -40,11 +31,21 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
         }
     }
 
-    static <A> List<A> nil() {
+    static <A> List<A> cycle(FiniteList<A> lst){
+        if (lst.length() == 0) {
+            return nil();
+        } else if (lst.length() == 1) {
+            return lst.head().maybe(List::repeat,nil());
+        } else {
+            return new Cycle<>(lst);
+        }
+    }
+
+    static <A> FiniteList<A> nil() {
         return (FiniteList<A>) Nil.NIL;
     }
 
-    static <A> List<A> repeat(A a){
+    static <A> InfiniteList<A> repeat(A a){
         return new Repeat<>(a);
     }
 }

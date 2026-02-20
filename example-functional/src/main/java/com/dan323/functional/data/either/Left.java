@@ -22,8 +22,12 @@ public final class Left<A, B> implements Either<A, B> {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
-        if (obj == null || obj.getClass() != getClass()) return false;
-        return Objects.equals(a, ((Left<A, B>) obj).a);
+        if (obj == null) return false;
+        if (obj instanceof Left<?,?> left) {
+            return Objects.equals(a, left.a);
+        } else {
+            return false;
+        }
     }
 
     @Override

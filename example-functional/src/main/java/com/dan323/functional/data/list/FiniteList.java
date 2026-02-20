@@ -43,6 +43,11 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
         }
     }
 
+    @Override
+    default FiniteList<A> cons(A head) {
+        return cons(head, this);
+    }
+
     @SafeVarargs
     private static <A> FiniteList<A> of(int n, A... a) {
         if (n >= a.length) {

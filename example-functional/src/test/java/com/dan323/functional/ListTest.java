@@ -17,7 +17,7 @@ public class ListTest {
 
     @Test
     public void consToFiniteList() {
-        var sol = List.cons(5, FiniteList.of(1, 2));
+        var sol = FiniteList.of(1, 2).cons(5);
         assertEquals(FiniteList.of(5, 1, 2), sol);
     }
 }

@@ -60,22 +60,9 @@ Welcome to the complete documentation for **Functional Java by Annotations**. Th
 
 **Understanding the library**
 
-- **[Core Concepts](docs/CORE_CONCEPTS.md)**
-    - Type hierarchy and structure
-    - Functional vs Algebraic structures
-    - Minimal implementations
-    - Type constructors and variance
-
-- **[Functional Structures](docs/FUNCTIONAL_STRUCTURES.md)**
-    - Functor, Applicative, Monad
-    - Foldable, Traversal
-    - Alternative
-    - Laws and requirements
-
-- **[Algebraic Structures](docs/ALGEBRAIC_STRUCTURES.md)**
-    - Semigroup, Monoid
-    - Ring
-    - Laws and examples
+- **[Core Concepts](docs/CORE_CONCEPTS.md)**: Overview of functional and algebraic structures, annotations, type hierarchy, and minimal implementations.
+- **[Functional Structures](docs/FUNCTIONAL_STRUCTURES.md)**: Details on Functor, Applicative, Monad, Foldable, Traversal, Alternative, and their laws.
+- **[Algebraic Structures](docs/ALGEBRAIC_STRUCTURES.md)**: Details on Semigroup, Monoid, Ring, and their laws.
 
 ### 📖 Practical Guides
 

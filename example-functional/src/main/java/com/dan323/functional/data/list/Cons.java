@@ -1,7 +1,6 @@
 package com.dan323.functional.data.list;
 
-import com.dan323.functional.data.optional.Maybe;
-
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -23,8 +22,8 @@ final class Cons<A> extends InfiniteList<A> {
     }
 
     @Override
-    public Maybe<A> head() {
-        return Maybe.of(head);
+    public A getHead() {
+        return head;
     }
 
     @Override
@@ -35,6 +34,11 @@ final class Cons<A> extends InfiniteList<A> {
     @Override
     public <B> InfiniteList<B> map(Function<A, B> mapping) {
         return new Cons<>(mapping.apply(head), tail().map(mapping));
+    }
+
+    public <B,C> InfiniteList<C> zipBy(BiFunction<A, B, C> mapper, InfiniteList<B> list) {
+        var newHead = mapper.apply(head,list.getHead());
+        return new Cons<>(newHead, (InfiniteList<C>) ZipApplicative.liftA2(mapper, tail, list.tail()));
     }
 
     @Override

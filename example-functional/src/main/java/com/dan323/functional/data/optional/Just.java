@@ -29,7 +29,7 @@ public final class Just<A> implements Maybe<A> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(element);
+        return Objects.hash(element) * 5 + 7;
     }
 
     @Override

@@ -28,6 +28,15 @@ public class ZipApplicativeTest {
     }
 
     @Test
+    public void zipCons() {
+        ZipApplicative zipApplicative = new ZipApplicative();
+        List<Integer> lst = (List<Integer>) ApplicativeUtil.liftA2(zipApplicative, Integer::sum, List.repeat(5).cons(7), List.generate(1, x -> x + 1));
+        assertEquals(FiniteList.of(8, 7, 8, 9), lst.limit(4));
+        lst = (List<Integer>) ApplicativeUtil.liftA2(zipApplicative, Integer::sum, List.generate(1, x -> x + 1).cons(3).cons(5), List.repeat(5));
+        assertEquals(FiniteList.of(10, 8, 6, 7, 8), lst.limit(5));
+    }
+
+    @Test
     public void zipGenerating() {
         ZipApplicative zipApplicative = new ZipApplicative();
         List<Integer> lst = (List<Integer>) ApplicativeUtil.liftA2(zipApplicative, Integer::sum, List.repeat(5), List.generate(1, x -> x * 2));

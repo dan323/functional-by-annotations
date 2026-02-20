@@ -34,6 +34,12 @@ public class ListFunctorTest {
     }
 
     @Test
+    public void cycleListFunctor() {
+        var sol = ZipApplicative.map(List.cycle(FiniteList.of(1,2,3)), x -> x * 3);
+        assertEquals(List.cycle(FiniteList.of(3,6,9)).limit(10), sol.limit(10));
+    }
+
+    @Test
     public void generatingListFunctor() {
         // Since this type of lists cannot be checked in all their entries, we will test the first 10 elements
         var sol = ZipApplicative.map(List.generate(1, x -> x + 1), x -> x + 1);

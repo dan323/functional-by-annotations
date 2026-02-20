@@ -31,6 +31,16 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
         }
     }
 
+    static <A> List<A> cycle(FiniteList<A> lst){
+        if (lst.length() == 0) {
+            return nil();
+        } else if (lst.length() == 1) {
+            return lst.head().maybe(List::repeat,nil());
+        } else {
+            return new Cycle<>(lst);
+        }
+    }
+
     static <A> FiniteList<A> nil() {
         return (FiniteList<A>) Nil.NIL;
     }

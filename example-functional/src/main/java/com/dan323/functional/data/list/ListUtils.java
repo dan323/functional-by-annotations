@@ -7,6 +7,10 @@ public final class ListUtils {
     }
 
     public static <A> FiniteList<A> concat(FiniteList<A> a, FiniteList<A> b){
-        return a.head().maybe(h -> FiniteList.cons(h, concat(a.tail(), b)), b);
+        return a.head().maybe(h -> concat(a.tail(), b).cons(h), b);
+    }
+
+    public static <A> InfiniteList<A> concat(FiniteList<A> a, InfiniteList<A> b){
+        return a.head().maybe(h -> concat(a.tail(), b).cons(h), b);
     }
 }

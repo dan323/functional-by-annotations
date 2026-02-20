@@ -43,7 +43,7 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
     }
 
     public static <A, B> FiniteList<B> map(FiniteList<A> finiteList, Function<A, B> mapping) {
-        return finiteList.head().maybe(h -> FiniteList.cons(mapping.apply(h), map(finiteList.tail(), mapping)), FiniteList.nil());
+        return finiteList.map(mapping);
     }
 
     public static <A> FiniteList<A> disjunction(FiniteList<A> op1, FiniteList<A> op2) {

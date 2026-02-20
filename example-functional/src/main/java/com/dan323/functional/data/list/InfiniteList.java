@@ -1,5 +1,7 @@
 package com.dan323.functional.data.list;
 
+import com.dan323.functional.data.optional.Maybe;
+
 import java.util.function.Function;
 
 /**
@@ -14,6 +16,18 @@ public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Ge
 
     @Override
     abstract public <B> InfiniteList<B> map(Function<A, B> mapping);
+
+    abstract public A getHead();
+
+    @Override
+    public Maybe<A> head() {
+        return Maybe.of(getHead());
+    }
+
+    @Override
+    public InfiniteList<A> cons(A head) {
+        return new Cons<>(head, this);
+    }
 
     /**
      * Infinite lists are incomparable in a finite amount of time

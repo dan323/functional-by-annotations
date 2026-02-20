@@ -1,6 +1,5 @@
 package com.dan323.functional.data.optional;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 public final class Nothing<A> implements Maybe<A> {
@@ -22,7 +21,7 @@ public final class Nothing<A> implements Maybe<A> {
 
     @Override
     public int hashCode(){
-        return 90;
+        return 7;
     }
 
     @Override

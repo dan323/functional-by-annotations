@@ -1,9 +1,5 @@
 package com.dan323.functional.data.list;
 
-import com.dan323.functional.data.optional.Maybe;
-
-import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -21,8 +17,8 @@ final class Repeat<A> extends InfiniteList<A> {
     }
 
     @Override
-    public Maybe<A> head() {
-        return Maybe.of(element);
+    public A getHead() {
+        return element;
     }
 
     @Override

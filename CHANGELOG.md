@@ -1,6 +1,9 @@
 ## CHANGELOG
 
 ## [Unreleased]
+- Future notes.
+### Features
+- Overhaul List: Zipping Cons(head,tail) less lazy. Lazy only in infinite sublist.
 ### Docs
 - Documentation: Complete 16-week v2.0 production readiness plan (docs/PLAN.md) with detailed weekly breakdowns, parallel work streams, risk mitigation, and success metrics
 - Documentation: Update README.md to properly link and describe the v2.0 production readiness plan
@@ -24,9 +27,9 @@
 - Documentation: Add cross-references between BREAKING_CHANGES.md and API_AUDIT_v2.0.md for improved navigation
 - Documentation: Update README.md with v2.0 release planning section and migration guides
 - Documentation: Remove registry-related items from the v2.0 plan to align with annotation-processor-driven code generation.
+- Documentation: Add initial documentation for core concepts in docs/CORE_CONCEPTS.md, covering functional and algebraic structures, annotations, type hierarchy, and minimal implementations.
 ### Infrastructure
 - Pipeline compiles in java 17, 21 and 24
-- Future notes.
 ### Code smells
 - Some sonar code smells removed by refactoring and code cleanup, but many remain due to the nature of the generated code and reflection utilities. Focus is on critical issues and maintainable code rather than eliminating all smells.
 

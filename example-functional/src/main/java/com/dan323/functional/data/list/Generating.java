@@ -1,8 +1,5 @@
 package com.dan323.functional.data.list;
 
-import com.dan323.functional.data.optional.Maybe;
-
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -20,8 +17,8 @@ final class Generating<A> extends InfiniteList<A> {
     }
 
     @Override
-    public Maybe<A> head() {
-        return Maybe.of(head);
+    public A getHead() {
+        return head;
     }
 
     @Override
@@ -36,17 +33,17 @@ final class Generating<A> extends InfiniteList<A> {
 
     protected static final class GeneratingMapped<A,B> extends InfiniteList<B> {
 
-        private final List<A> originalList;
+        private final InfiniteList<A> originalList;
         private final Function<A,B> mapping;
 
-        GeneratingMapped(List<A> originalList, Function<A,B> mapping){
+        GeneratingMapped(InfiniteList<A> originalList, Function<A,B> mapping){
             this.mapping = mapping;
             this.originalList = originalList;
         }
 
         @Override
-        public Maybe<B> head() {
-            return originalList.head().maybe(h -> Maybe.of(mapping.apply(h)), Maybe.of());
+        public B getHead() {
+            return mapping.apply(originalList.getHead());
         }
 
         @Override

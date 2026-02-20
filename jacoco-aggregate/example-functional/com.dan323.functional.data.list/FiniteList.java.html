@@ -43,12 +43,17 @@ public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCon
         }
     }
 
+    @Override
+    default FiniteList&lt;A&gt; cons(A head) {
+<span class="fc" id="L48">        return cons(head, this);</span>
+    }
+
     @SafeVarargs
     private static &lt;A&gt; FiniteList&lt;A&gt; of(int n, A... a) {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (n &gt;= a.length) {</span>
-<span class="fc" id="L49">            return nil();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (n &gt;= a.length) {</span>
+<span class="fc" id="L54">            return nil();</span>
         } else {
-<span class="fc" id="L51">            return cons(a[n], of(n + 1, a));</span>
+<span class="fc" id="L56">            return cons(a[n], of(n + 1, a));</span>
         }
     }
 

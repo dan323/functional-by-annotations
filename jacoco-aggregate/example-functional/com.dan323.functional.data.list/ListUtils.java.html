@@ -7,7 +7,11 @@
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
-<span class="fc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
+<span class="fc" id="L10">        return a.head().maybe(h -&gt; concat(a.tail(), b).cons(h), b);</span>
+    }
+
+    public static &lt;A&gt; InfiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, InfiniteList&lt;A&gt; b){
+<span class="fc" id="L14">        return a.head().maybe(h -&gt; concat(a.tail(), b).cons(h), b);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

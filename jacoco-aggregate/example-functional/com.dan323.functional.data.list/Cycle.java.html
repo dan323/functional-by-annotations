@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Cycle.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">Cycle.java</span></div><h1>Cycle.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import java.util.function.Function;
+
+public final class Cycle&lt;A&gt; extends InfiniteList&lt;A&gt; {
+
+    private final FiniteList&lt;A&gt; cycled;
+
+<span class="fc" id="L9">    Cycle(FiniteList&lt;A&gt; cycle) {</span>
+<span class="pc bpc" id="L10" title="2 of 4 branches missed.">        if (cycle == null || cycle.length() == 0) {</span>
+<span class="nc" id="L11">            throw new IllegalArgumentException(&quot;The list to be cycled must not be null or empty.&quot;);</span>
+        }
+<span class="fc" id="L13">        this.cycled = cycle;</span>
+<span class="fc" id="L14">    }</span>
+
+    @Override
+    public A getHead() {
+<span class="fc" id="L18">        return cycled.head().maybe(Function.identity(), null);</span>
+    }
+
+    @Override
+    public InfiniteList&lt;A&gt; tail() {
+<span class="fc" id="L23">        var init = cycled.tail();</span>
+<span class="fc" id="L24">        return ListUtils.concat(init, this);</span>
+    }
+
+    @Override
+    public &lt;B&gt; Cycle&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+<span class="fc" id="L29">        return new Cycle&lt;&gt;(cycled.map(mapping));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -4,29 +4,29 @@ import java.util.function.Function;
 
 public final class Cycle&lt;A&gt; extends InfiniteList&lt;A&gt; {
 
-    private final FiniteList&lt;A&gt; cycle;
+    private final FiniteList&lt;A&gt; cycled;
 
 <span class="fc" id="L9">    Cycle(FiniteList&lt;A&gt; cycle) {</span>
 <span class="pc bpc" id="L10" title="2 of 4 branches missed.">        if (cycle == null || cycle.length() == 0) {</span>
 <span class="nc" id="L11">            throw new IllegalArgumentException(&quot;The list to be cycled must not be null or empty.&quot;);</span>
         }
-<span class="fc" id="L13">        this.cycle = cycle;</span>
+<span class="fc" id="L13">        this.cycled = cycle;</span>
 <span class="fc" id="L14">    }</span>
 
     @Override
     public A getHead() {
-<span class="fc" id="L18">        return cycle.head().maybe(Function.identity(), null);</span>
+<span class="fc" id="L18">        return cycled.head().maybe(Function.identity(), null);</span>
     }
 
     @Override
     public InfiniteList&lt;A&gt; tail() {
-<span class="fc" id="L23">        var init = cycle.tail();</span>
+<span class="fc" id="L23">        var init = cycled.tail();</span>
 <span class="fc" id="L24">        return ListUtils.concat(init, this);</span>
     }
 
     @Override
     public &lt;B&gt; Cycle&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L29">        return new Cycle&lt;&gt;(cycle.map(mapping));</span>
+<span class="fc" id="L29">        return new Cycle&lt;&gt;(cycled.map(mapping));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

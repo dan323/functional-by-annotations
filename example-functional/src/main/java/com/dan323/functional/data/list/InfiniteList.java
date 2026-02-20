@@ -12,12 +12,12 @@ import java.util.function.Function;
 public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Generating, Generating.GeneratingMapped, Repeat, Zipped {
 
     @Override
-    abstract public InfiniteList<A> tail();
+    public abstract InfiniteList<A> tail();
 
     @Override
-    abstract public <B> InfiniteList<B> map(Function<A, B> mapping);
+    public abstract <B> InfiniteList<B> map(Function<A, B> mapping);
 
-    abstract public A getHead();
+    public abstract A getHead();
 
     @Override
     public Maybe<A> head() {

@@ -3,7 +3,7 @@
 ## [Unreleased]
 - Future notes.
 ### Features
-- Overhaul List: Zipping Cons(head,tail) less lazy. Lazy only in infinite sublist.
+- Overhaul list zipping: make Cons(head, tail) less lazy, preserving laziness only for infinite sublists.
 ### Docs
 - Documentation: Complete 16-week v2.0 production readiness plan (docs/PLAN.md) with detailed weekly breakdowns, parallel work streams, risk mitigation, and success metrics
 - Documentation: Update README.md to properly link and describe the v2.0 production readiness plan

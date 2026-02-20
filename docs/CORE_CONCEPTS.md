@@ -19,7 +19,7 @@ Algebraic structures define mathematical operations and laws:
 - **Ring**: Supports addition and multiplication operations.
 
 ## Annotations
-Annotations such as `@Functor`, `@Monad`, `@Semigroup`, etc., are used to mark types and specify minimal required methods. The annotation processor generates boilerplate code and enforces structure laws.
+Annotations such as `@Functor`, `@Monad`, `@Semigroup`, etc., are used to mark types and specify minimal required methods. The annotation processor generates boilerplate code and validates that the required methods are present.
 
 ## Type Hierarchy and Structure
 Types are organized hierarchically, with interfaces like `Algebraic` and `Structure` serving as base types. Each structure requires minimal implementations (e.g., `map` for Functor, `op` for Semigroup).

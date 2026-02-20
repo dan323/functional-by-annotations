@@ -9,7 +9,7 @@ import java.util.function.Function;
  *
  * @param <A> type of elements in the list
  */
-public abstract sealed class InfiniteList<A> implements List<A> permits Cons, Cycle, Generating, Generating.GeneratingMapped, Repeat, Zipped {
+public sealed abstract class InfiniteList<A> implements List<A> permits Cons, Cycle, Generating, Generating.GeneratingMapped, Merged, Repeat, Zipped {
 
     @Override
     public abstract InfiniteList<A> tail();
@@ -18,18 +18,6 @@ public abstract sealed class InfiniteList<A> implements List<A> permits Cons, Cy
     public abstract <B> InfiniteList<B> map(Function<A, B> mapping);
 
     public abstract A getHead();
-
-    @Override
-    public Maybe<A> head() {
-        return Maybe.of(getHead());
-    }
-
-    @Override
-    public InfiniteList<A> cons(A head) {
-        return new Cons<>(head, this);
-    }
-
-    abstract public A getHead();
 
     @Override
     public Maybe<A> head() {

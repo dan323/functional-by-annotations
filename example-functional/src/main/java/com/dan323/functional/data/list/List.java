@@ -20,12 +20,12 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
     }
 
     default FiniteList<A> limit(int k){
-        return head().maybe(h -> limitWithHead(h, k), FiniteList.nil());
+        return head().maybe(h -> limitWithHead(h, k), List.nil());
     }
 
     private FiniteList<A> limitWithHead(A h, int k){
         if (k == 0){
-            return FiniteList.nil();
+            return List.nil();
         } else {
             return FiniteList.cons(h, tail().limit(k-1));
         }

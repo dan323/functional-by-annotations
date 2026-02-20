@@ -29,6 +29,18 @@ public abstract sealed class InfiniteList<A> implements List<A> permits Cons, Cy
         return new Cons<>(head, this);
     }
 
+    abstract public A getHead();
+
+    @Override
+    public Maybe<A> head() {
+        return Maybe.of(getHead());
+    }
+
+    @Override
+    public InfiniteList<A> cons(A head) {
+        return new Cons<>(head, this);
+    }
+
     /**
      * Infinite lists are incomparable in a finite amount of time
      *

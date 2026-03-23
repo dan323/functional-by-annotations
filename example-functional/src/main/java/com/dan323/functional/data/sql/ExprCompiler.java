@@ -8,7 +8,8 @@ public final class ExprCompiler {
             return c.tableAlias() + "." + c.name();
         } else if (expr instanceof Expr.Literal<?> l) {
             if (l.value() instanceof String s) {
-                return "'" + s + "'";
+                String escaped = s.replace("'", "''");
+                return "'" + escaped + "'";
             }
             return l.value().toString();
         } else if (expr instanceof Expr.Add a) {

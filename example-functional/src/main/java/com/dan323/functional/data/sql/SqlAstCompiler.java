@@ -33,7 +33,8 @@ public final class SqlAstCompiler {
         } else if (ast instanceof SqlAst.Pure) {
             return new Fragment.Query("1", null, null);
         } else if (ast instanceof SqlAst.Table t) {
-            return new Fragment.Query("*", t.name(), null);
+            String from = t.alias() != null ? t.name() + " AS " + t.alias() : t.name();
+            return new Fragment.Query("*", from, null);
         } else if (ast instanceof SqlAst.Filter f) {
             Fragment src = toFragment(f.source());
             String newCond = ExprCompiler.compile(f.condition());

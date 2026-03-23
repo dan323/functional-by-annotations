@@ -38,9 +38,9 @@ public class SqlAstCompilerTest {
     @Test
     public void filterOnTable() {
         var ast = new SqlAst.Filter(
-                new SqlAst.Table("orders"),
+                new SqlAst.Table("orders", "o"),
                 new Expr.Gt(col("o", "amount"), lit(100)));
-        assertEquals("SELECT * FROM orders WHERE (o.amount > 100)", SqlAstCompiler.compile(ast));
+        assertEquals("SELECT * FROM orders AS o WHERE (o.amount > 100)", SqlAstCompiler.compile(ast));
     }
 
     // Two consecutive filters are folded into a single WHERE … AND …, no subquery.
@@ -48,11 +48,11 @@ public class SqlAstCompilerTest {
     public void twoFiltersAreFlattenedWithAnd() {
         var ast = new SqlAst.Filter(
                 new SqlAst.Filter(
-                        new SqlAst.Table("orders"),
+                        new SqlAst.Table("orders", "o"),
                         new Expr.Gt(col("o", "amount"), lit(50))),
                 new Expr.Lt(col("o", "amount"), lit(200)));
         assertEquals(
-                "SELECT * FROM orders WHERE ((o.amount > 50)) AND ((o.amount < 200))",
+                "SELECT * FROM orders AS o WHERE ((o.amount > 50)) AND ((o.amount < 200))",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -62,12 +62,12 @@ public class SqlAstCompilerTest {
         var ast = new SqlAst.Filter(
                 new SqlAst.Filter(
                         new SqlAst.Filter(
-                                new SqlAst.Table("orders"),
+                                new SqlAst.Table("orders", "o"),
                                 new Expr.Gt(col("o", "id"), lit(0))),
                         new Expr.Gt(col("o", "amount"), lit(0))),
                 new Expr.Lt(col("o", "amount"), lit(100)));
         assertEquals(
-                "SELECT * FROM orders WHERE (((o.id > 0)) AND ((o.amount > 0))) AND ((o.amount < 100))",
+                "SELECT * FROM orders AS o WHERE (((o.id > 0)) AND ((o.amount > 0))) AND ((o.amount < 100))",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -90,8 +90,8 @@ public class SqlAstCompilerTest {
     // Project on a plain table: SELECT columns replace the default *.
     @Test
     public void project() {
-        var ast = new SqlAst.Project(twoColumns(), new SqlAst.Table("orders"));
-        assertEquals("SELECT o.id, o.name FROM orders", SqlAstCompiler.compile(ast));
+        var ast = new SqlAst.Project(twoColumns(), new SqlAst.Table("orders", "o"));
+        assertEquals("SELECT o.id, o.name FROM orders AS o", SqlAstCompiler.compile(ast));
     }
 
     // Project on Filter: both fold into one query (the motivating optimisation).
@@ -100,10 +100,10 @@ public class SqlAstCompilerTest {
         var ast = new SqlAst.Project(
                 twoColumns(),
                 new SqlAst.Filter(
-                        new SqlAst.Table("orders"),
+                        new SqlAst.Table("orders", "o"),
                         new Expr.Lt(col("o", "amount"), lit(4))));
         assertEquals(
-                "SELECT o.id, o.name FROM orders WHERE (o.amount < 4)",
+                "SELECT o.id, o.name FROM orders AS o WHERE (o.amount < 4)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -111,10 +111,10 @@ public class SqlAstCompilerTest {
     @Test
     public void filterOnProjectIsFlattened() {
         var ast = new SqlAst.Filter(
-                new SqlAst.Project(twoColumns(), new SqlAst.Table("orders")),
+                new SqlAst.Project(twoColumns(), new SqlAst.Table("orders", "o")),
                 new Expr.Lt(col("o", "amount"), lit(4)));
         assertEquals(
-                "SELECT o.id, o.name FROM orders WHERE (o.amount < 4)",
+                "SELECT o.id, o.name FROM orders AS o WHERE (o.amount < 4)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -125,11 +125,11 @@ public class SqlAstCompilerTest {
                 new SqlAst.Project(
                         twoColumns(),
                         new SqlAst.Filter(
-                                new SqlAst.Table("orders"),
+                                new SqlAst.Table("orders", "o"),
                                 new Expr.Gt(col("o", "amount"), lit(0)))),
                 new Expr.Lt(col("o", "amount"), lit(4)));
         assertEquals(
-                "SELECT o.id, o.name FROM orders WHERE ((o.amount > 0)) AND ((o.amount < 4))",
+                "SELECT o.id, o.name FROM orders AS o WHERE ((o.amount > 0)) AND ((o.amount < 4))",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -138,9 +138,9 @@ public class SqlAstCompilerTest {
     public void projectOnProjectWrapsSubquery() {
         var ast = new SqlAst.Project(
                 oneColumn(),
-                new SqlAst.Project(twoColumns(), new SqlAst.Table("orders")));
+                new SqlAst.Project(twoColumns(), new SqlAst.Table("orders", "o")));
         assertEquals(
-                "SELECT o.id FROM (SELECT o.id, o.name FROM orders)",
+                "SELECT o.id FROM (SELECT o.id, o.name FROM orders AS o)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -176,11 +176,11 @@ public class SqlAstCompilerTest {
     @Test
     public void joinTwoTables() {
         var ast = new SqlAst.Join(
-                new SqlAst.Table("orders"),
-                new SqlAst.Table("customers"),
+                new SqlAst.Table("orders", "o"),
+                new SqlAst.Table("customers", "c"),
                 new Expr.Eq<>(colInt("o", "customer_id"), colInt("c", "id")));
         assertEquals(
-                "SELECT * FROM orders JOIN customers ON (o.customer_id = c.id)",
+                "SELECT * FROM orders AS o JOIN customers AS c ON (o.customer_id = c.id)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -196,12 +196,12 @@ public class SqlAstCompilerTest {
     public void joinWithOneFilteredSideWrapsSubquery() {
         var ast = new SqlAst.Join(
                 new SqlAst.Filter(
-                        new SqlAst.Table("orders"),
+                        new SqlAst.Table("orders", "o"),
                         new Expr.Gt(col("o", "amount"), lit(0))),
-                new SqlAst.Table("customers"),
+                new SqlAst.Table("customers", "c"),
                 new Expr.Eq<>(colInt("o", "customer_id"), colInt("c", "id")));
         assertEquals(
-                "SELECT * FROM (SELECT * FROM orders WHERE (o.amount > 0)) JOIN customers ON (o.customer_id = c.id)",
+                "SELECT * FROM (SELECT * FROM orders AS o WHERE (o.amount > 0)) JOIN customers AS c ON (o.customer_id = c.id)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -209,12 +209,12 @@ public class SqlAstCompilerTest {
     @Test
     public void joinWithBothSidesFilteredWrapsBothSubqueries() {
         var ast = new SqlAst.Join(
-                new SqlAst.Filter(new SqlAst.Table("orders"), new Expr.Gt(col("o", "amount"), lit(0))),
-                new SqlAst.Filter(new SqlAst.Table("customers"), new Expr.Gt(col("c", "id"), lit(0))),
+                new SqlAst.Filter(new SqlAst.Table("orders", "o"), new Expr.Gt(col("o", "amount"), lit(0))),
+                new SqlAst.Filter(new SqlAst.Table("customers", "c"), new Expr.Gt(col("c", "id"), lit(0))),
                 new Expr.Eq<>(colInt("o", "customer_id"), colInt("c", "id")));
         assertEquals(
-                "SELECT * FROM (SELECT * FROM orders WHERE (o.amount > 0))"
-                        + " JOIN (SELECT * FROM customers WHERE (c.id > 0))"
+                "SELECT * FROM (SELECT * FROM orders AS o WHERE (o.amount > 0))"
+                        + " JOIN (SELECT * FROM customers AS c WHERE (c.id > 0))"
                         + " ON (o.customer_id = c.id)",
                 SqlAstCompiler.compile(ast));
     }
@@ -224,12 +224,12 @@ public class SqlAstCompilerTest {
     public void filterOnJoinFoldsIntoJoin() {
         var ast = new SqlAst.Filter(
                 new SqlAst.Join(
-                        new SqlAst.Table("orders"),
-                        new SqlAst.Table("customers"),
+                        new SqlAst.Table("orders", "o"),
+                        new SqlAst.Table("customers", "c"),
                         new Expr.Eq<>(colInt("o", "customer_id"), colInt("c", "id"))),
                 new Expr.Gt(col("o", "amount"), lit(0)));
         assertEquals(
-                "SELECT * FROM orders JOIN customers ON (o.customer_id = c.id) WHERE (o.amount > 0)",
+                "SELECT * FROM orders AS o JOIN customers AS c ON (o.customer_id = c.id) WHERE (o.amount > 0)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -239,11 +239,11 @@ public class SqlAstCompilerTest {
         var ast = new SqlAst.Project(
                 twoColumns(),
                 new SqlAst.Join(
-                        new SqlAst.Table("orders"),
-                        new SqlAst.Table("customers"),
+                        new SqlAst.Table("orders", "o"),
+                        new SqlAst.Table("customers", "c"),
                         new Expr.Eq<>(colInt("o", "customer_id"), colInt("c", "id"))));
         assertEquals(
-                "SELECT o.id, o.name FROM orders JOIN customers ON (o.customer_id = c.id)",
+                "SELECT o.id, o.name FROM orders AS o JOIN customers AS c ON (o.customer_id = c.id)",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -262,10 +262,10 @@ public class SqlAstCompilerTest {
     @Test
     public void productWithFilteredSideWrapsSubquery() {
         var ast = new SqlAst.Product(
-                new SqlAst.Filter(new SqlAst.Table("orders"), new Expr.Gt(col("o", "amount"), lit(0))),
+                new SqlAst.Filter(new SqlAst.Table("orders", "o"), new Expr.Gt(col("o", "amount"), lit(0))),
                 new SqlAst.Table("customers"));
         assertEquals(
-                "SELECT * FROM (SELECT * FROM orders WHERE (o.amount > 0)) CROSS JOIN customers",
+                "SELECT * FROM (SELECT * FROM orders AS o WHERE (o.amount > 0)) CROSS JOIN customers",
                 SqlAstCompiler.compile(ast));
     }
 
@@ -285,10 +285,10 @@ public class SqlAstCompilerTest {
     @Test
     public void unionOfFilteredTables() {
         var ast = new SqlAst.Union(
-                new SqlAst.Filter(new SqlAst.Table("archived_orders"), new Expr.Gt(col("o", "amount"), lit(0))),
-                new SqlAst.Filter(new SqlAst.Table("orders"), new Expr.Gt(col("o", "amount"), lit(0))));
+                new SqlAst.Filter(new SqlAst.Table("archived_orders", "o"), new Expr.Gt(col("o", "amount"), lit(0))),
+                new SqlAst.Filter(new SqlAst.Table("orders", "o"), new Expr.Gt(col("o", "amount"), lit(0))));
         assertEquals(
-                "(SELECT * FROM archived_orders WHERE (o.amount > 0)) UNION (SELECT * FROM orders WHERE (o.amount > 0))",
+                "(SELECT * FROM archived_orders AS o WHERE (o.amount > 0)) UNION (SELECT * FROM orders AS o WHERE (o.amount > 0))",
                 SqlAstCompiler.compile(ast));
     }
 

@@ -5,7 +5,9 @@ import com.dan323.functional.data.list.List;
 public sealed interface SqlAst permits SqlAst.Empty, SqlAst.Table, SqlAst.Product, SqlAst.Join,
         SqlAst.Filter, SqlAst.Union, SqlAst.Pure, SqlAst.Project {
 
-    record Table(String name) implements SqlAst {}
+    record Table(String name, String alias) implements SqlAst {
+        public Table(String name) { this(name, null); }
+    }
 
     record Product(SqlAst left, SqlAst right) implements SqlAst {}
 

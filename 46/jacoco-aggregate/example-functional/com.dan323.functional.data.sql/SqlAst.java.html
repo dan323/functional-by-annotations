@@ -5,20 +5,22 @@ import com.dan323.functional.data.list.List;
 public sealed interface SqlAst permits SqlAst.Empty, SqlAst.Table, SqlAst.Product, SqlAst.Join,
         SqlAst.Filter, SqlAst.Union, SqlAst.Pure, SqlAst.Project {
 
-<span class="fc" id="L8">    record Table(String name) implements SqlAst {}</span>
+<span class="fc" id="L8">    record Table(String name, String alias) implements SqlAst {</span>
+<span class="fc" id="L9">        public Table(String name) { this(name, null); }</span>
+    }
 
-<span class="fc" id="L10">    record Product(SqlAst left, SqlAst right) implements SqlAst {}</span>
+<span class="fc" id="L12">    record Product(SqlAst left, SqlAst right) implements SqlAst {}</span>
 
-<span class="fc" id="L12">    record Join(SqlAst left, SqlAst right, Expr&lt;Boolean&gt; on) implements SqlAst {}</span>
+<span class="fc" id="L14">    record Join(SqlAst left, SqlAst right, Expr&lt;Boolean&gt; on) implements SqlAst {}</span>
 
-<span class="fc" id="L14">    record Filter(SqlAst source, Expr&lt;Boolean&gt; condition) implements SqlAst {}</span>
+<span class="fc" id="L16">    record Filter(SqlAst source, Expr&lt;Boolean&gt; condition) implements SqlAst {}</span>
 
-<span class="fc" id="L16">    record Union(SqlAst left, SqlAst right) implements SqlAst {}</span>
+<span class="fc" id="L18">    record Union(SqlAst left, SqlAst right) implements SqlAst {}</span>
 
-<span class="fc" id="L18">    record Empty() implements SqlAst {}</span>
+<span class="fc" id="L20">    record Empty() implements SqlAst {}</span>
 
-<span class="fc" id="L20">    record Pure() implements SqlAst {}</span>
+<span class="fc" id="L22">    record Pure() implements SqlAst {}</span>
 
-<span class="fc" id="L22">    record Project(List&lt;Expr&lt;?&gt;&gt; exprList, SqlAst source) implements SqlAst {}</span>
+<span class="fc" id="L24">    record Project(List&lt;Expr&lt;?&gt;&gt; exprList, SqlAst source) implements SqlAst {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

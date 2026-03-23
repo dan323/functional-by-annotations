@@ -8,49 +8,50 @@
 <span class="fc" id="L8">            return c.tableAlias() + &quot;.&quot; + c.name();</span>
 <span class="fc bfc" id="L9" title="All 2 branches covered.">        } else if (expr instanceof Expr.Literal&lt;?&gt; l) {</span>
 <span class="pc bpc" id="L10" title="1 of 2 branches missed.">            if (l.value() instanceof String s) {</span>
-<span class="nc" id="L11">                return &quot;'&quot; + s + &quot;'&quot;;</span>
+<span class="nc" id="L11">                String escaped = s.replace(&quot;'&quot;, &quot;''&quot;);</span>
+<span class="nc" id="L12">                return &quot;'&quot; + escaped + &quot;'&quot;;</span>
             }
-<span class="fc" id="L13">            return l.value().toString();</span>
-<span class="pc bpc" id="L14" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Add a) {</span>
-<span class="nc" id="L15">            return &quot;(&quot; + compile(a.left()) +</span>
-<span class="nc" id="L16">                    &quot; + &quot; + compile(a.right()) + &quot;)&quot;;</span>
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        } else if (expr instanceof Expr.Gt g) {</span>
-<span class="fc" id="L18">            return &quot;(&quot; + compile(g.left()) +</span>
-<span class="fc" id="L19">                    &quot; &gt; &quot; + compile(g.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.And a) {</span>
-<span class="nc" id="L21">            return &quot;(&quot; + compile(a.left()) +</span>
-<span class="nc" id="L22">                    &quot; AND &quot; + compile(a.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Or a) {</span>
-<span class="nc" id="L24">            return &quot;(&quot; + compile(a.left()) +</span>
-<span class="nc" id="L25">                    &quot; OR &quot; + compile(a.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Not n) {</span>
-<span class="nc" id="L27">            return &quot;(NOT &quot; + compile(n.value()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Sub a) {</span>
-<span class="nc" id="L29">            return &quot;(&quot; + compile(a.left()) +</span>
-<span class="nc" id="L30">                    &quot; - &quot; + compile(a.right()) + &quot;)&quot;;</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        } else if (expr instanceof Expr.Lt l) {</span>
-<span class="fc" id="L32">            return &quot;(&quot; + compile(l.left()) +</span>
-<span class="fc" id="L33">                    &quot; &lt; &quot; + compile(l.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Mul m) {</span>
-<span class="nc" id="L35">            return &quot;(&quot; + compile(m.left()) +</span>
-<span class="nc" id="L36">                    &quot; * &quot; + compile(m.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Lte g) {</span>
-<span class="nc" id="L38">            return &quot;(&quot; + compile(g.left()) +</span>
-<span class="nc" id="L39">                    &quot; &lt;= &quot; + compile(g.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Gte g) {</span>
-<span class="nc" id="L41">            return &quot;(&quot; + compile(g.left()) +</span>
-<span class="nc" id="L42">                    &quot; &gt;= &quot; + compile(g.right()) + &quot;)&quot;;</span>
-<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Eq&lt;?&gt; g) {</span>
-<span class="fc" id="L44">            return &quot;(&quot; + compile(g.left()) +</span>
-<span class="fc" id="L45">                    &quot; = &quot; + compile(g.right()) + &quot;)&quot;;</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        } else if (expr instanceof Expr.Neq&lt;?&gt; g) {</span>
-<span class="nc" id="L47">            return &quot;(&quot; + compile(g.left()) +</span>
-<span class="nc" id="L48">                    &quot; &lt;&gt; &quot; + compile(g.right()) + &quot;)&quot;;</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        } else if (expr instanceof Expr.Div m) {</span>
-<span class="nc" id="L50">            return &quot;(&quot; + compile(m.left()) +</span>
-<span class="nc" id="L51">                    &quot; / &quot; + compile(m.right()) + &quot;)&quot;;</span>
+<span class="fc" id="L14">            return l.value().toString();</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Add a) {</span>
+<span class="nc" id="L16">            return &quot;(&quot; + compile(a.left()) +</span>
+<span class="nc" id="L17">                    &quot; + &quot; + compile(a.right()) + &quot;)&quot;;</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        } else if (expr instanceof Expr.Gt g) {</span>
+<span class="fc" id="L19">            return &quot;(&quot; + compile(g.left()) +</span>
+<span class="fc" id="L20">                    &quot; &gt; &quot; + compile(g.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.And a) {</span>
+<span class="nc" id="L22">            return &quot;(&quot; + compile(a.left()) +</span>
+<span class="nc" id="L23">                    &quot; AND &quot; + compile(a.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Or a) {</span>
+<span class="nc" id="L25">            return &quot;(&quot; + compile(a.left()) +</span>
+<span class="nc" id="L26">                    &quot; OR &quot; + compile(a.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Not n) {</span>
+<span class="nc" id="L28">            return &quot;(NOT &quot; + compile(n.value()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Sub a) {</span>
+<span class="nc" id="L30">            return &quot;(&quot; + compile(a.left()) +</span>
+<span class="nc" id="L31">                    &quot; - &quot; + compile(a.right()) + &quot;)&quot;;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        } else if (expr instanceof Expr.Lt l) {</span>
+<span class="fc" id="L33">            return &quot;(&quot; + compile(l.left()) +</span>
+<span class="fc" id="L34">                    &quot; &lt; &quot; + compile(l.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Mul m) {</span>
+<span class="nc" id="L36">            return &quot;(&quot; + compile(m.left()) +</span>
+<span class="nc" id="L37">                    &quot; * &quot; + compile(m.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Lte g) {</span>
+<span class="nc" id="L39">            return &quot;(&quot; + compile(g.left()) +</span>
+<span class="nc" id="L40">                    &quot; &lt;= &quot; + compile(g.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Gte g) {</span>
+<span class="nc" id="L42">            return &quot;(&quot; + compile(g.left()) +</span>
+<span class="nc" id="L43">                    &quot; &gt;= &quot; + compile(g.right()) + &quot;)&quot;;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        } else if (expr instanceof Expr.Eq&lt;?&gt; g) {</span>
+<span class="fc" id="L45">            return &quot;(&quot; + compile(g.left()) +</span>
+<span class="fc" id="L46">                    &quot; = &quot; + compile(g.right()) + &quot;)&quot;;</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        } else if (expr instanceof Expr.Neq&lt;?&gt; g) {</span>
+<span class="nc" id="L48">            return &quot;(&quot; + compile(g.left()) +</span>
+<span class="nc" id="L49">                    &quot; &lt;&gt; &quot; + compile(g.right()) + &quot;)&quot;;</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        } else if (expr instanceof Expr.Div m) {</span>
+<span class="nc" id="L51">            return &quot;(&quot; + compile(m.left()) +</span>
+<span class="nc" id="L52">                    &quot; / &quot; + compile(m.right()) + &quot;)&quot;;</span>
         } else {
-<span class="nc" id="L53">            throw new IllegalStateException(&quot;Unknown Expr: &quot; + expr);</span>
+<span class="nc" id="L54">            throw new IllegalStateException(&quot;Unknown Expr: &quot; + expr);</span>
         }
     }
 }

@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 <span class="fc" id="L7">public record Config(String host, int port, String db) {</span>
 
-<span class="fc" id="L9">    static Function&lt;Config,String&gt; getPath = Reader.&lt;Config&gt;getInstance().liftA2(</span>
+<span class="fc" id="L9">    public static final Function&lt;Config,String&gt; getPath = Reader.&lt;Config&gt;getInstance().liftA2(</span>
 <span class="fc" id="L10">            (url, db) -&gt; url + &quot;/&quot; + db,</span>
 <span class="fc" id="L11">            Reader.&lt;Config&gt;getInstance()</span>
 <span class="fc" id="L12">                    .liftA2((host, port) -&gt; &quot;jdbc:postgresql://&quot; + host + &quot;:&quot; + port, Config::host, Config::port),</span>

@@ -33,54 +33,55 @@ public final class SqlAstCompiler {
 <span class="fc bfc" id="L33" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Pure) {</span>
 <span class="fc" id="L34">            return new Fragment.Query(&quot;1&quot;, null, null);</span>
 <span class="fc bfc" id="L35" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Table t) {</span>
-<span class="fc" id="L36">            return new Fragment.Query(&quot;*&quot;, t.name(), null);</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Filter f) {</span>
-<span class="fc" id="L38">            Fragment src = toFragment(f.source());</span>
-<span class="fc" id="L39">            String newCond = ExprCompiler.compile(f.condition());</span>
-<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (src instanceof Fragment.Query q) {</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">                String combined = q.where() == null ? newCond : &quot;(&quot; + q.where() + &quot;) AND (&quot; + newCond + &quot;)&quot;;</span>
-<span class="fc" id="L42">                return new Fragment.Query(q.select(), q.from(), combined);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            String from = t.alias() != null ? t.name() + &quot; AS &quot; + t.alias() : t.name();</span>
+<span class="fc" id="L37">            return new Fragment.Query(&quot;*&quot;, from, null);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Filter f) {</span>
+<span class="fc" id="L39">            Fragment src = toFragment(f.source());</span>
+<span class="fc" id="L40">            String newCond = ExprCompiler.compile(f.condition());</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            if (src instanceof Fragment.Query q) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">                String combined = q.where() == null ? newCond : &quot;(&quot; + q.where() + &quot;) AND (&quot; + newCond + &quot;)&quot;;</span>
+<span class="fc" id="L43">                return new Fragment.Query(q.select(), q.from(), combined);</span>
             }
-<span class="fc" id="L44">            return new Fragment.Query(&quot;*&quot;, &quot;(&quot; + render(src) + &quot;)&quot;, newCond);</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Project p) {</span>
-<span class="fc" id="L46">            Fragment src = toFragment(p.source());</span>
-<span class="fc" id="L47">            String cols = joinExprs(p.exprList());</span>
-<span class="fc bfc" id="L48" title="All 4 branches covered.">            if (src instanceof Fragment.Query q &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
-<span class="fc" id="L49">                return new Fragment.Query(cols, q.from(), q.where());</span>
+<span class="fc" id="L45">            return new Fragment.Query(&quot;*&quot;, &quot;(&quot; + render(src) + &quot;)&quot;, newCond);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Project p) {</span>
+<span class="fc" id="L47">            Fragment src = toFragment(p.source());</span>
+<span class="fc" id="L48">            String cols = joinExprs(p.exprList());</span>
+<span class="fc bfc" id="L49" title="All 4 branches covered.">            if (src instanceof Fragment.Query q &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
+<span class="fc" id="L50">                return new Fragment.Query(cols, q.from(), q.where());</span>
             }
-<span class="fc" id="L51">            return new Fragment.Query(cols, &quot;(&quot; + render(src) + &quot;)&quot;, null);</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Join j) {</span>
-<span class="fc" id="L53">            String leftSrc = asJoinSource(toFragment(j.left()));</span>
-<span class="fc" id="L54">            String rightSrc = asJoinSource(toFragment(j.right()));</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">            String from = j.on() == null</span>
-<span class="fc" id="L56">                    ? leftSrc + &quot; CROSS JOIN &quot; + rightSrc</span>
-<span class="fc" id="L57">                    : leftSrc + &quot; JOIN &quot; + rightSrc + &quot; ON &quot; + ExprCompiler.compile(j.on());</span>
-<span class="fc" id="L58">            return new Fragment.Query(&quot;*&quot;, from, null);</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Product p) {</span>
-<span class="fc" id="L60">            String leftSrc = asJoinSource(toFragment(p.left()));</span>
-<span class="fc" id="L61">            String rightSrc = asJoinSource(toFragment(p.right()));</span>
-<span class="fc" id="L62">            return new Fragment.Query(&quot;*&quot;, leftSrc + &quot; CROSS JOIN &quot; + rightSrc, null);</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        } else if (ast instanceof SqlAst.Union u) {</span>
-<span class="fc" id="L64">            return new Fragment.Union(toFragment(u.left()), toFragment(u.right()));</span>
+<span class="fc" id="L52">            return new Fragment.Query(cols, &quot;(&quot; + render(src) + &quot;)&quot;, null);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Join j) {</span>
+<span class="fc" id="L54">            String leftSrc = asJoinSource(toFragment(j.left()));</span>
+<span class="fc" id="L55">            String rightSrc = asJoinSource(toFragment(j.right()));</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            String from = j.on() == null</span>
+<span class="fc" id="L57">                    ? leftSrc + &quot; CROSS JOIN &quot; + rightSrc</span>
+<span class="fc" id="L58">                    : leftSrc + &quot; JOIN &quot; + rightSrc + &quot; ON &quot; + ExprCompiler.compile(j.on());</span>
+<span class="fc" id="L59">            return new Fragment.Query(&quot;*&quot;, from, null);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Product p) {</span>
+<span class="fc" id="L61">            String leftSrc = asJoinSource(toFragment(p.left()));</span>
+<span class="fc" id="L62">            String rightSrc = asJoinSource(toFragment(p.right()));</span>
+<span class="fc" id="L63">            return new Fragment.Query(&quot;*&quot;, leftSrc + &quot; CROSS JOIN &quot; + rightSrc, null);</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        } else if (ast instanceof SqlAst.Union u) {</span>
+<span class="fc" id="L65">            return new Fragment.Union(toFragment(u.left()), toFragment(u.right()));</span>
         }
-<span class="nc" id="L66">        throw new IllegalStateException(&quot;Unknown SqlAst: &quot; + ast);</span>
+<span class="nc" id="L67">        throw new IllegalStateException(&quot;Unknown SqlAst: &quot; + ast);</span>
     }
 
     // A fragment can be used directly as a JOIN source only when it has no WHERE
     // and no custom projection — otherwise it must be wrapped as a subquery.
     private static String asJoinSource(Fragment fragment) {
-<span class="pc bpc" id="L72" title="1 of 6 branches missed.">        if (fragment instanceof Fragment.Query q &amp;&amp; q.where() == null &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
-<span class="fc" id="L73">            return q.from();</span>
+<span class="pc bpc" id="L73" title="1 of 6 branches missed.">        if (fragment instanceof Fragment.Query q &amp;&amp; q.where() == null &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
+<span class="fc" id="L74">            return q.from();</span>
         }
-<span class="fc" id="L75">        return &quot;(&quot; + render(fragment) + &quot;)&quot;;</span>
+<span class="fc" id="L76">        return &quot;(&quot; + render(fragment) + &quot;)&quot;;</span>
     }
 
     private static String joinExprs(List&lt;Expr&lt;?&gt;&gt; exprs) {
-<span class="fc" id="L79">        return exprs.head().maybe(</span>
+<span class="fc" id="L80">        return exprs.head().maybe(</span>
                 h -&gt; {
-<span class="fc" id="L81">                    String tail = joinExprs(exprs.tail());</span>
-<span class="fc" id="L82">                    String compiled = ExprCompiler.compile(h);</span>
-<span class="fc bfc" id="L83" title="All 2 branches covered.">                    return tail.isEmpty() ? compiled : compiled + &quot;, &quot; + tail;</span>
+<span class="fc" id="L82">                    String tail = joinExprs(exprs.tail());</span>
+<span class="fc" id="L83">                    String compiled = ExprCompiler.compile(h);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">                    return tail.isEmpty() ? compiled : compiled + &quot;, &quot; + tail;</span>
                 },
                 &quot;&quot;);
     }

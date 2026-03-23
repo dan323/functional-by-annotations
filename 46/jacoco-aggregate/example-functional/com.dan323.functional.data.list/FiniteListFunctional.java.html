@@ -47,7 +47,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; disjunction(FiniteList&lt;A&gt; op1, FiniteList&lt;A&gt; op2) {
-<span class="fc" id="L50">        return (FiniteList&lt;A&gt;) ListUtils.concat(op1, op2);</span>
+<span class="fc" id="L50">        return ListUtils.concat(op1, op2);</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; empty() {
@@ -59,7 +59,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;A, B&gt; FiniteList&lt;B&gt; flatMap(Function&lt;A, FiniteList&lt;B&gt;&gt; f, FiniteList&lt;A&gt; base) {
-<span class="fc" id="L62">        return base.head().maybe(h -&gt; (FiniteList&lt;B&gt;) concat(f.apply(h), flatMap(f, base.tail())), List.nil());</span>
+<span class="fc" id="L62">        return base.head().maybe(h -&gt; concat(f.apply(h), flatMap(f, base.tail())), List.nil());</span>
     }
 
     @Override

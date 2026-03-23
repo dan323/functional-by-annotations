@@ -11,8 +11,10 @@ public final class ContinuationMonad<R> implements IMonad<Continuation<?, R>> {
     private ContinuationMonad() {
     }
 
+    private static final ContinuationMonad<?> CONTINUATION_MONAD = new ContinuationMonad<>();
+
     public static <R> ContinuationMonad<R> getInstance() {
-        return new ContinuationMonad<>();
+        return (ContinuationMonad<R>) CONTINUATION_MONAD;
     }
 
     public <R1, R2> Continuation<R2, R> map(Continuation<R1, R> base, Function<R1, R2> mapping) {

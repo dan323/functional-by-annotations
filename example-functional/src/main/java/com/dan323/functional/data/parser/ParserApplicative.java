@@ -6,6 +6,7 @@ import com.dan323.functional.annotation.funcs.IAlternative;
 import com.dan323.functional.annotation.funcs.IApplicative;
 import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.state.StateMonad;
 
 import java.util.function.Function;
@@ -52,7 +53,7 @@ public final class ParserApplicative implements IApplicative<Parser<?>>, IAltern
     }
 
     public static <A> Parser<FiniteList<A>> many(Parser<A> parser) {
-        return disjunction(some(parser), pure(FiniteList.nil()));
+        return disjunction(some(parser), pure(List.nil()));
     }
 
     public static <A, B> Parser<B> whenFailureWhenSuccess(Parser<A> parser, Supplier<Parser<B>> errorParser, Supplier<Parser<B>> successParser) {

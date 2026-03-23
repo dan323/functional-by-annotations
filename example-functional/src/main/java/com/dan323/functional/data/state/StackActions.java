@@ -1,7 +1,7 @@
 package com.dan323.functional.data.state;
 
 import com.dan323.functional.data.either.Either;
-import com.dan323.functional.data.function.FunctionFrom;
+import com.dan323.functional.data.function.Reader;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
@@ -85,7 +85,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @return ... -> |
      */
     static <A> StackActions<A> reset() {
-        return s -> Either.right(new Pair<>(Maybe.of(), FiniteList.nil()));
+        return s -> Either.right(new Pair<>(Maybe.of(), List.nil()));
     }
 
     /**
@@ -182,7 +182,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @see #thenByPopped(Function)
      */
     default StackActions<A> then(StackActions<A> st) {
-        return this.thenByPopped(FunctionFrom.<Maybe<A>>getInstance().pure(st));
+        return this.thenByPopped(Reader.<Maybe<A>>getInstance().pure(st));
     }
 
     /**
@@ -194,7 +194,7 @@ public interface StackActions<A> extends StateWithError<Maybe<A>, FiniteList<A>,
      * @see com.dan323.functional.data.either.Right#toString()
      */
     default String print() {
-        return apply(FiniteList.nil()).toString();
+        return apply(List.nil()).toString();
     }
 
 }

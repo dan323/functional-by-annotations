@@ -30,10 +30,8 @@ public final class ZipApplicative implements IApplicative<List<?>> {
      * @param <C> type of elements in the resulting list
      */
     public static <A, B, C> List<C> liftA2(BiFunction<A, B, C> fun, List<A> lstA, List<B> lstB) {
-        if (lstA instanceof FiniteList<A>) {
-            return lstA.head().maybe(a -> lstB.head().maybe(b -> FiniteList.cons(fun.apply(a, b), (FiniteList<C>) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());
-        } else if (lstB instanceof FiniteList<B>) {
-            return lstB.head().maybe(a -> lstA.head().maybe(b -> FiniteList.cons(fun.apply(b, a), (FiniteList<C>) liftA2(fun, lstA.tail(), lstB.tail())), FiniteList.nil()), FiniteList.nil());
+        if (lstA instanceof FiniteList<A> || lstB instanceof FiniteList<B>) {
+            return lstA.head().maybe(a -> lstB.head().maybe(b -> FiniteList.cons(fun.apply(a, b), (FiniteList<C>) liftA2(fun, lstA.tail(), lstB.tail())), List.nil()), List.nil());
         } else if (lstA instanceof Repeat<A> ra) {
             Function<B,C> auxFun = b -> fun.apply(ra.getHead(), b);
             return lstB.map(auxFun);
@@ -44,6 +42,8 @@ public final class ZipApplicative implements IApplicative<List<?>> {
             return ca.zipBy(fun, (InfiniteList<B>) lstB);
         } else if (lstB instanceof Cons<B> cb) {
             return cb.zipBy((a,b) -> fun.apply(b,a), (InfiniteList<A>) lstA);
+        } else if (lstA instanceof Merged<A> ma && lstB instanceof Merged<B> mb) {
+            return ma.zipBy(fun, mb);
         } else {
             return new Zipped<>((InfiniteList<A>) lstA, fun, (InfiniteList<B>) lstB);
         }

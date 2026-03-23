@@ -31,7 +31,19 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
         }
     }
 
-    static <A> List<A> cycle(FiniteList<A> lst){
+    static <A> InfiniteList<A> interleave(InfiniteList<A> fa, InfiniteList<A> fb) {
+        return new Merged<>(fa, fb);
+    }
+
+    static <A> List<A> cycle(List<A> lst){
+        if (lst instanceof FiniteList<A> fl) {
+            return cycle(fl);
+        } else {
+            return lst;
+        }
+    }
+
+    private static <A> List<A> cycle(FiniteList<A> lst){
         if (lst.length() == 0) {
             return nil();
         } else if (lst.length() == 1) {

@@ -1,6 +1,7 @@
 module functional.data {
     requires functional.annotations;
     requires functional.compiler;
+    requires java.sql;
 
     exports com.dan323.functional.data.continuation;
     exports com.dan323.functional.data.either;

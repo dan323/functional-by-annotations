@@ -7,16 +7,16 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Monad
-public final class FunctionFrom<A> implements IMonad<Function<A, ?>> {
+public final class Reader<A> implements IMonad<Function<A, ?>> {
 
-    private FunctionFrom() {
+    private Reader() {
     }
 
-    public static <A> FunctionFrom<A> getInstance() {
-        return (FunctionFrom<A>) FUNCTION_FROM;
+    public static <A> Reader<A> getInstance() {
+        return (Reader<A>) READER;
     }
 
-    private static final FunctionFrom<?> FUNCTION_FROM = new FunctionFrom<>();
+    private static final Reader<?> READER = new Reader<>();
 
     public <B, C> Function<A, C> map(Function<A, B> base, Function<B, C> mapping) {
         return mapping.compose(base);

@@ -2,6 +2,7 @@ package com.dan323.functional;
 
 import com.dan323.functional.data.either.Either;
 import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.pair.Pair;
 import com.dan323.functional.data.parser.Parser;
@@ -66,7 +67,7 @@ public class ParserTest {
     void sepByEmpty() {
         var sepByInt = Parser.sepBy(Parser.intParser(), Parser.stringParser(","));
         var result = sepByInt.apply("abc");
-        assertEquals(Either.right(new Pair<>(FiniteList.nil(), "abc")), result);
+        assertEquals(Either.right(new Pair<>(List.nil(), "abc")), result);
     }
 
     @Test

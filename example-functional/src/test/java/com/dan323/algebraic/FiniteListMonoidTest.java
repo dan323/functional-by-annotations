@@ -2,6 +2,7 @@ package com.dan323.algebraic;
 
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,6 @@ public class FiniteListMonoidTest {
 
     @Test
     public void unitTest() {
-        assertEquals(FiniteList.nil(), FiniteListFunctional.getAlternativeMonoid().unit());
+        assertEquals(List.nil(), FiniteListFunctional.getAlternativeMonoid().unit());
     }
 }

@@ -24,7 +24,7 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
     }
 
     public static <K, A> K traverse(IApplicative<K> applicative, Function<A, K> fun, FiniteList<A> lst) {
-        var empty = ApplicativeUtil.pure(applicative, FiniteList.nil());
+        var empty = ApplicativeUtil.pure(applicative, List.nil());
         return foldr((x, y) -> ApplicativeUtil.liftA2(applicative, (BiFunction<A, FiniteList<A>, FiniteList<A>>) FiniteList::cons, fun.apply(x), y), empty, lst);
     }
 
@@ -47,11 +47,11 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
     }
 
     public static <A> FiniteList<A> disjunction(FiniteList<A> op1, FiniteList<A> op2) {
-        return ListUtils.concat(op1, op2);
+        return (FiniteList<A>) ListUtils.concat(op1, op2);
     }
 
     public static <A> FiniteList<A> empty() {
-        return FiniteList.nil();
+        return List.nil();
     }
 
     public static <A> FiniteList<A> pure(A a) {
@@ -59,7 +59,7 @@ public final class FiniteListFunctional implements IMonad<FiniteList<?>>, IAlter
     }
 
     public static <A, B> FiniteList<B> flatMap(Function<A, FiniteList<B>> f, FiniteList<A> base) {
-        return base.head().maybe(h -> concat(f.apply(h), flatMap(f, base.tail())), FiniteList.nil());
+        return base.head().maybe(h -> (FiniteList<B>) concat(f.apply(h), flatMap(f, base.tail())), List.nil());
     }
 
     @Override

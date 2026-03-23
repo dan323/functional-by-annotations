@@ -41,7 +41,7 @@ public final class ListZipper<A> {
         if (finiteList == null) {
             throw new IllegalArgumentException("No input can be null");
         }
-        this.left = FiniteList.nil();
+        this.left = List.nil();
         this.right = finiteList;
     }
 

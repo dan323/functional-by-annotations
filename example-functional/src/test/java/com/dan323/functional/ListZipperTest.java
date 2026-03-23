@@ -1,6 +1,7 @@
 package com.dan323.functional;
 
 import com.dan323.functional.data.list.FiniteList;
+import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.list.zipper.ListZipper;
 import com.dan323.functional.data.optional.Maybe;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class ListZipperTest {
 
     @Test
     public void testEmptyListZipper() {
-        var zipper = ListZipper.zipFrom(FiniteList.nil());
+        var zipper = ListZipper.zipFrom(List.nil());
         assertEquals(Maybe.of(), zipper.get());
         assertEquals(Maybe.of(), zipper.moveRight());
         assertEquals(Maybe.of(), zipper.moveLeft());

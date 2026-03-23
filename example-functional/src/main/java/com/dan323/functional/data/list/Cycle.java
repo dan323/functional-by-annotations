@@ -7,7 +7,7 @@ public final class Cycle<A> extends InfiniteList<A> {
     private final FiniteList<A> cycled;
 
     Cycle(FiniteList<A> cycle) {
-        if (cycle == null || cycle.length() == 0) {
+        if (cycle == null || cycle.length() < 1) {
             throw new IllegalArgumentException("The list to be cycled must not be null or empty.");
         }
         this.cycled = cycle;

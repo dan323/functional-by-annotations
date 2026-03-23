@@ -13,10 +13,6 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
         return new FinCons<>(a, tail);
     }
 
-    static <A> FiniteList<A> nil() {
-        return (FiniteList<A>) Nil.NIL;
-    }
-
     /**
      * This default implementation only works finite lists, since otherwise the program does not finish
      *
@@ -29,7 +25,7 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
      */
     @Override
     default <B> FiniteList<B> map(Function<A, B> mapping) {
-        return head().maybe(h -> FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());
+        return head().maybe(h -> FiniteList.cons(mapping.apply(h), tail().map(mapping)), List.nil());
     }
 
     FiniteList<A> tail();
@@ -37,7 +33,7 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
     @SafeVarargs
     static <A> FiniteList<A> of(A... a) {
         if (a.length == 0) {
-            return nil();
+            return List.nil();
         } else {
             return FiniteList.of(0, a);
         }
@@ -51,7 +47,7 @@ public sealed interface FiniteList<A> extends List<A> permits FinCons, Nil {
     @SafeVarargs
     private static <A> FiniteList<A> of(int n, A... a) {
         if (n >= a.length) {
-            return nil();
+            return List.nil();
         } else {
             return cons(a[n], of(n + 1, a));
         }

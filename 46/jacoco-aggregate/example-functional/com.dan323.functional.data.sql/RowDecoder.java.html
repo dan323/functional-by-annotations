@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>RowDecoder.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.sql</a> &gt; <span class="el_source">RowDecoder.java</span></div><h1>RowDecoder.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.sql;
+
+import com.dan323.functional.data.either.Either;
+
+import java.sql.ResultSet;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+@FunctionalInterface
+public interface RowDecoder&lt;A&gt; {
+    Either&lt;DbError, A&gt; decode(ResultSet rs);
+
+    static &lt;A,B&gt; RowDecoder&lt;B&gt; map(RowDecoder&lt;A&gt; dec, Function&lt;A, B&gt; mapping){
+<span class="nc" id="L14">        return rs -&gt; dec.decode(rs).either(</span>
+<span class="nc" id="L15">                err -&gt; Either.left(err),</span>
+<span class="nc" id="L16">                a -&gt; Either.right(mapping.apply(a))</span>
+        );
+    }
+
+    static &lt;A,B,C&gt; RowDecoder&lt;C&gt; liftA2(BiFunction&lt;A, B, C&gt; mapping, RowDecoder&lt;A&gt; decA, RowDecoder&lt;B&gt; decB){
+<span class="nc" id="L21">        return rs -&gt; decA.decode(rs).either(</span>
+<span class="nc" id="L22">                err -&gt; Either.left(err),</span>
+<span class="nc" id="L23">                a -&gt; decB.decode(rs).either(</span>
+<span class="nc" id="L24">                        err -&gt; Either.left(err),</span>
+<span class="nc" id="L25">                        b -&gt; Either.right(mapping.apply(a,b))</span>
+                )
+        );
+    }
+
+    static &lt;A&gt; RowDecoder&lt;A&gt; empty() {
+<span class="nc" id="L31">       return rs -&gt; Either.left(new DbError.DecodeError(&quot;Not implemented&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>SqlAstCompiler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.sql</a> &gt; <span class="el_source">SqlAstCompiler.java</span></div><h1>SqlAstCompiler.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.sql;
+
+import com.dan323.functional.data.list.List;
+
+public final class SqlAstCompiler {
+
+    private SqlAstCompiler() {}
+
+    private sealed interface Fragment permits Fragment.Query, Fragment.Union {
+<span class="fc" id="L10">        record Query(String select, String from, String where) implements Fragment {}</span>
+<span class="fc" id="L11">        record Union(Fragment left, Fragment right) implements Fragment {}</span>
+    }
+
+    public static String compile(SqlAst ast) {
+<span class="fc" id="L15">        return render(toFragment(ast));</span>
+    }
+
+    private static String render(Fragment fragment) {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if (fragment instanceof Fragment.Query q) {</span>
+<span class="fc" id="L20">            StringBuilder sb = new StringBuilder(&quot;SELECT &quot;).append(q.select());</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            if (q.from() != null) sb.append(&quot; FROM &quot;).append(q.from());</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">            if (q.where() != null) sb.append(&quot; WHERE &quot;).append(q.where());</span>
+<span class="fc" id="L23">            return sb.toString();</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        } else if (fragment instanceof Fragment.Union u) {</span>
+<span class="fc" id="L25">            return &quot;(&quot; + render(u.left()) + &quot;) UNION (&quot; + render(u.right()) + &quot;)&quot;;</span>
+        }
+<span class="nc" id="L27">        throw new IllegalStateException(&quot;Unknown Fragment: &quot; + fragment);</span>
+    }
+
+    private static Fragment toFragment(SqlAst ast) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (ast instanceof SqlAst.Empty) {</span>
+<span class="fc" id="L32">            return new Fragment.Query(&quot;1&quot;, null, &quot;FALSE&quot;);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Pure) {</span>
+<span class="fc" id="L34">            return new Fragment.Query(&quot;1&quot;, null, null);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Table t) {</span>
+<span class="fc" id="L36">            return new Fragment.Query(&quot;*&quot;, t.name(), null);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Filter f) {</span>
+<span class="fc" id="L38">            Fragment src = toFragment(f.source());</span>
+<span class="fc" id="L39">            String newCond = ExprCompiler.compile(f.condition());</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (src instanceof Fragment.Query q) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                String combined = q.where() == null ? newCond : &quot;(&quot; + q.where() + &quot;) AND (&quot; + newCond + &quot;)&quot;;</span>
+<span class="fc" id="L42">                return new Fragment.Query(q.select(), q.from(), combined);</span>
+            }
+<span class="fc" id="L44">            return new Fragment.Query(&quot;*&quot;, &quot;(&quot; + render(src) + &quot;)&quot;, newCond);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Project p) {</span>
+<span class="fc" id="L46">            Fragment src = toFragment(p.source());</span>
+<span class="fc" id="L47">            String cols = joinExprs(p.exprList());</span>
+<span class="fc bfc" id="L48" title="All 4 branches covered.">            if (src instanceof Fragment.Query q &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
+<span class="fc" id="L49">                return new Fragment.Query(cols, q.from(), q.where());</span>
+            }
+<span class="fc" id="L51">            return new Fragment.Query(cols, &quot;(&quot; + render(src) + &quot;)&quot;, null);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Join j) {</span>
+<span class="fc" id="L53">            String leftSrc = asJoinSource(toFragment(j.left()));</span>
+<span class="fc" id="L54">            String rightSrc = asJoinSource(toFragment(j.right()));</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            String from = j.on() == null</span>
+<span class="fc" id="L56">                    ? leftSrc + &quot; CROSS JOIN &quot; + rightSrc</span>
+<span class="fc" id="L57">                    : leftSrc + &quot; JOIN &quot; + rightSrc + &quot; ON &quot; + ExprCompiler.compile(j.on());</span>
+<span class="fc" id="L58">            return new Fragment.Query(&quot;*&quot;, from, null);</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        } else if (ast instanceof SqlAst.Product p) {</span>
+<span class="fc" id="L60">            String leftSrc = asJoinSource(toFragment(p.left()));</span>
+<span class="fc" id="L61">            String rightSrc = asJoinSource(toFragment(p.right()));</span>
+<span class="fc" id="L62">            return new Fragment.Query(&quot;*&quot;, leftSrc + &quot; CROSS JOIN &quot; + rightSrc, null);</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        } else if (ast instanceof SqlAst.Union u) {</span>
+<span class="fc" id="L64">            return new Fragment.Union(toFragment(u.left()), toFragment(u.right()));</span>
+        }
+<span class="nc" id="L66">        throw new IllegalStateException(&quot;Unknown SqlAst: &quot; + ast);</span>
+    }
+
+    // A fragment can be used directly as a JOIN source only when it has no WHERE
+    // and no custom projection — otherwise it must be wrapped as a subquery.
+    private static String asJoinSource(Fragment fragment) {
+<span class="pc bpc" id="L72" title="2 of 6 branches missed.">        if (fragment instanceof Fragment.Query q &amp;&amp; q.where() == null &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
+<span class="fc" id="L73">            return q.from();</span>
+        }
+<span class="fc" id="L75">        return &quot;(&quot; + render(fragment) + &quot;)&quot;;</span>
+    }
+
+    private static String joinExprs(List&lt;Expr&lt;?&gt;&gt; exprs) {
+<span class="fc" id="L79">        return exprs.head().maybe(</span>
+                h -&gt; {
+<span class="fc" id="L81">                    String tail = joinExprs(exprs.tail());</span>
+<span class="fc" id="L82">                    String compiled = ExprCompiler.compile(h);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">                    return tail.isEmpty() ? compiled : compiled + &quot;, &quot; + tail;</span>
+                },
+                &quot;&quot;);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

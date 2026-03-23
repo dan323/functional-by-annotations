@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>Cons.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.list</a> &gt; <span class="el_source">Cons.java</span></div><h1>Cons.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.list;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+/**
+ * List of one element in front of another infinite list
+ *
+ * @param &lt;A&gt;
+ */
+final class Cons&lt;A&gt; extends InfiniteList&lt;A&gt; {
+
+    private final A head;
+    private final InfiniteList&lt;A&gt; tail;
+
+<span class="fc" id="L16">    Cons(A head, InfiniteList&lt;A&gt; tail) {</span>
+<span class="pc bpc" id="L17" title="2 of 4 branches missed.">        if (head == null || tail == null) {</span>
+<span class="nc" id="L18">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L20">        this.head = head;</span>
+<span class="fc" id="L21">        this.tail = tail;</span>
+<span class="fc" id="L22">    }</span>
+
+    @Override
+    public A getHead() {
+<span class="fc" id="L26">        return head;</span>
+    }
+
+    @Override
+    public InfiniteList&lt;A&gt; tail() {
+<span class="fc" id="L31">        return tail;</span>
+    }
+
+    @Override
+    public &lt;B&gt; InfiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
+<span class="fc" id="L36">        return new Cons&lt;&gt;(mapping.apply(head), tail().map(mapping));</span>
+    }
+
+    public &lt;B,C&gt; InfiniteList&lt;C&gt; zipBy(BiFunction&lt;A, B, C&gt; mapper, InfiniteList&lt;B&gt; list) {
+<span class="fc" id="L40">        var newHead = mapper.apply(head,list.getHead());</span>
+<span class="fc" id="L41">        return new Cons&lt;&gt;(newHead, (InfiniteList&lt;C&gt;) ZipApplicative.liftA2(mapper, tail, list.tail()));</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L46">        return &quot;[&quot; + head + &quot;,&quot; + tail + &quot;]&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

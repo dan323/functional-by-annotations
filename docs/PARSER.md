@@ -71,7 +71,7 @@ var result = numbers.apply("1,2,3");
 // Returns: Either.right(Pair(FiniteList.of(1, 2, 3), ""))
 
 var empty = numbers.apply("abc");
-// Returns: Either.right(Pair(FiniteList.nil(), "abc"))  // zero values is ok
+// Returns: Either.right(Pair(List.nil(), "abc"))  // zero values is ok
 ```
 
 ### Disjunction/Alternative

@@ -4,6 +4,7 @@ import com.dan323.functional.annotation.Functor;
 import com.dan323.functional.annotation.funcs.IFunctor;
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.list.List;
 import com.dan323.functional.data.optional.Maybe;
 import com.dan323.functional.data.optional.MaybeMonad;
 
@@ -16,7 +17,7 @@ public final class ListZipperFunctor implements IFunctor<ListZipper<?>> {
 
     public static <A, B> ListZipper<B> map(ListZipper<A> base, Function<A, B> mapping) {
         Maybe<B> ma = MaybeMonad.map(base.get(), mapping);
-        FiniteList<B> bList = ma.maybe(p -> FiniteList.cons(p, FiniteListFunctional.map(base.getRight(), mapping)), FiniteList.nil());
+        FiniteList<B> bList = ma.maybe(p -> FiniteList.cons(p, FiniteListFunctional.map(base.getRight(), mapping)), List.nil());
         return new ListZipper<>(FiniteListFunctional.map(base.getLeft(), mapping), bList);
 
     }

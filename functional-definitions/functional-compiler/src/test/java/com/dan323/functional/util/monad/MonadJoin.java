@@ -3,7 +3,6 @@ package com.dan323.functional.util.monad;
 import com.dan323.functional.annotation.Monad;
 import com.dan323.functional.annotation.funcs.IMonad;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 

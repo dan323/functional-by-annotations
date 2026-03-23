@@ -140,7 +140,7 @@ public class FiniteListFunctional implements
             Function<A, B> f) {
         return list.head().maybe(
             h -> FiniteList.cons(f.apply(h), map(list.tail(), f)),
-            FiniteList.nil()
+            List.nil()
         );
     }
     
@@ -155,7 +155,7 @@ public class FiniteListFunctional implements
             FiniteList<A> list) {
         return list.head().maybe(
             h -> concat(f.apply(h), flatMap(f, list.tail())),
-            FiniteList.nil()
+            List.nil()
         );
     }
     
@@ -175,7 +175,7 @@ public class FiniteListFunctional implements
             IApplicative<K> app,
             Function<A, K> f,
             FiniteList<A> list) {
-        K empty = ApplicativeUtil.pure(app, FiniteList.nil());
+        K empty = ApplicativeUtil.pure(app, List.nil());
         return foldr(
             (x, y) -> ApplicativeUtil.liftA2(app, FiniteList::cons, f.apply(x), y),
             empty,
@@ -185,7 +185,7 @@ public class FiniteListFunctional implements
     
     // Alternative
     public static <A> FiniteList<A> empty() {
-        return FiniteList.nil();
+        return List.nil();
     }
     
     public static <A> FiniteList<A> disjunction(

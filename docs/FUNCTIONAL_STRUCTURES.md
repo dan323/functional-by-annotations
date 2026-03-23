@@ -101,7 +101,7 @@ public class ListTraversal implements ITraversal<FiniteList<?>> {
             IApplicative<K> app, 
             Function<A, K> f, 
             FiniteList<A> lst) {
-        K empty = ApplicativeUtil.pure(app, FiniteList.nil());
+        K empty = ApplicativeUtil.pure(app, List.nil());
         return foldr((x, y) -> 
             ApplicativeUtil.liftA2(app, FiniteList::cons, f.apply(x), y), 
             empty, lst);

@@ -20,18 +20,30 @@ public sealed interface List<A> permits FiniteList, InfiniteList {
     }
 
     default FiniteList<A> limit(int k){
-        return head().maybe(h -> limitWithHead(h, k), FiniteList.nil());
+        return head().maybe(h -> limitWithHead(h, k), List.nil());
     }
 
     private FiniteList<A> limitWithHead(A h, int k){
         if (k == 0){
-            return FiniteList.nil();
+            return List.nil();
         } else {
             return FiniteList.cons(h, tail().limit(k-1));
         }
     }
 
-    static <A> List<A> cycle(FiniteList<A> lst){
+    static <A> InfiniteList<A> interleave(InfiniteList<A> fa, InfiniteList<A> fb) {
+        return new Merged<>(fa, fb);
+    }
+
+    static <A> List<A> cycle(List<A> lst){
+        if (lst instanceof FiniteList<A> fl) {
+            return cycle(fl);
+        } else {
+            return lst;
+        }
+    }
+
+    private static <A> List<A> cycle(FiniteList<A> lst){
         if (lst.length() == 0) {
             return nil();
         } else if (lst.length() == 1) {

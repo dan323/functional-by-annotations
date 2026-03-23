@@ -2,6 +2,7 @@ package com.dan323.functional;
 
 import com.dan323.functional.data.list.FiniteList;
 import com.dan323.functional.data.list.FiniteListFunctional;
+import com.dan323.functional.data.list.List;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,8 +11,8 @@ public class FiniteListTest {
 
     @Test
     public void emptyListMap() {
-        var sol = FiniteListFunctional.map(FiniteList.nil(), Object::toString);
-        assertEquals(FiniteList.nil(), sol);
+        var sol = FiniteListFunctional.map(List.nil(), Object::toString);
+        assertEquals(List.nil(), sol);
     }
 
     @Test

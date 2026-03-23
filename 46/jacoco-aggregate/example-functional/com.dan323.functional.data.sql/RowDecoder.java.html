@@ -3,6 +3,7 @@
 import com.dan323.functional.data.either.Either;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -11,24 +12,76 @@ public interface RowDecoder&lt;A&gt; {
     Either&lt;DbError, A&gt; decode(ResultSet rs);
 
     static &lt;A,B&gt; RowDecoder&lt;B&gt; map(RowDecoder&lt;A&gt; dec, Function&lt;A, B&gt; mapping){
-<span class="nc" id="L14">        return rs -&gt; dec.decode(rs).either(</span>
-<span class="nc" id="L15">                err -&gt; Either.left(err),</span>
-<span class="nc" id="L16">                a -&gt; Either.right(mapping.apply(a))</span>
+<span class="fc" id="L15">        return rs -&gt; dec.decode(rs).either(</span>
+<span class="fc" id="L16">                err -&gt; Either.left(err),</span>
+<span class="fc" id="L17">                a -&gt; Either.right(mapping.apply(a))</span>
         );
     }
 
     static &lt;A,B,C&gt; RowDecoder&lt;C&gt; liftA2(BiFunction&lt;A, B, C&gt; mapping, RowDecoder&lt;A&gt; decA, RowDecoder&lt;B&gt; decB){
-<span class="nc" id="L21">        return rs -&gt; decA.decode(rs).either(</span>
-<span class="nc" id="L22">                err -&gt; Either.left(err),</span>
-<span class="nc" id="L23">                a -&gt; decB.decode(rs).either(</span>
-<span class="nc" id="L24">                        err -&gt; Either.left(err),</span>
-<span class="nc" id="L25">                        b -&gt; Either.right(mapping.apply(a,b))</span>
+<span class="fc" id="L22">        return rs -&gt; decA.decode(rs).either(</span>
+<span class="fc" id="L23">                err -&gt; Either.left(err),</span>
+<span class="fc" id="L24">                a -&gt; decB.decode(rs).either(</span>
+<span class="fc" id="L25">                        err -&gt; Either.left(err),</span>
+<span class="fc" id="L26">                        b -&gt; Either.right(mapping.apply(a,b))</span>
                 )
         );
     }
 
     static &lt;A&gt; RowDecoder&lt;A&gt; empty() {
-<span class="nc" id="L31">       return rs -&gt; Either.left(new DbError.DecodeError(&quot;Not implemented&quot;));</span>
+<span class="fc" id="L32">       return rs -&gt; Either.left(new DbError.DecodeError(&quot;Not implemented&quot;));</span>
+    }
+
+    static RowDecoder&lt;String&gt; string(String column) {
+<span class="fc" id="L36">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L38">                String value = rs.getString(column);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                return value != null</span>
+<span class="fc" id="L40">                        ? Either.right(value)</span>
+<span class="fc" id="L41">                        : Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column));</span>
+<span class="fc" id="L42">            } catch (SQLException e) {</span>
+<span class="fc" id="L43">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Integer&gt; integer(String column) {
+<span class="fc" id="L49">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L51">                int value = rs.getInt(column);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L53">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L54">                        : Either.right(value);</span>
+<span class="fc" id="L55">            } catch (SQLException e) {</span>
+<span class="fc" id="L56">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Long&gt; longCol(String column) {
+<span class="fc" id="L62">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L64">                long value = rs.getLong(column);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L66">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L67">                        : Either.right(value);</span>
+<span class="fc" id="L68">            } catch (SQLException e) {</span>
+<span class="fc" id="L69">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Boolean&gt; bool(String column) {
+<span class="fc" id="L75">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L77">                boolean value = rs.getBoolean(column);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L79">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L80">                        : Either.right(value);</span>
+<span class="fc" id="L81">            } catch (SQLException e) {</span>
+<span class="fc" id="L82">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

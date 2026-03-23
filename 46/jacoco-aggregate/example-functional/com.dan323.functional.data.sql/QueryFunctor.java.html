@@ -17,23 +17,27 @@ import java.util.function.Function;
     }
 
     public static &lt;A, B&gt; Query&lt;B&gt; map(Query&lt;A&gt; base, Function&lt;A, B&gt; mapping) {
-<span class="nc" id="L20">        return new Query&lt;&gt;(base.sql(), RowDecoder.map(base.decoder(), mapping));</span>
+<span class="fc" id="L20">        return new Query&lt;&gt;(base.sql(), RowDecoder.map(base.decoder(), mapping));</span>
     }
 
     public static &lt;A&gt; Query&lt;A&gt; pure(A value) {
-<span class="nc" id="L24">        return new Query&lt;&gt;(new SqlAst.Pure(), rs -&gt; Either.right(value));</span>
+<span class="fc" id="L24">        return new Query&lt;&gt;(new SqlAst.Pure(), rs -&gt; Either.right(value));</span>
     }
 
     public static &lt;A&gt; Query&lt;A&gt; empty() {
-<span class="nc" id="L28">        return new Query&lt;&gt;(new SqlAst.Empty(), RowDecoder.empty());</span>
+<span class="fc" id="L28">        return new Query&lt;&gt;(new SqlAst.Empty(), RowDecoder.empty());</span>
     }
 
     public static &lt;A&gt; Query&lt;A&gt; disjunction(Query&lt;A&gt; first, Query&lt;A&gt; snd) {
-<span class="nc" id="L32">        return new Query&lt;&gt;(new SqlAst.Union(first.sql(), snd.sql()), first.decoder());</span>
+<span class="fc" id="L32">        return new Query&lt;&gt;(new SqlAst.Union(first.sql(), snd.sql()), first.decoder());</span>
     }
 
     public static &lt;A,B,C&gt; Query&lt;C&gt; liftA2(BiFunction&lt;A, B, C&gt; mapping, Query&lt;A&gt; qa, Query&lt;B&gt; qb) {
-<span class="nc" id="L36">        return new Query&lt;&gt;(new SqlAst.Join(qa.sql(), qb.sql(), null), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));</span>
+<span class="fc" id="L36">        return new Query&lt;&gt;(new SqlAst.Product(qa.sql(), qb.sql()), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));</span>
+    }
+
+    public static &lt;A,B,C&gt; Query&lt;C&gt; join(BiFunction&lt;A, B, C&gt; mapping, Query&lt;A&gt; qa, Query&lt;B&gt; qb, Expr&lt;Boolean&gt; on) {
+<span class="fc" id="L40">        return new Query&lt;&gt;(new SqlAst.Join(qa.sql(), qb.sql(), on), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));</span>
     }
 
 }

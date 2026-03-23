@@ -69,7 +69,7 @@ public final class SqlAstCompiler {
     // A fragment can be used directly as a JOIN source only when it has no WHERE
     // and no custom projection — otherwise it must be wrapped as a subquery.
     private static String asJoinSource(Fragment fragment) {
-<span class="pc bpc" id="L72" title="2 of 6 branches missed.">        if (fragment instanceof Fragment.Query q &amp;&amp; q.where() == null &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
+<span class="pc bpc" id="L72" title="1 of 6 branches missed.">        if (fragment instanceof Fragment.Query q &amp;&amp; q.where() == null &amp;&amp; &quot;*&quot;.equals(q.select())) {</span>
 <span class="fc" id="L73">            return q.from();</span>
         }
 <span class="fc" id="L75">        return &quot;(&quot; + render(fragment) + &quot;)&quot;;</span>

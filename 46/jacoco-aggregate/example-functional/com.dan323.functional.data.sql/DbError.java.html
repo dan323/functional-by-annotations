@@ -4,6 +4,6 @@ public sealed interface DbError permits DbError.SqlError, DbError.DecodeError {
 
 <span class="nc" id="L5">    record SqlError(String message) implements DbError {}</span>
 
-<span class="nc" id="L7">    record DecodeError(String message) implements DbError {}</span>
+<span class="fc" id="L7">    record DecodeError(String message) implements DbError {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

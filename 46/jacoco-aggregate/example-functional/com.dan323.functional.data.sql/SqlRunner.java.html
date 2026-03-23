@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>SqlRunner.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.sql</a> &gt; <span class="el_source">SqlRunner.java</span></div><h1>SqlRunner.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.sql;
+
+import com.dan323.functional.data.either.Either;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
+public final class SqlRunner {
+
+    private SqlRunner() {}
+
+    public static &lt;A&gt; Either&lt;DbError, List&lt;A&gt;&gt; run(Config cfg, Query&lt;A&gt; query) {
+<span class="nc" id="L17">        try (var conn = DriverManager.getConnection(Config.getPath.apply(cfg))) {</span>
+<span class="nc" id="L18">            return run(conn, query);</span>
+<span class="fc" id="L19">        } catch (SQLException e) {</span>
+<span class="fc" id="L20">            return Either.left(new DbError.SqlError(e.getMessage()));</span>
+        }
+    }
+
+    public static &lt;A&gt; Either&lt;DbError, List&lt;A&gt;&gt; run(Connection conn, Query&lt;A&gt; query) {
+<span class="fc" id="L25">        var sql = SqlAstCompiler.compile(query.sql());</span>
+<span class="fc" id="L26">        try (var stmt = conn.createStatement();</span>
+<span class="fc" id="L27">             var rs = stmt.executeQuery(sql)) {</span>
+<span class="fc" id="L28">            var results = new ArrayList&lt;A&gt;();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L30">                DbError error = query.decoder().decode(rs).either(Function.identity(), val -&gt; {</span>
+<span class="fc" id="L31">                    results.add(val);</span>
+<span class="fc" id="L32">                    return null;</span>
+                });
+<span class="fc bfc" id="L34" title="All 2 branches covered.">                if (error != null) {</span>
+<span class="fc" id="L35">                    return Either.left(error);</span>
+                }
+<span class="fc" id="L37">            }</span>
+<span class="fc" id="L38">            return Either.right(results);</span>
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="fc" id="L40">            return Either.left(new DbError.SqlError(e.getMessage()));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -4,12 +4,12 @@ import com.dan323.functional.data.function.Reader;
 
 import java.util.function.Function;
 
-<span class="nc" id="L7">public record Config(String host, int port, String db) {</span>
+<span class="fc" id="L7">public record Config(String host, int port, String db) {</span>
 
-<span class="nc" id="L9">    static Function&lt;Config,String&gt; getPath = Reader.&lt;Config&gt;getInstance().liftA2(</span>
-<span class="nc" id="L10">            (url, db) -&gt; url + &quot;/&quot; + db,</span>
-<span class="nc" id="L11">            Reader.&lt;Config&gt;getInstance()</span>
-<span class="nc" id="L12">                    .liftA2((host, port) -&gt; &quot;jdbc:postgresql://&quot; + host + &quot;:&quot; + port, Config::host, Config::port),</span>
+<span class="fc" id="L9">    static Function&lt;Config,String&gt; getPath = Reader.&lt;Config&gt;getInstance().liftA2(</span>
+<span class="fc" id="L10">            (url, db) -&gt; url + &quot;/&quot; + db,</span>
+<span class="fc" id="L11">            Reader.&lt;Config&gt;getInstance()</span>
+<span class="fc" id="L12">                    .liftA2((host, port) -&gt; &quot;jdbc:postgresql://&quot; + host + &quot;:&quot; + port, Config::host, Config::port),</span>
             Config::db);
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -10,10 +10,10 @@
 [![GitHub forks](https://img.shields.io/github/forks/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/network)
 [![Last Commit](https://img.shields.io/github/last-commit/dan323/functional-by-annotations)](https://github.com/dan323/functional-by-annotations/commits)
 
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=alert_status)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=coverage)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=bugs)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=dan323_functional-by-annotations&metric=code_smells)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=functional-by-annotations&metric=alert_status)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=functional-by-annotations&metric=coverage)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=functional-by-annotations&metric=bugs)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=functional-by-annotations&metric=code_smells)](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations)
 
 > Bring functional programming concepts to Java through annotations and compile-time code generation
 

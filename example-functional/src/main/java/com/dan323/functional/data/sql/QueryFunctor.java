@@ -33,7 +33,11 @@ public class QueryFunctor implements IAlternative<Query<?>> {
     }
 
     public static <A,B,C> Query<C> liftA2(BiFunction<A, B, C> mapping, Query<A> qa, Query<B> qb) {
-        return new Query<>(new SqlAst.Join(qa.sql(), qb.sql(), null), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));
+        return new Query<>(new SqlAst.Product(qa.sql(), qb.sql()), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));
+    }
+
+    public static <A,B,C> Query<C> join(BiFunction<A, B, C> mapping, Query<A> qa, Query<B> qb, Expr<Boolean> on) {
+        return new Query<>(new SqlAst.Join(qa.sql(), qb.sql(), on), RowDecoder.liftA2(mapping, qa.decoder(), qb.decoder()));
     }
 
 }

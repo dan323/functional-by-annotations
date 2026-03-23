@@ -410,14 +410,14 @@ Recommended branch protection rules for `master`:
 
 ### Current Targets
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Line Coverage | ≥85% | Check [Reports](https://dan323.github.io/functional-by-annotations/) | - |
-| Mutation Coverage | ≥85% | Check [Reports](https://dan323.github.io/functional-by-annotations/pit-reports/) | - |
-| SonarCloud Quality Gate | Pass | Check [SonarCloud](https://sonarcloud.io/dashboard?id=dan323_functional-by-annotations) | - |
-| Bugs | 0 | - | - |
-| Vulnerabilities | 0 | - | - |
-| Code Smells | A Rating | - | - |
+| Metric                  | Target   | Current                                                                          | Status |
+|-------------------------|----------|----------------------------------------------------------------------------------|--------|
+| Line Coverage           | ≥85%     | Check [Reports](https://dan323.github.io/functional-by-annotations/)             | -      |
+| Mutation Coverage       | ≥85%     | Check [Reports](https://dan323.github.io/functional-by-annotations/pit-reports/) | -      |
+| SonarCloud Quality Gate | Pass     | Check [SonarCloud](https://sonarcloud.io/dashboard?id=functional-by-annotations) | -      |
+| Bugs                    | 0        | -                                                                                | -      |
+| Vulnerabilities         | 0        | -                                                                                | -      |
+| Code Smells             | A Rating | -                                                                                | -      |
 
 ### Historical Trends
 

@@ -13,10 +13,6 @@ public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCon
 <span class="fc" id="L13">        return new FinCons&lt;&gt;(a, tail);</span>
     }
 
-    static &lt;A&gt; FiniteList&lt;A&gt; nil() {
-<span class="fc" id="L17">        return (FiniteList&lt;A&gt;) Nil.NIL;</span>
-    }
-
     /**
      * This default implementation only works finite lists, since otherwise the program does not finish
      *
@@ -29,31 +25,31 @@ public sealed interface FiniteList&lt;A&gt; extends List&lt;A&gt; permits FinCon
      */
     @Override
     default &lt;B&gt; FiniteList&lt;B&gt; map(Function&lt;A, B&gt; mapping) {
-<span class="fc" id="L32">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), nil());</span>
+<span class="fc" id="L28">        return head().maybe(h -&gt; FiniteList.cons(mapping.apply(h), tail().map(mapping)), List.nil());</span>
     }
 
     FiniteList&lt;A&gt; tail();
 
     @SafeVarargs
     static &lt;A&gt; FiniteList&lt;A&gt; of(A... a) {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (a.length == 0) {</span>
-<span class="fc" id="L40">            return nil();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (a.length == 0) {</span>
+<span class="fc" id="L36">            return List.nil();</span>
         } else {
-<span class="fc" id="L42">            return FiniteList.of(0, a);</span>
+<span class="fc" id="L38">            return FiniteList.of(0, a);</span>
         }
     }
 
     @Override
     default FiniteList&lt;A&gt; cons(A head) {
-<span class="fc" id="L48">        return cons(head, this);</span>
+<span class="fc" id="L44">        return cons(head, this);</span>
     }
 
     @SafeVarargs
     private static &lt;A&gt; FiniteList&lt;A&gt; of(int n, A... a) {
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (n &gt;= a.length) {</span>
-<span class="fc" id="L54">            return nil();</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (n &gt;= a.length) {</span>
+<span class="fc" id="L50">            return List.nil();</span>
         } else {
-<span class="fc" id="L56">            return cons(a[n], of(n + 1, a));</span>
+<span class="fc" id="L52">            return cons(a[n], of(n + 1, a));</span>
         }
     }
 

@@ -3,15 +3,23 @@
 <span class="nc" id="L3">public final class ListUtils {</span>
 
     public static &lt;A&gt; FiniteList&lt;A&gt; reverse(FiniteList&lt;A&gt; lst) {
-<span class="fc" id="L6">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, FiniteList.nil())), FiniteList.nil());</span>
+<span class="fc" id="L6">        return lst.head().maybe(h -&gt; concat(reverse(lst.tail()), FiniteList.cons(h, List.nil())), List.nil());</span>
     }
 
-    public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b){
-<span class="fc" id="L10">        return a.head().maybe(h -&gt; concat(a.tail(), b).cons(h), b);</span>
+    public static &lt;A&gt; FiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, FiniteList&lt;A&gt; b) {
+<span class="fc" id="L10">        return a.head().maybe(h -&gt; FiniteList.cons(h, concat(a.tail(), b)), b);</span>
     }
 
-    public static &lt;A&gt; InfiniteList&lt;A&gt; concat(FiniteList&lt;A&gt; a, InfiniteList&lt;A&gt; b){
+    private static &lt;A&gt; List&lt;A&gt; concat(FiniteList&lt;A&gt; a, List&lt;A&gt; b){
 <span class="fc" id="L14">        return a.head().maybe(h -&gt; concat(a.tail(), b).cons(h), b);</span>
+    }
+
+    public static &lt;A&gt; List&lt;A&gt; concat(List&lt;A&gt; a, List&lt;A&gt; b){
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (a instanceof FiniteList&lt;A&gt; fa) {</span>
+<span class="fc" id="L19">            return concat(fa, b);</span>
+        } else {
+<span class="nc" id="L21">            return a;</span>
+        }
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

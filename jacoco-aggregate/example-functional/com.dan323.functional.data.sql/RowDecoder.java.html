@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>RowDecoder.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Functionals by annotation in Java</a> &gt; <a href="../index.html" class="el_bundle">example-functional</a> &gt; <a href="index.source.html" class="el_package">com.dan323.functional.data.sql</a> &gt; <span class="el_source">RowDecoder.java</span></div><h1>RowDecoder.java</h1><pre class="source lang-java linenums">package com.dan323.functional.data.sql;
+
+import com.dan323.functional.data.either.Either;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+@FunctionalInterface
+public interface RowDecoder&lt;A&gt; {
+    Either&lt;DbError, A&gt; decode(ResultSet rs);
+
+    static &lt;A,B&gt; RowDecoder&lt;B&gt; map(RowDecoder&lt;A&gt; dec, Function&lt;A, B&gt; mapping){
+<span class="fc" id="L15">        return rs -&gt; dec.decode(rs).either(</span>
+<span class="fc" id="L16">                err -&gt; Either.left(err),</span>
+<span class="fc" id="L17">                a -&gt; Either.right(mapping.apply(a))</span>
+        );
+    }
+
+    static &lt;A,B,C&gt; RowDecoder&lt;C&gt; liftA2(BiFunction&lt;A, B, C&gt; mapping, RowDecoder&lt;A&gt; decA, RowDecoder&lt;B&gt; decB){
+<span class="fc" id="L22">        return rs -&gt; decA.decode(rs).either(</span>
+<span class="fc" id="L23">                err -&gt; Either.left(err),</span>
+<span class="fc" id="L24">                a -&gt; decB.decode(rs).either(</span>
+<span class="fc" id="L25">                        err -&gt; Either.left(err),</span>
+<span class="fc" id="L26">                        b -&gt; Either.right(mapping.apply(a,b))</span>
+                )
+        );
+    }
+
+    static &lt;A&gt; RowDecoder&lt;A&gt; empty() {
+<span class="fc" id="L32">       return rs -&gt; Either.left(new DbError.DecodeError(&quot;Not implemented&quot;));</span>
+    }
+
+    static RowDecoder&lt;String&gt; string(String column) {
+<span class="fc" id="L36">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L38">                String value = rs.getString(column);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                return value != null</span>
+<span class="fc" id="L40">                        ? Either.right(value)</span>
+<span class="fc" id="L41">                        : Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column));</span>
+<span class="fc" id="L42">            } catch (SQLException e) {</span>
+<span class="fc" id="L43">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Integer&gt; integer(String column) {
+<span class="fc" id="L49">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L51">                int value = rs.getInt(column);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L53">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L54">                        : Either.right(value);</span>
+<span class="fc" id="L55">            } catch (SQLException e) {</span>
+<span class="fc" id="L56">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Long&gt; longCol(String column) {
+<span class="fc" id="L62">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L64">                long value = rs.getLong(column);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L66">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L67">                        : Either.right(value);</span>
+<span class="fc" id="L68">            } catch (SQLException e) {</span>
+<span class="fc" id="L69">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+
+    static RowDecoder&lt;Boolean&gt; bool(String column) {
+<span class="fc" id="L75">        return rs -&gt; {</span>
+            try {
+<span class="fc" id="L77">                boolean value = rs.getBoolean(column);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                return rs.wasNull()</span>
+<span class="fc" id="L79">                        ? Either.left(new DbError.DecodeError(&quot;null value in column: &quot; + column))</span>
+<span class="fc" id="L80">                        : Either.right(value);</span>
+<span class="fc" id="L81">            } catch (SQLException e) {</span>
+<span class="fc" id="L82">                return Either.left(new DbError.DecodeError(e.getMessage()));</span>
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

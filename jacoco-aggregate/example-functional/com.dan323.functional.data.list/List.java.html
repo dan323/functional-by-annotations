@@ -20,33 +20,45 @@ public sealed interface List&lt;A&gt; permits FiniteList, InfiniteList {
     }
 
     default FiniteList&lt;A&gt; limit(int k){
-<span class="fc" id="L23">        return head().maybe(h -&gt; limitWithHead(h, k), FiniteList.nil());</span>
+<span class="fc" id="L23">        return head().maybe(h -&gt; limitWithHead(h, k), List.nil());</span>
     }
 
     private FiniteList&lt;A&gt; limitWithHead(A h, int k){
 <span class="fc bfc" id="L27" title="All 2 branches covered.">        if (k == 0){</span>
-<span class="fc" id="L28">            return FiniteList.nil();</span>
+<span class="fc" id="L28">            return List.nil();</span>
         } else {
 <span class="fc" id="L30">            return FiniteList.cons(h, tail().limit(k-1));</span>
         }
     }
 
-    static &lt;A&gt; List&lt;A&gt; cycle(FiniteList&lt;A&gt; lst){
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (lst.length() == 0) {</span>
-<span class="nc" id="L36">            return nil();</span>
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        } else if (lst.length() == 1) {</span>
-<span class="nc" id="L38">            return lst.head().maybe(List::repeat,nil());</span>
+    static &lt;A&gt; InfiniteList&lt;A&gt; interleave(InfiniteList&lt;A&gt; fa, InfiniteList&lt;A&gt; fb) {
+<span class="nc" id="L35">        return new Merged&lt;&gt;(fa, fb);</span>
+    }
+
+    static &lt;A&gt; List&lt;A&gt; cycle(List&lt;A&gt; lst){
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (lst instanceof FiniteList&lt;A&gt; fl) {</span>
+<span class="fc" id="L40">            return cycle(fl);</span>
         } else {
-<span class="fc" id="L40">            return new Cycle&lt;&gt;(lst);</span>
+<span class="nc" id="L42">            return lst;</span>
+        }
+    }
+
+    private static &lt;A&gt; List&lt;A&gt; cycle(FiniteList&lt;A&gt; lst){
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (lst.length() == 0) {</span>
+<span class="nc" id="L48">            return nil();</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        } else if (lst.length() == 1) {</span>
+<span class="nc" id="L50">            return lst.head().maybe(List::repeat,nil());</span>
+        } else {
+<span class="fc" id="L52">            return new Cycle&lt;&gt;(lst);</span>
         }
     }
 
     static &lt;A&gt; FiniteList&lt;A&gt; nil() {
-<span class="fc" id="L45">        return (FiniteList&lt;A&gt;) Nil.NIL;</span>
+<span class="fc" id="L57">        return (FiniteList&lt;A&gt;) Nil.NIL;</span>
     }
 
     static &lt;A&gt; InfiniteList&lt;A&gt; repeat(A a){
-<span class="fc" id="L49">        return new Repeat&lt;&gt;(a);</span>
+<span class="fc" id="L61">        return new Repeat&lt;&gt;(a);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

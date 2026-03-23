@@ -24,7 +24,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;K, A&gt; K traverse(IApplicative&lt;K&gt; applicative, Function&lt;A, K&gt; fun, FiniteList&lt;A&gt; lst) {
-<span class="fc" id="L27">        var empty = ApplicativeUtil.pure(applicative, FiniteList.nil());</span>
+<span class="fc" id="L27">        var empty = ApplicativeUtil.pure(applicative, List.nil());</span>
 <span class="fc" id="L28">        return foldr((x, y) -&gt; ApplicativeUtil.liftA2(applicative, (BiFunction&lt;A, FiniteList&lt;A&gt;, FiniteList&lt;A&gt;&gt;) FiniteList::cons, fun.apply(x), y), empty, lst);</span>
     }
 
@@ -51,7 +51,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; empty() {
-<span class="fc" id="L54">        return FiniteList.nil();</span>
+<span class="fc" id="L54">        return List.nil();</span>
     }
 
     public static &lt;A&gt; FiniteList&lt;A&gt; pure(A a) {
@@ -59,7 +59,7 @@ public final class FiniteListFunctional implements IMonad&lt;FiniteList&lt;?&gt;
     }
 
     public static &lt;A, B&gt; FiniteList&lt;B&gt; flatMap(Function&lt;A, FiniteList&lt;B&gt;&gt; f, FiniteList&lt;A&gt; base) {
-<span class="fc" id="L62">        return base.head().maybe(h -&gt; concat(f.apply(h), flatMap(f, base.tail())), FiniteList.nil());</span>
+<span class="fc" id="L62">        return base.head().maybe(h -&gt; concat(f.apply(h), flatMap(f, base.tail())), List.nil());</span>
     }
 
     @Override

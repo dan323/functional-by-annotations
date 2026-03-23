@@ -7,7 +7,7 @@ public final class Cycle&lt;A&gt; extends InfiniteList&lt;A&gt; {
     private final FiniteList&lt;A&gt; cycled;
 
 <span class="fc" id="L9">    Cycle(FiniteList&lt;A&gt; cycle) {</span>
-<span class="pc bpc" id="L10" title="2 of 4 branches missed.">        if (cycle == null || cycle.length() == 0) {</span>
+<span class="pc bpc" id="L10" title="2 of 4 branches missed.">        if (cycle == null || cycle.length() &lt; 1) {</span>
 <span class="nc" id="L11">            throw new IllegalArgumentException(&quot;The list to be cycled must not be null or empty.&quot;);</span>
         }
 <span class="fc" id="L13">        this.cycled = cycle;</span>
@@ -21,7 +21,7 @@ public final class Cycle&lt;A&gt; extends InfiniteList&lt;A&gt; {
     @Override
     public InfiniteList&lt;A&gt; tail() {
 <span class="fc" id="L23">        var init = cycled.tail();</span>
-<span class="fc" id="L24">        return ListUtils.concat(init, this);</span>
+<span class="fc" id="L24">        return (InfiniteList&lt;A&gt;) ListUtils.concat(init, this);</span>
     }
 
     @Override

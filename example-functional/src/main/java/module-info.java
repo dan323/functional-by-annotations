@@ -20,4 +20,5 @@ module functional.data {
     exports com.dan323.functional.data.parser;
     exports com.dan323.functional.data;
     exports com.dan323.functional.data.writer;
+    exports com.dan323.functional.data.sql;
 }
